@@ -20,7 +20,9 @@ Rel(teamlead, app, "Uses (admin, poll and view data)")
 Rel(admin, app, "In control of")
 ' Rel_Back(customer, mail_system, "Sends e-mails to")
 ' Rel_Neighbor(socialsecurity, mail_system, "Sends e-mails", "SMTP")
-Rel(panopticon, app, "Uses API")
-Rel(external, app, "Uses API")
+Rel_U(panopticon, app, "Uses API")
+Rel_U(external, app, "Uses API")
+
+Lay_D(app, panopticon)
 
 @enduml

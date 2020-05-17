@@ -1,0 +1,52 @@
+@startuml "socialsecurityapp"
+'!includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Container.puml
+' uncomment the following line and comment the first to use locally
+!include C4/C4_Container.puml
+
+LAYOUT_TOP_DOWN
+'LAYOUT_AS_SKETCH
+LAYOUT_WITH_LEGEND()
+
+title Container Diagram for Team Spirit v2.0
+
+Person(teammember, "Team Member", "Member of a Team")
+Person(teamlead, "Team Lead", "Team Lead which can require a Team Spirit Poll")
+Person(admin, "Administrator", "Power user administrating the system")
+
+System_Ext(panopticon, "Panopticon ADCenter Dashboard", "Mangages all ADCenter PKI´s; uses the TS API to obtain the Team Spirit indicators")
+System_Ext(external, "External System", "Any external system authorized to access the Team Spirit API")
+
+System_Boundary(c1, "Team Spirit v2.0"){
+    
+    Container(mobileapp, "Mobile App", "React Native", "Mobile client")
+    Container(webapp, "Legacy Web client (SPA)", "Angular", "Legacy Team Spirit v1.*")
+    Container(api, "New ReST API", "Go", "Team Spirit v2.0 API (backward compatible with v1.0)")
+    ContainerDb(db, "SQL DB", "PostgreSQL", "Stores all datat related with Team Spirit in a single Schema")
+}
+
+Rel(teammember, mobileapp, "Uses", "HTTPS")
+Rel(teammember, webapp, "Uses", "HTTPS")
+Rel(teamlead, mobileapp, "Uses", "HTTPS")
+Rel(teamlead, webapp, "Uses", "HTTPS")
+Rel(admin, webapp, "Uses", "HTTPS")
+
+Rel(webapp, api, "Connects to and uses", "HTTPS")
+Rel(mobileapp, api, "Connects to and uses", "HTTPS")
+
+Rel_L(api, db, "Stores data in ")
+
+Rel_U(panopticon, api, "Connects to and uses", "HTTPS")
+Rel_U(external, api, "Connects to and uses", "HTTPS")
+
+Lay_D(api, panopticon)
+
+'  Lay_R(mobile_app, web_app)
+'  Rel_U(updater, rel_db, "Reads from and writes data to", "SQL/JDBC, post 3306")
+'  Rel_U(updater, filesystem, "Writes to")
+'  Rel_U(updater, nosql, "Reads from and writes to", "MongoDB wire protocol, port 27017")
+
+'  Rel(updater, twitter, "Gets profile information and tweets from", "HTTPS")
+'  Rel(updater, github, "Gets information about public code repositories from", "HTTPS")
+'  Rel(updater, blogs, "Gets content using RSS and Atom feeds from", "HTTP")
+
+@enduml

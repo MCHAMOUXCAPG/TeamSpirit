@@ -1,0 +1,26 @@
+@startuml
+' !includeurl https://raw.githubusercontent.com/RicardoNiepel/C4-PlantUML/master/C4_Context.puml
+' uncomment the following line and comment the first to use locally
+!include C4/C4_Context.puml
+
+LAYOUT_WITH_LEGEND()
+
+title System Context diagram for Team Spirit v2.0
+
+Person(teammember, "Team Member", "Member of a Team")
+Person(teamlead, "Team Lead", "Team Lead which can require a Team Spirit Poll")
+Person(admin, "Administrator", "Power user administrating the system")
+System(app, "Team Spirit v2.0", "Allows to get the Team mood, state of mind or Spirit through an anonymois poll, expressed as a numeric indicator")
+
+System_Ext(panopticon, "Panopticon ADCenter Dashboard", "Mangages all ADCenter PKI´s; uses the TS API to obtain the Team Spirit indicators")
+System_Ext(external, "External System", "Any external system authorized to access the Team Spirit API")
+
+Rel(teammember, app, "Uses (poll and view data)")
+Rel(teamlead, app, "Uses (admin, poll and view data)")
+Rel(admin, app, "In control of")
+' Rel_Back(customer, mail_system, "Sends e-mails to")
+' Rel_Neighbor(socialsecurity, mail_system, "Sends e-mails", "SMTP")
+Rel(panopticon, app, "Uses API")
+Rel(external, app, "Uses API")
+
+@enduml

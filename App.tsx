@@ -1,22 +1,24 @@
 import React from "react";
-import { StyleSheet, Text, View } from "react-native";
-import colors from "./src/config/colors";
+import { NavigationContainer } from "@react-navigation/native";
+import { createStackNavigator } from "@react-navigation/stack";
+
+import HomeScreen from "./src/screens/HomeScreen";
+import SurveyScreen from "./src/screens/SurveyScreen";
+import SuccessScreen from "./src/screens/SuccessScreen";
 
 export default function App() {
+  const Stack = createStackNavigator();
+
   return (
-    <View style={styles.container}>
-      <Text style={{ color: colors.primary }}>
-        Welcome to Team Spirit Survey!
-      </Text>
-    </View>
+    <NavigationContainer>
+      <Stack.Navigator
+        initialRouteName="HomeScreen"
+        screenOptions={{ headerShown: false }}
+      >
+        <Stack.Screen name="HomeScreen" component={HomeScreen} />
+        <Stack.Screen name="SurveyScreen" component={SurveyScreen} />
+        <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
   );
 }
-
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: colors.white,
-    alignItems: "center",
-    justifyContent: "center",
-  },
-});

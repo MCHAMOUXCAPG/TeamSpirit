@@ -5,7 +5,7 @@ import colors from "../config/colors";
 
 const Question = (props) => {
   return (
-    <View style={Styles.container}>
+    <View style={{ ...Styles.container, ...props.style }}>
       <Text style={Styles.number}> Question {props.questionNum} </Text>
       <Text style={Styles.question}> {props.text} </Text>
       <View style={Styles.emojis}>{props.emojis}</View>

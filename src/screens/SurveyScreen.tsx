@@ -3,11 +3,12 @@ import {
   ImageBackground,
   StyleSheet,
   Text,
+  View,
   TouchableOpacity,
 } from "react-native";
 
 import colors from "../config/colors";
-import Question from "../components/Question";
+import Swiper from "../components/Swiper";
 
 const SurveyScreen = ({ navigation }) => {
   const handleSurveyCompletion = () => navigation.navigate("SuccessScreen");
@@ -18,8 +19,10 @@ const SurveyScreen = ({ navigation }) => {
       source={require("../assets/surveyBackfround.png")}
       style={styles.container}
     >
-      <Text style={styles.project}>Project's Name</Text>
-      <Question style={styles.question} />
+      <Text style={styles.project}>Project's Name</Text> 
+      <View style={styles.swiper}>
+        <Swiper />
+      </View>
       <TouchableOpacity
         style={disabled ? styles.btnDisabled : styles.btn}
         activeOpacity={0.5}
@@ -41,17 +44,17 @@ const styles = StyleSheet.create({
   },
   project: {
     flex: 0.1,
-    right: "28%",
-    bottom: "14%",
+    right: "27%",
+    bottom: "5%",
     color: colors.primary,
     fontSize: 20,
     fontWeight: "bold",
   },
-  question: {
-    bottom: "14%",
+  swiper: {
+    flex: 0.7,
+    bottom: "16%",
   },
   btn: {
-    top: "8%",
     backgroundColor: colors.primary,
     width: 160,
     alignItems: "center",
@@ -60,7 +63,6 @@ const styles = StyleSheet.create({
     borderRadius: 30,
   },
   btnDisabled: {
-    top: "8%",
     backgroundColor: colors.disabled,
     width: 160,
     alignItems: "center",

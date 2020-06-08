@@ -1,23 +1,49 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import colors from "../config/colors";
 
-const SuccessScreen = () => {
+const SucessScreen = () => {
   return (
-    <View style={styles.container}>
-      <Text style={styles.text}>Success!</Text>
+    <View style={styles.screen}>
+      <ImageBackground
+        source={require("../assets/homeBackground.png")}
+        style={styles.imgBackground}
+      >
+        <Text style={styles.message}>
+          Thank you for submitting your answers!
+        </Text>
+      </ImageBackground>
     </View>
   );
 };
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
+  screen: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    left: 0,
+    top: 0,
   },
-  text: {
+  imgBackground: {
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    flex: 1,
+    alignItems: "center",
+    justifyContent: "center",
+  },
+  message: {
+    flex: 1,
+    position: "absolute",
+    width: "80%",
+    top: "50%",
+    fontFamily: "Roboto",
+    fontStyle: "normal",
     textAlign: "center",
+    fontSize: 25,
+    color: colors.white,
   },
 });
 
-export default SuccessScreen;
+export default SucessScreen;

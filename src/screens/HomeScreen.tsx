@@ -11,7 +11,7 @@ import {
 } from "react-native";
 import colors from "../config/colors";
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [inputText, setInputText] = useState("");
 
   const resetInputHandler = () => {
@@ -24,17 +24,13 @@ const HomeScreen = ({ navigation }) => {
       Keyboard.dismiss();
       resetInputHandler();
     } else {
-       Alert.alert(
-        "",
-        "The project does not exist, try again!",
-        [
-          {
-            text: "Ok!",
-            style: "destructive",
-            onPress: resetInputHandler,
-          },
-        ]
-      );
+      Alert.alert("", "The project does not exist, try again!", [
+        {
+          text: "Ok!",
+          style: "destructive",
+          onPress: resetInputHandler,
+        },
+      ]);
       Keyboard.dismiss();
       return;
     }

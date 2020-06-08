@@ -10,7 +10,7 @@ import {
 import colors from "../config/colors";
 import Swiper from "../components/Swiper";
 
-const SurveyScreen = ({ navigation }) => {
+const SurveyScreen = ({ navigation }: { navigation: any }) => {
   const handleSurveyCompletion = () => navigation.navigate("SuccessScreen");
   const [disabled, setDisabled] = useState(false);
 
@@ -19,7 +19,7 @@ const SurveyScreen = ({ navigation }) => {
       source={require("../assets/surveyBackfround.png")}
       style={styles.container}
     >
-      <Text style={styles.project}>Project's Name</Text> 
+      <Text style={styles.project}>Project's Name</Text>
       <View style={styles.swiper}>
         <Swiper />
       </View>

@@ -1,14 +1,40 @@
 import React from "react";
-import { View, Text, StyleSheet } from "react-native";
+import { View, Text, StyleSheet, Image, Slider } from "react-native";
 
+import { questionType } from "../models/interfaces";
 import colors from "../config/colors";
 
-const Question = (props) => {
+const Question = ({
+  number,
+  question,
+  type,
+  images,
+}: {
+  number: number;
+  question: string;
+  type: questionType;
+  images: any[];
+}) => {
   return (
-    <View style={{ ...Styles.container}}>
-      <Text style={Styles.number}> Question {props.questionNum} </Text>
-      <Text style={Styles.question}> {props.text} </Text>
-      <View style={Styles.emojis}>{props.emojis}</View>
+    <View style={{ ...Styles.container }}>
+      <Text style={Styles.number}> Question {number} </Text>
+      <Text style={Styles.question}> {question} </Text>
+      {type == questionType.fiveIcons ? (
+        <View style={Styles.emojis}>
+          {images.map((image, index) => {
+            return <Image key={index} source={image} height={20} width={20} />;
+          })}
+        </View>
+      ) : null}
+      {type == questionType.slider ? (
+        <Slider
+          style={{ width: 200, height: 40 }}
+          minimumValue={0}
+          maximumValue={1}
+          minimumTrackTintColor="#FFFFFF"
+          maximumTrackTintColor="#000000"
+        />
+      ) : null}
     </View>
   );
 };

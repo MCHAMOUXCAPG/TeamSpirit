@@ -12,7 +12,7 @@ import Swiper from "../components/Swiper";
 
 const SurveyScreen = ({ navigation }) => {
   const handleSurveyCompletion = () => navigation.navigate("SuccessScreen");
-  const [disabled, setDisabled] = useState(true);
+  const [disabled, setDisabled] = useState(false);
 
   return (
     <ImageBackground

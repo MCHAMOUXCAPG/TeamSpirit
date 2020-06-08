@@ -6,18 +6,37 @@ import {
   View,
   Alert,
   TouchableOpacity,
+  Keyboard,
   ImageBackground,
 } from "react-native";
 import colors from "../config/colors";
 
-const HomeScreen = () => {
+const HomeScreen = ({ navigation }) => {
   const [inputText, setInputText] = useState("");
+
+  const resetInputHandler = () => {
+    setInputText("");
+  };
 
   const submitHandler = () => {
     if (inputText === "Test") {
-      console.log("Navigate to the survey");
+      navigation.navigate("SurveyScreen");
+      Keyboard.dismiss();
+      resetInputHandler();
     } else {
-      Alert.alert("The project does not exist, try again");
+       Alert.alert(
+        "",
+        "The project does not exist, try again!",
+        [
+          {
+            text: "Ok!",
+            style: "destructive",
+            onPress: resetInputHandler,
+          },
+        ]
+      );
+      Keyboard.dismiss();
+      return;
     }
   };
 

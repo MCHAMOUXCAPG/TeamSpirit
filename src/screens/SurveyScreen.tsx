@@ -9,6 +9,7 @@ import {
 
 import colors from "../config/colors";
 import SwiperComponent from "../components/Swiper";
+import SwiperCircle from "../components/SwiperCircle";
 import { IQuestionStatus } from "../models/interfaces";
 
 const SurveyScreen = ({ navigation }: { navigation: any }) => {
@@ -64,6 +65,9 @@ const SurveyScreen = ({ navigation }: { navigation: any }) => {
           setQuestionsState={setQuestionsState}
           questionsState={questionsState}
         />
+        <View style={styles.circle}>
+          <SwiperCircle />
+        </View>
       </View>
       <TouchableOpacity
         style={disabled ? styles.btnDisabled : styles.btn}
@@ -95,6 +99,10 @@ const styles = StyleSheet.create({
   swiper: {
     flex: 0.7,
     bottom: "16%",
+  },
+  circle: {
+    alignItems: "center",
+    justifyContent: "center",
   },
   btn: {
     backgroundColor: colors.primary,

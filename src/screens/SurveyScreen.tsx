@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   ImageBackground,
   StyleSheet,
@@ -8,11 +8,47 @@ import {
 } from "react-native";
 
 import colors from "../config/colors";
-import Swiper from "../components/Swiper";
+import SwiperComponent from "../components/Swiper";
+import { IQuestionStatus } from "../models/interfaces";
 
 const SurveyScreen = ({ navigation }: { navigation: any }) => {
   const handleSurveyCompletion = () => navigation.navigate("SuccessScreen");
-  const [disabled, setDisabled] = useState(false);
+  const [currentQuestion, setCurrentQuestion] = useState(0);
+  const [disabled, setDisabled] = useState(true);
+  const [questionsState, setQuestionsState] = useState<IQuestionStatus[]>([
+    { valid: false, answer: 0, status: "active" },
+    { valid: false, answer: 0, status: "" },
+    { valid: true, answer: 5, status: "" },
+    { valid: true, answer: 5, status: "" },
+    { valid: false, answer: 0, status: "" },
+    { valid: false, answer: 0, status: "" },
+  ]);
+  const [activeIcon, setActiveIcon] = useState([
+    [false, false, false, false, false],
+    [false, false, false, false, false],
+    [],
+    [],
+    [],
+    [false, false],
+  ]);
+
+  useEffect(() => {
+    let count = 0;
+    const currentQuestionStatus = questionsState;
+    currentQuestionStatus.map((question: IQuestionStatus) => {
+      question.status = "";
+      if (question.valid) {
+        count++;
+      }
+    });
+    currentQuestionStatus[currentQuestion].status = "active";
+    setQuestionsState(currentQuestionStatus);
+    if (count === questionsState.length) {
+      setDisabled(false);
+    }
+
+    console.log(questionsState);
+  });
 
   return (
     <ImageBackground
@@ -21,7 +57,13 @@ const SurveyScreen = ({ navigation }: { navigation: any }) => {
     >
       <Text style={styles.project}>Project's Name</Text>
       <View style={styles.swiper}>
-        <Swiper />
+        <SwiperComponent
+          activeIcon={activeIcon}
+          setActiveIcon={setActiveIcon}
+          setCurrentQuestion={setCurrentQuestion}
+          setQuestionsState={setQuestionsState}
+          questionsState={questionsState}
+        />
       </View>
       <TouchableOpacity
         style={disabled ? styles.btnDisabled : styles.btn}

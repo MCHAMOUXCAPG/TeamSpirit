@@ -11,3 +11,9 @@ export interface ISurveyQuestion {
   type: questionType;
   images: string[];
 }
+
+export interface IQuestionStatus {
+  answer: number;
+  status?: string;
+  valid: boolean;
+}

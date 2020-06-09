@@ -1,8 +1,26 @@
-import React from "react";
-import { StyleSheet, Text, View, ImageBackground } from "react-native";
+import React, { useEffect } from "react";
+import {
+  StyleSheet,
+  Text,
+  View,
+  ImageBackground,
+  BackHandler,
+} from "react-native";
+
 import colors from "../config/colors";
 
 const SucessScreen = () => {
+  useEffect(() => {
+    const backAction = () => {
+      BackHandler.exitApp();
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
   return (
     <View style={styles.screen}>
       <ImageBackground

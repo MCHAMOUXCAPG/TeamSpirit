@@ -5,6 +5,8 @@ import {
   Text,
   View,
   TouchableOpacity,
+  BackHandler,
+  Alert,
 } from "react-native";
 
 import colors from "../config/colors";
@@ -12,6 +14,29 @@ import SwiperComponent from "../components/Swiper";
 import { IQuestionStatus } from "../models/interfaces";
 
 const SurveyScreen = ({ navigation }: { navigation: any }) => {
+  useEffect(() => {
+    const backAction = () => {
+      Alert.alert(
+        "Exit App",
+        "Do you want to exit?",
+        [
+          {
+            text: "No",
+            onPress: () => console.log("Cancel Pressed"),
+            style: "cancel",
+          },
+          { text: "Yes", onPress: () => BackHandler.exitApp() },
+        ],
+        { cancelable: false }
+      );
+      return true;
+    };
+    const backHandler = BackHandler.addEventListener(
+      "hardwareBackPress",
+      backAction
+    );
+    return () => backHandler.remove();
+  }, []);
   const handleSurveyCompletion = () => navigation.navigate("SuccessScreen");
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);

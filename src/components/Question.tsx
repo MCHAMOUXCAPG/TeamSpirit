@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import Slider from "react-native-slider";
+import { Slider } from "react-native-elements";
 import { AirbnbRating } from "react-native-ratings";
 
 import { questionType } from "../models/interfaces";
@@ -34,11 +34,20 @@ const Question = ({
     active[number - 1][index] = true;
     setActiveIcon(active);
   };
-  const handleClickStarsAndRating = (index: number) => {
+  const handleClickSlider = (value: number) => {
     const currentQuestionstate = questionsState;
     currentQuestionstate[number - 1] = {
       valid: true,
-      answer: (index - 1) * 2.5,
+      answer: value * 2.5,
+    };
+    setQuestionsState(currentQuestionstate);
+  };
+
+  const handleClickStars = (value: number) => {
+    const currentQuestionstate = questionsState;
+    currentQuestionstate[number - 1] = {
+      valid: true,
+      answer: (value - 1) * 2.5,
     };
     setQuestionsState(currentQuestionstate);
   };
@@ -92,7 +101,7 @@ const Question = ({
             step={1}
             minimumTrackTintColor={colors.primary}
             thumbTintColor={colors.primary}
-            onSlidingComplete={handleClickStarsAndRating}
+            onSlidingComplete={(value) => handleClickSlider(value)}
             style={{ width: "50%" }}
           />
           <TouchableOpacity>
@@ -106,7 +115,7 @@ const Question = ({
           count={5}
           size={40}
           showRating={false}
-          onFinishRating={handleClickStarsAndRating}
+          onFinishRating={handleClickStars}
         />
       ) : null}
       {type == questionType.twoIcons ? (

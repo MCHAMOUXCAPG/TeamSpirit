@@ -29,7 +29,7 @@ func (*SurveyRepo) GetSurvies() ([]*entities.Survey, error) {
 
 	defer DB.Close()
 
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.Team{})
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
 	var survies []*entities.Survey
 	DB.Preload("Notes").Find(&survies)
@@ -46,7 +46,7 @@ func (*SurveyRepo) GetSurvey(surveyCode string) (*entities.Survey, error) {
 
 	defer DB.Close()
 
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.Team{})
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
 	var survey = &entities.Survey{}
 	DB.Where("code = ? ", surveyCode).Preload("Notes").Find(&survey)
@@ -63,7 +63,7 @@ func (*SurveyRepo) CreateSurvey(survey *entities.Survey) (*entities.Survey, erro
 
 	defer DB.Close()
 
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.Team{})
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
 	DB.Create(&survey)
 	return survey, nil
@@ -79,7 +79,7 @@ func (*SurveyRepo) UpdateSurvey(surveyCode string, survey *entities.Survey) (*en
 
 	defer DB.Close()
 
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.Team{})
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
 	var surveyToUpdate = &entities.Survey{}
 	DB.Model(&surveyToUpdate).Where("code = ? ", surveyCode).Updates(&survey)
@@ -97,7 +97,7 @@ func (*SurveyRepo) DeleteSurvey(surveyCode string) (*entities.Survey, error) {
 
 	defer DB.Close()
 
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.Team{})
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
 	var survey = &entities.Survey{}
 	DB.Where("code = ? ", surveyCode).Delete(&survey)
@@ -115,7 +115,8 @@ func (*SurveyRepo) GetResultSurvey(surveyCode string) (float64, error) {
 
 	defer DB.Close()
 
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.Team{})
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
+
 	var result float64
 	row := DB.Table("notes").Where("survey_code = ?", surveyCode).Select("avg(note)").Row()
 	row.Scan(&result)

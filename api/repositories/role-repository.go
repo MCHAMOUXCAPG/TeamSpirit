@@ -5,21 +5,21 @@ import (
 	"github.com/jinzhu/gorm"
 )
 
-type TeamRepository interface {
-	GetTeams() ([]*entities.Team, error)
-	GetTeam(teamName string) (*entities.Team, error)
-	CreateTeam(team *entities.Team) (*entities.Team, error)
-	UpdateTeam(teamName string, team *entities.Team) (*entities.Team, error)
-	DeleteTeam(teameName string) (*entities.Team, error)
+type RoleRepository interface {
+	GetRoles() ([]*entities.Role, error)
+	GetRole(roleID int) (*entities.Role, error)
+	CreateRole(role *entities.Role) (*entities.Role, error)
+	UpdateRole(roleID int, role *entities.Role) (*entities.Role, error)
+	DeleteRole(roleID int) (*entities.Role, error)
 }
 
-type TeamRepo struct{}
+type RoleRepo struct{}
 
-func NewTeamRepository() TeamRepository {
-	return &TeamRepo{}
+func NewRoleRepository() RoleRepository {
+	return &RoleRepo{}
 }
 
-func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
+func (*RoleRepo) GetRoles() ([]*entities.Role, error) {
 	DB, ERR := gorm.Open("sqlite3", "./database.db")
 
 	if ERR != nil {
@@ -30,44 +30,13 @@ func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
 
 	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
-	var teams []*entities.Team
-	DB.Preload("Surveys.Notes").Find(&teams)
+	var roles []*entities.Role
+	DB.Find(&roles)
 
-	return teams, nil
+	return roles, nil
 }
 
-func (*TeamRepo) GetTeam(teamName string) (*entities.Team, error) {
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-	var team = &entities.Team{}
-	DB.Where("name = ? ", teamName).Preload("Surveys.Notes").Find(&team)
-
-	return team, nil
-}
-
-func (*TeamRepo) CreateTeam(team *entities.Team) (*entities.Team, error) {
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
-	DB.Create(&team)
-	return team, nil
-}
-
-func (*TeamRepo) UpdateTeam(teamName string, team *entities.Team) (*entities.Team, error) {
+func (*RoleRepo) GetRole(roleID int) (*entities.Role, error) {
 
 	DB, ERR := gorm.Open("sqlite3", "./database.db")
 
@@ -79,13 +48,13 @@ func (*TeamRepo) UpdateTeam(teamName string, team *entities.Team) (*entities.Tea
 
 	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
-	var teamToUpdate = &entities.Team{}
-	DB.Model(&teamToUpdate).Where("name = ? ", teamName).Updates(&team)
+	var role = &entities.Role{}
+	DB.Where("id = ? ", roleID).Find(&role)
 
-	return team, nil
+	return role, nil
 }
 
-func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
+func (*RoleRepo) CreateRole(role *entities.Role) (*entities.Role, error) {
 
 	DB, ERR := gorm.Open("sqlite3", "./database.db")
 
@@ -97,8 +66,42 @@ func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 
 	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 
-	var team = &entities.Team{}
-	DB.Where("name = ? ", teamName).Delete(&team)
+	DB.Create(&role)
+	return role, nil
+}
 
-	return team, nil
+func (*RoleRepo) UpdateRole(roleID int, role *entities.Role) (*entities.Role, error) {
+
+	DB, ERR := gorm.Open("sqlite3", "./database.db")
+
+	if ERR != nil {
+		panic("failed to connect database")
+	}
+
+	defer DB.Close()
+
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
+
+	var roleToUpdate = &entities.Role{}
+	DB.Model(&roleToUpdate).Where("id = ? ", roleID).Updates(&role)
+
+	return role, nil
+}
+
+func (*RoleRepo) DeleteRole(roleID int) (*entities.Role, error) {
+
+	DB, ERR := gorm.Open("sqlite3", "./database.db")
+
+	if ERR != nil {
+		panic("failed to connect database")
+	}
+
+	defer DB.Close()
+
+	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
+
+	var role = &entities.Role{}
+	DB.Where("id = ? ", roleID).Delete(&role)
+
+	return role, nil
 }

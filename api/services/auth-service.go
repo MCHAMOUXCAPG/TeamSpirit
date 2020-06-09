@@ -2,17 +2,25 @@ package services
 
 import (
 	"encoding/json"
+	"log"
 	"net/http"
 	"time"
 
 	"github.com/callicoder/packer/entities"
+	"github.com/callicoder/packer/repositories"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
+	"golang.org/x/crypto/bcrypt"
+)
+
+var (
+	AuthRepo repositories.AuthRepository = repositories.NewAuthRepository()
 )
 
 // @Summary Access to survey
 // @Description you should send a survey code to access
-// @Tags Autentication
+// @Tags Authentication
 // @Accept json
 // @Produce json
 // @Param Code body entities.Access true "string"
@@ -40,4 +48,107 @@ func AccessToSurvey(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, survey)
+}
+
+func CurrentUser(c echo.Context) error {
+
+	token := c.Get("user").(*jwt.Token)
+	claims := token.Claims.(*entities.JwtCustomClaims)
+	currentUser, _ := AuthRepo.GetUserByEmail(claims.Email)
+
+	return c.JSON(http.StatusOK, currentUser)
+
+}
+
+// Login godoc
+// @Summary Login
+// @Description Login
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param Email body entities.JwtCustomClaims true "String"
+// @Param Password body entities.JwtCustomClaims true "String"
+// @Success 200 {object} entities.JwtCustomClaims
+// @Router /login [post]
+func Login(c echo.Context) error {
+
+	var claims = &entities.JwtCustomClaims{}
+
+	json.NewDecoder(c.Request().Body).Decode(&claims)
+
+	user, _ := AuthRepo.GetUserByEmail(claims.Email)
+
+	if user.Id == 0 {
+		return c.JSON(http.StatusNotFound, echo.Map{"Error": "This email doesn't exist, please register"})
+	}
+
+	if passwordMatch(user.Password, []byte(claims.Password)) == false {
+		return c.JSON(http.StatusNotFound, echo.Map{"Error": "Invalid credentials"})
+	}
+
+	claims.StandardClaims = jwt.StandardClaims{
+		ExpiresAt: time.Now().Add(time.Hour * 72).Unix(),
+	}
+
+	token := jwt.NewWithClaims(jwt.SigningMethodHS256, claims)
+
+	t, err := token.SignedString([]byte("secret"))
+
+	if err != nil {
+		return err
+	}
+
+	return c.JSON(http.StatusOK, echo.Map{"token": t})
+}
+
+// Register godoc
+// @Summary Register
+// @Description Register
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Param Full-name body entities.User true "string"
+// @Param Email body entities.User true "string"
+// @Param Password body entities.User true "string"
+// @Param Phone body entities.User true "int"
+// @Success 200 {object} entities.User
+// @Router /register [post]
+func Register(c echo.Context) error {
+
+	var newUser = &entities.User{}
+
+	json.NewDecoder(c.Request().Body).Decode(&newUser)
+
+	foundUser, _ := AuthRepo.GetUserByEmail(newUser.Email)
+
+	if foundUser.Id != 0 {
+		return c.JSON(http.StatusNotFound, echo.Map{"Error": "This email already exist, please log in!"})
+	}
+
+	newUser.Password = hashAndSalt(newUser.Password)
+
+	user, _ := UserRepo.CreateUser(newUser)
+	return c.JSON(http.StatusOK, user)
+}
+
+func hashAndSalt(password string) string {
+	pwd := []byte(password)
+	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
+	if err != nil {
+		log.Println(err)
+	}
+
+	return string(hash)
+}
+
+func passwordMatch(checkedPwd string, foundPwd []byte) bool {
+
+	checkedPwdByte := []byte(checkedPwd)
+
+	err := bcrypt.CompareHashAndPassword(checkedPwdByte, foundPwd)
+	if err != nil {
+		return false
+	}
+
+	return true
 }

@@ -5,6 +5,13 @@ definitions:
       code:
         type: string
     type: object
+  entities.JwtCustomClaims:
+    properties:
+      Email:
+        type: string
+      Password:
+        type: string
+    type: object
   entities.Note:
     properties:
       note:
@@ -13,6 +20,15 @@ definitions:
         type: integer
       surveyCode:
         type: string
+    type: object
+  entities.Role:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      userID:
+        type: integer
     type: object
   entities.Survey:
     properties:
@@ -42,6 +58,27 @@ definitions:
       surveys:
         items:
           $ref: '#/definitions/entities.Survey'
+        type: array
+    type: object
+  entities.User:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      phone:
+        type: integer
+      roles:
+        items:
+          $ref: '#/definitions/entities.Role'
+        type: array
+      teams:
+        items:
+          $ref: '#/definitions/entities.Team'
         type: array
     type: object
 host: petstore.swagger.io
@@ -79,7 +116,75 @@ paths:
             $ref: '#/definitions/entities.Survey'
       summary: Access to survey
       tags:
-      - Autentication
+      - Authentication
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: String
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/entities.JwtCustomClaims'
+      - description: String
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/entities.JwtCustomClaims'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.JwtCustomClaims'
+      summary: Login
+      tags:
+      - Authentication
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: string
+        in: body
+        name: Full-name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: string
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: string
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: int
+        in: body
+        name: Phone
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Register
+      tags:
+      - Authentication
   /survey/:surveyCode:
     delete:
       consumes:

@@ -66,7 +66,7 @@ const SurveyScreen = ({ navigation }: { navigation: any }) => {
           questionsState={questionsState}
         />
         <View style={styles.circle}>
-          <SwiperCircle />
+          <SwiperCircle state={questionsState} />
         </View>
       </View>
       <TouchableOpacity

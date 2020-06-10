@@ -1,13 +1,28 @@
-import React from "react";
+import React, { useState } from "react";
 import { Text, View, StyleSheet } from "react-native";
 import Colors from "../config/colors";
 
-const SwiperCircle = () => {
+const SwiperCircle = (props: any) => {
+  const [questionsState, setQuestionsState] = useState([
+    { valid: false, answer: 0, status: "active", touched: false },
+    { valid: false, answer: 0, status: "" },
+    { valid: true, answer: 5, status: "" },
+    { valid: true, answer: 5, status: "" },
+    { valid: false, answer: 0, status: "" },
+    { valid: false, answer: 0, status: "" },
+  ]);
+
   return (
     <View style={styles.container}>
-      <View style={styles.redCircle} />
-      <View style={styles.activeCircle} />
-      <View style={styles.inactiveCircle} />
+      {props.state.map((question: any) => {
+        if (question.status === "active") {
+          return <View style={styles.activeCircle} />;
+        } else if (question.status === "") {
+          return <View style={styles.inactiveCircle} />;
+        } else if (question.valid === true) {
+          return <View style={styles.validCircle} />;
+        }
+      })}
     </View>
   );
 };
@@ -16,13 +31,25 @@ const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
   },
-  activeCircle: {
+  validCircle: {
     backgroundColor: Colors.transparent,
     width: 14,
     height: 14,
     borderRadius: 14,
     borderWidth: 2,
     borderColor: Colors.green,
+    marginLeft: 3,
+    marginRight: 3,
+    marginTop: 3,
+    marginBottom: 3,
+  },
+  activeCircle: {
+    backgroundColor: Colors.accent,
+    width: 14,
+    height: 14,
+    borderRadius: 14,
+    borderWidth: 2,
+    borderColor: Colors.accent,
     marginLeft: 3,
     marginRight: 3,
     marginTop: 3,

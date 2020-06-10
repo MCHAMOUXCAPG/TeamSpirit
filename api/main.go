@@ -71,7 +71,7 @@ func handleResquests() {
 	r.POST("/survey/create", services.CreateSurvey)
 	r.PUT("/survey/:surveyCode", services.UpdateSurvey)
 	r.DELETE("/survey/:surveyCode", services.DeleteSurvey)
-	r.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
+	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 	r.GET("/survey/result/:surveyCode", services.GetResultSurvey)
 
 	// **** Temas routes *****

@@ -21,7 +21,6 @@ func NewRoleRepository() RoleRepository {
 
 func (*RoleRepo) GetRoles() ([]*entities.Role, error) {
 
-	config.AutoMigrate()
 	var roles []*entities.Role
 	config.DB.Find(&roles)
 
@@ -30,7 +29,6 @@ func (*RoleRepo) GetRoles() ([]*entities.Role, error) {
 
 func (*RoleRepo) GetRole(roleID int) (*entities.Role, error) {
 
-	config.AutoMigrate()
 	var role = &entities.Role{}
 	config.DB.Where("id = ? ", roleID).Find(&role)
 
@@ -39,7 +37,6 @@ func (*RoleRepo) GetRole(roleID int) (*entities.Role, error) {
 
 func (*RoleRepo) CreateRole(role *entities.Role) (*entities.Role, error) {
 
-	config.AutoMigrate()
 	config.DB.Create(&role)
 
 	return role, nil
@@ -47,7 +44,6 @@ func (*RoleRepo) CreateRole(role *entities.Role) (*entities.Role, error) {
 
 func (*RoleRepo) UpdateRole(roleID int, role *entities.Role) (*entities.Role, error) {
 
-	config.AutoMigrate()
 	var roleToUpdate = &entities.Role{}
 	config.DB.Model(&roleToUpdate).Where("id = ? ", roleID).Updates(&role)
 
@@ -56,7 +52,6 @@ func (*RoleRepo) UpdateRole(roleID int, role *entities.Role) (*entities.Role, er
 
 func (*RoleRepo) DeleteRole(roleID int) (*entities.Role, error) {
 
-	config.AutoMigrate()
 	var role = &entities.Role{}
 	config.DB.Where("id = ? ", roleID).Delete(&role)
 

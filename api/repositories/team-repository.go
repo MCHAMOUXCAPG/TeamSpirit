@@ -21,7 +21,6 @@ func NewTeamRepository() TeamRepository {
 
 func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
 
-	config.AutoMigrate()
 	var teams []*entities.Team
 	config.DB.Preload("Surveys.Notes").Preload("Users").Find(&teams)
 
@@ -30,7 +29,6 @@ func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
 
 func (*TeamRepo) GetTeam(teamName string) (*entities.Team, error) {
 
-	config.AutoMigrate()
 	var team = &entities.Team{}
 	config.DB.Where("name = ? ", teamName).Preload("Surveys.Notes").Preload("Users").Find(&team)
 
@@ -39,14 +37,12 @@ func (*TeamRepo) GetTeam(teamName string) (*entities.Team, error) {
 
 func (*TeamRepo) CreateTeam(team *entities.Team) (*entities.Team, error) {
 
-	config.AutoMigrate()
 	config.DB.Create(&team)
 	return team, nil
 }
 
 func (*TeamRepo) UpdateTeam(teamName string, team *entities.Team) (*entities.Team, error) {
 
-	config.AutoMigrate()
 	var teamToUpdate = &entities.Team{}
 	config.DB.Model(&teamToUpdate).Where("name = ? ", teamName).Updates(&team)
 
@@ -55,7 +51,6 @@ func (*TeamRepo) UpdateTeam(teamName string, team *entities.Team) (*entities.Tea
 
 func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 
-	config.AutoMigrate()
 	var team = &entities.Team{}
 	config.DB.Where("name = ? ", teamName).Delete(&team)
 

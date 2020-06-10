@@ -147,6 +147,21 @@ paths:
       summary: Login
       tags:
       - Authentication
+  /me:
+    get:
+      consumes:
+      - application/json
+      description: Current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Current User
+      tags:
+      - Authentication
   /register:
     post:
       consumes:

@@ -16,9 +16,5 @@ func GetConnection() {
 		panic("failed to connect database")
 	}
 
-	AutoMigrate()
-}
-
-func AutoMigrate() {
 	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 }

@@ -17,7 +17,6 @@ func NewAuthRepository() AuthRepository {
 
 func (*AuthRepo) GetUserByEmail(email string) (*entities.User, error) {
 
-	config.AutoMigrate()
 	var foundUser = &entities.User{}
 	config.DB.Where("email = ?", email).Preload("Roles").Preload("Teams").Find(&foundUser)
 

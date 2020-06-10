@@ -21,7 +21,6 @@ func NewUserRepository() UserRepository {
 
 func (*UserRepo) GetUsers() ([]*entities.User, error) {
 
-	config.AutoMigrate()
 	var users []*entities.User
 	config.DB.Preload("Roles").Preload("Teams").Find(&users)
 
@@ -30,7 +29,6 @@ func (*UserRepo) GetUsers() ([]*entities.User, error) {
 
 func (*UserRepo) GetUser(userID int) (*entities.User, error) {
 
-	config.AutoMigrate()
 	var user = &entities.User{}
 	config.DB.Where("id = ? ", userID).Preload("Roles").Preload("Teams").Find(&user)
 
@@ -39,14 +37,12 @@ func (*UserRepo) GetUser(userID int) (*entities.User, error) {
 
 func (*UserRepo) CreateUser(user *entities.User) (*entities.User, error) {
 
-	config.AutoMigrate()
 	config.DB.Create(&user)
 	return user, nil
 }
 
 func (*UserRepo) UpdateUser(userID int, user *entities.User) (*entities.User, error) {
 
-	config.AutoMigrate()
 	var userToUpdate = &entities.User{}
 	config.DB.Model(&userToUpdate).Where("id = ? ", userID).Updates(&user)
 
@@ -55,7 +51,6 @@ func (*UserRepo) UpdateUser(userID int, user *entities.User) (*entities.User, er
 
 func (*UserRepo) DeleteUser(userID int) (*entities.User, error) {
 
-	config.AutoMigrate()
 	var user = &entities.User{}
 	config.DB.Where("id = ? ", userID).Delete(&user)
 

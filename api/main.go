@@ -51,11 +51,11 @@ func handleResquests() {
 	r.GET("/me", services.CurrentUser)
 
 	// **** users routes *****
-	e.POST("/user/create", services.CreateUser)
-	e.GET("/users", services.GetUsers)
-	e.GET("/user/:id", services.GetUser)
-	e.DELETE("/user/:id", services.DeleteUser)
-	e.PUT("/user/:id", services.UpdateUser)
+	r.POST("/user/create", services.CreateUser)
+	r.GET("/users", services.GetUsers)
+	r.GET("/user/:id", services.GetUser)
+	r.DELETE("/user/:id", services.DeleteUser)
+	r.PUT("/user/:id", services.UpdateUser)
 
 	// **** Roles routes *****
 	r.GET("/role/:id", services.GetRole)

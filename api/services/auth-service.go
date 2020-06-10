@@ -51,6 +51,14 @@ func AccessToSurvey(c echo.Context) error {
 	return c.JSON(http.StatusOK, survey)
 }
 
+// Current User godoc
+// @Summary Current User
+// @Description Current user
+// @Tags Authentication
+// @Accept json
+// @Produce json
+// @Success 200 {object} entities.User
+// @Router /me [Get]
 func CurrentUser(c echo.Context) error {
 
 	token := c.Get("user").(*jwt.Token)

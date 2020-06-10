@@ -1,11 +1,11 @@
 basePath: /v2
 definitions:
-  entities.Access:
+  dto.Access:
     properties:
       code:
         type: string
     type: object
-  entities.JwtCustomClaims:
+  dto.JwtCustomClaims:
     properties:
       Email:
         type: string
@@ -59,6 +59,10 @@ definitions:
         items:
           $ref: '#/definitions/entities.Survey'
         type: array
+      users:
+        items:
+          $ref: '#/definitions/entities.User'
+        type: array
     type: object
   entities.User:
     properties:
@@ -104,7 +108,7 @@ paths:
         name: Code
         required: true
         schema:
-          $ref: '#/definitions/entities.Access'
+          $ref: '#/definitions/dto.Access'
       produces:
       - application/json
       responses:
@@ -126,20 +130,20 @@ paths:
         name: Email
         required: true
         schema:
-          $ref: '#/definitions/entities.JwtCustomClaims'
+          $ref: '#/definitions/dto.JwtCustomClaims'
       - description: String
         in: body
         name: Password
         required: true
         schema:
-          $ref: '#/definitions/entities.JwtCustomClaims'
+          $ref: '#/definitions/dto.JwtCustomClaims'
       produces:
       - application/json
       responses:
         "200":
           description: OK
           schema:
-            $ref: '#/definitions/entities.JwtCustomClaims'
+            $ref: '#/definitions/dto.JwtCustomClaims'
       summary: Login
       tags:
       - Authentication

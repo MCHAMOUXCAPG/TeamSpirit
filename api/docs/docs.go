@@ -53,7 +53,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.Access"
+                            "$ref": "#/definitions/dto.Access"
                         }
                     }
                 ],
@@ -87,7 +87,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.JwtCustomClaims"
+                            "$ref": "#/definitions/dto.JwtCustomClaims"
                         }
                     },
                     {
@@ -96,7 +96,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.JwtCustomClaims"
+                            "$ref": "#/definitions/dto.JwtCustomClaims"
                         }
                     }
                 ],
@@ -104,7 +104,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entities.JwtCustomClaims"
+                            "$ref": "#/definitions/dto.JwtCustomClaims"
                         }
                     }
                 }
@@ -977,7 +977,7 @@ var doc = `{
         }
     },
     "definitions": {
-        "entities.Access": {
+        "dto.Access": {
             "type": "object",
             "properties": {
                 "code": {
@@ -985,7 +985,7 @@ var doc = `{
                 }
             }
         },
-        "entities.JwtCustomClaims": {
+        "dto.JwtCustomClaims": {
             "type": "object",
             "properties": {
                 "Email": {
@@ -1066,6 +1066,12 @@ var doc = `{
                     "type": "array",
                     "items": {
                         "$ref": "#/definitions/entities.Survey"
+                    }
+                },
+                "users": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.User"
                     }
                 }
             }

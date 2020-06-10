@@ -1,8 +1,8 @@
 package repositories
 
 import (
+	"github.com/callicoder/packer/config"
 	"github.com/callicoder/packer/entities"
-	"github.com/jinzhu/gorm"
 )
 
 type TeamRepository interface {
@@ -20,85 +20,44 @@ func NewTeamRepository() TeamRepository {
 }
 
 func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
 
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var teams []*entities.Team
-	DB.Preload("Surveys.Notes").Find(&teams)
+	config.DB.Preload("Surveys.Notes").Preload("Users").Find(&teams)
 
 	return teams, nil
 }
 
 func (*TeamRepo) GetTeam(teamName string) (*entities.Team, error) {
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
 
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
+	config.AutoMigrate()
 	var team = &entities.Team{}
-	DB.Where("name = ? ", teamName).Preload("Surveys.Notes").Find(&team)
+	config.DB.Where("name = ? ", teamName).Preload("Surveys.Notes").Preload("Users").Find(&team)
 
 	return team, nil
 }
 
 func (*TeamRepo) CreateTeam(team *entities.Team) (*entities.Team, error) {
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
 
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
-	DB.Create(&team)
+	config.AutoMigrate()
+	config.DB.Create(&team)
 	return team, nil
 }
 
 func (*TeamRepo) UpdateTeam(teamName string, team *entities.Team) (*entities.Team, error) {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var teamToUpdate = &entities.Team{}
-	DB.Model(&teamToUpdate).Where("name = ? ", teamName).Updates(&team)
+	config.DB.Model(&teamToUpdate).Where("name = ? ", teamName).Updates(&team)
 
 	return team, nil
 }
 
 func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var team = &entities.Team{}
-	DB.Where("name = ? ", teamName).Delete(&team)
+	config.DB.Where("name = ? ", teamName).Delete(&team)
 
 	return team, nil
 }

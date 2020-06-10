@@ -3,10 +3,11 @@ package main
 import (
 	"net/http"
 
+	"github.com/callicoder/packer/config"
 	"github.com/callicoder/packer/docs"
 	"github.com/callicoder/packer/entities"
 	"github.com/callicoder/packer/services"
-	"github.com/jinzhu/gorm"
+
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
@@ -110,15 +111,7 @@ func configSwagger() {
 // @BasePath /v2
 func main() {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
+	config.GetConnection()
 
 	c := cron.New()
 

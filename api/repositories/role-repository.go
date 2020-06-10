@@ -1,8 +1,8 @@
 package repositories
 
 import (
+	"github.com/callicoder/packer/config"
 	"github.com/callicoder/packer/entities"
-	"github.com/jinzhu/gorm"
 )
 
 type RoleRepository interface {
@@ -20,88 +20,45 @@ func NewRoleRepository() RoleRepository {
 }
 
 func (*RoleRepo) GetRoles() ([]*entities.Role, error) {
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
 
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var roles []*entities.Role
-	DB.Find(&roles)
+	config.DB.Find(&roles)
 
 	return roles, nil
 }
 
 func (*RoleRepo) GetRole(roleID int) (*entities.Role, error) {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var role = &entities.Role{}
-	DB.Where("id = ? ", roleID).Find(&role)
+	config.DB.Where("id = ? ", roleID).Find(&role)
 
 	return role, nil
 }
 
 func (*RoleRepo) CreateRole(role *entities.Role) (*entities.Role, error) {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
+	config.AutoMigrate()
+	config.DB.Create(&role)
 
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
-	DB.Create(&role)
 	return role, nil
 }
 
 func (*RoleRepo) UpdateRole(roleID int, role *entities.Role) (*entities.Role, error) {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var roleToUpdate = &entities.Role{}
-	DB.Model(&roleToUpdate).Where("id = ? ", roleID).Updates(&role)
+	config.DB.Model(&roleToUpdate).Where("id = ? ", roleID).Updates(&role)
 
 	return role, nil
 }
 
 func (*RoleRepo) DeleteRole(roleID int) (*entities.Role, error) {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var role = &entities.Role{}
-	DB.Where("id = ? ", roleID).Delete(&role)
+	config.DB.Where("id = ? ", roleID).Delete(&role)
 
 	return role, nil
 }

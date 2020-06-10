@@ -1,8 +1,8 @@
 package repositories
 
 import (
+	"github.com/callicoder/packer/config"
 	"github.com/callicoder/packer/entities"
-	"github.com/jinzhu/gorm"
 )
 
 type AuthRepository interface {
@@ -17,18 +17,9 @@ func NewAuthRepository() AuthRepository {
 
 func (*AuthRepo) GetUserByEmail(email string) (*entities.User, error) {
 
-	DB, ERR := gorm.Open("sqlite3", "./database.db")
-
-	if ERR != nil {
-		panic("failed to connect database")
-	}
-
-	defer DB.Close()
-
-	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-
+	config.AutoMigrate()
 	var foundUser = &entities.User{}
-	DB.Where("email = ?", email).Preload("Roles").Preload("Teams").Find(&foundUser)
+	config.DB.Where("email = ?", email).Preload("Roles").Preload("Teams").Find(&foundUser)
 
 	return foundUser, nil
 }

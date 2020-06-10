@@ -15,12 +15,26 @@ var (
 	RoleRepo repositories.RoleRepository = repositories.NewRoleRepository()
 )
 
+// @Summary Get all roles
+// @Description returns all roles
+// @Tags Roles
+// @Accept json
+// @Produce json
+// @Success 200 {object} entities.Role
+// @Router /roles [Get]
 func GetRoles(c echo.Context) error {
 
 	roles, _ := RoleRepo.GetRoles()
 	return c.JSON(http.StatusOK, roles)
 }
 
+// @Summary Get one role
+// @Description returns one role by id
+// @Tags Roles
+// @Accept json
+// @Produce json
+// @Success 200 {object} entities.Role
+// @Router /role/:id [Get]
 func GetRole(c echo.Context) error {
 
 	roleID, _ := strconv.Atoi(c.Param("id"))
@@ -28,6 +42,15 @@ func GetRole(c echo.Context) error {
 	return c.JSON(http.StatusOK, role)
 }
 
+// @Summary Create a new role
+// @Description returns the role created
+// @Tags Roles
+// @Accept json
+// @Produce json
+// @Param Name body entities.Role true "String"
+// @Param UserID body entities.Role true "int"
+// @Success 200 {object} entities.Role
+// @Router /role/create [post]
 func CreateRole(c echo.Context) error {
 
 	var newRole = &entities.Role{}
@@ -37,6 +60,15 @@ func CreateRole(c echo.Context) error {
 	return c.JSON(http.StatusOK, role)
 }
 
+// @Summary Update a new role
+// @Description returns the role updated
+// @Tags Roles
+// @Accept json
+// @Produce json
+// @Param Name body entities.Role true "String"
+// @Param UserID body entities.Role true "int"
+// @Success 200 {object} entities.Role
+// @Router /role/:id [put]
 func UpdateRole(c echo.Context) error {
 
 	roleID, _ := strconv.Atoi(c.Param("id"))
@@ -47,6 +79,13 @@ func UpdateRole(c echo.Context) error {
 	return c.JSON(http.StatusOK, role)
 }
 
+// @Summary Delete a role
+// @Description returns a empty role
+// @Tags Roles
+// @Accept json
+// @Produce json
+// @Success 200 {object} entities.Role
+// @Router /role/:id [delete]
 func DeleteRole(c echo.Context) error {
 
 	roleID, _ := strconv.Atoi(c.Param("id"))

@@ -70,8 +70,6 @@ definitions:
         type: integer
       password:
         type: string
-      phone:
-        type: integer
       roles:
         items:
           $ref: '#/definitions/entities.Role'
@@ -185,6 +183,105 @@ paths:
       summary: Register
       tags:
       - Authentication
+  /role/:id:
+    delete:
+      consumes:
+      - application/json
+      description: returns a empty role
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Delete a role
+      tags:
+      - Roles
+    get:
+      consumes:
+      - application/json
+      description: returns one role by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Get one role
+      tags:
+      - Roles
+    put:
+      consumes:
+      - application/json
+      description: returns the role updated
+      parameters:
+      - description: String
+        in: body
+        name: Name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      - description: int
+        in: body
+        name: UserID
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Update a new role
+      tags:
+      - Roles
+  /role/create:
+    post:
+      consumes:
+      - application/json
+      description: returns the role created
+      parameters:
+      - description: String
+        in: body
+        name: Name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      - description: int
+        in: body
+        name: UserID
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Create a new role
+      tags:
+      - Roles
+  /roles:
+    get:
+      consumes:
+      - application/json
+      description: returns all roles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Get all roles
+      tags:
+      - Roles
   /survey/:surveyCode:
     delete:
       consumes:
@@ -503,4 +600,115 @@ paths:
       summary: Get all teams
       tags:
       - Teams
+  /user/:id:
+    delete:
+      consumes:
+      - application/json
+      description: returns a empty user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Delete a user
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: returns one
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Get one users
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: returns the user updated
+      parameters:
+      - description: String
+        in: body
+        name: Full_name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Update a new user
+      tags:
+      - Users
+  /user/create:
+    post:
+      consumes:
+      - application/json
+      description: returns the user created
+      parameters:
+      - description: String
+        in: body
+        name: Full_name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Create a new user
+      tags:
+      - Users
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: returns all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Get all users
+      tags:
+      - Users
 swagger: "2.0"

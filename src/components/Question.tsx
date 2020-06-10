@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
-import Slider from "react-native-slider";
+import { Slider } from "react-native-elements";
 import { AirbnbRating } from "react-native-ratings";
 
 import { questionType } from "../models/interfaces";
@@ -27,7 +27,11 @@ const Question = ({
 }) => {
   const handleClick5Icons = (index: number) => {
     const currentQuestionstate = questionsState;
-    currentQuestionstate[number - 1] = { valid: true, answer: index * 2.5 };
+    currentQuestionstate[number - 1] = {
+      valid: true,
+      answer: index * 2.5,
+      touched: true,
+    };
     setQuestionsState(currentQuestionstate);
     const active = activeIcon;
     active[number - 1] = [false, false, false, false, false];
@@ -39,13 +43,18 @@ const Question = ({
     currentQuestionstate[number - 1] = {
       valid: true,
       answer: (index - 1) * 2.5,
+      touched: true,
     };
     setQuestionsState(currentQuestionstate);
   };
 
   const handleClick2Icons = (index: number, mark: number) => {
     const currentQuestionstate = questionsState;
-    currentQuestionstate[number - 1] = { valid: true, answer: mark };
+    currentQuestionstate[number - 1] = {
+      valid: true,
+      answer: mark,
+      touched: true,
+    };
     setQuestionsState(currentQuestionstate);
     const active = activeIcon;
     active[number - 1] = [false, false];

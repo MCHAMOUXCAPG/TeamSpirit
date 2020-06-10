@@ -17,12 +17,12 @@ const SurveyScreen = ({ navigation }: { navigation: any }) => {
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [questionsState, setQuestionsState] = useState<IQuestionStatus[]>([
-    { valid: false, answer: 0, status: "active" },
-    { valid: false, answer: 0, status: "" },
-    { valid: true, answer: 5, status: "" },
-    { valid: true, answer: 5, status: "" },
-    { valid: false, answer: 0, status: "" },
-    { valid: false, answer: 0, status: "" },
+    { valid: false, answer: 0, status: "active", touched: false },
+    { valid: false, answer: 0, status: "", touched: false },
+    { valid: true, answer: 5, status: "", touched: false },
+    { valid: true, answer: 5, status: "", touched: false },
+    { valid: false, answer: 0, status: "", touched: false },
+    { valid: false, answer: 0, status: "", touched: false },
   ]);
   const [activeIcon, setActiveIcon] = useState([
     [false, false, false, false, false],
@@ -43,6 +43,7 @@ const SurveyScreen = ({ navigation }: { navigation: any }) => {
       }
     });
     currentQuestionStatus[currentQuestion].status = "active";
+    currentQuestionStatus[currentQuestion].touched = true;
     setQuestionsState(currentQuestionStatus);
     if (count === questionsState.length) {
       setDisabled(false);

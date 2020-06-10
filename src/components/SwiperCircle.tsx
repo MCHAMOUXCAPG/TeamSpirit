@@ -1,26 +1,27 @@
 import React, { useState } from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Colors from "../config/colors";
 
 const SwiperCircle = (props: any) => {
-  const [questionsState, setQuestionsState] = useState([
-    { valid: false, answer: 0, status: "active", touched: false },
-    { valid: false, answer: 0, status: "" },
-    { valid: true, answer: 5, status: "" },
-    { valid: true, answer: 5, status: "" },
-    { valid: false, answer: 0, status: "" },
-    { valid: false, answer: 0, status: "" },
-  ]);
-
   return (
     <View style={styles.container}>
-      {props.state.map((question: any) => {
+      {props.state.map((question: any, index: any) => {
         if (question.status === "active") {
-          return <View style={styles.activeCircle} />;
-        } else if (question.status === "") {
-          return <View style={styles.inactiveCircle} />;
-        } else if (question.valid === true) {
-          return <View style={styles.validCircle} />;
+          return <View style={styles.activeCircle} key={index} />;
+        } else if (
+          question.status === "" &&
+          question.valid === true &&
+          question.touched === true
+        ) {
+          return <View style={styles.validCircle} key={index} />;
+        } else if (
+          question.status === "" &&
+          question.valid === false &&
+          question.touched === true
+        ) {
+          return <View style={styles.redCircle} key={index} />;
+        } else if (question.status == "" && question.touched === false) {
+          return <View style={styles.inactiveCircle} key={index} />;
         }
       })}
     </View>

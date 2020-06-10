@@ -5,9 +5,8 @@ import (
 
 	"github.com/callicoder/packer/config"
 	"github.com/callicoder/packer/docs"
-	"github.com/callicoder/packer/entities"
+	"github.com/callicoder/packer/dto"
 	"github.com/callicoder/packer/services"
-
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
@@ -42,7 +41,7 @@ func handleResquests() {
 	r := e.Group("")
 
 	config := middleware.JWTConfig{
-		Claims:     &entities.JwtCustomClaims{},
+		Claims:     &dto.JwtCustomClaims{},
 		SigningKey: []byte("secret"),
 	}
 

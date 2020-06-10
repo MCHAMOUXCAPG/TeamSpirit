@@ -6,6 +6,7 @@ import (
 	"net/http"
 	"time"
 
+	"github.com/callicoder/packer/dto"
 	"github.com/callicoder/packer/entities"
 	"github.com/callicoder/packer/repositories"
 	"github.com/dgrijalva/jwt-go"
@@ -23,11 +24,11 @@ var (
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param Code body entities.Access true "string"
+// @Param Code body dto.Access true "string"
 // @Success 200 {object} entities.Survey
 // @Router /access [post]
 func AccessToSurvey(c echo.Context) error {
-	access := &entities.Access{}
+	access := &dto.Access{}
 
 	json.NewDecoder(c.Request().Body).Decode(&access)
 	survey, _ := SurveyRepo.GetSurvey(access.Code)
@@ -53,7 +54,7 @@ func AccessToSurvey(c echo.Context) error {
 func CurrentUser(c echo.Context) error {
 
 	token := c.Get("user").(*jwt.Token)
-	claims := token.Claims.(*entities.JwtCustomClaims)
+	claims := token.Claims.(*dto.JwtCustomClaims)
 	currentUser, _ := AuthRepo.GetUserByEmail(claims.Email)
 
 	return c.JSON(http.StatusOK, currentUser)
@@ -66,13 +67,13 @@ func CurrentUser(c echo.Context) error {
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param Email body entities.JwtCustomClaims true "String"
-// @Param Password body entities.JwtCustomClaims true "String"
-// @Success 200 {object} entities.JwtCustomClaims
+// @Param Email body dto.JwtCustomClaims true "String"
+// @Param Password body dto.JwtCustomClaims true "String"
+// @Success 200 {object} dto.JwtCustomClaims
 // @Router /login [post]
 func Login(c echo.Context) error {
 
-	var claims = &entities.JwtCustomClaims{}
+	var claims = &dto.JwtCustomClaims{}
 
 	json.NewDecoder(c.Request().Body).Decode(&claims)
 

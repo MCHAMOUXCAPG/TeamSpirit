@@ -57,7 +57,7 @@ func TestGetUser(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/users/:id")
+	c.SetPath("/user/:id")
 	c.SetParamNames("id")
 	c.SetParamValues(strconv.Itoa(user1.Id))
 
@@ -79,7 +79,7 @@ func TestCreateUser(t *testing.T) {
 	var user entities.User
 	userJSON := `{"Full_name":"User1", "Email": "user1@gmail.com"}`
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/users", strings.NewReader(userJSON))
+	req := httptest.NewRequest(http.MethodPost, "/user/create", strings.NewReader(userJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -108,7 +108,7 @@ func TestUpdateUser(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/users/:id")
+	c.SetPath("/user/:id")
 	c.SetParamNames("id")
 	c.SetParamValues(strconv.Itoa(user1.Id))
 
@@ -134,7 +134,7 @@ func TestDeleteUser(t *testing.T) {
 	req := httptest.NewRequest(http.MethodDelete, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/users/:id")
+	c.SetPath("/user/:id")
 	c.SetParamNames("id")
 	c.SetParamValues(strconv.Itoa(user1.Id))
 

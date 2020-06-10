@@ -8,9 +8,10 @@ import (
 	"strconv"
 	"strings"
 	"testing"
-	"github.com/callicoder/packer/services"
+
 	"github.com/callicoder/packer/entities"
 	"github.com/callicoder/packer/repositories"
+	"github.com/callicoder/packer/services"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
@@ -57,7 +58,7 @@ func TestGetRole(t *testing.T) {
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/roles/:id")
+	c.SetPath("/role/:id")
 	c.SetParamNames("id")
 	c.SetParamValues(strconv.Itoa(role1.Id))
 
@@ -79,7 +80,7 @@ func TestCreateRole(t *testing.T) {
 	var role entities.Role
 	roleJSON := `{"Name":"Role1"}`
 	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/roles", strings.NewReader(roleJSON))
+	req := httptest.NewRequest(http.MethodPost, "/role/create", strings.NewReader(roleJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
@@ -108,7 +109,7 @@ func TestUpdateRole(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/roles/:id")
+	c.SetPath("/role/:id")
 	c.SetParamNames("id")
 	c.SetParamValues(strconv.Itoa(role1.Id))
 
@@ -134,7 +135,7 @@ func TestDeleteRole(t *testing.T) {
 	req := httptest.NewRequest(http.MethodDelete, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/roles/:id")
+	c.SetPath("/role/:id")
 	c.SetParamNames("id")
 	c.SetParamValues(strconv.Itoa(role1.Id))
 

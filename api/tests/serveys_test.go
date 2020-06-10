@@ -18,40 +18,7 @@ import (
 
 var (
 	SurveyRepo repositories.SurveyRepository = repositories.NewSurveyRepository()
-	TeamRepo   repositories.TeamRepository   = repositories.NewTeamRepository()
 )
-
-func TestAccessToSurvey(t *testing.T) {
-
-	// Post 1 team in the mock database
-
-	team, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 5, Frequency: 15})
-	assert.Equal(t, team.Name, "team1")
-
-	// Post 1 survey in the mock database
-	survey1, _ := SurveyRepo.CreateSurvey(&entities.Survey{StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), EndDate: time.Now().Add(24 * time.Hour), Code: "code1", TeamName: "team1"})
-	assert.Equal(t, survey1.Code, "code1")
-
-	// Create a new Request
-	survey2 := &entities.Survey{}
-	accessCodeJSON := `{"Code":"code1"}`
-	e := echo.New()
-	req := httptest.NewRequest(http.MethodPost, "/access", strings.NewReader(accessCodeJSON))
-	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
-	rec := httptest.NewRecorder()
-	c := e.NewContext(req, rec)
-
-	// Assertions
-	if assert.NoError(t, services.AccessToSurvey(c)) {
-		json.NewDecoder(io.Reader(rec.Body)).Decode(&survey2)
-		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, survey2.Code, "code1")
-	}
-
-	// clean databse
-	SurveyRepo.DeleteSurvey(survey1.Code)
-	TeamRepo.DeleteTeam(team.Name)
-}
 
 func TestGetSurvies(t *testing.T) {
 
@@ -241,4 +208,43 @@ func TestGetResultSurvey(t *testing.T) {
 
 	// clean databse
 	SurveyRepo.DeleteSurvey(survey1.Code)
+}
+
+func TestSurveyCodeLength(t *testing.T) {
+	randomString := services.GenerateSurveyCode(4)
+	assert.Equal(t, len(randomString), 4)
+}
+
+func TestSurveyCodesNotEqual(t *testing.T) {
+	randomString1 := services.GenerateSurveyCode(4)
+	randomString2 := services.GenerateSurveyCode(4)
+	assert.NotEqual(t, randomString1, randomString2)
+}
+
+func TestBuildNextSurvey(t *testing.T) {
+	// Post 1 team in the mock database
+
+	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 5, Frequency: 15})
+	assert.Equal(t, team1.Name, "team1")
+
+	// Post 1 survey in the mock database
+
+	team1.Surveys = []entities.Survey{{StartDate: time.Now().Add(time.Duration(10) * 24 * time.Hour * -1), EndDate: time.Now().Add(time.Duration(team1.Frequency) * 24 * time.Hour), Code: "code1", TeamName: "team1"}}
+	assert.Equal(t, team1.Surveys[0].Code, "code1")
+
+	team2, _ := TeamRepo.UpdateTeam(team1.Name, team1)
+	assert.Equal(t, team2.Surveys[0].Code, "code1")
+
+	// build next survey
+	nextSurvey := services.BuildNextSurvey(team2)
+	nextSurveyCode := []rune(nextSurvey.Code)
+	firstPartNextSurveyCode := string(nextSurveyCode[0:len(team2.Name)])
+	assert.Equal(t, firstPartNextSurveyCode, team2.Name)
+	assert.Equal(t, nextSurvey.TeamName, team2.Surveys[0].TeamName)
+	assert.Equal(t, nextSurvey.StartDate, team2.Surveys[0].EndDate.Add(24*time.Hour))
+	assert.Equal(t, nextSurvey.EndDate, nextSurvey.StartDate.Add(time.Duration(team2.Frequency)*24*time.Hour))
+	// clean databse
+	SurveyRepo.DeleteSurvey(nextSurvey.Code)
+	SurveyRepo.DeleteSurvey(team2.Surveys[0].Code)
+	TeamRepo.DeleteTeam(team2.Name)
 }

@@ -145,23 +145,23 @@ func CreateSurveyAtEndOfSprint() {
 			daysbeforeEndSprint := 4
 			durationSinceStartLastSprint := int(time.Since(team.Surveys[len(team.Surveys)-1].StartDate).Hours() / 24)
 			if durationSinceStartLastSprint == (team.Frequency - daysbeforeEndSprint) {
-				nextSurvey := buildNextSurvey(team)
+				nextSurvey := BuildNextSurvey(team)
 				SurveyRepo.CreateSurvey(nextSurvey)
 			}
 		}
 	}
 }
 
-func buildNextSurvey(team *entities.Team) *entities.Survey {
+func BuildNextSurvey(team *entities.Team) *entities.Survey {
 	nextSurveyStartDay := team.Surveys[len(team.Surveys)-1].EndDate.Add(24 * time.Hour)
 	nextSurveyEndDay := nextSurveyStartDay.Add(time.Duration(team.Frequency) * 24 * time.Hour)
-	nextSurveyCode := team.Name + "-" + generateSurveyCode(5)
+	nextSurveyCode := team.Name + "-" + GenerateSurveyCode(5)
 	nextSurveyTeamName := team.Name
 	nextSurvey := &entities.Survey{StartDate: nextSurveyStartDay, EndDate: nextSurveyEndDay, Code: nextSurveyCode, TeamName: nextSurveyTeamName}
 	return nextSurvey
 }
 
-func generateSurveyCode(n int) string {
+func GenerateSurveyCode(n int) string {
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
 	s := make([]rune, n)

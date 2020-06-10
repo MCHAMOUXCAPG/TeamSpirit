@@ -18,3 +18,9 @@ export interface IQuestionStatus {
   valid: boolean;
   touched: boolean;
 }
+
+export interface IQuestionResponse {
+  note: number;
+  number: number;
+  surveyCode: string;
+}

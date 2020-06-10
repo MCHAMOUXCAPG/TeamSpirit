@@ -12,9 +12,22 @@ import {
 import colors from "../config/colors";
 import SwiperComponent from "../components/Swiper";
 import SwiperCircle from "../components/SwiperCircle";
-import { IQuestionStatus } from "../models/interfaces";
+import { IQuestionStatus, IQuestionResponse } from "../models/interfaces";
 
-const SurveyScreen = ({ navigation }: { navigation: any }) => {
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue((value) => ++value); // update the state to force render
+}
+
+const SurveyScreen = ({
+  navigation,
+  route,
+}: {
+  navigation: any;
+  route: any;
+}) => {
+  const forceUpdate = useForceUpdate();
+  const { surveyCode } = route.params;
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -38,17 +51,32 @@ const SurveyScreen = ({ navigation }: { navigation: any }) => {
     );
     return () => backHandler.remove();
   }, []);
-  const handleSurveyCompletion = () => navigation.navigate("SuccessScreen");
+  const handleSurveyCompletion = () => {
+    console.log(questionsResponse);
+    navigation.navigate("SuccessScreen");
+  };
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [questionsState, setQuestionsState] = useState<IQuestionStatus[]>([
-    { valid: false, answer: 0, status: "active", touched: false },
+    { valid: false, answer: 0, status: "active", touched: true },
     { valid: false, answer: 0, status: "", touched: false },
     { valid: true, answer: 5, status: "", touched: false },
     { valid: true, answer: 5, status: "", touched: false },
     { valid: false, answer: 0, status: "", touched: false },
     { valid: false, answer: 0, status: "", touched: false },
   ]);
+
+  const [questionsResponse, setQuestionsResponse] = useState<
+    IQuestionResponse[]
+  >([
+    { number: 1, note: 0, surveyCode: surveyCode },
+    { number: 2, note: 0, surveyCode: surveyCode },
+    { number: 3, note: 5, surveyCode: surveyCode },
+    { number: 4, note: 5, surveyCode: surveyCode },
+    { number: 5, note: 0, surveyCode: surveyCode },
+    { number: 6, note: 0, surveyCode: surveyCode },
+  ]);
+
   const [activeIcon, setActiveIcon] = useState([
     [false, false, false, false, false],
     [false, false, false, false, false],
@@ -69,13 +97,21 @@ const SurveyScreen = ({ navigation }: { navigation: any }) => {
     });
     currentQuestionStatus[currentQuestion].status = "active";
     currentQuestionStatus[currentQuestion].touched = true;
+    currentQuestionStatus[currentQuestion].answer =
+      currentQuestionStatus[currentQuestion].answer;
     setQuestionsState(currentQuestionStatus);
+    const response = questionsResponse;
+    console.log(currentQuestionStatus[currentQuestion].answer);
+    response[currentQuestion].note =
+      currentQuestionStatus[currentQuestion].answer;
+    setQuestionsResponse(response);
     if (count === questionsState.length) {
       setDisabled(false);
+      forceUpdate();
     }
-
-    console.log(questionsState);
-  });
+    console.log(questionsResponse);
+    forceUpdate();
+  }, [questionsState, activeIcon, currentQuestion]);
 
   return (
     <ImageBackground

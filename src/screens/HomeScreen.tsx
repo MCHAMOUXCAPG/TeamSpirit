@@ -20,7 +20,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   const submitHandler = () => {
     if (inputText === "Test") {
-      navigation.navigate("SurveyScreen");
+      navigation.navigate("SurveyScreen", { surveyCode: inputText });
       Keyboard.dismiss();
       resetInputHandler();
     } else {

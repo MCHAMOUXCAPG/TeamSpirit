@@ -3,8 +3,13 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Slider } from "react-native-elements";
 import { AirbnbRating } from "react-native-ratings";
 
-import { questionType } from "../models/interfaces";
+import { questionType, IQuestionStatus } from "../models/interfaces";
 import colors from "../config/colors";
+
+function useForceUpdate() {
+  const [value, setValue] = useState(0); // integer state
+  return () => setValue((value) => ++value); // update the state to force render
+}
 
 const Question = ({
   number,
@@ -21,10 +26,11 @@ const Question = ({
   type: questionType;
   images: any[];
   setQuestionsState: any;
-  questionsState: any;
+  questionsState: IQuestionStatus[];
   activeIcon: any;
   setActiveIcon: any;
 }) => {
+  const forceUpdate = useForceUpdate();
   const handleClick5Icons = (index: number) => {
     const currentQuestionstate = questionsState;
     currentQuestionstate[number - 1] = {
@@ -37,6 +43,7 @@ const Question = ({
     active[number - 1] = [false, false, false, false, false];
     active[number - 1][index] = true;
     setActiveIcon(active);
+    forceUpdate();
   };
   const handleClickSlider = (value: number) => {
     const currentQuestionstate = questionsState;
@@ -46,6 +53,7 @@ const Question = ({
       touched: true,
     };
     setQuestionsState(currentQuestionstate);
+    forceUpdate();
   };
 
   const handleClickStars = (value: number) => {
@@ -56,6 +64,7 @@ const Question = ({
       touched: true,
     };
     setQuestionsState(currentQuestionstate);
+    forceUpdate();
   };
 
   const handleClick2Icons = (index: number, mark: number) => {
@@ -70,6 +79,7 @@ const Question = ({
     active[number - 1] = [false, false];
     active[number - 1][index] = true;
     setActiveIcon(active);
+    forceUpdate();
   };
   return (
     <View style={{ ...Styles.container }}>

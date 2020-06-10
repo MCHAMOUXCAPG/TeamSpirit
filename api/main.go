@@ -94,6 +94,12 @@ func configSwagger() {
 	docs.SwaggerInfo.Schemes = []string{"http"}
 }
 
+func CreateSurveyAutomatically() {
+	c := cron.New()
+	c.AddFunc("* * * 1 * *", services.CreateSurveyAtEndOfSprint)
+	c.Start()
+}
+
 // @title Swagger Example API
 // @version 1.0
 // @description This is a sample server Petstore server.
@@ -112,14 +118,7 @@ func main() {
 
 	config.GetConnection()
 
-	c := cron.New()
-
-	defer c.Stop()
-
-	c.AddFunc("* * * 1 * *", services.CreateSurveyAtEndOfSprint)
-
-	// Comenzar
-	c.Start()
+	CreateSurveyAutomatically()
 
 	configSwagger()
 

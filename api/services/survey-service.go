@@ -10,6 +10,7 @@ import (
 	"github.com/callicoder/packer/repositories"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/robfig/cron"
 )
 
 var (
@@ -169,4 +170,10 @@ func GenerateSurveyCode(n int) string {
 		s[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(s)
+}
+
+func CreateSurveyAutomatically() {
+	c := cron.New()
+	c.AddFunc("* * * 1 * *", CreateSurveyAtEndOfSprint)
+	c.Start()
 }

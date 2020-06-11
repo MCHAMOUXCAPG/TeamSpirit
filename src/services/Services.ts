@@ -1,5 +1,5 @@
 import { environment } from "./environment/environment";
-import { IQuestionResponse } from "../models/interfaces";
+import { IQuestionResponse, IValidationCode } from "../models/interfaces";
 
 export class SurveyService {
   public sendSurvey(
@@ -8,5 +8,12 @@ export class SurveyService {
   ): Promise<any> {
     const endPoint = "/survey/" + surveyCode + "/addNotes";
     return environment.post(endPoint, body);
+  }
+}
+
+export class CodeValidationService {
+  public sendCode(code: IValidationCode): Promise<any> {
+    const endPoint = "/access";
+    return environment.post(endPoint, code);
   }
 }

@@ -29,7 +29,7 @@ const SurveyScreen = ({
   route: any;
 }) => {
   const forceUpdate = useForceUpdate();
-  const { surveyCode } = route.params;
+  const { surveyCode, projectName } = route.params;
   const surveyService: SurveyService = new SurveyService();
   const [loading, setLoading] = useState(false);
   async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
@@ -143,7 +143,7 @@ const SurveyScreen = ({
           />
         </View>
       ) : null}
-      <Text style={styles.project}>Project's Name</Text>
+      <Text style={styles.project}>{projectName}</Text>
       <View style={styles.swiper}>
         <SwiperComponent
           activeIcon={activeIcon}
@@ -177,7 +177,7 @@ const styles = StyleSheet.create({
   },
   project: {
     flex: 0.1,
-    right: "27%",
+    right: "37%",
     bottom: "5%",
     color: colors.primary,
     fontSize: 20,
@@ -190,6 +190,7 @@ const styles = StyleSheet.create({
   circle: {
     alignItems: "center",
     justifyContent: "center",
+    bottom: "7%",
   },
   btn: {
     backgroundColor: colors.primary,

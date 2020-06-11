@@ -15,7 +15,7 @@ definitions:
   entities.Note:
     properties:
       note:
-        type: integer
+        type: number
       number:
         type: integer
       surveyCode:

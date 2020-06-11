@@ -1023,7 +1023,7 @@ var doc = `{
             "type": "object",
             "properties": {
                 "note": {
-                    "type": "integer"
+                    "type": "number"
                 },
                 "number": {
                     "type": "integer"

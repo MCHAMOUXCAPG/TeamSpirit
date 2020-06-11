@@ -182,12 +182,12 @@ func TestGetResultSurvey(t *testing.T) {
 	assert.Equal(t, survey1.Code, "code1")
 
 	survey1.Notes = []entities.Note{{Number: 0, Note: 10, SurveyCode: "code1"}, {Number: 1, Note: 2, SurveyCode: "code1"}}
-	assert.Equal(t, survey1.Notes[0].Note, 10)
-	assert.Equal(t, survey1.Notes[1].Note, 2)
+	assert.Equal(t, survey1.Notes[0].Note, float64(10))
+	assert.Equal(t, survey1.Notes[1].Note, float64(2))
 
 	survey2, _ := SurveyRepo.UpdateSurvey(survey1.Code, survey1)
-	assert.Equal(t, survey2.Notes[0].Note, 10)
-	assert.Equal(t, survey2.Notes[1].Note, 2)
+	assert.Equal(t, survey2.Notes[0].Note, float64(10))
+	assert.Equal(t, survey2.Notes[1].Note, float64(2))
 
 	// Create a new Request
 	e := echo.New()

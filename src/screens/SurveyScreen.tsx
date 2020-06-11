@@ -7,6 +7,7 @@ import {
   TouchableOpacity,
   BackHandler,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 
 import colors from "../config/colors";
@@ -30,11 +31,13 @@ const SurveyScreen = ({
   const forceUpdate = useForceUpdate();
   const { surveyCode } = route.params;
   const surveyService: SurveyService = new SurveyService();
+  const [loading, setLoading] = useState(false);
   async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
     await surveyService
       .sendSurvey(surveyCode, body)
       .then((res) => {
         console.log(res.data);
+        navigation.navigate("SuccessScreen");
       })
       .catch((err) => {
         console.log("Error: " + err);
@@ -65,8 +68,8 @@ const SurveyScreen = ({
   }, []);
   const handleSurveyCompletion = () => {
     console.log(questionsResponse);
+    setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
-    navigation.navigate("SuccessScreen");
   };
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
@@ -131,6 +134,15 @@ const SurveyScreen = ({
       source={require("../assets/surveyBackfround.png")}
       style={styles.container}
     >
+      {loading ? (
+        <View style={styles.activityIndicatorBackground}>
+          <ActivityIndicator
+            size="large"
+            color={colors.primary}
+            style={styles.activityIndicator}
+          />
+        </View>
+      ) : null}
       <Text style={styles.project}>Project's Name</Text>
       <View style={styles.swiper}>
         <SwiperComponent
@@ -198,6 +210,19 @@ const styles = StyleSheet.create({
   btnTitle: {
     color: colors.white,
     fontSize: 20,
+  },
+  activityIndicator: {
+    margin: "auto",
+  },
+  activityIndicatorBackground: {
+    zIndex: 150,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
   },
 });
 

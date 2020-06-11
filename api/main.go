@@ -90,7 +90,7 @@ func configSwagger() {
 	docs.SwaggerInfo.Description = " Team spirit Api"
 	docs.SwaggerInfo.Version = "1.0"
 	docs.SwaggerInfo.Host = "localhost:3000"
-	docs.SwaggerInfo.BasePath = "/api/v1"
+	docs.SwaggerInfo.BasePath = "/"
 	docs.SwaggerInfo.Schemes = []string{"http"}
 }
 

@@ -13,6 +13,7 @@ import colors from "../config/colors";
 import SwiperComponent from "../components/Swiper";
 import SwiperCircle from "../components/SwiperCircle";
 import { IQuestionStatus, IQuestionResponse } from "../models/interfaces";
+import { SurveyService } from "../services/Services";
 
 function useForceUpdate() {
   const [value, setValue] = useState(0); // integer state
@@ -28,6 +29,17 @@ const SurveyScreen = ({
 }) => {
   const forceUpdate = useForceUpdate();
   const { surveyCode } = route.params;
+  const surveyService: SurveyService = new SurveyService();
+  async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
+    await surveyService
+      .sendSurvey(surveyCode, body)
+      .then((res) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log("Error: " + err);
+      });
+  }
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -53,6 +65,7 @@ const SurveyScreen = ({
   }, []);
   const handleSurveyCompletion = () => {
     console.log(questionsResponse);
+    sendSurvey(surveyCode, questionsResponse);
     navigation.navigate("SuccessScreen");
   };
   const [currentQuestion, setCurrentQuestion] = useState(0);

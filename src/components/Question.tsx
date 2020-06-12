@@ -1,15 +1,15 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Slider } from "react-native-elements";
 import { AirbnbRating } from "react-native-ratings";
 
-import { questionType, IQuestionStatus } from "../models/interfaces";
+import {
+  questionType,
+  IQuestionStatus,
+  IQuestionResponse,
+} from "../models/interfaces";
 import colors from "../config/colors";
-
-function useForceUpdate() {
-  const [value, setValue] = useState(0); // integer state
-  return () => setValue((value) => ++value); // update the state to force render
-}
+import questionsContext from "../context/questionsContext";
 
 const Question = ({
   number,
@@ -20,6 +20,7 @@ const Question = ({
   questionsState,
   activeIcon,
   setActiveIcon,
+  useForceUpdate,
 }: {
   number: number;
   question: string;
@@ -29,57 +30,88 @@ const Question = ({
   questionsState: IQuestionStatus[];
   activeIcon: any;
   setActiveIcon: any;
+  useForceUpdate: any;
 }) => {
+  const { questionsResponse, setQuestionsResponse, setDisabled } = useContext(
+    questionsContext
+  );
   const forceUpdate = useForceUpdate();
+  const checkDisabled = () => {
+    let count = 0;
+    const currentQuestionStatus = questionsState;
+    currentQuestionStatus.map((question: IQuestionStatus) => {
+      question.status = "";
+      if (question.valid) {
+        count++;
+      }
+    });
+    if (count === questionsState.length) {
+      console.log("disabled false");
+      setDisabled(false);
+      forceUpdate();
+    }
+  };
   const handleClick5Icons = (index: number) => {
     const currentQuestionstate = questionsState;
+    const currentQuestionsResponse = questionsResponse;
     currentQuestionstate[number - 1] = {
       valid: true,
-      answer: index * 2.5,
       touched: true,
     };
+    currentQuestionsResponse[number - 1].note = index * 2.5;
     setQuestionsState(currentQuestionstate);
+    setQuestionsResponse(currentQuestionsResponse);
     const active = activeIcon;
     active[number - 1] = [false, false, false, false, false];
     active[number - 1][index] = true;
     setActiveIcon(active);
     forceUpdate();
+    checkDisabled();
   };
   const handleClickSlider = (value: number) => {
     const currentQuestionstate = questionsState;
+    const currentQuestionsResponse = questionsResponse;
     currentQuestionstate[number - 1] = {
       valid: true,
-      answer: value * 2.5,
       touched: true,
     };
+    currentQuestionsResponse[number - 1].note = value * 2.5;
     setQuestionsState(currentQuestionstate);
+    setQuestionsResponse(currentQuestionsResponse);
     forceUpdate();
+    checkDisabled();
   };
 
   const handleClickStars = (value: number) => {
     const currentQuestionstate = questionsState;
+    const currentQuestionsResponse = questionsResponse;
     currentQuestionstate[number - 1] = {
       valid: true,
-      answer: (value - 1) * 2.5,
       touched: true,
     };
+    currentQuestionsResponse[number - 1].note = (value - 1) * 2.5;
     setQuestionsState(currentQuestionstate);
+    setQuestionsResponse(currentQuestionsResponse);
     forceUpdate();
+    checkDisabled();
   };
 
   const handleClick2Icons = (index: number, mark: number) => {
     const currentQuestionstate = questionsState;
+    const currentQuestionsResponse = questionsResponse;
     currentQuestionstate[number - 1] = {
       valid: true,
-      answer: mark,
       touched: true,
     };
+    currentQuestionsResponse[number - 1].note = mark;
     setQuestionsState(currentQuestionstate);
+    setQuestionsResponse(currentQuestionsResponse);
     const active = activeIcon;
     active[number - 1] = [false, false];
     active[number - 1][index] = true;
     setActiveIcon(active);
     forceUpdate();
+    checkDisabled();
   };
   return (
     <View style={{ ...Styles.container }}>

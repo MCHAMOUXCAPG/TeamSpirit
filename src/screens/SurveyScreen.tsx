@@ -15,6 +15,7 @@ import SwiperComponent from "../components/Swiper";
 import SwiperCircle from "../components/SwiperCircle";
 import { IQuestionStatus, IQuestionResponse } from "../models/interfaces";
 import { SurveyService } from "../services/Services";
+import QuestionsContext from "../context/questionsContext";
 
 function useForceUpdate() {
   const [value, setValue] = useState(0); // integer state
@@ -36,9 +37,28 @@ const SurveyScreen = ({
     await surveyService
       .sendSurvey(surveyCode, body)
       .then((res) => {
-        navigation.navigate("SuccessScreen");
+        if ((res.status = 200)) {
+          navigation.navigate("SuccessScreen");
+        }
       })
-      .catch((err) => {});
+      .catch((err) => {
+        setLoading(false);
+        if (err.request.status == 0) {
+          Alert.alert(
+            "Network Error!",
+            "Please verify you have internet access.",
+            [{ text: "Ok", style: "cancel" }],
+            { cancelable: false }
+          );
+        } else {
+          Alert.alert(
+            "Oops!",
+            err.response.data.message,
+            [{ text: "Ok", style: "cancel" }],
+            { cancelable: false }
+          );
+        }
+      });
   }
   useEffect(() => {
     const backAction = () => {
@@ -69,12 +89,12 @@ const SurveyScreen = ({
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [questionsState, setQuestionsState] = useState<IQuestionStatus[]>([
-    { valid: false, answer: 0, status: "active", touched: true },
-    { valid: false, answer: 0, status: "", touched: false },
-    { valid: true, answer: 5, status: "", touched: false },
-    { valid: true, answer: 5, status: "", touched: false },
-    { valid: false, answer: 0, status: "", touched: false },
-    { valid: false, answer: 0, status: "", touched: false },
+    { valid: false, status: "active", touched: true },
+    { valid: false, status: "", touched: false },
+    { valid: true, status: "", touched: false },
+    { valid: true, status: "", touched: false },
+    { valid: false, status: "", touched: false },
+    { valid: false, status: "", touched: false },
   ]);
 
   const [questionsResponse, setQuestionsResponse] = useState<
@@ -108,12 +128,8 @@ const SurveyScreen = ({
     });
     currentQuestionStatus[currentQuestion].status = "active";
     currentQuestionStatus[currentQuestion].touched = true;
-    currentQuestionStatus[currentQuestion].answer =
-      currentQuestionStatus[currentQuestion].answer;
     setQuestionsState(currentQuestionStatus);
     const response = questionsResponse;
-    response[currentQuestion].note =
-      currentQuestionStatus[currentQuestion].answer;
     setQuestionsResponse(response);
     if (count === questionsState.length) {
       setDisabled(false);
@@ -123,41 +139,51 @@ const SurveyScreen = ({
   }, [questionsState, activeIcon, currentQuestion]);
 
   return (
-    <ImageBackground
-      source={require("../assets/surveyBackfround.png")}
-      style={styles.container}
+    <QuestionsContext.Provider
+      value={{
+        questionsResponse: questionsResponse,
+        setQuestionsResponse: setQuestionsResponse,
+        disabled: disabled,
+        setDisabled: setDisabled,
+      }}
     >
-      {loading ? (
-        <View style={styles.activityIndicatorBackground}>
-          <ActivityIndicator
-            size="large"
-            color={colors.primary}
-            style={styles.activityIndicator}
-          />
-        </View>
-      ) : null}
-      <Text style={styles.project}>{projectName}</Text>
-      <View style={styles.swiper}>
-        <SwiperComponent
-          activeIcon={activeIcon}
-          setActiveIcon={setActiveIcon}
-          setCurrentQuestion={setCurrentQuestion}
-          setQuestionsState={setQuestionsState}
-          questionsState={questionsState}
-        />
-        <View style={styles.circle}>
-          <SwiperCircle state={questionsState} />
-        </View>
-      </View>
-      <TouchableOpacity
-        style={disabled ? styles.btnDisabled : styles.btn}
-        activeOpacity={0.5}
-        onPress={handleSurveyCompletion}
-        disabled={disabled}
+      <ImageBackground
+        source={require("../assets/surveyBackfround.png")}
+        style={styles.container}
       >
-        <Text style={styles.btnTitle}>Submit</Text>
-      </TouchableOpacity>
-    </ImageBackground>
+        {loading ? (
+          <View style={styles.activityIndicatorBackground}>
+            <ActivityIndicator
+              size="large"
+              color={colors.primary}
+              style={styles.activityIndicator}
+            />
+          </View>
+        ) : null}
+        <Text style={styles.project}>{projectName}</Text>
+        <View style={styles.swiper}>
+          <SwiperComponent
+            activeIcon={activeIcon}
+            setActiveIcon={setActiveIcon}
+            setCurrentQuestion={setCurrentQuestion}
+            setQuestionsState={setQuestionsState}
+            questionsState={questionsState}
+            useForceUpdate={useForceUpdate}
+          />
+          <View style={styles.circle}>
+            <SwiperCircle state={questionsState} />
+          </View>
+        </View>
+        <TouchableOpacity
+          style={disabled ? styles.btnDisabled : styles.btn}
+          activeOpacity={0.5}
+          onPress={handleSurveyCompletion}
+          disabled={disabled}
+        >
+          <Text style={styles.btnTitle}>Submit</Text>
+        </TouchableOpacity>
+      </ImageBackground>
+    </QuestionsContext.Provider>
   );
 };
 

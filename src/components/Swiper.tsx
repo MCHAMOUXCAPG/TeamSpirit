@@ -78,6 +78,7 @@ const SwiperComponent = (props: any) => {
               question={question.question}
               type={question.type}
               images={question.images}
+              useForceUpdate={props.useForceUpdate}
             />
           </View>
         );

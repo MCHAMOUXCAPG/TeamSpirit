@@ -13,7 +13,6 @@ export interface ISurveyQuestion {
 }
 
 export interface IQuestionStatus {
-  answer: number;
   status?: string;
   valid: boolean;
   touched: boolean;

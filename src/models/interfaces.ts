@@ -23,3 +23,7 @@ export interface IQuestionResponse {
   number: number;
   surveyCode: string;
 }
+
+export interface IValidationCode {
+  code: string;
+}

@@ -5,37 +5,63 @@ import {
   Text,
   View,
   Alert,
+  ActivityIndicator,
   TouchableOpacity,
   Keyboard,
   ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
 } from "react-native";
+
 import colors from "../config/colors";
+import { CodeValidationService } from "../services/Services";
+import { IValidationCode } from "../models/interfaces";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [inputText, setInputText] = useState("");
+  const [loading, setLoading] = useState(false);
+  const codeValidationService: CodeValidationService = new CodeValidationService();
 
   const resetInputHandler = () => {
+    setLoading(false);
     setInputText("");
   };
 
+  async function sendCode(inputText: IValidationCode) {
+    await codeValidationService
+      .sendCode(inputText)
+      .then((res) => {
+        if (res.status == 200) {
+          navigation.navigate("SurveyScreen", {
+            surveyCode: inputText,
+            projectName: res.data.TeamName,
+          });
+        }
+      })
+      .catch((err) => {
+        resetInputHandler();
+        if (err.request.status == 0) {
+          Alert.alert(
+            "Network Error!",
+            "Please verify you have internet access.",
+            [{ text: "Ok", style: "cancel" }],
+            { cancelable: false }
+          );
+        } else {
+          Alert.alert(
+            "Oops!",
+            err.response.data.message,
+            [{ text: "Ok", style: "cancel" }],
+            { cancelable: false }
+          );
+        }
+      });
+  }
+
   const submitHandler = () => {
-    if (inputText === "Test") {
-      navigation.navigate("SurveyScreen", { surveyCode: inputText });
-      Keyboard.dismiss();
-      resetInputHandler();
-    } else {
-      Alert.alert("", "The project does not exist, try again!", [
-        {
-          text: "Ok!",
-          style: "destructive",
-          onPress: resetInputHandler,
-        },
-      ]);
-      Keyboard.dismiss();
-      return;
-    }
+    setLoading(true);
+    Keyboard.dismiss();
+    sendCode({ code: inputText });
   };
 
   return (
@@ -46,6 +72,15 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
             source={require("../assets/homeBackground.png")}
             style={styles.imgBackground}
           >
+            {loading ? (
+              <View style={styles.activityIndicatorBackground}>
+                <ActivityIndicator
+                  size="large"
+                  color={colors.primary}
+                  style={styles.activityIndicator}
+                />
+              </View>
+            ) : null}
             <View style={styles.contentAbove}>
               <Text style={styles.title}>Welcome to Team Spirit Survey!</Text>
             </View>
@@ -151,6 +186,19 @@ const styles = StyleSheet.create({
     fontSize: 24,
     lineHeight: 65,
     color: colors.white,
+  },
+  activityIndicator: {
+    margin: "auto",
+  },
+  activityIndicatorBackground: {
+    zIndex: 150,
+    backgroundColor: "rgba(0, 0, 0, 0.3)",
+    position: "absolute",
+    top: 0,
+    left: 0,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
   },
 });
 

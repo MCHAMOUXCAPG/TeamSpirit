@@ -29,19 +29,16 @@ const SurveyScreen = ({
   route: any;
 }) => {
   const forceUpdate = useForceUpdate();
-  const { surveyCode } = route.params;
+  const { surveyCode, projectName } = route.params;
   const surveyService: SurveyService = new SurveyService();
   const [loading, setLoading] = useState(false);
   async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
     await surveyService
       .sendSurvey(surveyCode, body)
       .then((res) => {
-        console.log(res.data);
         navigation.navigate("SuccessScreen");
       })
-      .catch((err) => {
-        console.log("Error: " + err);
-      });
+      .catch((err) => {});
   }
   useEffect(() => {
     const backAction = () => {
@@ -51,7 +48,6 @@ const SurveyScreen = ({
         [
           {
             text: "No",
-            onPress: () => console.log("Cancel Pressed"),
             style: "cancel",
           },
           { text: "Yes", onPress: () => BackHandler.exitApp() },
@@ -67,7 +63,6 @@ const SurveyScreen = ({
     return () => backHandler.remove();
   }, []);
   const handleSurveyCompletion = () => {
-    console.log(questionsResponse);
     setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
   };
@@ -117,7 +112,6 @@ const SurveyScreen = ({
       currentQuestionStatus[currentQuestion].answer;
     setQuestionsState(currentQuestionStatus);
     const response = questionsResponse;
-    console.log(currentQuestionStatus[currentQuestion].answer);
     response[currentQuestion].note =
       currentQuestionStatus[currentQuestion].answer;
     setQuestionsResponse(response);
@@ -125,7 +119,6 @@ const SurveyScreen = ({
       setDisabled(false);
       forceUpdate();
     }
-    console.log(questionsResponse);
     forceUpdate();
   }, [questionsState, activeIcon, currentQuestion]);
 
@@ -143,7 +136,7 @@ const SurveyScreen = ({
           />
         </View>
       ) : null}
-      <Text style={styles.project}>Project's Name</Text>
+      <Text style={styles.project}>{projectName}</Text>
       <View style={styles.swiper}>
         <SwiperComponent
           activeIcon={activeIcon}
@@ -177,7 +170,7 @@ const styles = StyleSheet.create({
   },
   project: {
     flex: 0.1,
-    right: "27%",
+    right: "37%",
     bottom: "5%",
     color: colors.primary,
     fontSize: 20,
@@ -190,6 +183,7 @@ const styles = StyleSheet.create({
   circle: {
     alignItems: "center",
     justifyContent: "center",
+    bottom: "7%",
   },
   btn: {
     backgroundColor: colors.primary,

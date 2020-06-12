@@ -36,12 +36,9 @@ const SurveyScreen = ({
     await surveyService
       .sendSurvey(surveyCode, body)
       .then((res) => {
-        console.log(res.data);
         navigation.navigate("SuccessScreen");
       })
-      .catch((err) => {
-        console.log("Error: " + err);
-      });
+      .catch((err) => {});
   }
   useEffect(() => {
     const backAction = () => {
@@ -51,7 +48,6 @@ const SurveyScreen = ({
         [
           {
             text: "No",
-            onPress: () => console.log("Cancel Pressed"),
             style: "cancel",
           },
           { text: "Yes", onPress: () => BackHandler.exitApp() },
@@ -67,7 +63,6 @@ const SurveyScreen = ({
     return () => backHandler.remove();
   }, []);
   const handleSurveyCompletion = () => {
-    console.log(questionsResponse);
     setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
   };
@@ -117,7 +112,6 @@ const SurveyScreen = ({
       currentQuestionStatus[currentQuestion].answer;
     setQuestionsState(currentQuestionStatus);
     const response = questionsResponse;
-    console.log(currentQuestionStatus[currentQuestion].answer);
     response[currentQuestion].note =
       currentQuestionStatus[currentQuestion].answer;
     setQuestionsResponse(response);
@@ -125,7 +119,6 @@ const SurveyScreen = ({
       setDisabled(false);
       forceUpdate();
     }
-    console.log(questionsResponse);
     forceUpdate();
   }, [questionsState, activeIcon, currentQuestion]);
 

@@ -23,27 +23,44 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const codeValidationService: CodeValidationService = new CodeValidationService();
 
   const resetInputHandler = () => {
+    setLoading(false);
     setInputText("");
   };
 
   async function sendCode(inputText: IValidationCode) {
-    console.log(inputText);
     await codeValidationService
       .sendCode(inputText)
       .then((res) => {
-        console.log(res);
-        navigation.navigate("SurveyScreen", {
-          surveyCode: inputText,
-          projectName: res.data.TeamName,
-        });
+        if (res.status == 200) {
+          navigation.navigate("SurveyScreen", {
+            surveyCode: inputText,
+            projectName: res.data.TeamName,
+          });
+        }
       })
       .catch((err) => {
-        console.log("Error: " + err);
+        resetInputHandler();
+        if (err.request.status == 0) {
+          Alert.alert(
+            "Network Error!",
+            "Please verify you have internet access.",
+            [{ text: "Ok", style: "cancel" }],
+            { cancelable: false }
+          );
+        } else {
+          Alert.alert(
+            "Oops!",
+            err.response.data.message,
+            [{ text: "Ok", style: "cancel" }],
+            { cancelable: false }
+          );
+        }
       });
   }
 
   const submitHandler = () => {
     setLoading(true);
+    Keyboard.dismiss();
     sendCode({ code: inputText });
   };
 

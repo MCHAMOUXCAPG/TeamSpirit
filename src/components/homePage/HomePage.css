@@ -60,14 +60,17 @@
   text-align: right;
   color: #ffffff;
 }
-#espacio {
+#espacioHeader {
   height: 40vh;
 }
-#espacio2 {
+#espacioTitle-Input {
   height: 5vh;
 }
-#espacio3 {
+#espacioCard-Input {
   height: 20px;
+}
+.MuiOutlinedInput-root {
+  border-radius: 12px !important;
 }
 @media all and (max-width: 1280px) {
   #bgImg {

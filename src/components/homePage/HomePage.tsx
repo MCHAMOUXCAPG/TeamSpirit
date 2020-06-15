@@ -26,7 +26,7 @@ function HomePage() {
       >
         <Grid item>
           <Grid container spacing={0}>
-            <Grid item xs={12} id="espacio"></Grid>
+            <Grid item xs={12} id="espacioHeader"></Grid>
             <Grid item xs={2} sm={1} md={3} lg={1}></Grid>
             <Grid item xs={8} sm={10} md={8} lg={10} id="header">
               <div className="headerSurvey">
@@ -34,7 +34,7 @@ function HomePage() {
               </div>
             </Grid>
             <Grid item xs={2} sm={2} md={1} lg={1}></Grid>
-            <Grid item xs={12} id="espacio2"></Grid>
+            <Grid item xs={12} id="espacioTitle-Input"></Grid>
             <Grid item xs={2} sm={6} md={6} lg={6}></Grid>
             <Grid item xs={5} sm={5} md={5} lg={5}>
               <form noValidate autoComplete="off">
@@ -46,7 +46,7 @@ function HomePage() {
                     alignItems="center"
                   >
                     <Grid item>
-                      <Grid item xs={12} id="espacio3"></Grid>
+                      <Grid item xs={12} id="espacioCard-Input"></Grid>
                       <Grid item xs={1}></Grid>
                       <Grid item xs={8} sm={8} md={8} lg={8}>
                         <TextField
@@ -74,7 +74,6 @@ function HomePage() {
                       } else {
                         setErr(false);
                         alert(search.toString());
-                        setHelperTxt("");
                       }
                     }}
                     size="small"

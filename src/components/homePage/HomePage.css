@@ -27,6 +27,9 @@
   /* top: 15px;
   left: 20px; */
 }
+#outlined-required:focus {
+  outline: none;
+}
 #Card {
   position: relative;
   width: 289px;

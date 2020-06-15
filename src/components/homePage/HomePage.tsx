@@ -73,7 +73,8 @@ function HomePage() {
                         setHelperTxt("Incorrect entry.");
                       } else {
                         setErr(false);
-                        setHelperTxt("  ");
+                        alert(search.toString());
+                        setHelperTxt("");
                       }
                     }}
                     size="small"

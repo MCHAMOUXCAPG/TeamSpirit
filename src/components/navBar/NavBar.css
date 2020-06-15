@@ -1,0 +1,59 @@
+.navBar {
+  background-image: url("../../assets/header-xl.png");
+  background-color: transparent;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 80;
+}
+
+.MuiAppBar-colorPrimary {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.MuiToolbar-regular {
+  min-height: 150px !important;
+}
+
+@media all and (max-width: 1920px) {
+  .MuiToolbar-regular {
+    min-height: 140px !important;
+  }
+}
+
+@media all and (max-width: 1440px) {
+  .MuiToolbar-regular {
+    min-height: 120px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-l.png");
+  }
+}
+
+@media all and (max-width: 1024px) {
+  .MuiToolbar-regular {
+    min-height: 100px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-md.png");
+  }
+}
+
+@media all and (max-width: 768px) {
+  .MuiToolbar-regular {
+    min-height: 80px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-sm.png");
+  }
+}
+
+@media all and (max-width: 500px) {
+  .MuiToolbar-regular {
+    min-height: 60px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-xs.png");
+  }
+}

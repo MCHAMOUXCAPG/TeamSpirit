@@ -1,20 +1,44 @@
 import React, { useState } from "react";
 import "./HomePage.css";
-// import Background from "../../assets/homePageBackground.png";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Grid, Paper, Container } from "@material-ui/core";
+import {
+  withStyles,
+  makeStyles,
+  createStyles,
+  Theme,
+} from "@material-ui/core/styles";
 function HomePage() {
   const [search, setSearch] = useState("");
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
+  const useStyles = makeStyles((theme: Theme) =>
+    createStyles({
+      root: {
+        // "& label.Mui-focused": {
+        //   color: "#ffff",
+        // },
+        // "& .MuiInput-underline:after": {
+        //   borderBottomColor: "#ffff",
+        // },
+        "& .MuiOutlinedInput-root": {
+          "& fieldset": {
+            borderColor: "#ffff",
+          },
+          "&:hover fieldset": {
+            borderColor: "#ffff",
+          },
+          "&.Mui-focused fieldset": {
+            borderColor: "#ffff",
+          },
+        },
+      },
+    })
+  );
+  const classes = useStyles();
   return (
-    <Container
-      id="bgImg"
-      // style={sectionStyle}
-      // maxWidth="lg"
-      disableGutters={true}
-    >
+    <Container id="bgImg" disableGutters={true}>
       <Grid
         container
         justify="center"
@@ -52,6 +76,7 @@ function HomePage() {
                         <TextField
                           required
                           error={Err}
+                          className={classes.root}
                           id="outlined-required"
                           variant="outlined"
                           placeholder="Enter your code in captial letters..."
@@ -73,6 +98,7 @@ function HomePage() {
                         setHelperTxt("Incorrect entry.");
                       } else {
                         setErr(false);
+                        setHelperTxt("");
                         alert(search.toString());
                       }
                     }}

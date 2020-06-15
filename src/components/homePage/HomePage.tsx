@@ -61,30 +61,25 @@ function HomePage() {
                         />
                       </Grid>
                       <Grid item xs={3}></Grid>
-                      <Grid item xs={12} id="espacio3"></Grid>
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={8} sm={8} md={8} lg={8}>
-                        <Button
-                          id="ButtonStart"
-                          // type="submit"
-                          onClick={() => {
-                            // alert(search.toString());
-                            if (search !== "Test") {
-                              setErr(true);
-                              setHelperTxt("Incorrect entry.");
-                            } else {
-                              setErr(false);
-                              setHelperTxt("");
-                            }
-                          }}
-                          size="small"
-                        >
-                          Start
-                        </Button>
-                      </Grid>
-                      <Grid item xs={3}></Grid>
                     </Grid>
                   </Grid>
+                  <Button
+                    id="ButtonStart"
+                    // type="submit"
+                    onClick={() => {
+                      // alert(search.toString());
+                      if (search !== "Test") {
+                        setErr(true);
+                        setHelperTxt("Incorrect entry.");
+                      } else {
+                        setErr(false);
+                        setHelperTxt("  ");
+                      }
+                    }}
+                    size="small"
+                  >
+                    Start
+                  </Button>
                 </Paper>
               </form>
             </Grid>

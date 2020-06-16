@@ -9,10 +9,43 @@ import {
   createStyles,
   Theme,
 } from "@material-ui/core/styles";
+import { CodeValidationService } from "../../services/Services";
+import { IValidationCode } from "../../models/interfaces";
+import { useNavigate } from "react-router-dom";
+
 function HomePage() {
   const [search, setSearch] = useState("");
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
+  const navigate = useNavigate();
+  const codeValidationService: CodeValidationService = new CodeValidationService();
+
+  const submitHandler = () => {
+    console.log("dentro de submit");
+    sendCode({ code: search });
+  };
+
+  async function sendCode(inputText: IValidationCode) {
+    await codeValidationService
+      .sendCode(inputText)
+      .then((res) => {
+        console.log("dentro de res: " + res.data.TeamName);
+        navigate("/survey");
+      })
+      .catch((err) => {
+        console.log(err);
+        setErr(true);
+        setHelperTxt("Incorrect entry.");
+
+        //      setErr(true);
+        //      if (err.request.status == 0) {
+        //        setHelperTxt("Network Error!");
+        //      } else {
+        //        setHelperTxt("Incorrect entry.");
+        //      }
+      });
+  }
+
   const useStyles = makeStyles((theme: Theme) =>
     createStyles({
       root: {
@@ -91,17 +124,7 @@ function HomePage() {
                   <Button
                     id="ButtonStart"
                     // type="submit"
-                    onClick={() => {
-                      // alert(search.toString());
-                      if (search !== "Test") {
-                        setErr(true);
-                        setHelperTxt("Incorrect entry.");
-                      } else {
-                        setErr(false);
-                        setHelperTxt("");
-                        alert(search.toString());
-                      }
-                    }}
+                    onClick={submitHandler}
                     size="small"
                   >
                     Start

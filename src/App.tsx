@@ -9,7 +9,7 @@ import { AuthContext } from "./context/auth";
 
 function App() {
   return (
-    <AuthContext.Provider value={false}>
+    <AuthContext.Provider value={true}>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />

@@ -7,7 +7,6 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { CodeValidationService } from "../../services/Services";
 import { IValidationCode } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
-
 import { AuthContext } from "../../context/auth";
 
 function HomePage() {
@@ -33,41 +32,16 @@ function HomePage() {
       .catch((err) => {
         console.log(err);
         setErr(true);
-        setHelperTxt("Incorrect entry.");
-
-        //      setErr(true);
-        //      if (err.request.status == 0) {
-        //        setHelperTxt("Network Error!");
-        //      } else {
-        //        setHelperTxt("Incorrect entry.");
-        //      }
+        if (err.request.status === 0) {
+          setHelperTxt("Network Error!");
+        } else {
+          setHelperTxt("Incorrect entry.");
+        }
       });
   }
 
-  const useStyles = makeStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        // "& label.Mui-focused": {
-        //   color: "#ffff",
-        // },
-        // "& .MuiInput-underline:after": {
-        //   borderBottomColor: "#ffff",
-        // },
-        "& .MuiOutlinedInput-root": {
-          "& fieldset": {
-            borderColor: "#ffff",
-          },
-          "&:hover fieldset": {
-            borderColor: "#ffff",
-          },
-          "&.Mui-focused fieldset": {
-            borderColor: "#ffff",
-          },
-        },
-      },
-    })
-  );
   const classes = useStyles();
+
   return (
     <Container id="bgImg" disableGutters={true}>
       <Grid
@@ -119,12 +93,7 @@ function HomePage() {
                       <Grid item xs={3}></Grid>
                     </Grid>
                   </Grid>
-                  <Button
-                    id="ButtonStart"
-                    // type="submit"
-                    onClick={submitHandler}
-                    size="small"
-                  >
+                  <Button id="ButtonStart" onClick={submitHandler} size="small">
                     Start
                   </Button>
                 </Paper>
@@ -137,5 +106,23 @@ function HomePage() {
     </Container>
   );
 }
+
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+          borderColor: "#ffff",
+        },
+        "&:hover fieldset": {
+          borderColor: "#ffff",
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: "#ffff",
+        },
+      },
+    },
+  })
+);
 
 export default HomePage;

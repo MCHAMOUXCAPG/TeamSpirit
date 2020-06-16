@@ -1,19 +1,17 @@
-import React, { useState } from "react";
+import React, { useState, useContext } from "react";
 import "./HomePage.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Grid, Paper, Container } from "@material-ui/core";
-import {
-  withStyles,
-  makeStyles,
-  createStyles,
-  Theme,
-} from "@material-ui/core/styles";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { CodeValidationService } from "../../services/Services";
 import { IValidationCode } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
 
+import { AuthContext } from "../../context/auth";
+
 function HomePage() {
+  const context = useContext(AuthContext);
   const [search, setSearch] = useState("");
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
@@ -29,7 +27,7 @@ function HomePage() {
     await codeValidationService
       .sendCode(inputText)
       .then((res) => {
-        console.log("dentro de res: " + res.data.TeamName);
+        context.setValid(true);
         navigate("/survey");
       })
       .catch((err) => {

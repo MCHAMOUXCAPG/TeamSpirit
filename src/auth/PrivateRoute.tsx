@@ -11,7 +11,7 @@ function PrivateRoute({
   path: string;
   alternativePath: string;
 }) {
-  const isAuthenticated = useAuth();
+  const isAuthenticated = useAuth().valid;
 
   return (
     <>

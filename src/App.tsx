@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import HomePage from "./components/homePage/HomePage";
@@ -8,8 +8,9 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { AuthContext } from "./context/auth";
 
 function App() {
+  const [valid, setValid] = useState(false);
   return (
-    <AuthContext.Provider value={true}>
+    <AuthContext.Provider value={{ valid: valid, setValid: setValid }}>
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />

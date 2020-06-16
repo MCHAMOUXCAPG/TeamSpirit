@@ -27,7 +27,7 @@ function HomePage() {
       .sendCode(inputText)
       .then((res) => {
         context.setValid(true);
-        navigate("/survey");
+        navigate("/success"); //<-- "/survey"
       })
       .catch((err) => {
         console.log(err);

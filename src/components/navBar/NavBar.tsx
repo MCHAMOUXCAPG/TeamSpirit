@@ -1,50 +1,20 @@
 import React from "react";
-import { createStyles, makeStyles, Theme } from "@material-ui/core/styles";
 import AppBar from "@material-ui/core/AppBar";
 import Toolbar from "@material-ui/core/Toolbar";
-import Typography from "@material-ui/core/Typography";
-import IconButton from "@material-ui/core/IconButton";
-import AccountCircle from "@material-ui/icons/AccountCircle";
+import Grid from "@material-ui/core/Grid";
 
 import "./NavBar.css";
-import { useAuth } from "../../context/auth";
-
-const useStyles = makeStyles((theme: Theme) =>
-  createStyles({
-    root: {
-      flexGrow: 1,
-    },
-    menuButton: {
-      marginRight: theme.spacing(2),
-    },
-    title: {
-      flexGrow: 1,
-    },
-  })
-);
+import logo from "../../assets/logo.png";
 
 function NavBar() {
-  const classes = useStyles();
-  const isAuthenticated = useAuth();
-
   return (
     <AppBar position="static" className="navBar">
       <Toolbar>
-        <Typography variant="h6" className={classes.title}>
-          Photos
-        </Typography>
-        {isAuthenticated && (
-          <div>
-            <IconButton
-              aria-label="account of current user"
-              aria-controls="menu-appbar"
-              aria-haspopup="true"
-              color="inherit"
-            >
-              <AccountCircle />
-            </IconButton>
-          </div>
-        )}
+        <Grid container direction="row" justify="flex-end" alignItems="center">
+          <Grid item xs={4} sm={3} md={3}>
+            <img className="logoImg" src={logo} alt="Capgemini Logo" />
+          </Grid>
+        </Grid>
       </Toolbar>
     </AppBar>
   );

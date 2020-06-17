@@ -1,5 +1,4 @@
-import React, { useContext } from "react";
-import { AuthContext } from "../../context/auth";
+import React from "react";
 import { Grid, Container } from "@material-ui/core";
 
 import "./ExitPage.css";

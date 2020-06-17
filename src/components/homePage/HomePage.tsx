@@ -18,7 +18,6 @@ function HomePage() {
   const codeValidationService: CodeValidationService = new CodeValidationService();
 
   const submitHandler = () => {
-    console.log("dentro de submit");
     sendCode({ code: search });
   };
 
@@ -27,15 +26,16 @@ function HomePage() {
       .sendCode(inputText)
       .then((res) => {
         context.setValid(true);
-        navigate("/success"); //<-- "/survey"
+        navigate("/survey");
       })
       .catch((err) => {
-        console.log(err);
         setErr(true);
         if (err.request.status === 0) {
-          setHelperTxt("Network Error!");
+          setHelperTxt(
+            "Network Error! Please verify you have internet access."
+          );
         } else {
-          setHelperTxt("Incorrect entry.");
+          setHelperTxt(err.response.data.message);
         }
       });
   }
@@ -53,19 +53,21 @@ function HomePage() {
         spacing={0}
         id="GridContainer"
       >
-        <Grid item>
-          <Grid container spacing={0}>
-            <Grid item xs={12} id="espacioHeader"></Grid>
-            <Grid item xs={2} sm={1} md={3} lg={1}></Grid>
-            <Grid item xs={8} sm={10} md={8} lg={10} id="header">
+        <Grid item xs={12} id="content">
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="flex-end"
+          >
+            <Grid item xs={12} id="header">
               <div className="headerSurvey">
-                Welcome to <br /> Team Spirit Survey
+                Welcome to
+                <br />
+                Team Spirit Survey
               </div>
             </Grid>
-            <Grid item xs={2} sm={2} md={1} lg={1}></Grid>
-            <Grid item xs={12} id="espacioTitle-Input"></Grid>
-            <Grid item xs={2} sm={6} md={6} lg={6}></Grid>
-            <Grid item xs={5} sm={5} md={5} lg={5}>
+            <Grid item xs={12}>
               <form noValidate autoComplete="off">
                 <Paper id="Card" variant="elevation" elevation={3}>
                   <Grid
@@ -75,9 +77,7 @@ function HomePage() {
                     alignItems="center"
                   >
                     <Grid item>
-                      <Grid item xs={12} id="espacioCard-Input"></Grid>
-                      <Grid item xs={1}></Grid>
-                      <Grid item xs={8} sm={8} md={8} lg={8}>
+                      <Grid item xs={12} style={{ margin: 15 }}>
                         <TextField
                           required
                           error={Err}
@@ -90,16 +90,19 @@ function HomePage() {
                           helperText={HelperTxt}
                         />
                       </Grid>
-                      <Grid item xs={3}></Grid>
                     </Grid>
                   </Grid>
-                  <Button id="ButtonStart" onClick={submitHandler} size="small">
+                  <Button
+                    id="ButtonStart"
+                    onClick={submitHandler}
+                    size="small"
+                    style={{ bottom: Err ? 15 : -12 }}
+                  >
                     Start
                   </Button>
                 </Paper>
               </form>
             </Grid>
-            <Grid item xs={5} sm={1} md={1} lg={1}></Grid>
           </Grid>
         </Grid>
       </Grid>

@@ -78,7 +78,6 @@ Prerequisite:  Golang must be installed and present in PATH
 
 ### **Discover ReactNative**: 
 
-WIP
 
 React Native Tutorial for Beginners - Crash Course 2020 (expo): https://www.youtube.com/watch?v=qSRrxpdMpVc
 
@@ -88,7 +87,9 @@ Build a React Native App [2020] : https://www.youtube.com/watch?v=0-S5a0eXPoc&fe
 
 ### **Develop with ReactNative**: 
 
-WIP
+We have two ways to start a project: Expo CLI or React Native ClI. For this project, Expo CLI is used.
+
+[React Native](https://reactnative.dev/) itself gives us the UI components needed, but there are also other style libraries available.
 
 ### **Build and run**: 
 
@@ -118,14 +119,23 @@ Follow:
 
 ### **Discover React**: 
 
-WIP
+For beginners: Learning React in 2020: https://www.youtube.com/watch?v=NJWI1b1upps&list=PLDIXF8nb0VG1v4S-smVy7GV0MHsJ3PJiL
+
+React Tutorial - Learn React in 2020 - Building Todoist From Scratch: https://www.youtube.com/watch?v=HgfA4W_VjmI
 
 ### **Develop with React**: 
 
-WIP
+There are several ways to start a React project [here](https://reactjs.org/docs/create-a-new-react-app.html).
+
+In this project, [Create React App](https://create-react-app.dev/docs/getting-started) is used. It allows us create a project with a TypeScript setup.
 
 ### **Build and run** the app: 
 
-WIP
+Follow: 
+- clone or download code, navigate to project's root folder
+- install modules with ```npm install ```
+- Run the App with ```npm start```
+- A browser window will be opened. 
+- Enjoy your app
 
 **[UP](#TeamSpirit)**

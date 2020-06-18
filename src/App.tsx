@@ -6,6 +6,7 @@ import Survey from "./components/survey/Survey";
 import ExitPage from "./components/exitPage/ExitPage";
 import PrivateRoute from "./auth/PrivateRoute";
 import { AuthContext } from "./context/auth";
+import TeamHomePage from "./components/teamHomePage/TeamHomePage";
 
 function App() {
   const [valid, setValid] = useState(false);
@@ -20,6 +21,7 @@ function App() {
             element={<Survey />}
             alternativePath="/"
           />
+          <Route path="/teamleader" element={<TeamHomePage />} />
         </Routes>
       </Router>
     </AuthContext.Provider>

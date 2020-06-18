@@ -6,5 +6,11 @@
   line-height: 49px;
   text-align: right;
   color: #e43e;
+  text-align: center;
   margin-bottom: 100px;
+  background-color: bisque;
+}
+
+.fondotemporal {
+  background-color: bisque;
 }

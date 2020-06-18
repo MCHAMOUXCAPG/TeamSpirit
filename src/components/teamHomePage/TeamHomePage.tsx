@@ -1,53 +1,41 @@
 import React, { useState } from "react";
-import "./Survey.css";
+import "./TeamHomePage.css";
 import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
-const Survey = () => {
+import AverageChart from "../averageChart/Chart";
+const TeamHomePage = () => {
   const [sliderStep, setSliderStep] = useState<number | number[]>(5);
 
   return (
-    <Container maxWidth="lg" className="content" disableGutters={true}>
+    <div>
       <NavBar user={true}></NavBar>
-      <Grid container direction="column" justify="center" alignItems="center">
+      <Container maxWidth="lg" className="content" disableGutters={true}>
         <Grid
           container
-          item
           direction="row"
           justify="center"
           alignItems="center"
+          spacing={5}
         >
-          <div className="Texto">Team Spirit Survey</div>
+          <Grid item xs={12}>
+            <div className="Texto">Team Spirit Survey</div>
+          </Grid>
+          <Grid item xs={6} md={6}>
+            <AverageChart />
+          </Grid>
+          <Grid item xs={6} md={6}>
+            <div className="Texto">Team Spirit Survey</div>
+          </Grid>
+          <Grid item xs={12}>
+            <div className="Texto">Team Spirit Survey</div>
+          </Grid>
+          <Grid item xs={12}>
+            <div className="Texto">Team Spirit Survey</div>
+          </Grid>
         </Grid>
-        <Grid
-          container
-          item
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <div className="Texto">Team Spirit Survey</div>
-        </Grid>
-        <Grid
-          container
-          item
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <div className="Texto">Team Spirit Survey</div>
-        </Grid>
-        <Grid
-          container
-          item
-          direction="row"
-          justify="center"
-          alignItems="center"
-        >
-          <div className="Texto">Team Spirit Survey</div>
-        </Grid>
-      </Grid>
-    </Container>
+      </Container>
+    </div>
   );
 };
 
-export default Survey;
+export default TeamHomePage;

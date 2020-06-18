@@ -4,7 +4,7 @@ import Chart from "react-apexcharts";
 import Button from "@material-ui/core/Button";
 function AverageChart() {
   const [state, setState] = useState({
-    seriesRadial: [76],
+    seriesRadial: [100],
     options: {
       chart: {
         type: "radialBar",
@@ -20,7 +20,8 @@ function AverageChart() {
           track: {
             background: "#e7e7e7",
             strokeWidth: "97%",
-            margin: 5, // margin is in pixels
+            margin: 40,
+            // size: "70%", // margin is in pixels
             dropShadow: {
               enabled: true,
               top: 2,
@@ -36,7 +37,7 @@ function AverageChart() {
             },
             value: {
               offsetY: -2,
-              fontSize: "22px",
+              fontSize: "0px",
             },
           },
         },
@@ -48,15 +49,27 @@ function AverageChart() {
       },
       fill: {
         type: "gradient",
+        inverseColors: false,
         gradient: {
-          shade: "light",
-          shadeIntensity: 0.4,
-          inverseColors: false,
-          opacityFrom: 1,
-          opacityTo: 1,
-          stops: [0, 50, 53, 91],
+          shadeIntensity: 1,
+          opacityFrom: 0.7,
+          opacityTo: 0.9,
+          colorStops: [
+            {
+              offset: 60,
+              color: "#95DA74",
+              opacity: 1,
+            },
+
+            {
+              offset: 80,
+              color: "#EB656F",
+              opacity: 1,
+            },
+          ],
         },
       },
+
       labels: ["Average Results"],
     },
   });

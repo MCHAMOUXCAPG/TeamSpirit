@@ -12,6 +12,7 @@ type SurveyRepository interface {
 	UpdateSurvey(surveyCode string, survey *entities.Survey) (*entities.Survey, error)
 	DeleteSurvey(SurveyCode string) (*entities.Survey, error)
 	GetResultSurvey(surveyCode string) (float64, error)
+	GetHistoricResult(teamName string) (float64, error)
 }
 
 type SurveyRepo struct{}
@@ -63,6 +64,15 @@ func (*SurveyRepo) GetResultSurvey(surveyCode string) (float64, error) {
 
 	var result float64
 	row := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("avg(note)").Row()
+	row.Scan(&result)
+
+	return result, nil
+}
+
+func (*SurveyRepo) GetHistoricResult(teamName string) (float64, error) {
+
+	var result float64
+	row := config.DB.Table("notes").Where("survey_code LIKE ?", "%"+teamName+"%").Select("avg(note)").Row()
 	row.Scan(&result)
 
 	return result, nil

@@ -13,7 +13,8 @@ import (
 
 func HandleResquests() {
 	e := echo.New()
-
+	e.Use(middleware.CORS())
+	
 	// init route
 	e.GET("/", helloWorld)
 

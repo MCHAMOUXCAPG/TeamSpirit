@@ -4,8 +4,10 @@ import (
 	"encoding/json"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 
+	"github.com/callicoder/packer/dto"
 	"github.com/callicoder/packer/entities"
 	"github.com/callicoder/packer/repositories"
 	"github.com/labstack/echo/v4"
@@ -134,8 +136,24 @@ func AddNotesToSurvey(c echo.Context) error {
 // @Router /survey/result/:surveyCode [get]
 func GetResultSurvey(c echo.Context) error {
 	surveyCode := c.Param("surveyCode")
-	result, _ := SurveyRepo.GetResultSurvey(surveyCode)
-	return c.JSON(http.StatusOK, result)
+	currentSurvey, _ := SurveyRepo.GetSurvey(surveyCode)
+	team, _ := TeamRepo.GetTeam(currentSurvey.TeamName)
+	return c.JSON(http.StatusOK, mapResult(team, currentSurvey))
+}
+
+func mapResult(team *entities.Team, currentSurvey *entities.Survey) *dto.Result {
+	var result = &dto.Result{}
+	result.Period.StartDate = currentSurvey.StartDate
+	result.Period.EndDate = currentSurvey.EndDate
+	result.Completed = calculateCompleted(team.Num_mumbers, currentSurvey.Notes)
+	result.CurrentResult, _ = SurveyRepo.GetResultSurvey(currentSurvey.Code)
+	result.HistoricResult, _ = SurveyRepo.GetHistoricResult(team.Name)
+	return result
+}
+
+func calculateCompleted(membersTeam int, notes []entities.Note) string {
+	membersVote := len(notes) / 6
+	return strconv.Itoa(membersVote) + "/" + strconv.Itoa(membersTeam)
 }
 
 func CreateSurveyAtEndOfSprint() {

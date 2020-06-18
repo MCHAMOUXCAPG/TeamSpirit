@@ -39,6 +39,7 @@
   width: 100%;
   border-radius: 25px !important;
   font-size: 0.8em !important;
+  text-transform: none !important;
 }
 
 .btn-contained {

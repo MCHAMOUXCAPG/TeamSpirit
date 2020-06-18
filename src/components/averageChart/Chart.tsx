@@ -2,9 +2,32 @@ import React, { useState } from "react";
 import "./Chart.css";
 import Chart from "react-apexcharts";
 import Button from "@material-ui/core/Button";
-function AverageChart() {
+
+import faceverysad from "../../assets/emoji1_1x.png";
+import facesad from "../../assets/emoji2_1x.png";
+import faceplain from "../../assets/emoji3_1x.png";
+import facesmile from "../../assets/emoji4_1x.png";
+import facebigsmile from "../../assets/emoji5_1x.png";
+
+const AverageChart = (props: any) => {
+  const noteIcons = [faceverysad, facesad, faceplain, facesmile, facebigsmile];
+
+  const iconHandler: any = () => {
+    if (props.grade <= 40) {
+      return noteIcons[0];
+    } else if (props.grade <= 65) {
+      return noteIcons[1];
+    } else if (props.grade <= 70) {
+      return noteIcons[2];
+    } else if (props.grade <= 90) {
+      return noteIcons[3];
+    } else {
+      return noteIcons[4];
+    }
+  };
+
   const [state, setState] = useState({
-    seriesRadial: [100],
+    seriesRadial: [props.grade],
     options: {
       chart: {
         type: "radialBar",
@@ -49,21 +72,22 @@ function AverageChart() {
       },
       fill: {
         type: "gradient",
-        inverseColors: false,
+
         gradient: {
           shadeIntensity: 1,
-          opacityFrom: 0.7,
-          opacityTo: 0.9,
+          inverseColors: false,
+          type: "horizontal",
+          opacityFrom: 1,
+          opacityTo: 1,
           colorStops: [
             {
-              offset: 60,
-              color: "#95DA74",
+              offset: 0,
+              color: "#ff8d05",
               opacity: 1,
             },
-
             {
-              offset: 80,
-              color: "#EB656F",
+              offset: 100,
+              color: "#95DA74",
               opacity: 1,
             },
           ],
@@ -86,11 +110,13 @@ function AverageChart() {
         series={state.seriesRadial}
         type="radialBar"
       />
-      <Button id="ButtonStart" onClick={updateCharts} size="small">
+      <h1 className="grade">{props.grade}</h1>
+      <img className="noteicon" src={iconHandler()} alt="note icon" />
+      {/*    <Button id="ButtonStart" onClick={updateCharts} size="small">
         Start
-      </Button>
+      </Button> */}
     </div>
   );
-}
+};
 
 export default AverageChart;

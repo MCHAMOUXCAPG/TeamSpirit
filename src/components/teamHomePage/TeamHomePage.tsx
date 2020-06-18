@@ -21,7 +21,7 @@ const TeamHomePage = () => {
             <div className="Texto">Team Spirit Survey</div>
           </Grid>
           <Grid item xs={6} md={6}>
-            <AverageChart />
+            <AverageChart grade={20} />
           </Grid>
           <Grid item xs={6} md={6}>
             <div className="Texto">Team Spirit Survey</div>

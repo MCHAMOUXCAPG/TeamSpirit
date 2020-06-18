@@ -12,6 +12,6 @@ type Survey struct {
 
 type Note struct {
 	Number     int
-	Note       int
+	Note       float64
 	SurveyCode string `sql:"type:integer REFERENCES surveys(code)"`
 }

@@ -4,12 +4,15 @@ import (
 	"encoding/json"
 	"math/rand"
 	"net/http"
+	"strconv"
 	"time"
 
+	"github.com/callicoder/packer/dto"
 	"github.com/callicoder/packer/entities"
 	"github.com/callicoder/packer/repositories"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
+	"github.com/robfig/cron"
 )
 
 var (
@@ -125,16 +128,32 @@ func AddNotesToSurvey(c echo.Context) error {
 }
 
 // @Summary Survey result
-// @Description returns the average of all the survey notes
+// @Description returns the result survey
 // @Tags Survies
 // @Accept json
 // @Produce json
-// @Success 200 "int"
+// @Success 200 {object} dto.Result
 // @Router /survey/result/:surveyCode [get]
 func GetResultSurvey(c echo.Context) error {
 	surveyCode := c.Param("surveyCode")
-	result, _ := SurveyRepo.GetResultSurvey(surveyCode)
-	return c.JSON(http.StatusOK, result)
+	currentSurvey, _ := SurveyRepo.GetSurvey(surveyCode)
+	team, _ := TeamRepo.GetTeam(currentSurvey.TeamName)
+	return c.JSON(http.StatusOK, mapResult(team, currentSurvey))
+}
+
+func mapResult(team *entities.Team, currentSurvey *entities.Survey) *dto.Result {
+	var result = &dto.Result{}
+	result.Period.StartDate = currentSurvey.StartDate
+	result.Period.EndDate = currentSurvey.EndDate
+	result.Completed = calculateCompleted(team.Num_mumbers, currentSurvey.Notes)
+	result.CurrentResult, _ = SurveyRepo.GetResultSurvey(currentSurvey.Code)
+	result.HistoricResult, _ = SurveyRepo.GetHistoricResult(team.Name)
+	return result
+}
+
+func calculateCompleted(membersTeam int, notes []entities.Note) string {
+	membersVote := len(notes) / 6
+	return strconv.Itoa(membersVote) + "/" + strconv.Itoa(membersTeam)
 }
 
 func CreateSurveyAtEndOfSprint() {
@@ -145,23 +164,23 @@ func CreateSurveyAtEndOfSprint() {
 			daysbeforeEndSprint := 4
 			durationSinceStartLastSprint := int(time.Since(team.Surveys[len(team.Surveys)-1].StartDate).Hours() / 24)
 			if durationSinceStartLastSprint == (team.Frequency - daysbeforeEndSprint) {
-				nextSurvey := buildNextSurvey(team)
+				nextSurvey := BuildNextSurvey(team)
 				SurveyRepo.CreateSurvey(nextSurvey)
 			}
 		}
 	}
 }
 
-func buildNextSurvey(team *entities.Team) *entities.Survey {
+func BuildNextSurvey(team *entities.Team) *entities.Survey {
 	nextSurveyStartDay := team.Surveys[len(team.Surveys)-1].EndDate.Add(24 * time.Hour)
 	nextSurveyEndDay := nextSurveyStartDay.Add(time.Duration(team.Frequency) * 24 * time.Hour)
-	nextSurveyCode := team.Name + "-" + generateSurveyCode(5)
+	nextSurveyCode := team.Name + "-" + GenerateSurveyCode(5)
 	nextSurveyTeamName := team.Name
 	nextSurvey := &entities.Survey{StartDate: nextSurveyStartDay, EndDate: nextSurveyEndDay, Code: nextSurveyCode, TeamName: nextSurveyTeamName}
 	return nextSurvey
 }
 
-func generateSurveyCode(n int) string {
+func GenerateSurveyCode(n int) string {
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")
 
 	s := make([]rune, n)
@@ -169,4 +188,10 @@ func generateSurveyCode(n int) string {
 		s[i] = letters[rand.Intn(len(letters))]
 	}
 	return string(s)
+}
+
+func CreateSurveyAutomatically() {
+	c := cron.New()
+	c.AddFunc("* * * 1 * *", CreateSurveyAtEndOfSprint)
+	c.Start()
 }

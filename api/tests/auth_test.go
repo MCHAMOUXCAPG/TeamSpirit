@@ -16,19 +16,20 @@ import (
 )
 
 func TestAccessToSurvey(t *testing.T) {
-
 	// Post 1 team in the mock database
 
-	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 5, Frequency: 15})
+	team1, _ := TeamRepo.CreateTeam(&entities.Team{
+		Name:        "team1",
+		StartDate:   time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
+		Num_mumbers: 5, Frequency: 15,
+		Surveys: []entities.Survey{
+			{
+				StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Now().Add(24 * time.Hour),
+				Code:      "code1",
+				TeamName:  "team1"}}})
 	assert.Equal(t, team1.Name, "team1")
-
-	// Post 1 survey in the mock database
-
-	team1.Surveys = []entities.Survey{{StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), EndDate: time.Now().Add(24 * time.Hour), Code: "code1", TeamName: "team1"}}
 	assert.Equal(t, team1.Surveys[0].Code, "code1")
-
-	team2, _ := TeamRepo.UpdateTeam(team1.Name, team1)
-	assert.Equal(t, team2.Surveys[0].Code, "code1")
 
 	// Create a new Request
 	survey2 := &entities.Survey{}

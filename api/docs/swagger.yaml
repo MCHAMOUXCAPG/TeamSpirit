@@ -1,18 +1,53 @@
-basePath: /v2
+basePath: /
 definitions:
-  entities.Access:
+  dto.Access:
     properties:
       code:
         type: string
     type: object
+  dto.JwtCustomClaims:
+    properties:
+      Email:
+        type: string
+      Password:
+        type: string
+    type: object
+  dto.Period:
+    properties:
+      endDate:
+        type: string
+      startDate:
+        type: string
+    type: object
+  dto.Result:
+    properties:
+      completed:
+        type: string
+      currentResult:
+        type: number
+      historicResult:
+        type: number
+      period:
+        $ref: '#/definitions/dto.Period'
+        type: object
+    type: object
   entities.Note:
     properties:
       note:
-        type: integer
+        type: number
       number:
         type: integer
       surveyCode:
         type: string
+    type: object
+  entities.Role:
+    properties:
+      id:
+        type: integer
+      name:
+        type: string
+      userID:
+        type: integer
     type: object
   entities.Survey:
     properties:
@@ -43,6 +78,29 @@ definitions:
         items:
           $ref: '#/definitions/entities.Survey'
         type: array
+      users:
+        items:
+          $ref: '#/definitions/entities.User'
+        type: array
+    type: object
+  entities.User:
+    properties:
+      email:
+        type: string
+      full_name:
+        type: string
+      id:
+        type: integer
+      password:
+        type: string
+      roles:
+        items:
+          $ref: '#/definitions/entities.Role'
+        type: array
+      teams:
+        items:
+          $ref: '#/definitions/entities.Team'
+        type: array
     type: object
 host: petstore.swagger.io
 info:
@@ -69,7 +127,7 @@ paths:
         name: Code
         required: true
         schema:
-          $ref: '#/definitions/entities.Access'
+          $ref: '#/definitions/dto.Access'
       produces:
       - application/json
       responses:
@@ -79,7 +137,189 @@ paths:
             $ref: '#/definitions/entities.Survey'
       summary: Access to survey
       tags:
-      - Autentication
+      - Authentication
+  /login:
+    post:
+      consumes:
+      - application/json
+      description: Login
+      parameters:
+      - description: String
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/dto.JwtCustomClaims'
+      - description: String
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/dto.JwtCustomClaims'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.JwtCustomClaims'
+      summary: Login
+      tags:
+      - Authentication
+  /me:
+    get:
+      consumes:
+      - application/json
+      description: Current user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Current User
+      tags:
+      - Authentication
+  /register:
+    post:
+      consumes:
+      - application/json
+      description: Register
+      parameters:
+      - description: string
+        in: body
+        name: Full-name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: string
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: string
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: int
+        in: body
+        name: Phone
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Register
+      tags:
+      - Authentication
+  /role/:id:
+    delete:
+      consumes:
+      - application/json
+      description: returns a empty role
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Delete a role
+      tags:
+      - Roles
+    get:
+      consumes:
+      - application/json
+      description: returns one role by id
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Get one role
+      tags:
+      - Roles
+    put:
+      consumes:
+      - application/json
+      description: returns the role updated
+      parameters:
+      - description: String
+        in: body
+        name: Name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      - description: int
+        in: body
+        name: UserID
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Update a new role
+      tags:
+      - Roles
+  /role/create:
+    post:
+      consumes:
+      - application/json
+      description: returns the role created
+      parameters:
+      - description: String
+        in: body
+        name: Name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      - description: int
+        in: body
+        name: UserID
+        required: true
+        schema:
+          $ref: '#/definitions/entities.Role'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Create a new role
+      tags:
+      - Roles
+  /roles:
+    get:
+      consumes:
+      - application/json
+      description: returns all roles
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Role'
+      summary: Get all roles
+      tags:
+      - Roles
   /survey/:surveyCode:
     delete:
       consumes:
@@ -226,12 +466,14 @@ paths:
     get:
       consumes:
       - application/json
-      description: returns the average of all the survey notes
+      description: returns the result survey
       produces:
       - application/json
       responses:
         "200":
-          description: int
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Result'
       summary: Survey result
       tags:
       - Survies
@@ -398,4 +640,115 @@ paths:
       summary: Get all teams
       tags:
       - Teams
+  /user/:id:
+    delete:
+      consumes:
+      - application/json
+      description: returns a empty user
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Delete a user
+      tags:
+      - Users
+    get:
+      consumes:
+      - application/json
+      description: returns one
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Get one users
+      tags:
+      - Users
+    put:
+      consumes:
+      - application/json
+      description: returns the user updated
+      parameters:
+      - description: String
+        in: body
+        name: Full_name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Update a new user
+      tags:
+      - Users
+  /user/create:
+    post:
+      consumes:
+      - application/json
+      description: returns the user created
+      parameters:
+      - description: String
+        in: body
+        name: Full_name
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Email
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      - description: String
+        in: body
+        name: Password
+        required: true
+        schema:
+          $ref: '#/definitions/entities.User'
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Create a new user
+      tags:
+      - Users
+  /users:
+    get:
+      consumes:
+      - application/json
+      description: returns all users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.User'
+      summary: Get all users
+      tags:
+      - Users
 swagger: "2.0"

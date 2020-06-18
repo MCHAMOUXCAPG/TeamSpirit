@@ -128,11 +128,11 @@ func AddNotesToSurvey(c echo.Context) error {
 }
 
 // @Summary Survey result
-// @Description returns the average of all the survey notes
+// @Description returns the result survey
 // @Tags Survies
 // @Accept json
 // @Produce json
-// @Success 200 "int"
+// @Success 200 {object} dto.Result
 // @Router /survey/result/:surveyCode [get]
 func GetResultSurvey(c echo.Context) error {
 	surveyCode := c.Param("surveyCode")

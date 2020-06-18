@@ -12,6 +12,25 @@ definitions:
       Password:
         type: string
     type: object
+  dto.Period:
+    properties:
+      endDate:
+        type: string
+      startDate:
+        type: string
+    type: object
+  dto.Result:
+    properties:
+      completed:
+        type: string
+      currentResult:
+        type: number
+      historicResult:
+        type: number
+      period:
+        $ref: '#/definitions/dto.Period'
+        type: object
+    type: object
   entities.Note:
     properties:
       note:
@@ -447,12 +466,14 @@ paths:
     get:
       consumes:
       - application/json
-      description: returns the average of all the survey notes
+      description: returns the result survey
       produces:
       - application/json
       responses:
         "200":
-          description: int
+          description: OK
+          schema:
+            $ref: '#/definitions/dto.Result'
       summary: Survey result
       tags:
       - Survies

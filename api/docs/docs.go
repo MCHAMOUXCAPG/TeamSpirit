@@ -563,7 +563,7 @@ var doc = `{
         },
         "/survey/result/:surveyCode": {
             "get": {
-                "description": "returns the average of all the survey notes",
+                "description": "returns the result survey",
                 "consumes": [
                     "application/json"
                 ],
@@ -576,7 +576,10 @@ var doc = `{
                 "summary": "Survey result",
                 "responses": {
                     "200": {
-                        "description": "int"
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Result"
+                        }
                     }
                 }
             }
@@ -1016,6 +1019,35 @@ var doc = `{
                 },
                 "Password": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.Period": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.Result": {
+            "type": "object",
+            "properties": {
+                "completed": {
+                    "type": "string"
+                },
+                "currentResult": {
+                    "type": "number"
+                },
+                "historicResult": {
+                    "type": "number"
+                },
+                "period": {
+                    "type": "object",
+                    "$ref": "#/definitions/dto.Period"
                 }
             }
         },

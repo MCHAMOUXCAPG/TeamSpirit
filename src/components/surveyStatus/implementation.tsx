@@ -2,7 +2,7 @@
 
 import React, { useState, useEffect } from "react";
 
-import "./Survey.css";
+import "./SurveyStatus.css";
 import SurveyStatus from "../surveyStatus/SurveySatus";
 import { ICurrentSurveyResult } from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";

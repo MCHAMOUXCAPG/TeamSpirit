@@ -3,6 +3,8 @@ import { createContext, useContext } from "react";
 export const AuthContext = createContext({
   valid: false,
   setValid: (valid: boolean) => {},
+  token: "",
+  setToken: (newToken: string) => {},
 });
 
 export function useAuth() {

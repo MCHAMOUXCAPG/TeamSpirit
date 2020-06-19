@@ -9,6 +9,15 @@ export class SurveyService {
     const endPoint = "/survey/" + surveyCode + "/addNotes";
     return environment.post(endPoint, body);
   }
+
+  public getCurrentResult(surveyCode: string, token: string): Promise<any> {
+    const endPoint = "/survey/result/" + surveyCode;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }
 
 export class CodeValidationService {

@@ -4,6 +4,7 @@ import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
 import SurveyStatus from "../surveyStatus/SurveyStatus";
+import DetailResults from "../detailResults/DetailResults";
 const TeamHomePage = () => {
   return (
     <div>
@@ -31,7 +32,7 @@ const TeamHomePage = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <div className="Texto">Team Spirit Survey</div>
+            <DetailResults />
           </Grid>
           <Grid item xs={12}>
             <div className="Texto">Team Spirit Survey</div>

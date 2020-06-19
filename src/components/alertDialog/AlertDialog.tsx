@@ -8,7 +8,7 @@ import {
 import colors from "../../config/colors";
 import "./AlertDialog.css";
 
-export default function AlertDialog() {
+export default function AlertDialog(props: any) {
   const [open, setOpen] = useState(true); //On false for testing purposes
 
   const handleClose = () => {
@@ -38,8 +38,8 @@ export default function AlertDialog() {
           height: 140,
         }}
       >
-        <p>Please answer the 6 following questions.</p>
-        <p>It will only take you a couple of minutes.</p>
+        <p>{props.text1}</p>
+        <p>{props.text2}</p>
       </DialogContent>
       <DialogActions
         style={{
@@ -55,7 +55,7 @@ export default function AlertDialog() {
             borderRadius: 20,
             width: 60,
           }}
-          onClick={handleClose}
+          onClick={props.clicked === "" ? handleClose : props.clicked}
         >
           OK
         </Button>

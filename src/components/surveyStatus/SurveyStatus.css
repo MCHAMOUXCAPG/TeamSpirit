@@ -1,0 +1,51 @@
+.paper {
+  border-color: #79c0c6 !important;
+  border-radius: 12px !important;
+  padding: 28px;
+}
+
+.h2 {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 18px;
+  line-height: 21px;
+  text-align: center;
+}
+.surveyStatusContainer p {
+  margin-block-start: 0.5em;
+  margin-block-end: 0.5em;
+  color: #79c0c6;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 0.8em;
+}
+
+.surveyStatusContainer p span {
+  color: #000000;
+  margin-left: 6px;
+}
+
+.icon {
+  position: relative;
+  top: 0.31em;
+  width: 1.1em !important;
+  height: 1.1em !important;
+  margin-right: 6px;
+}
+
+.btn {
+  width: 100%;
+  border-radius: 25px !important;
+  font-size: 0.8em !important;
+}
+
+.btn-contained {
+  background-color: #79c0c6 !important;
+  color: #ffffff !important;
+}
+.btn-outlined {
+  color: #79c0c6 !important;
+  border-color: #79c0c6 !important;
+}

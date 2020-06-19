@@ -3,26 +3,40 @@ import "./Chart.css";
 import Chart from "react-apexcharts";
 import Button from "@material-ui/core/Button";
 
-import faceverysad from "../../assets/emoji1_1x.png";
-import facesad from "../../assets/emoji2_1x.png";
-import faceplain from "../../assets/emoji3_1x.png";
-import facesmile from "../../assets/emoji4_1x.png";
-import facebigsmile from "../../assets/emoji5_1x.png";
+import cryface from "../../assets/emoji_1.png";
+import verysadface from "../../assets/emoji_3.png";
+import sadface from "../../assets/emoji_4.png";
+import plainface from "../../assets/emoji_5.png";
+import smileface from "../../assets/emoji_7.png";
+import happyface from "../../assets/emoji_9.png";
+import bigsmileface from "../../assets/emoji_10.png";
 
 const AverageChart = (props: any) => {
-  const noteIcons = [faceverysad, facesad, faceplain, facesmile, facebigsmile];
+  const noteIcons = [
+    cryface,
+    verysadface,
+    sadface,
+    plainface,
+    smileface,
+    happyface,
+    bigsmileface,
+  ];
 
   const iconHandler: any = () => {
-    if (props.grade <= 40) {
+    if (props.grade <= 20) {
       return noteIcons[0];
-    } else if (props.grade <= 65) {
+    } else if (props.grade <= 40) {
       return noteIcons[1];
-    } else if (props.grade <= 70) {
+    } else if (props.grade <= 55) {
       return noteIcons[2];
-    } else if (props.grade <= 90) {
+    } else if (props.grade <= 70) {
       return noteIcons[3];
-    } else {
+    } else if (props.grade <= 80) {
       return noteIcons[4];
+    } else if (props.grade <= 90) {
+      return noteIcons[5];
+    } else {
+      return noteIcons[6];
     }
   };
 
@@ -97,12 +111,12 @@ const AverageChart = (props: any) => {
       labels: ["Average Results"],
     },
   });
-  function updateCharts() {
+  /*   function updateCharts() {
     setState({
       ...state,
       seriesRadial: [Math.floor(Math.random() * (90 - 50 + 1)) + 50],
     });
-  }
+  } */
   return (
     <div id="chart">
       <Chart

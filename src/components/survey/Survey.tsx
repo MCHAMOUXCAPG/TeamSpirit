@@ -78,6 +78,7 @@ const Survey = (props: any) => {
       .then((res) => {
         if ((res.status = 200)) {
           setSuccess(true);
+          setLoading(false);
           console.log("success");
         }
       })

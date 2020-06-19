@@ -8,15 +8,19 @@ import Event from "@material-ui/icons/Event";
 import Group from "@material-ui/icons/Group";
 import Schedule from "@material-ui/icons/Schedule";
 import AssessmentOutlined from "@material-ui/icons/AssessmentOutlined";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 import "./SurveyStatus.css";
+import colors from "../../config/colors";
 
 function SurveyStatus({
+  loading,
   period,
   completed,
   currentResult,
   historicResult,
 }: {
+  loading: boolean;
   period: string;
   completed: string;
   currentResult: number;
@@ -25,59 +29,72 @@ function SurveyStatus({
   return (
     <div>
       <Paper variant="outlined" className="paper">
-        <h2 className="h2">Team Status</h2>
-        <Grid container spacing={1} className="surveyStatusContainer">
-          <Grid item xs={12}>
-            <p>
-              <Event className="icon" />
-              Period:
-              <span>{period}</span>
-            </p>
+        {loading ? (
+          <Grid container direction="row" justify="center">
+            <CircularProgress
+              size={24}
+              style={{
+                color: colors.primary,
+              }}
+            />
           </Grid>
-          <Grid item xs={12}>
-            <p>
-              <Group className="icon" />
-              Completed:
-              <span>{completed}</span>
-            </p>
-          </Grid>
-          <Grid item xs={12}>
-            <p>
-              <AssessmentOutlined className="icon" />
-              Current result:
-              <span>{currentResult}/10</span>
-            </p>
-          </Grid>
-          <Grid item xs={12}>
-            <p>
-              <Schedule className="icon" />
-              Historic result:
-              <span>{historicResult}/10</span>
-            </p>
-          </Grid>
-          <Grid item xs={12}>
-            <Grid container spacing={4} style={{ marginTop: 10 }}>
-              <Grid item xs={12} sm={6}>
-                <Button
-                  variant="contained"
-                  className="btn btn-contained"
-                  startIcon={<Settings />}
-                >
-                  Configure your team
-                </Button>
+        ) : (
+          <>
+            <h2 className="h2">Team Status</h2>
+            <Grid container spacing={1} className="surveyStatusContainer">
+              <Grid item xs={12}>
+                <p>
+                  <Event className="icon" />
+                  Period:
+                  <span>{period}</span>
+                </p>
               </Grid>
-              <Grid item xs={12} sm={6}>
-                <Button
-                  variant="outlined"
-                  className="btn btn-outlined"
-                  startIcon={<Delete />}
-                >
-                  Reset current survey
-                </Button>
+              <Grid item xs={12}>
+                <p>
+                  <Group className="icon" />
+                  Completed:
+                  <span>{completed}</span>
+                </p>
+              </Grid>
+              <Grid item xs={12}>
+                <p>
+                  <AssessmentOutlined className="icon" />
+                  Current result:
+                  <span>{currentResult}/10</span>
+                </p>
+              </Grid>
+              <Grid item xs={12}>
+                <p>
+                  <Schedule className="icon" />
+                  Historic result:
+                  <span>{historicResult}/10</span>
+                </p>
+              </Grid>
+              <Grid item xs={12}>
+                <Grid container spacing={4} style={{ marginTop: 10 }}>
+                  <Grid item xs={12} sm={6}>
+                    <Button
+                      variant="contained"
+                      className="btn btn-contained"
+                      startIcon={<Settings />}
+                    >
+                      Configure your team
+                    </Button>
+                  </Grid>
+                  <Grid item xs={12} sm={6}>
+                    <Button
+                      variant="outlined"
+                      className="btn btn-outlined"
+                      startIcon={<Delete />}
+                    >
+                      Reset current survey
+                    </Button>
+                  </Grid>
+                </Grid>
               </Grid>
             </Grid>
-          </Grid>
-        </Grid>
+          </>
+        )}
       </Paper>
     </div>
   );

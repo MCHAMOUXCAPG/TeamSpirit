@@ -2,6 +2,7 @@
   border-color: #79c0c6 !important;
   border-radius: 12px !important;
   padding: 28px;
+  min-height: 300px;
 }
 
 .h2 {

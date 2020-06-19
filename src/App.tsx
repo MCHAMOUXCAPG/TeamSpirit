@@ -8,9 +8,19 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { AuthContext } from "./context/auth";
 
 function App() {
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(true);
+  const [token, setToken] = useState(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InVzZXJAbWFpbC5jb20iLCJQYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTU5MjY2MzA1MX0.KUKPMjY3U-o79RaPnckolg_QUyzc5nPQLfkSlFdWxy0"
+  ); // here put your token until we make the login page
   return (
-    <AuthContext.Provider value={{ valid: valid, setValid: setValid }}>
+    <AuthContext.Provider
+      value={{
+        valid: valid,
+        setValid: setValid,
+        token: token,
+        setToken: setToken,
+      }}
+    >
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />

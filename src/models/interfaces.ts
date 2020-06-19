@@ -27,3 +27,13 @@ export interface IQuestionResponse {
 export interface IValidationCode {
   code: string;
 }
+
+export interface ICurrentSurveyResult {
+  Period: {
+    StartDate: string;
+    EndDate: string;
+  };
+  Completed: string;
+  CurrentResult: number;
+  HistoricResult: number;
+}

@@ -3,7 +3,7 @@ import "./TeamHomePage.css";
 import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
-import SurveyStatus from "../surveyStatus/SurveyStatus";
+import Survey from "../surveyStatus/implementation";
 import DetailResults from "../detailResults/DetailResults";
 const TeamHomePage = () => {
   return (
@@ -24,12 +24,7 @@ const TeamHomePage = () => {
             <AverageChart grade={18} />
           </Grid>
           <Grid item xs={6} md={6}>
-            <SurveyStatus
-              period={"25-jun 2020 to 26 jun 2020"}
-              completed={"4/5"}
-              currentResult={7.9}
-              historicResult={7.6}
-            />
+            <Survey />
           </Grid>
           <Grid item xs={12}>
             <DetailResults />

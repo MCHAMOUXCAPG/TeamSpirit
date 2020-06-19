@@ -11,7 +11,7 @@ import { IValidationCode } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
 
-function HomePage() {
+const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const context = useContext(AuthContext);
   const [search, setSearch] = useState("");
@@ -30,6 +30,7 @@ function HomePage() {
       .sendCode(inputText)
       .then((res) => {
         context.setValid(true);
+        context.setSurveyCode(search);
         navigate("/survey");
       })
       .catch((err) => {
@@ -126,7 +127,7 @@ function HomePage() {
       </Grid>
     </Container>
   );
-}
+};
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

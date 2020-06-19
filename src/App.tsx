@@ -9,8 +9,16 @@ import { AuthContext } from "./context/auth";
 
 function App() {
   const [valid, setValid] = useState(false);
+  const [surveyCode, setSurveyCode] = useState("");
   return (
-    <AuthContext.Provider value={{ valid: valid, setValid: setValid }}>
+    <AuthContext.Provider
+      value={{
+        valid: valid,
+        surveyCode: surveyCode,
+        setValid: setValid,
+        setSurveyCode: setSurveyCode,
+      }}
+    >
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />

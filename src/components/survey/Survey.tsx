@@ -1,5 +1,6 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
+import { useAuth, AuthContext } from "../../context/auth";
 import "./Survey.css";
 import {
   Container,
@@ -22,7 +23,8 @@ import {
 } from "../../models/interfaces";
 
 const Survey = (props: any) => {
-  const surveyCode = "Test";
+  const surveyCode = useAuth().surveyCode;
+  const context = useContext(AuthContext);
 
   const surveyService: SurveyService = new SurveyService();
   const [starsSelected, setStarsSelected] = useState<number | any>(0);
@@ -80,7 +82,7 @@ const Survey = (props: any) => {
         }
       })
       .catch((err) => {
-        if (err.request.status == 0) {
+        if (err.request.status === 0) {
           alert("Please verify you have internet access!");
         } else {
           alert(err.response.data.message);
@@ -451,9 +453,10 @@ const Survey = (props: any) => {
       />
       {success && (
         <AlertDialog
-          text1="Form successfully submited."
+          text1="Form successfully submitted."
           text2="Thank you for sending us your feedback."
           clicked={() => {
+            context.setValid(false);
             navigate("/success");
           }}
         />

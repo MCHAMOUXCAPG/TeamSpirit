@@ -4,12 +4,15 @@ import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
 import { Grid, Paper, Container } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import CircularProgress from "@material-ui/core/CircularProgress";
+
 import { CodeValidationService } from "../../services/Services";
 import { IValidationCode } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
 
 function HomePage() {
+  const [loading, setLoading] = useState(false);
   const context = useContext(AuthContext);
   const [search, setSearch] = useState("");
   const [Err, setErr] = useState(false);
@@ -18,6 +21,7 @@ function HomePage() {
   const codeValidationService: CodeValidationService = new CodeValidationService();
 
   const submitHandler = () => {
+    setLoading(true);
     sendCode({ code: search });
   };
 
@@ -37,6 +41,7 @@ function HomePage() {
         } else {
           setHelperTxt(err.response.data.message);
         }
+        setLoading(false);
       });
   }
 
@@ -93,12 +98,25 @@ function HomePage() {
                     </Grid>
                   </Grid>
                   <Button
+                    disabled={loading}
                     id="ButtonStart"
                     onClick={submitHandler}
                     size="small"
-                    style={{ bottom: Err ? 15 : -12 }}
+                    style={{
+                      bottom: Err ? 15 : -12,
+                      opacity: loading ? 0.5 : 1,
+                    }}
                   >
-                    Start
+                    {loading ? (
+                      <CircularProgress
+                        size={24}
+                        style={{
+                          color: "#fff",
+                        }}
+                      />
+                    ) : (
+                      "Start"
+                    )}
                   </Button>
                 </Paper>
               </form>

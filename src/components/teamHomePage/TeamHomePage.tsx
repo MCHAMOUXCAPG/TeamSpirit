@@ -18,7 +18,7 @@ const TeamHomePage = () => {
           spacing={5}
         >
           <Grid item xs={12}>
-            <div className="Texto">Team Spirit Survey</div>
+            <div className="Texto">Team Name</div>
           </Grid>
           <Grid item xs={6} md={6}>
             <AverageChart grade={18} />
@@ -27,10 +27,10 @@ const TeamHomePage = () => {
             <Survey />
           </Grid>
           <Grid item xs={12}>
-            <DetailResults />
+            <div className="Texto">Export Data Component</div>
           </Grid>
           <Grid item xs={12}>
-            <div className="Texto">Team Spirit Survey</div>
+            <DetailResults />
           </Grid>
         </Grid>
       </Container>

@@ -13,6 +13,7 @@ function App() {
   const [token, setToken] = useState(
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InVzZXJAbWFpbC5jb20iLCJQYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTU5MjY2MzA1MX0.KUKPMjY3U-o79RaPnckolg_QUyzc5nPQLfkSlFdWxy0"
   ); // here put your token until we make the login page
+  const [surveyCode, setSurveyCode] = useState("");
   return (
     <AuthContext.Provider
       value={{
@@ -20,6 +21,8 @@ function App() {
         setValid: setValid,
         token: token,
         setToken: setToken,
+        surveyCode: surveyCode,
+        setSurveyCode: setSurveyCode,
       }}
     >
       <Router>

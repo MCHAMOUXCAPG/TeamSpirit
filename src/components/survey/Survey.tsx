@@ -247,7 +247,7 @@ const Survey = (props: any) => {
                         <Grid item xs={1}></Grid>
                         {question.images.map((image, index) => {
                           return (
-                            <Grid item xs={2}>
+                            <Grid item xs={2} key={index}>
                               <img
                                 onClick={() => {
                                   if (question.number === 1) {

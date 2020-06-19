@@ -79,7 +79,6 @@ const Survey = (props: any) => {
         if ((res.status = 200)) {
           setSuccess(true);
           setLoading(false);
-          console.log("success");
         }
       })
       .catch((err) => {
@@ -200,7 +199,6 @@ const Survey = (props: any) => {
   };
 
   const handleSurveyCompletion = () => {
-    console.log(questionsResponse);
     setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
   };

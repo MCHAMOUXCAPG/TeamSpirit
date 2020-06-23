@@ -124,7 +124,7 @@ const AverageChart = (props: any) => {
         series={state.seriesRadial}
         type="radialBar"
       />
-      <h1 className="grade">{props.grade}</h1>
+      <h1 className="grade">{props.grade / 10}</h1>
       <img className="noteicon" src={iconHandler()} alt="note icon" />
       {/*    <Button id="ButtonStart" onClick={updateCharts} size="small">
         Start

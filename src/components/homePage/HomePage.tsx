@@ -126,7 +126,9 @@ const HomePage = () => {
                   </Button>
                   <Link
                     component="button"
-                    style={{ marginTop: 25, width: "100%" }}
+                    style={
+                      Err ? { width: "100%" } : { marginTop: 25, width: "100%" }
+                    }
                     onClick={() => {
                       navigate("/Login");
                     }}

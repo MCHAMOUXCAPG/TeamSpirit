@@ -15,19 +15,52 @@ import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import "./LoginPage.css";
 import colors from "../../config/colors";
 
+import { UserValidationService } from "../../services/Services";
+import { IValidationUser } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
+import { AuthContext } from "../../context/auth";
 
 const LoginPage = () => {
   const [loading, setLoading] = useState(false);
+  const context = useContext(AuthContext);
   const [userValue, setUserValue] = useState("");
   const [passwordValue, setPasswordValue] = useState("");
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
   const navigate = useNavigate();
+  const userValidationService: UserValidationService = new UserValidationService();
 
   const submitHandler = () => {
     setLoading(true);
+
+    const params = {
+      Email: userValue,
+      Password: passwordValue,
+    };
+
+    console.log(params);
+    sendUser(params);
   };
+
+  async function sendUser(body: IValidationUser) {
+    await userValidationService
+      .sendUser(body)
+      .then((res) => {
+        context.setValid(true);
+        navigate("/survey");
+      })
+      .catch((err) => {
+        setErr(true);
+        if (err.request.status === 0) {
+          setHelperTxt(
+            "Network Error! Please verify you have internet access."
+          );
+        } else {
+          setHelperTxt(err.response.data.message);
+        }
+        setLoading(false);
+      });
+  }
 
   const classes = useStyles();
 
@@ -124,7 +157,7 @@ const LoginPage = () => {
                     onClick={submitHandler}
                     size="small"
                     style={{
-                      bottom: Err ? 15 : -12,
+                      bottom: Err ? -12 : -12,
                       opacity: loading ? 0.5 : 1,
                     }}
                   >

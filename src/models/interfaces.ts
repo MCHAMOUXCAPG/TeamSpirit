@@ -27,3 +27,8 @@ export interface IQuestionResponse {
 export interface IValidationCode {
   code: string;
 }
+
+export interface IValidationUser {
+  Email: string;
+  Password: string;
+}

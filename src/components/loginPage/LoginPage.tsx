@@ -1,50 +1,33 @@
 import React, { useState, useContext } from "react";
-import "./HomePage.css";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { Grid, Paper, Container, Link } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  Container,
+  Button,
+  TextField,
+  CircularProgress,
+  InputAdornment,
+  Input,
+} from "@material-ui/core";
+import { VpnKey } from "@material-ui/icons";
+import Person from "@material-ui/icons/Person";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import "./LoginPage.css";
+import colors from "../../config/colors";
 
-import { CodeValidationService } from "../../services/Services";
-import { IValidationCode } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
-import { AuthContext } from "../../context/auth";
 
-const HomePage = () => {
+const LoginPage = () => {
   const [loading, setLoading] = useState(false);
-  const context = useContext(AuthContext);
-  const [search, setSearch] = useState("");
+  const [userValue, setUserValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
   const navigate = useNavigate();
-  const codeValidationService: CodeValidationService = new CodeValidationService();
 
   const submitHandler = () => {
     setLoading(true);
-    sendCode({ code: search });
   };
-
-  async function sendCode(inputText: IValidationCode) {
-    await codeValidationService
-      .sendCode(inputText)
-      .then((res) => {
-        context.setValid(true);
-        context.setSurveyCode(search);
-        navigate("/survey");
-      })
-      .catch((err) => {
-        setErr(true);
-        if (err.request.status === 0) {
-          setHelperTxt(
-            "Network Error! Please verify you have internet access."
-          );
-        } else {
-          setHelperTxt(err.response.data.message);
-        }
-        setLoading(false);
-      });
-  }
 
   const classes = useStyles();
 
@@ -79,7 +62,7 @@ const HomePage = () => {
                   id="Card"
                   variant="elevation"
                   elevation={3}
-                  style={{ height: 160 }}
+                  style={{ height: 180 }}
                 >
                   <Grid
                     container
@@ -88,17 +71,49 @@ const HomePage = () => {
                     alignItems="center"
                   >
                     <Grid item>
-                      <Grid item xs={12} style={{ margin: 15 }}>
+                      <Grid
+                        item
+                        xs={12}
+                        style={{ margin: "15px 15px 5px 15px" }}
+                      >
                         <TextField
                           required
                           error={Err}
                           className={classes.root}
                           id="outlined-required"
                           variant="outlined"
-                          placeholder="Enter your code in captial letters..."
-                          value={search}
-                          onChange={(e) => setSearch(e.target.value)}
+                          placeholder="Username"
+                          value={userValue}
+                          onChange={(e) => setUserValue(e.target.value)}
                           helperText={HelperTxt}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <Person style={{ color: colors.primary }} />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} style={{ margin: "5px 15px" }}>
+                        <TextField
+                          required
+                          error={Err}
+                          className={classes.root}
+                          id="outlined-required"
+                          variant="outlined"
+                          placeholder="Password"
+                          type="password"
+                          value={passwordValue}
+                          onChange={(e) => setPasswordValue(e.target.value)}
+                          helperText={HelperTxt}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <VpnKey style={{ color: colors.primary }} />
+                              </InputAdornment>
+                            ),
+                          }}
                         />
                       </Grid>
                     </Grid>
@@ -121,18 +136,9 @@ const HomePage = () => {
                         }}
                       />
                     ) : (
-                      "Start"
+                      "Sign In"
                     )}
                   </Button>
-                  <Link
-                    component="button"
-                    style={{ marginTop: 25, width: "100%" }}
-                    onClick={() => {
-                      navigate("/Login");
-                    }}
-                  >
-                    Are you an administrator?
-                  </Link>
                 </Paper>
               </form>
             </Grid>
@@ -147,6 +153,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       "& .MuiOutlinedInput-root": {
+        backgroundColor: "#fff",
+        width: 250,
+
         "& fieldset": {
           borderColor: "#ffff",
         },
@@ -161,4 +170,4 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default HomePage;
+export default LoginPage;

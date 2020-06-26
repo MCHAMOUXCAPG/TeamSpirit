@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/callicoder/packer/dto"
-	"github.com/callicoder/packer/entities"
-	"github.com/callicoder/packer/repositories"
+	"campgemini.com/gorn/team-spirit/dto"
+	"campgemini.com/gorn/team-spirit/entities"
+	"campgemini.com/gorn/team-spirit/repositories"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"

@@ -3,18 +3,20 @@ package controllers
 import (
 	"net/http"
 
-	"github.com/callicoder/packer/dto"
-	"github.com/callicoder/packer/services"
+	"campgemini.com/gorn/team-spirit/dto"
+	"campgemini.com/gorn/team-spirit/services"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
 	echoSwagger "github.com/swaggo/echo-swagger"
 )
 
+// TODO: Extract constant text repeated
+// TODO: Review for multiple controller solution
 func HandleResquests() {
 	e := echo.New()
 	e.Use(middleware.CORS())
-	
+
 	// init route
 	e.GET("/", helloWorld)
 
@@ -30,6 +32,9 @@ func HandleResquests() {
 
 	// Register
 	e.POST("/register", services.Register)
+
+	// serve
+	e.Logger.Fatal(e.Start(":3000"))
 
 	// Guards Config
 	r := e.Group("")
@@ -65,20 +70,20 @@ func HandleResquests() {
 	r.POST("/survey/create", services.CreateSurvey)
 	r.PUT("/survey/:surveyCode", services.UpdateSurvey)
 	r.DELETE("/survey/:surveyCode", services.DeleteSurvey)
-	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 	r.GET("/survey/result/:surveyCode", services.GetResultSurvey)
 
-	// **** Temas routes *****
+	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
+
+	// **** Teams routes *****
 	r.GET("/teams", services.GetTeams)
 	r.GET("/team/:teamName", services.GetTeam)
 	r.POST("/team/create", services.CreateTeam)
 	r.PUT("/team/:teamName", services.UpdateTeam)
 	r.DELETE("/team/:teamName", services.DeleteTeam)
 
-	// serve
-	e.Logger.Fatal(e.Start(":3000"))
 }
 
 func helloWorld(c echo.Context) error {
+	// TODO: Extract this html to extrantl CONSt or file
 	return c.HTML(http.StatusOK, "<h1>Hello, this is the backend of TeamSpirit POC!</h1><h3>You can see actual API on : </h3><a href='http://localhost:3000/swagger/index.html'>Swagger index page</a><p>(As default for devs, if on another env. please check real path)</p>")
 }

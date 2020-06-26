@@ -7,9 +7,9 @@ import (
 	"strconv"
 	"time"
 
-	"github.com/callicoder/packer/dto"
-	"github.com/callicoder/packer/entities"
-	"github.com/callicoder/packer/repositories"
+	"campgemini.com/gorn/team-spirit/dto"
+	"campgemini.com/gorn/team-spirit/entities"
+	"campgemini.com/gorn/team-spirit/repositories"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/robfig/cron"
@@ -179,6 +179,8 @@ func BuildNextSurvey(team *entities.Team) *entities.Survey {
 	nextSurvey := &entities.Survey{StartDate: nextSurveyStartDay, EndDate: nextSurveyEndDay, Code: nextSurveyCode, TeamName: nextSurveyTeamName}
 	return nextSurvey
 }
+
+// TODO: Review logic for surveycode generation: Only on teamleader consult
 
 func GenerateSurveyCode(n int) string {
 	var letters = []rune("abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789")

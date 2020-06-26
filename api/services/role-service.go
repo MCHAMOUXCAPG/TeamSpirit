@@ -5,8 +5,8 @@ import (
 	"net/http"
 	"strconv"
 
-	"github.com/callicoder/packer/entities"
-	"github.com/callicoder/packer/repositories"
+	"campgemini.com/gorn/team-spirit/entities"
+	"campgemini.com/gorn/team-spirit/repositories"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 )

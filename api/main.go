@@ -1,9 +1,9 @@
 package main
 
 import (
-	"github.com/callicoder/packer/config"
-	"github.com/callicoder/packer/controllers"
-	"github.com/callicoder/packer/services"
+	"campgemini.com/gorn/team-spirit/config"
+	"campgemini.com/gorn/team-spirit/controllers"
+	"campgemini.com/gorn/team-spirit/services"
 )
 
 // @title Swagger Example API

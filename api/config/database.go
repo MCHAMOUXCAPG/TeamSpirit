@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/callicoder/packer/entities"
+	"campgemini.com/gorn/team-spirit/entities"
 	"github.com/jinzhu/gorm"
 )
 

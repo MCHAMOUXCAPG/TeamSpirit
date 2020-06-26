@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"github.com/callicoder/packer/config"
-	"github.com/callicoder/packer/entities"
+	"campgemini.com/gorn/team-spirit/config"
+	"campgemini.com/gorn/team-spirit/entities"
 )
 
 type SurveyRepository interface {

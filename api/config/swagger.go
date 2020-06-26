@@ -1,7 +1,7 @@
 package config
 
 import (
-	"github.com/callicoder/packer/docs"
+	"campgemini.com/gorn/team-spirit/docs"
 )
 
 func ConfigSwagger() {

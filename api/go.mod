@@ -1,4 +1,4 @@
-module github.com/callicoder/packer
+module campgemini.com/gorn/team-spirit
 
 go 1.14
 

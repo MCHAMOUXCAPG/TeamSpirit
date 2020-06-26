@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"github.com/callicoder/packer/config"
+	"campgemini.com/gorn/team-spirit/config"
 )
 
 func TestMain(m *testing.M) {

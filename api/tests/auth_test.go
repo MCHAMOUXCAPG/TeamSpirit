@@ -9,8 +9,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/callicoder/packer/entities"
-	"github.com/callicoder/packer/services"
+	"campgemini.com/gorn/team-spirit/entities"
+	"campgemini.com/gorn/team-spirit/services"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )

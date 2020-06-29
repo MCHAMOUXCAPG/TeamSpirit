@@ -1,8 +1,6 @@
 package repositories
 
 import (
-	"strconv"
-
 	"campgemini.com/gorn/team-spirit/config"
 	"campgemini.com/gorn/team-spirit/dto"
 	"campgemini.com/gorn/team-spirit/entities"
@@ -16,7 +14,9 @@ type SurveyRepository interface {
 	DeleteSurvey(SurveyCode string) (*entities.Survey, error)
 	GetResultSurvey(surveyCode string) (float64, error)
 	GetHistoricResult(teamName string) (float64, error)
-	GetSurveysGroupByUsers(teamName string) ([]*dto.ResultByUsers, error)
+	GetLastSurvey(teamName string) (*entities.Survey, error)
+	GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers, error)
+	GetNotesBySurveyAndUser(surveyCode string, user string) ([]*entities.Note, error)
 }
 
 type SurveyRepo struct{}
@@ -82,30 +82,31 @@ func (*SurveyRepo) GetHistoricResult(teamName string) (float64, error) {
 	return result, nil
 }
 
-func (*SurveyRepo) GetSurveysGroupByUsers(teamName string) ([]*dto.ResultByUsers, error) {
-
-	var maxDate string
-	row := config.DB.Table("surveys").Where("code LIKE ?", "%"+teamName+"%").Select("max(end_date)").Row()
-	row.Scan(&maxDate)
-
+func (*SurveyRepo) GetLastSurvey(teamName string) (*entities.Survey, error) {
 	var survey = &entities.Survey{}
-	config.DB.Where("end_date = ? ", maxDate).Preload("Notes").Find(&survey)
+	config.DB.Where("end_date = ? ", config.DB.Table("surveys").Where("code LIKE ?", "%"+teamName+"%").Select("max(end_date)").SubQuery()).Preload("Notes").Find(&survey)
+	return survey, nil
+}
 
-	rows, _ := config.DB.Table("notes").Where("survey_code = ?", survey.Code).Select("user as user ,avg(note) as average").Group("user").Rows()
+func (*SurveyRepo) GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers, error) {
+
+	rows, _ := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("user as user ,avg(note) as average").Group("user").Rows()
 
 	var response = &dto.ResultByUsers{}
 	var result []*dto.ResultByUsers
-	var index = 1
 	for rows.Next() {
 		rows.Scan(&response.User, &response.Average)
-		var notes []*entities.Note
-		config.DB.Select("number, note, survey_code").Where("survey_code = ? and user = ?", survey.Code, response.User).Find(&notes)
 		result = append(result, &dto.ResultByUsers{
-			User:    "User " + strconv.Itoa(index),
+			User:    response.User,
 			Average: response.Average,
-			Notes:   notes,
+			Notes:   nil,
 		})
-		index++
 	}
 	return result, nil
+}
+
+func (*SurveyRepo) GetNotesBySurveyAndUser(surveyCode string, user string) ([]*entities.Note, error) {
+	var notes []*entities.Note
+	config.DB.Select("number, note, survey_code").Where("survey_code = ? and user = ?", surveyCode, user).Find(&notes)
+	return notes, nil
 }

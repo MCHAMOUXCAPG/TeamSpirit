@@ -179,6 +179,32 @@
                 }
             }
         },
+        "/resultByUsers/:teamName": {
+            "get": {
+                "description": "returns the result survey grouped by users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Survies"
+                ],
+                "summary": "Survey resultByUsers",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.ResultByUsers"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/role/:id": {
             "get": {
                 "description": "returns one role by id",
@@ -1036,9 +1062,29 @@
                 }
             }
         },
+        "dto.ResultByUsers": {
+            "type": "object",
+            "properties": {
+                "average": {
+                    "type": "number"
+                },
+                "notes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Note"
+                    }
+                },
+                "user": {
+                    "type": "string"
+                }
+            }
+        },
         "entities.Note": {
             "type": "object",
             "properties": {
+                "User": {
+                    "type": "string"
+                },
                 "note": {
                     "type": "number"
                 },

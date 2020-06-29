@@ -31,8 +31,21 @@ definitions:
         $ref: '#/definitions/dto.Period'
         type: object
     type: object
+  dto.ResultByUsers:
+    properties:
+      average:
+        type: number
+      notes:
+        items:
+          $ref: '#/definitions/entities.Note'
+        type: array
+      user:
+        type: string
+    type: object
   entities.Note:
     properties:
+      User:
+        type: string
       note:
         type: number
       number:
@@ -221,6 +234,23 @@ paths:
       summary: Register
       tags:
       - Authentication
+  /resultByUsers/:teamName:
+    get:
+      consumes:
+      - application/json
+      description: returns the result survey grouped by users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.ResultByUsers'
+            type: array
+      summary: Survey resultByUsers
+      tags:
+      - Survies
   /role/:id:
     delete:
       consumes:

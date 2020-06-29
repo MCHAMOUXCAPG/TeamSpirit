@@ -141,10 +141,32 @@ func GetResultSurvey(c echo.Context) error {
 	return c.JSON(http.StatusOK, mapResult(team, currentSurvey))
 }
 
+// @Summary Survey resultByUsers
+// @Description returns the result survey grouped by users
+// @Tags Survies
+// @Accept json
+// @Produce json
+// @Success 200 {object} []dto.ResultByUsers
+// @Router /resultByUsers/:teamName [get]
 func GetHistoricSurveysByusers(c echo.Context) error {
 	teamName := c.Param("teamName")
-	result, _ := SurveyRepo.GetSurveysGroupByUsers(teamName)
+	lastSurvey, _ := SurveyRepo.GetLastSurvey(teamName)
+	notes, _ := SurveyRepo.GetNotesGroupByUsers(lastSurvey.Code)
+	result := mapNotes(notes, lastSurvey.Code)
 	return c.JSON(http.StatusOK, result)
+}
+
+func mapNotes(notes []*dto.ResultByUsers, surveyCode string) []*dto.ResultByUsers {
+	var result []*dto.ResultByUsers
+	for i, note := range notes {
+		notes, _ := SurveyRepo.GetNotesBySurveyAndUser(surveyCode, note.User)
+		result = append(result, &dto.ResultByUsers{
+			User:    "User " + strconv.Itoa(i+1),
+			Average: note.Average,
+			Notes:   notes,
+		})
+	}
+	return result
 }
 
 func mapResult(team *entities.Team, currentSurvey *entities.Survey) *dto.Result {

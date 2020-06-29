@@ -6,16 +6,22 @@ import Survey from "./components/survey/Survey";
 import ExitPage from "./components/exitPage/ExitPage";
 import PrivateRoute from "./auth/PrivateRoute";
 import { AuthContext } from "./context/auth";
+import TeamHomePage from "./components/teamHomePage/TeamHomePage";
 
 function App() {
-  const [valid, setValid] = useState(false);
+  const [valid, setValid] = useState(true);
+  const [token, setToken] = useState(
+    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InVzZXJAbWFpbC5jb20iLCJQYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTU5MjY2MzA1MX0.KUKPMjY3U-o79RaPnckolg_QUyzc5nPQLfkSlFdWxy0"
+  ); // here put your token until we make the login page
   const [surveyCode, setSurveyCode] = useState("");
   return (
     <AuthContext.Provider
       value={{
         valid: valid,
-        surveyCode: surveyCode,
         setValid: setValid,
+        token: token,
+        setToken: setToken,
+        surveyCode: surveyCode,
         setSurveyCode: setSurveyCode,
       }}
     >
@@ -28,6 +34,7 @@ function App() {
             element={<Survey />}
             alternativePath="/"
           />
+          <Route path="/teamleader" element={<TeamHomePage />} />
         </Routes>
       </Router>
     </AuthContext.Provider>

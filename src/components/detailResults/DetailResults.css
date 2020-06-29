@@ -1,0 +1,90 @@
+#Header {
+  position: relative;
+
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 14px;
+  /* identical to box height */
+  color: #79c0c6;
+}
+#mainPanel {
+  background: #ffffff;
+  border: 1px solid #79c0c6;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25);
+  border-radius: 15px;
+}
+#user-tab {
+  background: #ffffff;
+  border-radius: 12px;
+}
+.PrivateTabIndicator-colorSecondary-3 {
+  background-color: #ffffff00 !important;
+}
+.MuiSvgIcon-colorPrimary {
+  color: #79c0c6 !important ;
+}
+.MuiSvgIcon-colorSecondary {
+  color: #ffffff !important ;
+}
+#question-tab {
+  background: #ffffff;
+  border-radius: 12px;
+}
+
+#second-panel {
+  background: #ffffff;
+  border: 1px solid #79c0c6;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25);
+  border-radius: 15px;
+  margin-bottom: 10px;
+}
+#panel2a-header {
+  background: #79c0c6;
+  border: 1px solid #79c0c6;
+  box-sizing: border-box;
+  border-radius: 15px;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 14px;
+  /* identical to box height */
+
+  color: #ffffff;
+  box-shadow: none;
+}
+.Mui-selected {
+  background-color: #79c0c6 !important;
+  font-family: Roboto !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  /* identical to box height */
+
+  text-align: center !important;
+
+  color: #ffffff !important;
+}
+.MuiExpansionPanelDetails-root {
+  font-family: Roboto !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  /* identical to box height */
+
+  color: #919191 !important;
+}
+#inner-grid {
+  background: #ffffff;
+  border-top: 2px solid #79c0c6;
+  /* box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25); */
+  border-radius: 15px;
+  width: fit-content;
+}

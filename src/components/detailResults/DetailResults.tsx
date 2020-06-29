@@ -130,7 +130,7 @@ function DetailResults() {
                             return (
                               <Grid item xs={12} key={Note.User}>
                                 <p>
-                                  {Note.User}: {Note.note}
+                                  {Note.User}:{puntos} {Note.note}
                                 </p>
                               </Grid>
                             );

@@ -9,6 +9,8 @@ import { ICurrentSurveyResult } from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";
 import { useAuth } from "../../context/auth";
 import DetailResults from "../detailResults/DetailResults";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
+
 const TeamHomePage = () => {
   const surveyCode = "Test";
   const token = useAuth().token;
@@ -75,7 +77,7 @@ const TeamHomePage = () => {
           spacing={5}
         >
           <Grid item xs={12}>
-            <div className="Texto">Team Name</div>
+            <div className="team-name">Team Name</div>
           </Grid>
           <Grid item xs={12} md={6}>
             <AverageChart
@@ -92,9 +94,12 @@ const TeamHomePage = () => {
               historicResult={currentSurveyResult.HistoricResult}
             />
           </Grid>
-          {/* <Grid item xs={12}>
-            <div className="Texto">Export Data Component</div>
-          </Grid> */}
+          <Grid item xs={12}>
+            <div className="custom-export">
+              <NoteAddIcon className="export-icon" />
+              PREPARE RESULTS TO EXPORT
+            </div>
+          </Grid>
           <Grid item xs={12}>
             <DetailResults />
           </Grid>

@@ -1,17 +1,30 @@
-.Texto {
-  font-family: Roboto;
+.team-name {
   font-style: normal;
-  font-weight: bold;
   font-size: 42px;
   line-height: 49px;
   text-align: right;
-
   color: #79c0c6;
   text-align: center;
   margin-bottom: 10px;
   font-family: "Roboto";
 }
+.custom-export {
+  font-family: "Roboto";
+  font-style: normal;
+  font-size: 14px;
+  line-height: 49px;
+  text-align: center;
+  color: #79c0c6;
+  text-align: center;
+  background: #ffffff;
+  border: 1px solid #79c0c6;
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25);
+  border-radius: 25px;
+  padding-top: 10;
+}
 
-.fondotemporal {
-  background-color: bisque;
+.export-icon {
+  position: relative;
+  top: 6px;
 }

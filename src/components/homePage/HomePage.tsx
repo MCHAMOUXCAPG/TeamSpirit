@@ -1,3 +1,12 @@
+/********************************************************************************
+ *
+ *
+ *
+ *                           Team Survey Home Page
+ *
+ *
+ *
+ *********************************************************************************/
 import React, { useState, useContext } from "react";
 import "./HomePage.css";
 import TextField from "@material-ui/core/TextField";
@@ -5,12 +14,10 @@ import Button from "@material-ui/core/Button";
 import { Grid, Paper, Container } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
-
 import { CodeValidationService } from "../../services/Services";
 import { IValidationCode } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
-
 const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const context = useContext(AuthContext);
@@ -19,7 +26,11 @@ const HomePage = () => {
   const [HelperTxt, setHelperTxt] = useState("");
   const navigate = useNavigate();
   const codeValidationService: CodeValidationService = new CodeValidationService();
-
+  /********************************************************************************
+   *
+   *
+   *
+   *********************************************************************************/
   const submitHandler = () => {
     setLoading(true);
     sendCode({ code: search });

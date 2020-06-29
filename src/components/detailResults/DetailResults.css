@@ -23,7 +23,12 @@
 .PrivateTabIndicator-colorSecondary-3 {
   background-color: #ffffff00 !important;
 }
-
+.MuiSvgIcon-colorPrimary {
+  color: #79c0c6 !important ;
+}
+.MuiSvgIcon-colorSecondary {
+  color: #ffffff !important ;
+}
 #question-tab {
   background: #ffffff;
   border-radius: 12px;

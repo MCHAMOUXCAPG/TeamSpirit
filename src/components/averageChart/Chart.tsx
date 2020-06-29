@@ -1,3 +1,12 @@
+/********************************************************************************
+ *
+ *
+ *
+ *                           graphic component
+ *
+ *
+ *
+ *********************************************************************************/
 import React, { useState } from "react";
 import "./Chart.css";
 import Chart from "react-apexcharts";
@@ -12,6 +21,7 @@ import happyface from "../../assets/emoji_9.png";
 import bigsmileface from "../../assets/emoji_10.png";
 
 const AverageChart = (props: any) => {
+  /*List of emoticons to use to represent the team average*/
   const noteIcons = [
     cryface,
     verysadface,
@@ -21,7 +31,7 @@ const AverageChart = (props: any) => {
     happyface,
     bigsmileface,
   ];
-
+  /* Function that chooses the emoticon, according to the average*/
   const iconHandler: any = () => {
     if (props.grade <= 20) {
       return noteIcons[0];
@@ -39,7 +49,7 @@ const AverageChart = (props: any) => {
       return noteIcons[6];
     }
   };
-
+  /*Graphics settings*/
   const [state, setState] = useState({
     seriesRadial: [props.grade],
     options: {

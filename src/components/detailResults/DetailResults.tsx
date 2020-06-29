@@ -5,6 +5,7 @@ import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import AddCircleIcon from "@material-ui/icons/AddCircle";
+import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 import InputAdornment from "@material-ui/core/InputAdornment";
@@ -16,7 +17,8 @@ function DetailResults() {
   const [value, setValue] = useState(0);
   const [usersResult, setUsersResult] = useState(usersResultMock);
   const [questionsResult, setQuestionsResult] = useState(questionsResultMock);
-
+  const puntos =
+    "...................................................................................................................................................................................................................................................................................";
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -30,7 +32,7 @@ function DetailResults() {
   return (
     <ExpansionPanel id="mainPanel">
       <ExpansionPanelSummary
-        expandIcon={<ExpandMoreIcon />}
+        // expandIcon={<AddCircleIcon color="primary" />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
@@ -76,7 +78,7 @@ function DetailResults() {
                       style={{ margin: "20px 20px" }}
                     >
                       <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon />}
+                        expandIcon={<AddCircleIcon color="secondary" />}
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                       >
@@ -90,7 +92,8 @@ function DetailResults() {
                             return (
                               <Grid item xs={12} key={Note.number}>
                                 <p>
-                                  Question {Note.number}:&nbsp;{Note.note}
+                                  Question {Note.number}:&nbsp;{puntos}
+                                  {Note.note}
                                 </p>
                               </Grid>
                             );
@@ -112,7 +115,7 @@ function DetailResults() {
                       style={{ margin: "20px 20px" }}
                     >
                       <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon />}
+                        expandIcon={<AddCircleIcon color="secondary" />}
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                       >

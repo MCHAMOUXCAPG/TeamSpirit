@@ -78,7 +78,10 @@ const TeamHomePage = () => {
             <div className="Texto">Team Name</div>
           </Grid>
           <Grid item xs={6} md={6}>
-            <AverageChart grade={18} />
+            <AverageChart
+              loading={loading}
+              grade={parseFloat(currentSurveyResult.CurrentResult.toFixed(2))}
+            />
           </Grid>
           <Grid item xs={6} md={6}>
             <SurveyStatus

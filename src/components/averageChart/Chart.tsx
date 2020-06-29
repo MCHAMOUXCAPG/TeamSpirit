@@ -7,11 +7,10 @@
  *
  *
  *********************************************************************************/
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import "./Chart.css";
 import Chart from "react-apexcharts";
-import Button from "@material-ui/core/Button";
-
+import Grid from "@material-ui/core/Grid";
 import cryface from "../../assets/emoji_1.png";
 import verysadface from "../../assets/emoji_3.png";
 import sadface from "../../assets/emoji_4.png";
@@ -19,8 +18,10 @@ import plainface from "../../assets/emoji_5.png";
 import smileface from "../../assets/emoji_7.png";
 import happyface from "../../assets/emoji_9.png";
 import bigsmileface from "../../assets/emoji_10.png";
-
+import CircularProgress from "@material-ui/core/CircularProgress";
+import colors from "../../config/colors";
 const AverageChart = (props: any) => {
+  let customGrade = props.grade * 10;
   /*List of emoticons to use to represent the team average*/
   const noteIcons = [
     cryface,
@@ -33,17 +34,17 @@ const AverageChart = (props: any) => {
   ];
   /* Function that chooses the emoticon, according to the average*/
   const iconHandler: any = () => {
-    if (props.grade <= 20) {
+    if (customGrade <= 20) {
       return noteIcons[0];
-    } else if (props.grade <= 40) {
+    } else if (customGrade <= 40) {
       return noteIcons[1];
-    } else if (props.grade <= 55) {
+    } else if (customGrade <= 55) {
       return noteIcons[2];
-    } else if (props.grade <= 70) {
+    } else if (customGrade <= 70) {
       return noteIcons[3];
-    } else if (props.grade <= 80) {
+    } else if (customGrade <= 80) {
       return noteIcons[4];
-    } else if (props.grade <= 90) {
+    } else if (customGrade <= 90) {
       return noteIcons[5];
     } else {
       return noteIcons[6];
@@ -51,7 +52,7 @@ const AverageChart = (props: any) => {
   };
   /*Graphics settings*/
   const [state, setState] = useState({
-    seriesRadial: [props.grade],
+    seriesRadial: [customGrade],
     options: {
       chart: {
         type: "radialBar",
@@ -121,24 +122,37 @@ const AverageChart = (props: any) => {
       labels: ["Average Results"],
     },
   });
-  /*   function updateCharts() {
+  useEffect(() => {
+    updateCharts();
+  }, [props]);
+  function updateCharts() {
     setState({
       ...state,
-      seriesRadial: [Math.floor(Math.random() * (90 - 50 + 1)) + 50],
+      seriesRadial: [customGrade],
     });
-  } */
+  }
   return (
     <div id="chart">
-      <Chart
-        options={state.options}
-        series={state.seriesRadial}
-        type="radialBar"
-      />
-      <h1 className="grade">{props.grade / 10}</h1>
-      <img className="noteicon" src={iconHandler()} alt="note icon" />
-      {/*    <Button id="ButtonStart" onClick={updateCharts} size="small">
-        Start
-      </Button> */}
+      {props.loading ? (
+        <Grid container direction="row" justify="center">
+          <CircularProgress
+            size={24}
+            style={{
+              color: colors.primary,
+            }}
+          />
+        </Grid>
+      ) : (
+        <>
+          <Chart
+            options={state.options}
+            series={state.seriesRadial}
+            type="radialBar"
+          />
+          <h1 className="grade">{props.grade}</h1>
+          <img className="noteicon" src={iconHandler()} alt="note icon" />
+        </>
+      )}
     </div>
   );
 };

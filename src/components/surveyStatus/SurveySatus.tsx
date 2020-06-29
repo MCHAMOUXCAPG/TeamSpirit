@@ -60,7 +60,7 @@ function SurveyStatus({
                 <p>
                   <AssessmentOutlined className="icon" />
                   Current result:
-                  <span>{currentResult}/10</span>
+                  <span>{parseFloat(currentResult.toFixed(2))}/10</span>
                 </p>
               </Grid>
               <Grid item xs={12}>

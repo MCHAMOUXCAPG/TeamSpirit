@@ -32,7 +32,6 @@ function DetailResults() {
   return (
     <ExpansionPanel id="mainPanel">
       <ExpansionPanelSummary
-        // expandIcon={<AddCircleIcon color="primary" />}
         aria-controls="panel1a-content"
         id="panel1a-header"
       >
@@ -44,13 +43,11 @@ function DetailResults() {
             alignItems="center"
             spacing={0}
           >
-            <Grid item xs={6} style={{ position: "relative", left: "47%" }}>
-              <InputAdornment id="Header" position="start">
-                <LoupeIcon />
-              </InputAdornment>
-            </Grid>
-            <Grid item xs={6}>
-              <Typography id="Header">RESULTS IN DETAIL</Typography>
+            <Grid item xs={12}>
+              <Typography id="Header">
+                <LoupeIcon className="loupe-icon" />
+                RESULTS IN DETAIL
+              </Typography>
             </Grid>
           </Grid>
         </Container>

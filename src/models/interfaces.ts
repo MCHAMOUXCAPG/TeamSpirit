@@ -37,3 +37,7 @@ export interface ICurrentSurveyResult {
   CurrentResult: number;
   HistoricResult: number;
 }
+export interface IValidationUser {
+  Email: string;
+  Password: string;
+}

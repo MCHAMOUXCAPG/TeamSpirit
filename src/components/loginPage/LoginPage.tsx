@@ -1,50 +1,54 @@
-/********************************************************************************
- *
- *
- *
- *                           Team Survey Home Page
- *
- *
- *
- *********************************************************************************/
 import React, { useState, useContext } from "react";
-import "./HomePage.css";
-import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { Grid, Paper, Container, Link } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  Container,
+  Button,
+  TextField,
+  CircularProgress,
+  InputAdornment,
+  Input,
+} from "@material-ui/core";
+import { VpnKey } from "@material-ui/icons";
+import Person from "@material-ui/icons/Person";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import "./LoginPage.css";
+import colors from "../../config/colors";
 
-import Colors from "../../config/colors";
-import { CodeValidationService } from "../../services/Services";
-import { IValidationCode } from "../../models/interfaces";
+import { UserValidationService } from "../../services/Services";
+import { IValidationUser } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
-const HomePage = () => {
+
+const LoginPage = () => {
   const [loading, setLoading] = useState(false);
   const context = useContext(AuthContext);
-  const [search, setSearch] = useState("");
+  const [userValue, setUserValue] = useState("");
+  const [passwordValue, setPasswordValue] = useState("");
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
   const navigate = useNavigate();
-  const codeValidationService: CodeValidationService = new CodeValidationService();
-  /********************************************************************************
-   *
-   *
-   *
-   *********************************************************************************/
+  const userValidationService: UserValidationService = new UserValidationService();
+
   const submitHandler = () => {
     setLoading(true);
-    sendCode({ code: search });
+
+    const params = {
+      Email: userValue,
+      Password: passwordValue,
+    };
+
+    console.log(params);
+    sendUser(params);
   };
 
-  async function sendCode(inputText: IValidationCode) {
-    await codeValidationService
-      .sendCode(inputText)
+  async function sendUser(body: IValidationUser) {
+    await userValidationService
+      .sendUser(body)
       .then((res) => {
         context.setValid(true);
-        context.setSurveyCode(search);
-        navigate("/teamleader");
+        sessionStorage.setItem("token", res.data.token);
+        navigate("");
       })
       .catch((err) => {
         setErr(true);
@@ -92,7 +96,7 @@ const HomePage = () => {
                   id="Card"
                   variant="elevation"
                   elevation={3}
-                  style={{ height: 160 }}
+                  style={{ height: 180 }}
                 >
                   <Grid
                     container
@@ -101,17 +105,49 @@ const HomePage = () => {
                     alignItems="center"
                   >
                     <Grid item>
-                      <Grid item xs={12} style={{ margin: 15 }}>
+                      <Grid
+                        item
+                        xs={12}
+                        style={{ margin: "15px 15px 5px 15px" }}
+                      >
                         <TextField
                           required
                           error={Err}
                           className={classes.root}
                           id="outlined-required"
                           variant="outlined"
-                          placeholder="Enter your code in captial letters..."
-                          value={search}
-                          onChange={(e) => setSearch(e.target.value)}
+                          placeholder="Username"
+                          value={userValue}
+                          onChange={(e) => setUserValue(e.target.value)}
                           helperText={HelperTxt}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <Person style={{ color: colors.primary }} />
+                              </InputAdornment>
+                            ),
+                          }}
+                        />
+                      </Grid>
+                      <Grid item xs={12} style={{ margin: "5px 15px" }}>
+                        <TextField
+                          required
+                          error={Err}
+                          className={classes.root}
+                          id="outlined-required"
+                          variant="outlined"
+                          placeholder="Password"
+                          type="password"
+                          value={passwordValue}
+                          onChange={(e) => setPasswordValue(e.target.value)}
+                          helperText={HelperTxt}
+                          InputProps={{
+                            startAdornment: (
+                              <InputAdornment position="start">
+                                <VpnKey style={{ color: colors.primary }} />
+                              </InputAdornment>
+                            ),
+                          }}
                         />
                       </Grid>
                     </Grid>
@@ -122,7 +158,7 @@ const HomePage = () => {
                     onClick={submitHandler}
                     size="small"
                     style={{
-                      bottom: Err ? 15 : -12,
+                      bottom: Err ? -12 : -12,
                       opacity: loading ? 0.5 : 1,
                     }}
                   >
@@ -134,26 +170,9 @@ const HomePage = () => {
                         }}
                       />
                     ) : (
-                      "Start"
+                      "Sign In"
                     )}
                   </Button>
-                  <Link
-                    component="button"
-                    style={
-                      Err
-                        ? { color: Colors.primary, width: "100%" }
-                        : {
-                            color: Colors.primary,
-                            marginTop: 25,
-                            width: "100%",
-                          }
-                    }
-                    onClick={() => {
-                      navigate("/Login");
-                    }}
-                  >
-                    Are you a Team Leader?
-                  </Link>
                 </Paper>
               </form>
             </Grid>
@@ -168,6 +187,9 @@ const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     root: {
       "& .MuiOutlinedInput-root": {
+        backgroundColor: "#fff",
+        width: 250,
+
         "& fieldset": {
           borderColor: "#ffff",
         },
@@ -182,4 +204,4 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
-export default HomePage;
+export default LoginPage;

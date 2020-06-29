@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 
 import HomePage from "./components/homePage/HomePage";
+import LoginPage from "./components/loginPage/LoginPage";
 import Survey from "./components/survey/Survey";
 import ExitPage from "./components/exitPage/ExitPage";
 import PrivateRoute from "./auth/PrivateRoute";
@@ -29,6 +30,7 @@ function App() {
       <Router>
         <Routes>
           <Route path="/" element={<HomePage />} />
+          <Route path="/login" element={<LoginPage />} />
           <Route path="/success" element={<ExitPage />} />
           <PrivateRoute
             path="/survey"

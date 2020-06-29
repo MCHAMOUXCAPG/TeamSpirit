@@ -56,7 +56,7 @@ function DetailResults() {
         </Container>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Grid container spacing={3}>
+        <Grid container spacing={0}>
           <Grid item xs={12}>
             <Tabs
               value={value}
@@ -78,7 +78,7 @@ function DetailResults() {
                       style={{ margin: "20px 20px" }}
                     >
                       <ExpansionPanelSummary
-                        expandIcon={<AddCircleIcon color="secondary" />}
+                        expandIcon={<ExpandMoreIcon color="secondary" />}
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                       >
@@ -115,7 +115,7 @@ function DetailResults() {
                       style={{ margin: "20px 20px" }}
                     >
                       <ExpansionPanelSummary
-                        expandIcon={<AddCircleIcon color="secondary" />}
+                        expandIcon={<ExpandMoreIcon color="secondary" />}
                         aria-controls="panel2a-content"
                         id="panel2a-header"
                       >

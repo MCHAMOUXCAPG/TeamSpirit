@@ -14,11 +14,14 @@
   border: 1px solid #79c0c6;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25);
-  border-radius: 15px;
+  border-radius: 25px;
 }
 #user-tab {
+  border: 1px solid #79c0c6;
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
 }
 .PrivateTabIndicator-colorSecondary-3 {
   background-color: #ffffff00 !important;
@@ -30,24 +33,26 @@
   color: #ffffff !important ;
 }
 #question-tab {
+  border: 1px solid #79c0c6;
   background: #ffffff;
-  border-radius: 12px;
+  border-radius: 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
 }
 
 #second-panel {
   background: #ffffff;
-  border: 1px solid #79c0c6;
   box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25);
-  border-radius: 15px;
+  box-shadow: 0 0 0 1px #79c0c6;
+  border-radius: 25px;
   margin-bottom: 10px;
 }
 #panel2a-header {
   background: #79c0c6;
   border: 1px solid #79c0c6;
   box-sizing: border-box;
-  border-radius: 15px;
-  font-family: Roboto;
+  border-radius: 25px;
+  font-family: "Roboto";
   font-style: normal;
   font-weight: bold;
   font-size: 14px;
@@ -71,7 +76,7 @@
   color: #ffffff !important;
 }
 .MuiExpansionPanelDetails-root {
-  font-family: Roboto !important;
+  font-family: "Roboto" !important;
   font-style: normal !important;
   font-weight: normal !important;
   font-size: 14px !important;
@@ -80,11 +85,19 @@
 
   color: #919191 !important;
 }
+.PrivateTabIndicator-colorSecondary-8 {
+  background-color: #ffffff00 !important;
+}
 #inner-grid {
   background: #ffffff;
-  border-top: 2px solid #79c0c6;
+  border: 1px solid #79c0c6;
   /* box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25); */
   border-radius: 15px;
   width: fit-content;
+  border-top-left-radius: 0;
+}
+
+.MuiExpansionPanel-root:before {
+  background-color: transparent !important;
 }

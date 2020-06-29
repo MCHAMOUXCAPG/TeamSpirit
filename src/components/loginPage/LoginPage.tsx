@@ -47,7 +47,8 @@ const LoginPage = () => {
       .sendUser(body)
       .then((res) => {
         context.setValid(true);
-        navigate("/survey");
+        sessionStorage.setItem("token", res.data.token);
+        navigate("");
       })
       .catch((err) => {
         setErr(true);

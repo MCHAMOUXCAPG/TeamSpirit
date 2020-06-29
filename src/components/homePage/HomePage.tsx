@@ -5,6 +5,7 @@ import Button from "@material-ui/core/Button";
 import { Grid, Paper, Container, Link } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import Colors from "../../config/colors";
 
 import { CodeValidationService } from "../../services/Services";
 import { IValidationCode } from "../../models/interfaces";
@@ -127,13 +128,19 @@ const HomePage = () => {
                   <Link
                     component="button"
                     style={
-                      Err ? { width: "100%" } : { marginTop: 25, width: "100%" }
+                      Err
+                        ? { color: Colors.primary, width: "100%" }
+                        : {
+                            color: Colors.primary,
+                            marginTop: 25,
+                            width: "100%",
+                          }
                     }
                     onClick={() => {
                       navigate("/Login");
                     }}
                   >
-                    Are you an administrator?
+                    Are you a Team Leader?
                   </Link>
                 </Paper>
               </form>

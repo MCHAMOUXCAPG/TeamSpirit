@@ -2,7 +2,6 @@ import React, { useState, useEffect } from "react";
 import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
 
 import "./TeamHomePage.css";
 import "../surveyStatus/SurveyStatus.css";
@@ -10,6 +9,7 @@ import SurveyStatus from "../surveyStatus/SurveySatus";
 import { ICurrentSurveyResult } from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
+import ExportResult from "../exportResult/ExportResult";
 
 const TeamHomePage = () => {
   const surveyCode = "Test1";
@@ -95,10 +95,7 @@ const TeamHomePage = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <div className="custom-export">
-              <NoteAddIcon className="export-icon" />
-              PREPARE RESULTS TO EXPORT
-            </div>
+            <ExportResult />
           </Grid>
           <Grid item xs={12}>
             <DetailResults />

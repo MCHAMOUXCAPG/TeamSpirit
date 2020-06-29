@@ -7,14 +7,13 @@ import {
   TextField,
   CircularProgress,
   InputAdornment,
-  Input,
 } from "@material-ui/core";
 import { VpnKey } from "@material-ui/icons";
 import Person from "@material-ui/icons/Person";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+
 import "./LoginPage.css";
 import colors from "../../config/colors";
-
 import { UserValidationService } from "../../services/Services";
 import { IValidationUser } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
@@ -32,25 +31,25 @@ const LoginPage = () => {
 
   const submitHandler = () => {
     setLoading(true);
-
     const params = {
       Email: userValue,
       Password: passwordValue,
-    };
-
-    console.log(params);
+    }; // Save the inputs in constants
     sendUser(params);
+    // Call the service
   };
 
+  // User Validation service
   async function sendUser(body: IValidationUser) {
     await userValidationService
       .sendUser(body)
-      .then((res) => {
+      .then((res: any) => {
         context.setValid(true);
         sessionStorage.setItem("token", res.data.token);
-        navigate("");
+        navigate("/teamleader");
+        // If user valid, save the token and go to teamHomePage
       })
-      .catch((err) => {
+      .catch((err: any) => {
         setErr(true);
         if (err.request.status === 0) {
           setHelperTxt(

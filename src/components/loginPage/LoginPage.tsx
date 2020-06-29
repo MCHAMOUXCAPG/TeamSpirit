@@ -1,4 +1,4 @@
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import {
   Grid,
   Paper,
@@ -28,6 +28,11 @@ const LoginPage = () => {
   const [HelperTxt, setHelperTxt] = useState("");
   const navigate = useNavigate();
   const userValidationService: UserValidationService = new UserValidationService();
+
+  useEffect(() => {
+    context.setValid(false);
+  }, []);
+  // to make private route
 
   const submitHandler = () => {
     setLoading(true);

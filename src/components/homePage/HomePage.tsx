@@ -7,7 +7,7 @@
  *
  *
  *********************************************************************************/
-import React, { useState, useContext } from "react";
+import React, { useState, useContext, useEffect } from "react";
 import "./HomePage.css";
 import TextField from "@material-ui/core/TextField";
 import Button from "@material-ui/core/Button";
@@ -20,6 +20,7 @@ import { CodeValidationService } from "../../services/Services";
 import { IValidationCode } from "../../models/interfaces";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
+
 const HomePage = () => {
   const [loading, setLoading] = useState(false);
   const context = useContext(AuthContext);
@@ -33,18 +34,25 @@ const HomePage = () => {
    *
    *
    *********************************************************************************/
+  useEffect(() => {
+    context.setValid(false);
+  }, []);
+  // to make private route
+
   const submitHandler = () => {
     setLoading(true);
     sendCode({ code: search });
   };
 
+  // Fnction to valide the user input
   async function sendCode(inputText: IValidationCode) {
     await codeValidationService
       .sendCode(inputText)
       .then((res) => {
         context.setValid(true);
         context.setSurveyCode(search);
-        navigate("/teamleader");
+        navigate("/survey");
+        // if valid, you have access to survey
       })
       .catch((err) => {
         setErr(true);

@@ -14,7 +14,10 @@ export class SurveyService {
     return environment.post(endPoint, body);
   }
 
-  public getCurrentResult(surveyCode: string, token: string): Promise<any> {
+  public getCurrentResult(
+    surveyCode: string,
+    token: string | null
+  ): Promise<any> {
     const endPoint = "/survey/result/" + surveyCode;
     return environment.get(endPoint, {
       headers: {

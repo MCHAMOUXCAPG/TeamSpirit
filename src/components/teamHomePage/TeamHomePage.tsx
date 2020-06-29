@@ -1,19 +1,19 @@
 import React, { useState, useEffect } from "react";
-import "./TeamHomePage.css";
 import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
+
+import "./TeamHomePage.css";
 import "../surveyStatus/SurveyStatus.css";
 import SurveyStatus from "../surveyStatus/SurveySatus";
 import { ICurrentSurveyResult } from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";
-import { useAuth } from "../../context/auth";
 import DetailResults from "../detailResults/DetailResults";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
 
 const TeamHomePage = () => {
-  const surveyCode = "Test";
-  const token = useAuth().token;
+  const surveyCode = "Test1";
+  const token = sessionStorage.getItem("token");
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
     ICurrentSurveyResult
   >({
@@ -30,7 +30,7 @@ const TeamHomePage = () => {
 
   const surveyService: SurveyService = new SurveyService();
 
-  async function getResults(surveyCode: string, token: string) {
+  async function getResults(surveyCode: string, token: string | null) {
     await surveyService
       .getCurrentResult(surveyCode, token)
       .then((res) => {

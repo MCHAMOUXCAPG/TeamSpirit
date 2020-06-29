@@ -77,13 +77,13 @@ const TeamHomePage = () => {
           <Grid item xs={12}>
             <div className="Texto">Team Name</div>
           </Grid>
-          <Grid item xs={6} md={6}>
+          <Grid item xs={12} md={6}>
             <AverageChart
               loading={loading}
               grade={parseFloat(currentSurveyResult.CurrentResult.toFixed(2))}
             />
           </Grid>
-          <Grid item xs={6} md={6}>
+          <Grid item xs={12} md={6}>
             <SurveyStatus
               loading={loading}
               period={period}
@@ -92,9 +92,9 @@ const TeamHomePage = () => {
               historicResult={currentSurveyResult.HistoricResult}
             />
           </Grid>
-          <Grid item xs={12}>
+          {/* <Grid item xs={12}>
             <div className="Texto">Export Data Component</div>
-          </Grid>
+          </Grid> */}
           <Grid item xs={12}>
             <DetailResults />
           </Grid>

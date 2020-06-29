@@ -14,6 +14,7 @@ function App() {
     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6ImFuYXNAY2FwZ2VtaW5pLmNvbSIsIlBhc3N3b3JkIjoiIiwiZXhwIjoxNTkzNjc2NTQzfQ.yZgaOh500yG4Zk-FIxx7sD7DuD9QzB6IW1m5X4shKbk"
   ); // here put your token until we make the login page
   const [surveyCode, setSurveyCode] = useState("");
+  //here we set the context variables, and provide the context to the hole APP
   return (
     <AuthContext.Provider
       value={{
@@ -34,7 +35,11 @@ function App() {
             element={<Survey />}
             alternativePath="/"
           />
-          <Route path="/teamleader" element={<TeamHomePage />} />
+          <PrivateRoute
+            path="/teamleader"
+            element={<TeamHomePage />}
+            alternativePath="/"
+          />
         </Routes>
       </Router>
     </AuthContext.Provider>

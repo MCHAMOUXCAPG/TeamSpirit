@@ -141,6 +141,12 @@ func GetResultSurvey(c echo.Context) error {
 	return c.JSON(http.StatusOK, mapResult(team, currentSurvey))
 }
 
+func GetHistoricSurveysByusers(c echo.Context) error {
+	teamName := c.Param("teamName")
+	result, _ := SurveyRepo.GetSurveysGroupByUsers(teamName)
+	return c.JSON(http.StatusOK, result)
+}
+
 func mapResult(team *entities.Team, currentSurvey *entities.Survey) *dto.Result {
 	var result = &dto.Result{}
 	result.Period.StartDate = currentSurvey.StartDate

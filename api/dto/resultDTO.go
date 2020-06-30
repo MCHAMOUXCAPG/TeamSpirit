@@ -1,6 +1,10 @@
 package dto
 
-import "time"
+import (
+	"time"
+
+	"campgemini.com/gorn/team-spirit/entities"
+)
 
 type Result struct {
 	Period         Period
@@ -12,4 +16,10 @@ type Result struct {
 type Period struct {
 	StartDate time.Time
 	EndDate   time.Time
+}
+
+type ResultByUsers struct {
+	User    string
+	Average float64
+	Notes   []*entities.Note
 }

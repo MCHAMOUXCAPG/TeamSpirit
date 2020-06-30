@@ -30,6 +30,8 @@ func HandleResquests() {
 	// login
 	e.POST("/login", services.Login)
 
+	e.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
+
 	// Register
 	e.POST("/register", services.Register)
 
@@ -71,6 +73,7 @@ func HandleResquests() {
 	r.PUT("/survey/:surveyCode", services.UpdateSurvey)
 	r.DELETE("/survey/:surveyCode", services.DeleteSurvey)
 	r.GET("/survey/result/:surveyCode", services.GetResultSurvey)
+	r.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
 
 	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 

@@ -11,6 +11,7 @@ type Survey struct {
 }
 
 type Note struct {
+	User       string `json:"User,omitempty"`
 	Number     int
 	Note       float64
 	SurveyCode string `sql:"type:integer REFERENCES surveys(code)"`

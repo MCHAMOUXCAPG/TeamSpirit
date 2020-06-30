@@ -210,7 +210,6 @@ const Survey = (props: any) => {
   };
 
   const handleSurveyCompletion = () => {
-    console.log(questionsResponse);
     setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
   };

@@ -1,4 +1,4 @@
-module campgemini.com/gorn/team-spirit
+module capgemini.com/gorn/team-spirit
 
 go 1.14
 

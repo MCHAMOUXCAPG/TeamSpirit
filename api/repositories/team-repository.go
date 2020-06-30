@@ -1,8 +1,8 @@
 package repositories
 
 import (
-	"campgemini.com/gorn/team-spirit/config"
-	"campgemini.com/gorn/team-spirit/entities"
+	"capgemini.com/gorn/team-spirit/config"
+	"capgemini.com/gorn/team-spirit/entities"
 )
 
 type TeamRepository interface {

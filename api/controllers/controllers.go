@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"campgemini.com/gorn/team-spirit/dto"
-	"campgemini.com/gorn/team-spirit/services"
+	"capgemini.com/gorn/team-spirit/dto"
+	"capgemini.com/gorn/team-spirit/services"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
@@ -85,7 +85,6 @@ func HandleResquests() {
 
 	// serve
 	e.Logger.Fatal(e.Start(":3000"))
-
 }
 
 func helloWorld(c echo.Context) error {

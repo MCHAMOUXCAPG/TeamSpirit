@@ -3,7 +3,7 @@ package dto
 import (
 	"time"
 
-	"campgemini.com/gorn/team-spirit/entities"
+	"capgemini.com/gorn/team-spirit/entities"
 )
 
 type Result struct {

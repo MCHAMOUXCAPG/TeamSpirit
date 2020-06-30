@@ -12,6 +12,8 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import AlertDialog from "../alertDialog/AlertDialog";
+import { v4 as uuidv4 } from "uuid";
+
 import colors from "../../config/colors";
 import NavBar from "../navBar/NavBar";
 import questions from "../../models/questions";
@@ -42,6 +44,17 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
     { valid: false, status: "", touched: false },
   ]);
+
+  useEffect(() => {
+    let uniqueId = undefined;
+    if (localStorage.getItem("uniqueIdTS")) {
+      uniqueId = localStorage.getItem("uniqueIdTS");
+    } else {
+      uniqueId = uuidv4();
+      localStorage.setItem("uniqueIdTS", uniqueId);
+    }
+    // get the uniqueId, if not exists, create a new one
+  }, []);
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]

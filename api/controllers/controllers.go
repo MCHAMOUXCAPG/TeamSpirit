@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"campgemini.com/gorn/team-spirit/dto"
-	"campgemini.com/gorn/team-spirit/services"
+	"capgemini.com/gorn/team-spirit/dto"
+	"capgemini.com/gorn/team-spirit/services"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
@@ -34,9 +34,6 @@ func HandleResquests() {
 
 	// Register
 	e.POST("/register", services.Register)
-
-	// serve
-	e.Logger.Fatal(e.Start(":3000"))
 
 	// Guards Config
 	r := e.Group("")
@@ -84,6 +81,8 @@ func HandleResquests() {
 	r.PUT("/team/:teamName", services.UpdateTeam)
 	r.DELETE("/team/:teamName", services.DeleteTeam)
 
+	// serve
+	e.Logger.Fatal(e.Start(":3000"))
 }
 
 func helloWorld(c echo.Context) error {

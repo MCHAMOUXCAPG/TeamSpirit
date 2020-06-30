@@ -9,9 +9,9 @@ import (
 	"testing"
 	"time"
 
-	"campgemini.com/gorn/team-spirit/entities"
-	"campgemini.com/gorn/team-spirit/repositories"
-	"campgemini.com/gorn/team-spirit/services"
+	"capgemini.com/gorn/team-spirit/entities"
+	"capgemini.com/gorn/team-spirit/repositories"
+	"capgemini.com/gorn/team-spirit/services"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )

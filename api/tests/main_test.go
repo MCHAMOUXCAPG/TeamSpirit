@@ -4,7 +4,7 @@ import (
 	"os"
 	"testing"
 
-	"campgemini.com/gorn/team-spirit/config"
+	"capgemini.com/gorn/team-spirit/config"
 )
 
 func TestMain(m *testing.M) {

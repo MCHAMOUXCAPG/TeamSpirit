@@ -1,9 +1,9 @@
 package repositories
 
 import (
-	"campgemini.com/gorn/team-spirit/config"
-	"campgemini.com/gorn/team-spirit/dto"
-	"campgemini.com/gorn/team-spirit/entities"
+	"capgemini.com/gorn/team-spirit/config"
+	"capgemini.com/gorn/team-spirit/dto"
+	"capgemini.com/gorn/team-spirit/entities"
 )
 
 type SurveyRepository interface {

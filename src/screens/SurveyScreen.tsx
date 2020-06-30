@@ -16,7 +16,7 @@ import SwiperCircle from "../components/SwiperCircle";
 import { IQuestionStatus, IQuestionResponse } from "../models/interfaces";
 import { SurveyService } from "../services/Services";
 import QuestionsContext from "../context/questionsContext";
-import DeviceInfo from "react-native-device-info";
+import Constants from "expo-constants";
 
 function useForceUpdate() {
   const [value, setValue] = useState(0); // integer state
@@ -84,6 +84,7 @@ const SurveyScreen = ({
     return () => backHandler.remove();
   }, []);
   const handleSurveyCompletion = () => {
+    console.log(questionsResponse);
     setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
   };
@@ -98,28 +99,17 @@ const SurveyScreen = ({
     { valid: false, status: "", touched: false },
   ]);
 
-  const [uniqueUserId, setUniqueUserId] = useState("");
-  useEffect(() => {
-    let uniqueId: any = undefined;
-    if (localStorage.getItem("uniqueIdTS")) {
-      uniqueId = localStorage.getItem("uniqueIdTS");
-    } else {
-      uniqueId = DeviceInfo.getUniqueId();
-      localStorage.setItem("uniqueIdTS", uniqueId);
-    }
-    setUniqueUserId(uniqueId);
-    // get the uniqueId, if not exists, create a new one
-  }, []);
+  const uniqueUserId: any = Constants.deviceId;
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode, user: uniqueUserId },
-    { number: 2, note: 0, surveyCode: surveyCode, user: uniqueUserId },
-    { number: 3, note: 5, surveyCode: surveyCode, user: uniqueUserId },
-    { number: 4, note: 5, surveyCode: surveyCode, user: uniqueUserId },
-    { number: 5, note: 0, surveyCode: surveyCode, user: uniqueUserId },
-    { number: 6, note: 0, surveyCode: surveyCode, user: uniqueUserId },
+    { number: 1, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
+    { number: 2, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
+    { number: 3, note: 5, surveyCode: surveyCode.code, User: uniqueUserId },
+    { number: 4, note: 5, surveyCode: surveyCode.code, User: uniqueUserId },
+    { number: 5, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
+    { number: 6, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([

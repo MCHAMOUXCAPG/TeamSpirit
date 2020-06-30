@@ -11,9 +11,7 @@ import TeamHomePage from "./components/teamHomePage/TeamHomePage";
 
 function App() {
   const [valid, setValid] = useState(true);
-  const [token, setToken] = useState(
-    "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6ImFuYXNAY2FwZ2VtaW5pLmNvbSIsIlBhc3N3b3JkIjoiIiwiZXhwIjoxNTkzNjc2NTQzfQ.yZgaOh500yG4Zk-FIxx7sD7DuD9QzB6IW1m5X4shKbk"
-  ); // here put your token until we make the login page
+  const [token, setToken] = useState("");
   const [surveyCode, setSurveyCode] = useState("");
   //here we set the context variables, and provide the context to the hole APP
   return (

@@ -147,7 +147,6 @@ const LoginPage = () => {
                           placeholder="Username"
                           value={userValue}
                           onChange={(e) => setUserValue(e.target.value)}
-                          helperText={HelperTxt}
                           InputProps={{
                             startAdornment: (
                               <InputAdornment position="start">
@@ -186,7 +185,7 @@ const LoginPage = () => {
                     onClick={submitHandler}
                     size="small"
                     style={{
-                      bottom: Err ? -12 : -12,
+                      bottom: Err ? -1 : -12,
                       opacity: loading ? 0.5 : 1,
                     }}
                   >

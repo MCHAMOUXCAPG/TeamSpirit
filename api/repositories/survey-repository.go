@@ -17,6 +17,8 @@ type SurveyRepository interface {
 	GetLastSurvey(teamName string) (*entities.Survey, error)
 	GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers, error)
 	GetNotesBySurveyAndUser(surveyCode string, user string) ([]*entities.Note, error)
+	GetNotesGroupByQuestions(surveyCode string) ([]*dto.ResultByQuestions, error)
+	GetNotesBySurveyAndQuestion(number int, surveyCode string) ([]*entities.Note, error)
 }
 
 type SurveyRepo struct{}
@@ -108,5 +110,28 @@ func (*SurveyRepo) GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers
 func (*SurveyRepo) GetNotesBySurveyAndUser(surveyCode string, user string) ([]*entities.Note, error) {
 	var notes []*entities.Note
 	config.DB.Select("number, note, survey_code").Where("survey_code = ? and user = ?", surveyCode, user).Find(&notes)
+	return notes, nil
+}
+
+func (*SurveyRepo) GetNotesGroupByQuestions(surveyCode string) ([]*dto.ResultByQuestions, error) {
+	// var notes []*entities.Note
+	rows, _ := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("number as number ,avg(note) as average").Group("number").Rows()
+
+	var response = &dto.ResultByQuestions{}
+	var result []*dto.ResultByQuestions
+	for rows.Next() {
+		rows.Scan(&response.QuestionNumber, &response.Average)
+		result = append(result, &dto.ResultByQuestions{
+			QuestionNumber: response.QuestionNumber,
+			Average:        response.Average,
+			Notes:          nil,
+		})
+	}
+	return result, nil
+}
+
+func (*SurveyRepo) GetNotesBySurveyAndQuestion(number int, surveyCode string) ([]*entities.Note, error) {
+	var notes []*entities.Note
+	config.DB.Select("user, note").Where("number = ? and survey_code = ?", number, surveyCode).Find(&notes)
 	return notes, nil
 }

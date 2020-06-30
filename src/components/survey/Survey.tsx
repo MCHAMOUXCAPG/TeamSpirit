@@ -45,30 +45,24 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
   ]);
 
-  const [uniqueUserId, setUniqueUserId] = useState("");
-  useEffect(() => {
-    let uniqueId = undefined;
-    if (localStorage.getItem("uniqueIdTS")) {
-      uniqueId = localStorage.getItem("uniqueIdTS");
-    } else {
-      uniqueId = uuidv4();
-      localStorage.setItem("uniqueIdTS", uniqueId);
-    }
-    setUniqueUserId(uniqueId);
-    forceUpdate();
-    console.log(uniqueUserId);
-    // get the uniqueId, if not exists, create a new one
-  }, []);
+  let uniqueId = undefined;
+  if (localStorage.getItem("uniqueIdTS")) {
+    uniqueId = localStorage.getItem("uniqueIdTS");
+  } else {
+    uniqueId = uuidv4();
+    localStorage.setItem("uniqueIdTS", uniqueId);
+  }
+  // get the uniqueId, if not exists, create a new one
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode, User: uniqueUserId },
-    { number: 2, note: 0, surveyCode: surveyCode, User: uniqueUserId },
-    { number: 3, note: 5, surveyCode: surveyCode, User: uniqueUserId },
-    { number: 4, note: 5, surveyCode: surveyCode, User: uniqueUserId },
-    { number: 5, note: 0, surveyCode: surveyCode, User: uniqueUserId },
-    { number: 6, note: 0, surveyCode: surveyCode, User: uniqueUserId },
+    { number: 1, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 2, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 3, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 4, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 5, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 6, note: 0, surveyCode: surveyCode, User: uniqueId },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([

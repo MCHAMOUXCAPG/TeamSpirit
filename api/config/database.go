@@ -1,7 +1,7 @@
 package config
 
 import (
-	"campgemini.com/gorn/team-spirit/entities"
+	"capgemini.com/gorn/team-spirit/entities"
 	"github.com/jinzhu/gorm"
 )
 

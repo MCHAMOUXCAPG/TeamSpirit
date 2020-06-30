@@ -1,7 +1,7 @@
 package config
 
 import (
-	"campgemini.com/gorn/team-spirit/docs"
+	"capgemini.com/gorn/team-spirit/docs"
 )
 
 func ConfigSwagger() {

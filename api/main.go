@@ -1,9 +1,9 @@
 package main
 
 import (
-	"campgemini.com/gorn/team-spirit/config"
-	"campgemini.com/gorn/team-spirit/controllers"
-	"campgemini.com/gorn/team-spirit/services"
+	"capgemini.com/gorn/team-spirit/config"
+	"capgemini.com/gorn/team-spirit/controllers"
+	"capgemini.com/gorn/team-spirit/services"
 )
 
 // @title Swagger Example API

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
@@ -10,8 +10,10 @@ import SurveyStatus from "../surveyStatus/SurveySatus";
 import { ICurrentSurveyResult } from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
+import { AuthContext } from "../../context/auth";
 
 const TeamHomePage = () => {
+  const context = useContext(AuthContext);
   const surveyCode = "Test1";
   const token = sessionStorage.getItem("token");
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
@@ -77,7 +79,7 @@ const TeamHomePage = () => {
           spacing={5}
         >
           <Grid item xs={12}>
-            <div className="team-name">Team Name</div>
+            <div className="team-name">{context.currentTeam}</div>
           </Grid>
           <Grid item xs={12} md={6}>
             <AverageChart

@@ -51,7 +51,31 @@ const LoginPage = () => {
       .then((res: any) => {
         context.setValid(true);
         sessionStorage.setItem("token", res.data.token);
-        navigate("/teamleader");
+        userValidationService
+          .getUser(res.data.token)
+          .then((res2: any) => {
+            const teams = res2.data.Teams;
+            if (teams.length === 1) {
+              context.setCurrentTeam(res2.data.Teams[0].Name);
+              navigate("/teamleader");
+              //if one team go to see the results
+            } else {
+              context.setMyTeams(res2.data.Teams);
+              navigate("/myTeams");
+              // if more than 1 teams, go to coose your team
+            }
+          })
+          .catch((err: any) => {
+            setErr(true);
+            if (err.request.status === 0) {
+              setHelperTxt(
+                "Network Error! Please verify you have internet access."
+              );
+            } else {
+              setHelperTxt(err.response.data.message);
+            }
+            setLoading(false);
+          });
         // If user valid, save the token and go to teamHomePage
       })
       .catch((err: any) => {

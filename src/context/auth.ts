@@ -3,10 +3,12 @@ import { createContext, useContext } from "react";
 export const AuthContext = createContext({
   valid: false,
   surveyCode: "",
+  currentTeam: "",
+  myTeams: [{ Name: "" }],
   setValid: (valid: boolean) => {},
-  token: "",
-  setToken: (newToken: string) => {},
   setSurveyCode: (surveyCode: string) => {},
+  setCurrentTeam: (team: string) => {},
+  setMyTeams: (teams: any[]) => {},
 });
 
 export function useAuth() {

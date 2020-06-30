@@ -45,6 +45,7 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
   ]);
 
+  const [uniqueUserId, setUniqueUserId] = useState("");
   useEffect(() => {
     let uniqueId = undefined;
     if (localStorage.getItem("uniqueIdTS")) {
@@ -53,18 +54,21 @@ const Survey = (props: any) => {
       uniqueId = uuidv4();
       localStorage.setItem("uniqueIdTS", uniqueId);
     }
+    setUniqueUserId(uniqueId);
+    forceUpdate();
+    console.log(uniqueUserId);
     // get the uniqueId, if not exists, create a new one
   }, []);
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode },
-    { number: 2, note: 0, surveyCode: surveyCode },
-    { number: 3, note: 5, surveyCode: surveyCode },
-    { number: 4, note: 5, surveyCode: surveyCode },
-    { number: 5, note: 0, surveyCode: surveyCode },
-    { number: 6, note: 0, surveyCode: surveyCode },
+    { number: 1, note: 0, surveyCode: surveyCode, User: uniqueUserId },
+    { number: 2, note: 0, surveyCode: surveyCode, User: uniqueUserId },
+    { number: 3, note: 5, surveyCode: surveyCode, User: uniqueUserId },
+    { number: 4, note: 5, surveyCode: surveyCode, User: uniqueUserId },
+    { number: 5, note: 0, surveyCode: surveyCode, User: uniqueUserId },
+    { number: 6, note: 0, surveyCode: surveyCode, User: uniqueUserId },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([
@@ -91,7 +95,6 @@ const Survey = (props: any) => {
       .then((res) => {
         if ((res.status = 200)) {
           setSuccess(true);
-          setLoading(false);
         }
       })
       .catch((err) => {
@@ -101,12 +104,13 @@ const Survey = (props: any) => {
           alert(err.response.data.message);
         }
       });
+    setLoading(false);
   }
 
   useEffect(() => {
     let count = 0;
     const currentQuestionStatus = questionsState;
-    currentQuestionStatus.map((question: IQuestionStatus) => {
+    currentQuestionStatus.forEach((question: IQuestionStatus) => {
       question.status = "";
       if (question.valid) {
         count++;
@@ -127,7 +131,7 @@ const Survey = (props: any) => {
   const checkDisabled = () => {
     let count = 0;
     const currentQuestionStatus = questionsState;
-    currentQuestionStatus.map((question: IQuestionStatus) => {
+    currentQuestionStatus.forEach((question: IQuestionStatus) => {
       question.status = "";
       if (question.valid) {
         count++;
@@ -212,6 +216,7 @@ const Survey = (props: any) => {
   };
 
   const handleSurveyCompletion = () => {
+    console.log(questionsResponse);
     setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
   };

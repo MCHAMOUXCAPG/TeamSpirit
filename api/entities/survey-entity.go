@@ -12,7 +12,7 @@ type Survey struct {
 
 type Note struct {
 	User       string `json:"User,omitempty"`
-	Number     int
+	Number     int    `json:"Number,omitempty"`
 	Note       float64
-	SurveyCode string `sql:"type:integer REFERENCES surveys(code)"`
+	SurveyCode string `sql:"type:integer REFERENCES surveys(code)" json:"SurveyCode,omitempty"`
 }

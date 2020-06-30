@@ -23,3 +23,9 @@ type ResultByUsers struct {
 	Average float64
 	Notes   []*entities.Note
 }
+
+type ResultByQuestions struct {
+	QuestionNumber int
+	Average        float64
+	Notes          []*entities.Note
+}

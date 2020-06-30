@@ -41,3 +41,8 @@ export interface IValidationUser {
   Email: string;
   Password: string;
 }
+export interface IResultsByUsers {
+  average: number;
+  notes: IQuestionResponse[];
+  user: string;
+}

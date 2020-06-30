@@ -6,7 +6,7 @@ import AverageChart from "../averageChart/Chart";
 import "./TeamHomePage.css";
 import "../surveyStatus/SurveyStatus.css";
 import SurveyStatus from "../surveyStatus/SurveySatus";
-import { ICurrentSurveyResult } from "../../models/interfaces";
+import { ICurrentSurveyResult, IResultsByUsers } from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
@@ -14,6 +14,9 @@ import ExportResult from "../exportResult/ExportResult";
 const TeamHomePage = () => {
   const surveyCode = "Test1";
   const token = sessionStorage.getItem("token");
+  const [currentDetailResultsUsers, setCurrentDetailResultsUsers] = useState<
+    IResultsByUsers[]
+  >();
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
     ICurrentSurveyResult
   >({
@@ -41,9 +44,21 @@ const TeamHomePage = () => {
         console.log(err);
       });
   }
-
+  async function getResultsByUser(teamName: string, token: string | null) {
+    await surveyService
+      .getResultByUser(teamName, token)
+      .then((res) => {
+        setCurrentDetailResultsUsers(res.data);
+        console.log(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   useEffect(() => {
     getResults(surveyCode, token);
+    getResultsByUser("GORN", token);
   }, []);
 
   useEffect(() => {

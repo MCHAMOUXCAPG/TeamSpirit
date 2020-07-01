@@ -3,8 +3,8 @@ package controllers
 import (
 	"net/http"
 
-	"campgemini.com/gorn/team-spirit/dto"
-	"campgemini.com/gorn/team-spirit/services"
+	"capgemini.com/gorn/team-spirit/dto"
+	"capgemini.com/gorn/team-spirit/services"
 	"github.com/labstack/echo/v4"
 	"github.com/labstack/echo/v4/middleware"
 	_ "github.com/mattn/go-sqlite3"
@@ -70,7 +70,8 @@ func HandleResquests() {
 	r.GET("/survey/result/:surveyCode", services.GetResultSurvey)
 	// Surveys CSV Export
 	r.GET("/survey/exportCsv", services.ExportSurveysCsv)
-
+	r.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
+	r.GET("/resultByQuestions/:teamName", services.GetHistoricSurveysByQuestions)
 	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 
 	// **** Teams routes *****

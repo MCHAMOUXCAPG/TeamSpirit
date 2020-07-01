@@ -9,9 +9,9 @@ import (
 	"strconv"
 	"time"
 
-	"campgemini.com/gorn/team-spirit/dto"
-	"campgemini.com/gorn/team-spirit/entities"
-	"campgemini.com/gorn/team-spirit/repositories"
+	"capgemini.com/gorn/team-spirit/dto"
+	"capgemini.com/gorn/team-spirit/entities"
+	"capgemini.com/gorn/team-spirit/repositories"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/robfig/cron"
@@ -141,6 +141,62 @@ func GetResultSurvey(c echo.Context) error {
 	currentSurvey, _ := SurveyRepo.GetSurvey(surveyCode)
 	team, _ := TeamRepo.GetTeam(currentSurvey.TeamName)
 	return c.JSON(http.StatusOK, mapResult(team, currentSurvey))
+}
+
+// @Summary Survey resultByQuestions
+// @Description returns the result survey grouped by users
+// @Tags Survies
+// @Accept json
+// @Produce json
+// @Success 200 {object} []dto.ResultByQuestions
+// @Router /resultByQuestions/:teamName [get]
+func GetHistoricSurveysByQuestions(c echo.Context) error {
+	teamName := c.Param("teamName")
+	lastSurvey, _ := SurveyRepo.GetLastSurvey(teamName)
+	notes, _ := SurveyRepo.GetNotesGroupByQuestions(lastSurvey.Code)
+	result := mapQuestionNotes(notes, lastSurvey.Code)
+	return c.JSON(http.StatusOK, result)
+}
+
+func mapQuestionNotes(notes []*dto.ResultByQuestions, surveyCode string) []*dto.ResultByQuestions {
+	var result []*dto.ResultByQuestions
+	for _, note := range notes {
+		notes, _ := SurveyRepo.GetNotesBySurveyAndQuestion(note.QuestionNumber, surveyCode)
+		result = append(result, &dto.ResultByQuestions{
+			QuestionNumber: note.QuestionNumber,
+			Average:        note.Average,
+			Notes:          notes,
+		})
+	}
+	return result
+}
+
+// @Summary Survey resultByUsers
+// @Description returns the result survey grouped by users
+// @Tags Survies
+// @Accept json
+// @Produce json
+// @Success 200 {object} []dto.ResultByUsers
+// @Router /resultByUsers/:teamName [get]
+func GetHistoricSurveysByusers(c echo.Context) error {
+	teamName := c.Param("teamName")
+	lastSurvey, _ := SurveyRepo.GetLastSurvey(teamName)
+	notes, _ := SurveyRepo.GetNotesGroupByUsers(lastSurvey.Code)
+	result := mapNotes(notes, lastSurvey.Code)
+	return c.JSON(http.StatusOK, result)
+}
+
+func mapNotes(notes []*dto.ResultByUsers, surveyCode string) []*dto.ResultByUsers {
+	var result []*dto.ResultByUsers
+	for i, note := range notes {
+		notes, _ := SurveyRepo.GetNotesBySurveyAndUser(surveyCode, note.User)
+		result = append(result, &dto.ResultByUsers{
+			User:    "User " + strconv.Itoa(i+1),
+			Average: note.Average,
+			Notes:   notes,
+		})
+	}
+	return result
 }
 
 func mapResult(team *entities.Team, currentSurvey *entities.Survey) *dto.Result {

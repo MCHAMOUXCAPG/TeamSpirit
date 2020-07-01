@@ -6,9 +6,9 @@ import (
 	"net/http"
 	"time"
 
-	"campgemini.com/gorn/team-spirit/dto"
-	"campgemini.com/gorn/team-spirit/entities"
-	"campgemini.com/gorn/team-spirit/repositories"
+	"capgemini.com/gorn/team-spirit/dto"
+	"capgemini.com/gorn/team-spirit/entities"
+	"capgemini.com/gorn/team-spirit/repositories"
 	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"

@@ -86,7 +86,7 @@ const SurveyScreen = ({
   const handleSurveyCompletion = () => {
     console.log(questionsResponse);
     setLoading(true);
-    sendSurvey(surveyCode, questionsResponse);
+    sendSurvey(surveyCode.code, questionsResponse);
   };
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
@@ -104,12 +104,12 @@ const SurveyScreen = ({
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
-    { number: 2, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
-    { number: 3, note: 5, surveyCode: surveyCode.code, User: uniqueUserId },
-    { number: 4, note: 5, surveyCode: surveyCode.code, User: uniqueUserId },
-    { number: 5, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
-    { number: 6, note: 0, surveyCode: surveyCode.code, User: uniqueUserId },
+    { number: 1, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
+    { number: 2, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
+    { number: 3, note: 5, surveyCode: surveyCode.code, user: uniqueUserId },
+    { number: 4, note: 5, surveyCode: surveyCode.code, user: uniqueUserId },
+    { number: 5, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
+    { number: 6, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([

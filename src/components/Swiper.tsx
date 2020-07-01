@@ -44,7 +44,7 @@ const SwiperComponent = (props: any) => {
         />
       }
       dotColor={Colors.green}
-      nextButton={<Text style={styles.buttonRight}>></Text>}
+      nextButton={<Text style={styles.buttonRight}> {">"} </Text>}
       prevButton={<Text style={styles.buttonLeft}> {"<"} </Text>}
       buttonWrapperStyle={{
         backgroundColor: Colors.transparent,

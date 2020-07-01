@@ -194,6 +194,32 @@ var doc = `{
                 }
             }
         },
+        "/resultByQuestions/:teamName": {
+            "get": {
+                "description": "returns the result survey grouped by users",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Survies"
+                ],
+                "summary": "Survey resultByQuestions",
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.ResultByQuestions"
+                            }
+                        }
+                    }
+                }
+            }
+        },
         "/resultByUsers/:teamName": {
             "get": {
                 "description": "returns the result survey grouped by users",
@@ -587,7 +613,33 @@ var doc = `{
                 }
             }
         },
-        "/survey/result/:surveyCode": {
+        "/survey/exportCsv": {
+            "get": {
+                "description": "returns surveys export on csv stream",
+                "produces": [
+                    "application/octet-stream"
+                ],
+                "tags": [
+                    "Survies"
+                ],
+                "summary": "Surveys export",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "start date",
+                        "name": "startDate",
+                        "in": "query"
+                    },
+                    {
+                        "type": "string",
+                        "description": "end date",
+                        "name": "endDate",
+                        "in": "query"
+                    }
+                ]
+            }
+        },
+        "/survey/result/:teamName": {
             "get": {
                 "description": "returns the result survey",
                 "consumes": [
@@ -1077,6 +1129,23 @@ var doc = `{
                 }
             }
         },
+        "dto.ResultByQuestions": {
+            "type": "object",
+            "properties": {
+                "average": {
+                    "type": "number"
+                },
+                "notes": {
+                    "type": "array",
+                    "items": {
+                        "$ref": "#/definitions/entities.Note"
+                    }
+                },
+                "questionNumber": {
+                    "type": "integer"
+                }
+            }
+        },
         "dto.ResultByUsers": {
             "type": "object",
             "properties": {
@@ -1097,17 +1166,17 @@ var doc = `{
         "entities.Note": {
             "type": "object",
             "properties": {
+                "Number": {
+                    "type": "integer"
+                },
+                "SurveyCode": {
+                    "type": "string"
+                },
                 "User": {
                     "type": "string"
                 },
                 "note": {
                     "type": "number"
-                },
-                "number": {
-                    "type": "integer"
-                },
-                "surveyCode": {
-                    "type": "string"
                 }
             }
         },

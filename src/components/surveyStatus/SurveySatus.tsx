@@ -67,7 +67,7 @@ function SurveyStatus({
                 <p>
                   <Schedule className="icon" />
                   Historic result:
-                  <span>{historicResult}/10</span>
+                  <span>{parseFloat(historicResult.toFixed(2))}/10</span>
                 </p>
               </Grid>
               <Grid item xs={12}>

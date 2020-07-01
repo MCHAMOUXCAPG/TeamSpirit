@@ -6,7 +6,11 @@ import AverageChart from "../averageChart/Chart";
 import "./TeamHomePage.css";
 import "../surveyStatus/SurveyStatus.css";
 import SurveyStatus from "../surveyStatus/SurveySatus";
-import { ICurrentSurveyResult, IResultsByUsers } from "../../models/interfaces";
+import {
+  ICurrentSurveyResult,
+  IResultsByUsers,
+  IResultsByQuestions,
+} from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
@@ -19,6 +23,10 @@ const TeamHomePage = () => {
   const [currentDetailResultsUsers, setCurrentDetailResultsUsers] = useState<
     IResultsByUsers[]
   >();
+  const [
+    currentDetailResultsQuestions,
+    setCurrentDetailResultsQuestions,
+  ] = useState<IResultsByQuestions[]>();
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
     ICurrentSurveyResult
   >({
@@ -61,6 +69,24 @@ const TeamHomePage = () => {
   useEffect(() => {
     getResults(surveyCode, token);
     getResultsByUser(context.currentTeam, token);
+  }, []);
+
+  async function getResultsByQuestion(teamName: string, token: string | null) {
+    await surveyService
+      .getResultByQuestions(teamName, token)
+      .then((res) => {
+        setCurrentDetailResultsQuestions(res.data);
+        console.log(res.data);
+        setLoading(false);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  useEffect(() => {
+    getResults(surveyCode, token);
+    getResultsByUser(context.currentTeam, token);
+    getResultsByQuestion(context.currentTeam, token);
   }, []);
 
   useEffect(() => {
@@ -115,7 +141,10 @@ const TeamHomePage = () => {
             <ExportResult />
           </Grid>
           <Grid item xs={12}>
-            <DetailResults />
+            <DetailResults
+              usersResult={currentDetailResultsUsers}
+              questionsResult={currentDetailResultsQuestions}
+            />
           </Grid>
         </Grid>
       </Container>

@@ -4,19 +4,25 @@ import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
 import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
 import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import AddCircleIcon from "@material-ui/icons/AddCircle";
-import RemoveCircleIcon from "@material-ui/icons/RemoveCircle";
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
-import InputAdornment from "@material-ui/core/InputAdornment";
-import "./DetailResults.css";
-import { usersResultMock, questionsResultMock } from "./mockData";
+import CircularProgress from "@material-ui/core/CircularProgress";
 import LoupeIcon from "@material-ui/icons/Loupe";
 import { Grid, Container } from "@material-ui/core";
-function DetailResults() {
+
+import "./DetailResults.css";
+import { IResultsByUsers, IResultsByQuestions } from "../../models/interfaces";
+import colors from "../../config/colors";
+
+function DetailResults({
+  usersResult,
+  questionsResult,
+}: {
+  usersResult: IResultsByUsers[] | undefined;
+  questionsResult: IResultsByQuestions[] | undefined;
+}) {
   const [value, setValue] = useState(0);
-  const [usersResult, setUsersResult] = useState(usersResultMock);
-  const [questionsResult, setQuestionsResult] = useState(questionsResultMock);
+
   const puntos =
     "...................................................................................................................................................................................................................................................................................";
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -53,94 +59,107 @@ function DetailResults() {
         </Container>
       </ExpansionPanelSummary>
       <ExpansionPanelDetails>
-        <Grid container spacing={0}>
-          <Grid item xs={12}>
-            <Tabs
-              value={value}
-              onChange={handleChange}
-              aria-label="simple tabs example"
-            >
-              <Tab label="By User" {...a11yProps(0)} id="user-tab" />
-              <Tab label="By Question" {...a11yProps(1)} id="question-tab" />
-            </Tabs>
-          </Grid>
-          <Grid item xs={12} id="inner-grid">
-            {value === 0 && (
-              <>
-                {usersResult.map((userResult) => {
-                  return (
-                    <ExpansionPanel
-                      key={userResult.User}
-                      id="second-panel"
-                      style={{ margin: "20px 20px" }}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon color="secondary" />}
-                        aria-controls="panel2a-content"
-                        id="panel2a-header"
+        {usersResult && questionsResult ? (
+          <Grid container spacing={0}>
+            <Grid item xs={12}>
+              <Tabs
+                value={value}
+                onChange={handleChange}
+                aria-label="simple tabs example"
+              >
+                <Tab label="By User" {...a11yProps(0)} id="user-tab" />
+                <Tab label="By Question" {...a11yProps(1)} id="question-tab" />
+              </Tabs>
+            </Grid>
+            <Grid item xs={12} id="inner-grid">
+              {value === 0 && (
+                <>
+                  {usersResult.map((userResult) => {
+                    return (
+                      <ExpansionPanel
+                        key={userResult.User}
+                        id="second-panel"
+                        style={{ margin: "20px 20px" }}
                       >
-                        <Typography>
-                          {userResult.User}: {userResult.Average}
-                        </Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails>
-                        <Grid container spacing={0}>
-                          {userResult.Notes.map((Note) => {
-                            return (
-                              <Grid item xs={12} key={Note.number}>
-                                <p>
-                                  Question {Note.number}:&nbsp;{puntos}
-                                  {Note.note}
-                                </p>
-                              </Grid>
-                            );
-                          })}
-                        </Grid>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                  );
-                })}
-              </>
-            )}
-            {value === 1 && (
-              <>
-                {questionsResult.map((questionResult) => {
-                  return (
-                    <ExpansionPanel
-                      key={questionResult.QuestionNumber}
-                      id="second-panel"
-                      style={{ margin: "20px 20px" }}
-                    >
-                      <ExpansionPanelSummary
-                        expandIcon={<ExpandMoreIcon color="secondary" />}
-                        aria-controls="panel2a-content"
-                        id="panel2a-header"
+                        <ExpansionPanelSummary
+                          expandIcon={<ExpandMoreIcon color="secondary" />}
+                          aria-controls="panel2a-content"
+                          id="panel2a-header"
+                        >
+                          <Typography>
+                            {userResult.User}:&nbsp;
+                            {parseFloat(userResult.Average.toFixed(2))}
+                          </Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails>
+                          <Grid container spacing={0}>
+                            {userResult.Notes.map((Note) => {
+                              return (
+                                <Grid item xs={12} key={Note.Number}>
+                                  <p>
+                                    Question {Note.Number}:&nbsp;{puntos}
+                                    {parseFloat(Note.Note.toFixed(2))}
+                                  </p>
+                                </Grid>
+                              );
+                            })}
+                          </Grid>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                    );
+                  })}
+                </>
+              )}
+              {value === 1 && (
+                <>
+                  {questionsResult.map((questionResult) => {
+                    return (
+                      <ExpansionPanel
+                        key={questionResult.QuestionNumber}
+                        id="second-panel"
+                        style={{ margin: "20px 20px" }}
                       >
-                        <Typography>
-                          Question {questionResult.QuestionNumber}:&nbsp;
-                          {questionResult.Average}
-                        </Typography>
-                      </ExpansionPanelSummary>
-                      <ExpansionPanelDetails id="results-details">
-                        <Grid container spacing={0}>
-                          {questionResult.Notes.map((Note) => {
-                            return (
-                              <Grid item xs={12} key={Note.User}>
-                                <p>
-                                  {Note.User}:{puntos} {Note.note}
-                                </p>
-                              </Grid>
-                            );
-                          })}
-                        </Grid>
-                      </ExpansionPanelDetails>
-                    </ExpansionPanel>
-                  );
-                })}
-              </>
-            )}
+                        <ExpansionPanelSummary
+                          expandIcon={<ExpandMoreIcon color="secondary" />}
+                          aria-controls="panel2a-content"
+                          id="panel2a-header"
+                        >
+                          <Typography>
+                            Question {questionResult.QuestionNumber}:&nbsp;
+                            {parseFloat(questionResult.Average.toFixed(2))}
+                          </Typography>
+                        </ExpansionPanelSummary>
+                        <ExpansionPanelDetails id="results-details">
+                          <Grid container spacing={0}>
+                            {questionResult.Notes.map((Note, index) => {
+                              return (
+                                <Grid item xs={12} key={Note.User}>
+                                  <p>
+                                    User&nbsp;{index + 1}:{puntos}&nbsp;
+                                    {parseFloat(Note.Note.toFixed(2))}
+                                  </p>
+                                </Grid>
+                              );
+                            })}
+                          </Grid>
+                        </ExpansionPanelDetails>
+                      </ExpansionPanel>
+                    );
+                  })}
+                </>
+              )}
+            </Grid>
           </Grid>
-        </Grid>
+        ) : (
+          <Grid container direction="row" justify="center">
+            <CircularProgress
+              size={24}
+              style={{
+                color: colors.primary,
+              }}
+            />
+          </Grid>
+        )}
       </ExpansionPanelDetails>
     </ExpansionPanel>
   );

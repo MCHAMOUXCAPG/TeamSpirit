@@ -59,8 +59,6 @@ const TeamHomePage = () => {
       .getResultByUser(teamName, token)
       .then((res) => {
         setCurrentDetailResultsUsers(res.data);
-        console.log(res.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -76,8 +74,6 @@ const TeamHomePage = () => {
       .getResultByQuestions(teamName, token)
       .then((res) => {
         setCurrentDetailResultsQuestions(res.data);
-        console.log(res.data);
-        setLoading(false);
       })
       .catch((err) => {
         console.log(err);

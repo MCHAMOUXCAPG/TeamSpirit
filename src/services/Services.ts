@@ -34,6 +34,18 @@ export class SurveyService {
       },
     });
   }
+
+  public getResultByQuestions(
+    teamName: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/resultByQuestions/" + teamName;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }
 
 export class CodeValidationService {

@@ -43,7 +43,12 @@ export interface IValidationUser {
   Password: string;
 }
 export interface IResultsByUsers {
-  average: number;
-  notes: IQuestionResponse[];
-  user: string;
+  Average: number;
+  Notes: { Number: number; Note: number; SurveyCode: string }[];
+  User: string;
+}
+export interface IResultsByQuestions {
+  Average: number;
+  Notes: { Note: number; User: string }[];
+  QuestionNumber: number;
 }

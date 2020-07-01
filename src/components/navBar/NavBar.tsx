@@ -15,7 +15,7 @@ function NavBar({ user }: { user: boolean }) {
   const context = useContext(AuthContext);
   const navigate = useNavigate();
 
-  const handleClick = () => {
+  const handleClickExit = () => {
     context.setValid(false);
     navigate("/");
   };
@@ -24,22 +24,30 @@ function NavBar({ user }: { user: boolean }) {
     <AppBar position="static" className="navBar">
       <Toolbar>
         <Grid container direction="row" justify="flex-end" alignItems="center">
-          {user ? (
+          {user && (
             <Grid item xs={5} sm={9} className="navBarButtons">
               <Button
                 color="inherit"
                 startIcon={<ExitToApp />}
                 onClick={() => {
-                  handleClick();
+                  handleClickExit();
                 }}
               >
                 Sign Out
               </Button>
-              <Button color="inherit" startIcon={<Group />}>
-                My Teams
-              </Button>
+              {context.myTeams[0].Name !== "" && (
+                <Button
+                  color="inherit"
+                  startIcon={<Group />}
+                  onClick={() => {
+                    navigate("/myTeams");
+                  }}
+                >
+                  My Teams
+                </Button>
+              )}
             </Grid>
-          ) : null}
+          )}
 
           <Grid item xs={4} sm={3} md={3}>
             <img className="logoImg" src={logo} alt="Capgemini Logo" />

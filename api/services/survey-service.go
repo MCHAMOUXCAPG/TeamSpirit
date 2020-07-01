@@ -1,7 +1,9 @@
 package services
 
 import (
+	"encoding/csv"
 	"encoding/json"
+	"fmt"
 	"math/rand"
 	"net/http"
 	"strconv"
@@ -252,4 +254,51 @@ func CreateSurveyAutomatically() {
 	c := cron.New()
 	c.AddFunc("* * * 1 * *", CreateSurveyAtEndOfSprint)
 	c.Start()
+}
+
+// @Summary Surveys export
+// @Description returns surveys export on csv stream
+// @Tags Survies
+// @Produce octet-stream
+// @Param startDate query string false "start date"
+// @Param endDate query string false "end date"
+// @Router /survey/exportCsv [get]
+func ExportSurveysCsv(c echo.Context) (err error) {
+
+	startDate := c.QueryParam("startDate")
+	endDate := c.QueryParam("endDate")
+	var headerCsv = []string{"StartDate", "EndDate", "Q.Number", "Note", "Code", "TeamName"}
+	surveys, _ := SurveyRepo.GetSurviesByPeriod(startDate, endDate)
+	res := c.Response()
+	w := csv.NewWriter(res)
+	w.Comma = ';'
+	fileName := "Surveys_Export_" + startDate + "_" + endDate + ".csv"
+	header := res.Header()
+	header.Set(echo.HeaderContentType, echo.MIMEOctetStream)
+	header.Set(echo.HeaderContentDisposition, "attachment; filename="+fileName)
+	header.Set("Content-Transfer-Encoding", "binary")
+	header.Set("Expires", "0")
+	res.WriteHeader(http.StatusOK)
+
+	if err = w.Write(headerCsv); err != nil {
+		return
+	}
+
+	for _, survey := range surveys {
+		surveyStartDate := survey.StartDate.String()
+		surveyEndDate := survey.EndDate.String()
+		surveyTeamName := survey.TeamName
+		surveyCode := survey.Code
+
+		for _, note := range survey.Notes {
+			line := []string{surveyStartDate, surveyEndDate, strconv.Itoa(note.Number), fmt.Sprintf("%g", note.Note), surveyCode, surveyTeamName}
+			if err = w.Write(line); err != nil {
+				return
+			}
+			w.Flush()
+		}
+
+	}
+
+	return
 }

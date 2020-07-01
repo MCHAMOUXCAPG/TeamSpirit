@@ -1,6 +1,8 @@
 package repositories
 
 import (
+	"time"
+
 	"capgemini.com/gorn/team-spirit/config"
 	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
@@ -8,6 +10,7 @@ import (
 
 type SurveyRepository interface {
 	GetSurvies() ([]*entities.Survey, error)
+	GetSurviesByPeriod(startDate string, endDate string) ([]*entities.Survey, error)
 	GetSurvey(surveyCode string) (*entities.Survey, error)
 	CreateSurvey(survey *entities.Survey) (*entities.Survey, error)
 	UpdateSurvey(surveyCode string, survey *entities.Survey) (*entities.Survey, error)
@@ -31,6 +34,17 @@ func (*SurveyRepo) GetSurvies() ([]*entities.Survey, error) {
 
 	var survies []*entities.Survey
 	config.DB.Preload("Notes").Find(&survies)
+
+	return survies, nil
+}
+
+func (*SurveyRepo) GetSurviesByPeriod(startDate string, endDate string) ([]*entities.Survey, error) {
+	layoutISO := "2006-01-02"
+	startD, _ := time.Parse(layoutISO, startDate)
+	endD, _ := time.Parse(layoutISO, endDate)
+	endD = endD.AddDate(0, 0, 1)
+	var survies []*entities.Survey
+	config.DB.Where("start_date >= ? AND start_date < ?", startD, endD).Or("end_date >= ? AND end_date < ?", startD, endD).Preload("Notes").Find(&survies)
 
 	return survies, nil
 }

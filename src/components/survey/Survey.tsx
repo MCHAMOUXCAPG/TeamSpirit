@@ -12,6 +12,8 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import AlertDialog from "../alertDialog/AlertDialog";
+import { v4 as uuidv4 } from "uuid";
+
 import colors from "../../config/colors";
 import NavBar from "../navBar/NavBar";
 import questions from "../../models/questions";
@@ -43,15 +45,24 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
   ]);
 
+  let uniqueId = undefined;
+  if (localStorage.getItem("uniqueIdTS")) {
+    uniqueId = localStorage.getItem("uniqueIdTS");
+  } else {
+    uniqueId = uuidv4();
+    localStorage.setItem("uniqueIdTS", uniqueId);
+  }
+  // get the uniqueId, if not exists, create a new one
+
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode },
-    { number: 2, note: 0, surveyCode: surveyCode },
-    { number: 3, note: 5, surveyCode: surveyCode },
-    { number: 4, note: 5, surveyCode: surveyCode },
-    { number: 5, note: 0, surveyCode: surveyCode },
-    { number: 6, note: 0, surveyCode: surveyCode },
+    { number: 1, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 2, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 3, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 4, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 5, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 6, note: 0, surveyCode: surveyCode, User: uniqueId },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([
@@ -78,7 +89,6 @@ const Survey = (props: any) => {
       .then((res) => {
         if ((res.status = 200)) {
           setSuccess(true);
-          setLoading(false);
         }
       })
       .catch((err) => {
@@ -88,12 +98,13 @@ const Survey = (props: any) => {
           alert(err.response.data.message);
         }
       });
+    setLoading(false);
   }
 
   useEffect(() => {
     let count = 0;
     const currentQuestionStatus = questionsState;
-    currentQuestionStatus.map((question: IQuestionStatus) => {
+    currentQuestionStatus.forEach((question: IQuestionStatus) => {
       question.status = "";
       if (question.valid) {
         count++;
@@ -114,7 +125,7 @@ const Survey = (props: any) => {
   const checkDisabled = () => {
     let count = 0;
     const currentQuestionStatus = questionsState;
-    currentQuestionStatus.map((question: IQuestionStatus) => {
+    currentQuestionStatus.forEach((question: IQuestionStatus) => {
       question.status = "";
       if (question.valid) {
         count++;

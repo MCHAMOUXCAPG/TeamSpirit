@@ -48,4 +48,12 @@ export class UserValidationService {
     const endPoint = "/login";
     return environment.post(endPoint, body);
   }
+  public getUser(token: string | null): Promise<any> {
+    const endPoint = "/me";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }

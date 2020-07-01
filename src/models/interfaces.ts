@@ -22,7 +22,7 @@ export interface IQuestionResponse {
   note: number;
   number: number;
   surveyCode: string;
-  User: string;
+  User: string | null;
 }
 
 export interface IValidationCode {

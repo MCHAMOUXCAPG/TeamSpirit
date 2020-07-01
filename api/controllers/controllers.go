@@ -30,10 +30,6 @@ func HandleResquests() {
 	// login
 	e.POST("/login", services.Login)
 
-	//aurveys
-	e.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
-	e.GET("/resultByQuestions/:teamName", services.GetHistoricSurveysByQuestions)
-
 	// Register
 	e.POST("/register", services.Register)
 
@@ -48,7 +44,7 @@ func HandleResquests() {
 	r.Use(middleware.JWTWithConfig(config))
 
 	// Get the connected user
-	e.GET("/me", services.CurrentUser)
+	r.GET("/me", services.CurrentUser)
 
 	// **** users routes *****
 	r.POST("/user/create", services.CreateUser)
@@ -66,14 +62,14 @@ func HandleResquests() {
 
 	// ***** Servies routes *****
 
-	e.GET("/survies", services.GetSurvies)
+	r.GET("/survies", services.GetSurvies)
 	r.GET("/survey/:surveyCode", services.GetSurvey)
 	r.POST("/survey/create", services.CreateSurvey)
 	r.PUT("/survey/:surveyCode", services.UpdateSurvey)
 	r.DELETE("/survey/:surveyCode", services.DeleteSurvey)
 	r.GET("/survey/result/:surveyCode", services.GetResultSurvey)
 	r.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
-
+	r.GET("/resultByQuestions/:teamName", services.GetHistoricSurveysByQuestions)
 	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 
 	// **** Teams routes *****

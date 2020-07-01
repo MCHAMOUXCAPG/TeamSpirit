@@ -33,9 +33,6 @@ func HandleResquests() {
 	// Register
 	e.POST("/register", services.Register)
 
-	// serve
-	e.Logger.Fatal(e.Start(":3000"))
-
 	// Guards Config
 	r := e.Group("")
 
@@ -71,6 +68,8 @@ func HandleResquests() {
 	r.PUT("/survey/:surveyCode", services.UpdateSurvey)
 	r.DELETE("/survey/:surveyCode", services.DeleteSurvey)
 	r.GET("/survey/result/:surveyCode", services.GetResultSurvey)
+	// Surveys CSV Export
+	r.GET("/survey/exportCsv", services.ExportSurveysCsv)
 
 	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 
@@ -81,6 +80,8 @@ func HandleResquests() {
 	r.PUT("/team/:teamName", services.UpdateTeam)
 	r.DELETE("/team/:teamName", services.DeleteTeam)
 
+	// serve
+	e.Logger.Fatal(e.Start(":3000"))
 }
 
 func helloWorld(c echo.Context) error {

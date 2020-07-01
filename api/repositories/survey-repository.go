@@ -100,7 +100,7 @@ func (*SurveyRepo) GetHistoricResult(teamName string) (float64, error) {
 
 func (*SurveyRepo) GetLastSurvey(teamName string) (*entities.Survey, error) {
 	var survey = &entities.Survey{}
-	config.DB.Where("end_date = ? ", config.DB.Table("surveys").Where("code LIKE ?", "%"+teamName+"%").Select("max(end_date)").SubQuery()).Preload("Notes").Find(&survey)
+	config.DB.Where("end_date = ? AND team_name = ?", config.DB.Table("surveys").Select("max(end_date)").Where("team_name = ?", teamName).SubQuery(), teamName).Preload("Notes").Find(&survey)
 	return survey, nil
 }
 

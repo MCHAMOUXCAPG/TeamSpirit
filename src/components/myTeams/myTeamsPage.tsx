@@ -27,7 +27,7 @@ const MyTeamsPage = () => {
           <Grid container spacing={3}>
             {context.myTeams.map((team) => {
               return (
-                <Grid item xs={3}>
+                <Grid item xs={4}>
                   <Paper
                     className="paper-card"
                     elevation={4}
@@ -49,8 +49,8 @@ const MyTeamsPage = () => {
                       <Grid item xs={12} className="team">
                         {team.Name}
                       </Grid>
-                      <Grid item xs={12}>
-                        <AverageChart loading={false} grade={7.92} />
+                      <Grid item xs={12} justify="flex-start">
+                        <AverageChart loading={false} grade={6.06} />
                       </Grid>
                     </Grid>
                   </Paper>

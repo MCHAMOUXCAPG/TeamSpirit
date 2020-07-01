@@ -14,7 +14,7 @@ import { AuthContext } from "../../context/auth";
 
 const TeamHomePage = () => {
   const context = useContext(AuthContext);
-  const surveyCode = "Test1";
+  const surveyCode = "SNCF-klmnp";
   const token = sessionStorage.getItem("token");
   const [currentDetailResultsUsers, setCurrentDetailResultsUsers] = useState<
     IResultsByUsers[]
@@ -60,7 +60,7 @@ const TeamHomePage = () => {
   }
   useEffect(() => {
     getResults(surveyCode, token);
-    getResultsByUser("GORN", token);
+    getResultsByUser(context.currentTeam, token);
   }, []);
 
   useEffect(() => {

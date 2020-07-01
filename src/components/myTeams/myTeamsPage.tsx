@@ -1,13 +1,18 @@
 import React, { useContext } from "react";
 import { Container, Paper, Grid } from "@material-ui/core";
+import { useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../../context/auth";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
 import "./myTeamPage.css";
 const MyTeamsPage = () => {
   const context = useContext(AuthContext);
-  function handleClick(props: any) {
-    alert("Team Name clicked " + props);
+  const navigate = useNavigate();
+  function handleClick(teamName: string) {
+    console.log(teamName);
+    context.setCurrentTeam(teamName);
+    navigate("/teamleader");
   }
   return (
     <>
@@ -27,7 +32,7 @@ const MyTeamsPage = () => {
           <Grid container spacing={3}>
             {context.myTeams.map((team) => {
               return (
-                <Grid item xs={3}>
+                <Grid item xs={12} md={4}>
                   <Paper
                     className="paper-card"
                     elevation={4}

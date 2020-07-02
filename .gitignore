@@ -6,7 +6,7 @@ test.db
 
 
 # GO files
-
+api/database.db
 # Binaries for programs and plugins
 *.exe
 *.exe~

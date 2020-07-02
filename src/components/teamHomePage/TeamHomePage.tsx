@@ -12,7 +12,7 @@ import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
 
 const TeamHomePage = () => {
-  const surveyCode = "Test1";
+  const surveyCode = "Test";
   const token = sessionStorage.getItem("token");
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
     ICurrentSurveyResult

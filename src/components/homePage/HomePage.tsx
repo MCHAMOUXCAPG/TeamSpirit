@@ -51,7 +51,7 @@ const HomePage = () => {
       .then((res) => {
         context.setValid(true);
         context.setSurveyCode(search);
-        navigate("/survey");
+        navigate("/teamleader");
         // if valid, you have access to survey
       })
       .catch((err) => {

@@ -20,6 +20,7 @@
   line-height: 49px;
   text-align: right;
   color: #ffffff;
+  left: -3vw;
 }
 
 .sentence {
@@ -33,13 +34,12 @@
   line-height: 28px;
   text-align: right;
   color: white;
+  left: -4.3vw;
+  top: -5vh;
 }
 
 #espacioHeader {
   height: 40vh;
-}
-#espacioTitle-Input {
-  height: 2vh;
 }
 
 @media all and (max-width: 1280px) {
@@ -69,10 +69,7 @@
   }
   .sentence {
     transform: scale(0.8);
-    left: 5vw;
-  }
-  #espacio {
-    height: 10vh;
+    left: 13vw;
   }
 }
 

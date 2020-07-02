@@ -8,10 +8,12 @@ import ExitPage from "./components/exitPage/ExitPage";
 import PrivateRoute from "./auth/PrivateRoute";
 import { AuthContext } from "./context/auth";
 import TeamHomePage from "./components/teamHomePage/TeamHomePage";
+import MyTeamsPage from "./components/myTeams/myTeamsPage";
 
 function App() {
-  const [valid, setValid] = useState(true);
-  const [token, setToken] = useState(""); // here put your token until we make the login page
+  const [valid, setValid] = useState(false);
+  const [myTeams, setMyTeams] = useState([{ Name: "" }]);
+  const [currentTeam, setCurrentTeam] = useState("");
   const [surveyCode, setSurveyCode] = useState("");
   //here we set the context variables, and provide the context to the hole APP
   return (
@@ -19,10 +21,12 @@ function App() {
       value={{
         valid: valid,
         setValid: setValid,
-        token: token,
-        setToken: setToken,
         surveyCode: surveyCode,
         setSurveyCode: setSurveyCode,
+        myTeams: myTeams,
+        setMyTeams: setMyTeams,
+        currentTeam: currentTeam,
+        setCurrentTeam: setCurrentTeam,
       }}
     >
       <Router>
@@ -38,6 +42,11 @@ function App() {
           <PrivateRoute
             path="/teamleader"
             element={<TeamHomePage />}
+            alternativePath="/"
+          />
+          <PrivateRoute
+            path="/myTeams"
+            element={<MyTeamsPage />}
             alternativePath="/"
           />
         </Routes>

@@ -22,6 +22,7 @@ export interface IQuestionResponse {
   note: number;
   number: number;
   surveyCode: string;
+  User: string | null;
 }
 
 export interface IValidationCode {
@@ -40,4 +41,14 @@ export interface ICurrentSurveyResult {
 export interface IValidationUser {
   Email: string;
   Password: string;
+}
+export interface IResultsByUsers {
+  Average: number;
+  Notes: { Number: number; Note: number; SurveyCode: string }[];
+  User: string;
+}
+export interface IResultsByQuestions {
+  Average: number;
+  Notes: { Note: number; User: string }[];
+  QuestionNumber: number;
 }

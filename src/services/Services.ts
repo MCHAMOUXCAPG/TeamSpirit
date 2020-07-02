@@ -25,6 +25,27 @@ export class SurveyService {
       },
     });
   }
+
+  public getResultByUser(teamName: string, token: string | null): Promise<any> {
+    const endPoint = "/resultByUsers/" + teamName;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
+  public getResultByQuestions(
+    teamName: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/resultByQuestions/" + teamName;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }
 
 export class CodeValidationService {
@@ -38,5 +59,13 @@ export class UserValidationService {
   public sendUser(body: IValidationUser): Promise<any> {
     const endPoint = "/login";
     return environment.post(endPoint, body);
+  }
+  public getUser(token: string | null): Promise<any> {
+    const endPoint = "/me";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
   }
 }

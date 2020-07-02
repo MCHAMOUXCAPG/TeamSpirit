@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useContext } from "react";
 import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
@@ -6,14 +6,27 @@ import AverageChart from "../averageChart/Chart";
 import "./TeamHomePage.css";
 import "../surveyStatus/SurveyStatus.css";
 import SurveyStatus from "../surveyStatus/SurveySatus";
-import { ICurrentSurveyResult } from "../../models/interfaces";
+import {
+  ICurrentSurveyResult,
+  IResultsByUsers,
+  IResultsByQuestions,
+} from "../../models/interfaces";
 import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
+import { AuthContext } from "../../context/auth";
 
 const TeamHomePage = () => {
-  const surveyCode = "Test";
+  const context = useContext(AuthContext);
+  const surveyCode = "SNCF-klmnp";
   const token = sessionStorage.getItem("token");
+  const [currentDetailResultsUsers, setCurrentDetailResultsUsers] = useState<
+    IResultsByUsers[]
+  >();
+  const [
+    currentDetailResultsQuestions,
+    setCurrentDetailResultsQuestions,
+  ] = useState<IResultsByQuestions[]>();
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
     ICurrentSurveyResult
   >({
@@ -41,9 +54,35 @@ const TeamHomePage = () => {
         console.log(err);
       });
   }
-
+  async function getResultsByUser(teamName: string, token: string | null) {
+    await surveyService
+      .getResultByUser(teamName, token)
+      .then((res) => {
+        setCurrentDetailResultsUsers(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   useEffect(() => {
     getResults(surveyCode, token);
+    getResultsByUser(context.currentTeam, token);
+  }, []);
+
+  async function getResultsByQuestion(teamName: string, token: string | null) {
+    await surveyService
+      .getResultByQuestions(teamName, token)
+      .then((res) => {
+        setCurrentDetailResultsQuestions(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  useEffect(() => {
+    getResults(surveyCode, token);
+    getResultsByUser(context.currentTeam, token);
+    getResultsByQuestion(context.currentTeam, token);
   }, []);
 
   useEffect(() => {
@@ -77,7 +116,7 @@ const TeamHomePage = () => {
           spacing={5}
         >
           <Grid item xs={12}>
-            <div className="team-name">Team Name</div>
+            <div className="team-name">{context.currentTeam}</div>
           </Grid>
           <Grid item xs={12} md={6}>
             <AverageChart
@@ -98,7 +137,10 @@ const TeamHomePage = () => {
             <ExportResult />
           </Grid>
           <Grid item xs={12}>
-            <DetailResults />
+            <DetailResults
+              usersResult={currentDetailResultsUsers}
+              questionsResult={currentDetailResultsQuestions}
+            />
           </Grid>
         </Grid>
       </Container>

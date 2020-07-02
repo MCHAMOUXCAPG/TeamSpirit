@@ -224,8 +224,12 @@ const Survey = (props: any) => {
             padding: 30,
             width: "100%",
             justifyContent: "center",
+            paddingTop: 0,
           }}
         >
+          <Grid item xs={12}>
+            <div className="team-name">{context.currentTeam}</div>
+          </Grid>
           {questions.map((question, index) => {
             return (
               <Grid

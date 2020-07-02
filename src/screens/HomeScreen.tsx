@@ -11,7 +11,6 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
-  BackHandler,
 } from "react-native";
 
 import colors from "../config/colors";
@@ -126,7 +125,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
               value={inputText}
               maxLength={10}
             />
-
             <TouchableOpacity onPress={submitHandler} style={styles.submit}>
               <Text style={styles.insideButton}>Start</Text>
             </TouchableOpacity>

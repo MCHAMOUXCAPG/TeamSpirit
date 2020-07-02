@@ -155,12 +155,12 @@ func hashAndSaltUser(notes []entities.Note) []entities.Note {
 // @Accept json
 // @Produce json
 // @Success 200 {object} dto.Result
-// @Router /survey/result/:surveyCode [get]
+// @Router /survey/result/:teamName [get]
 func GetResultSurvey(c echo.Context) error {
-	surveyCode := c.Param("surveyCode")
-	currentSurvey, _ := SurveyRepo.GetSurvey(surveyCode)
-	team, _ := TeamRepo.GetTeam(currentSurvey.TeamName)
-	return c.JSON(http.StatusOK, mapResult(team, currentSurvey))
+	teamName := c.Param("teamName")
+	lastSurvey, _ := SurveyRepo.GetLastSurvey(teamName)
+	team, _ := TeamRepo.GetTeam(lastSurvey.TeamName)
+	return c.JSON(http.StatusOK, mapResult(team, lastSurvey))
 }
 
 // @Summary Survey resultByQuestions

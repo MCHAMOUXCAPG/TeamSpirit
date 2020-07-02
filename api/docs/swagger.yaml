@@ -31,6 +31,17 @@ definitions:
         $ref: '#/definitions/dto.Period'
         type: object
     type: object
+  dto.ResultByQuestions:
+    properties:
+      average:
+        type: number
+      notes:
+        items:
+          $ref: '#/definitions/entities.Note'
+        type: array
+      questionNumber:
+        type: integer
+    type: object
   dto.ResultByUsers:
     properties:
       average:
@@ -44,14 +55,14 @@ definitions:
     type: object
   entities.Note:
     properties:
+      Number:
+        type: integer
+      SurveyCode:
+        type: string
       User:
         type: string
       note:
         type: number
-      number:
-        type: integer
-      surveyCode:
-        type: string
     type: object
   entities.Role:
     properties:
@@ -234,6 +245,23 @@ paths:
       summary: Register
       tags:
       - Authentication
+  /resultByQuestions/:teamName:
+    get:
+      consumes:
+      - application/json
+      description: returns the result survey grouped by users
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.ResultByQuestions'
+            type: array
+      summary: Survey resultByQuestions
+      tags:
+      - Survies
   /resultByUsers/:teamName:
     get:
       consumes:
@@ -492,7 +520,24 @@ paths:
       summary: Create a new survey
       tags:
       - Survies
-  /survey/result/:surveyCode:
+  /survey/exportCsv:
+    get:
+      description: returns surveys export on csv stream
+      parameters:
+      - description: start date
+        in: query
+        name: startDate
+        type: string
+      - description: end date
+        in: query
+        name: endDate
+        type: string
+      produces:
+      - application/octet-stream
+      summary: Surveys export
+      tags:
+      - Survies
+  /survey/result/:teamName:
     get:
       consumes:
       - application/json

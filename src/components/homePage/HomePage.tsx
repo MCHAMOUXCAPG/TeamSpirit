@@ -51,6 +51,7 @@ const HomePage = () => {
       .then((res) => {
         context.setValid(true);
         context.setSurveyCode(search);
+        context.setCurrentTeam(res.data.TeamName);
         navigate("/survey");
         // if valid, you have access to survey
       })

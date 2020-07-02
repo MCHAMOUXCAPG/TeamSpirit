@@ -1,14 +1,13 @@
-import React, { useContext } from "react";
+import React, { useContext, useState, useEffect } from "react";
 import { Container, Paper, Grid } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
-
 import { AuthContext } from "../../context/auth";
 import NavBar from "../navBar/NavBar";
-import AverageChart from "../averageChart/Chart";
 import "./myTeamPage.css";
+import MyTeamChart from "../myTeamChart/myTeamChart";
 const MyTeamsPage = () => {
-  const context = useContext(AuthContext);
   const navigate = useNavigate();
+  const context = useContext(AuthContext);
   function handleClick(teamName: string) {
     console.log(teamName);
     context.setCurrentTeam(teamName);
@@ -29,10 +28,10 @@ const MyTeamsPage = () => {
             <div className="team-name">My Teams</div>
           </Grid>
 
-          <Grid container spacing={3}>
+          <Grid container spacing={8}>
             {context.myTeams.map((team) => {
               return (
-                <Grid item xs={12} md={4}>
+                <Grid key={team.Name} item xs={12} md={6}>
                   <Paper
                     className="paper-card"
                     elevation={4}
@@ -45,19 +44,7 @@ const MyTeamsPage = () => {
                       handleClick(team.Name);
                     }}
                   >
-                    <Grid
-                      container
-                      direction="column"
-                      justify="center"
-                      alignItems="center"
-                    >
-                      <Grid item xs={12} className="team">
-                        {team.Name}
-                      </Grid>
-                      <Grid item xs={12} justify="flex-start">
-                        <AverageChart loading={false} grade={6.06} />
-                      </Grid>
-                    </Grid>
+                    <MyTeamChart teamName={team.Name} />
                   </Paper>
                 </Grid>
               );

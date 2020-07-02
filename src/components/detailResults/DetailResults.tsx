@@ -74,10 +74,10 @@ function DetailResults({
             <Grid item xs={12} id="inner-grid">
               {value === 0 && (
                 <>
-                  {usersResult.map((userResult) => {
+                  {usersResult.map((userResult, index) => {
                     return (
                       <ExpansionPanel
-                        key={userResult.User}
+                        key={index}
                         id="second-panel"
                         style={{ margin: "20px 20px" }}
                       >
@@ -93,9 +93,9 @@ function DetailResults({
                         </ExpansionPanelSummary>
                         <ExpansionPanelDetails>
                           <Grid container spacing={0}>
-                            {userResult.Notes.map((Note) => {
+                            {userResult.Notes.map((Note, index) => {
                               return (
-                                <Grid item xs={12} key={Note.Number}>
+                                <Grid item xs={12} key={index}>
                                   <p>
                                     Question {Note.Number}:&nbsp;{puntos}
                                     {parseFloat(Note.Note.toFixed(2))}
@@ -112,10 +112,10 @@ function DetailResults({
               )}
               {value === 1 && (
                 <>
-                  {questionsResult.map((questionResult) => {
+                  {questionsResult.map((questionResult, index) => {
                     return (
                       <ExpansionPanel
-                        key={questionResult.QuestionNumber}
+                        key={index}
                         id="second-panel"
                         style={{ margin: "20px 20px" }}
                       >
@@ -133,7 +133,7 @@ function DetailResults({
                           <Grid container spacing={0}>
                             {questionResult.Notes.map((Note, index) => {
                               return (
-                                <Grid item xs={12} key={Note.User}>
+                                <Grid item xs={12} key={index}>
                                   <p>
                                     User&nbsp;{index + 1}:{puntos}&nbsp;
                                     {parseFloat(Note.Note.toFixed(2))}

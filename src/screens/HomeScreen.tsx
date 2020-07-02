@@ -89,6 +89,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
                 Please, answer the following 6 questions. It will take you a
                 couple of minutes.
               </Text>
+
               <Text style={styles.textSentence2}>
                 But first, write the code of your team:
               </Text>

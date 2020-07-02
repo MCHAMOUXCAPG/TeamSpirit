@@ -4,6 +4,7 @@ import Swiper from "react-native-swiper";
 import Question from "./Question";
 import Colors from "../config/colors";
 import questions from "../models/questions";
+import { AntDesign } from "@expo/vector-icons";
 
 const SwiperComponent = (props: any) => {
   return (
@@ -44,8 +45,12 @@ const SwiperComponent = (props: any) => {
         />
       }
       dotColor={Colors.green}
-      nextButton={<Text style={styles.buttonRight}> {">"} </Text>}
-      prevButton={<Text style={styles.buttonLeft}> {"<"} </Text>}
+      nextButton={
+        <AntDesign name="rightcircle" style={styles.buttonRight} size={60} />
+      }
+      prevButton={
+        <AntDesign name="leftcircle" style={styles.buttonLeft} size={60} />
+      }
       buttonWrapperStyle={{
         backgroundColor: Colors.transparent,
         flexDirection: "row",
@@ -100,24 +105,14 @@ var styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonRight: {
-    color: Colors.white,
-    backgroundColor: Colors.primary,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    width: 30,
-    height: 30,
-    borderRadius: 20,
+    top: 10,
+    left: 30,
+    color: Colors.primary,
   },
   buttonLeft: {
-    color: Colors.white,
-    backgroundColor: Colors.primary,
-    textAlign: "center",
-    fontWeight: "bold",
-    fontSize: 20,
-    width: 30,
-    height: 30,
-    borderRadius: 20,
+    top: 10,
+    right: 30,
+    color: Colors.primary,
   },
 });
 

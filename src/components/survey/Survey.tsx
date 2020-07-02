@@ -33,6 +33,7 @@ const Survey = (props: any) => {
   const [slider1, setSlider1] = useState<number | number[]>(5);
   const [slider2, setSlider2] = useState<number | number[]>(5);
   const [success, setSuccess] = useState(false);
+  const [repeated, setRepeated] = useState(false);
   const [loading, setLoading] = useState(false);
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
@@ -94,8 +95,10 @@ const Survey = (props: any) => {
       .catch((err) => {
         if (err.request.status === 0) {
           alert("Please verify you have internet access!");
+        } else if (err.request.status === 406) {
+          setRepeated(true);
         } else {
-          alert(err.response.data.message);
+          alert(err.Error);
         }
       });
     setLoading(false);
@@ -472,6 +475,16 @@ const Survey = (props: any) => {
           clicked={() => {
             context.setValid(false);
             navigate("/success");
+          }}
+        />
+      )}
+      {repeated && (
+        <AlertDialog
+          text1="You have already sent the survey"
+          text2="Please, wait until the next sprint"
+          clicked={() => {
+            context.setValid(false);
+            navigate("/");
           }}
         />
       )}

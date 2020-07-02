@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
   TextInput,
@@ -11,6 +11,7 @@ import {
   ImageBackground,
   KeyboardAvoidingView,
   TouchableWithoutFeedback,
+  BackHandler,
 } from "react-native";
 
 import colors from "../config/colors";
@@ -20,6 +21,7 @@ import { IValidationCode } from "../models/interfaces";
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
+  const [keyboard, setKeyboard] = useState(false);
   const codeValidationService: CodeValidationService = new CodeValidationService();
 
   const resetInputHandler = () => {
@@ -60,52 +62,76 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 
   const submitHandler = () => {
     setLoading(true);
-    Keyboard.dismiss();
+    closeKeyboard();
     sendCode({ code: inputText });
   };
 
-  return (
-    <KeyboardAvoidingView style={styles.container}>
-      <TouchableWithoutFeedback onPress={Keyboard.dismiss}>
-        <View style={styles.container}>
-          <ImageBackground
-            source={require("../assets/homeBackground.png")}
-            style={styles.imgBackground}
-          >
-            {loading ? (
-              <View style={styles.activityIndicatorBackground}>
-                <ActivityIndicator
-                  size="large"
-                  color={colors.primary}
-                  style={styles.activityIndicator}
-                />
-              </View>
-            ) : null}
-            <View style={styles.contentAbove}>
-              <Text style={styles.title}>Welcome to Team Spirit Survey!</Text>
-            </View>
-            <View style={styles.contentBelow}>
-              <Text style={styles.textSentence1}>
-                Please, answer the following 6 questions. It will take you a
-                couple of minutes.
-              </Text>
-              <Text style={styles.textSentence2}>
-                But first, write the code of your team:
-              </Text>
-              <TextInput
-                style={styles.input}
-                placeholder="My project is..."
-                onChangeText={(inputText) => setInputText(inputText)}
-                value={inputText}
-                maxLength={10}
-              />
+  const openKeyboard = () => {
+    setKeyboard(true);
+  };
 
-              <TouchableOpacity onPress={submitHandler} style={styles.submit}>
-                <Text style={styles.insideButton}>Start</Text>
-              </TouchableOpacity>
+  const closeKeyboard = () => {
+    Keyboard.dismiss();
+    setKeyboard(false);
+  };
+
+  useEffect(() => {
+    const handleBackButtonClick = () => {
+      closeKeyboard();
+      return true;
+    };
+    const keyboardHandler = Keyboard.addListener(
+      "keyboardDidHide",
+      handleBackButtonClick
+    );
+    return () => keyboardHandler.remove();
+  }, []);
+
+  return (
+    <KeyboardAvoidingView
+      style={keyboard ? styles.container : styles.imgBackground}
+    >
+      <TouchableWithoutFeedback onPress={closeKeyboard}>
+        <ImageBackground
+          source={require("../assets/homeBackground.png")}
+          style={styles.imgBackground}
+        >
+          {loading ? (
+            <View style={styles.activityIndicatorBackground}>
+              <ActivityIndicator
+                size="large"
+                color={colors.primary}
+                style={styles.activityIndicator}
+              />
             </View>
-          </ImageBackground>
-        </View>
+          ) : null}
+          <View style={styles.contentAbove}>
+            <Text style={keyboard ? styles.title2 : styles.title}>
+              Welcome to Team Spirit Survey!
+            </Text>
+          </View>
+          <View style={styles.contentBelow}>
+            <Text style={styles.textSentence1}>
+              Please, answer the following 6 questions. It will take you a
+              couple of minutes.
+            </Text>
+            <Text style={styles.textSentence2}>
+              But first, write the code of your team:
+            </Text>
+            <TextInput
+              style={styles.input}
+              placeholder="My project is..."
+              onFocus={openKeyboard}
+              onChangeText={(inputText) => setInputText(inputText)}
+              value={inputText}
+              maxLength={10}
+            />
+
+            <TouchableOpacity onPress={submitHandler} style={styles.submit}>
+              <Text style={styles.insideButton}>Start</Text>
+            </TouchableOpacity>
+          </View>
+        </ImageBackground>
       </TouchableWithoutFeedback>
     </KeyboardAvoidingView>
   );
@@ -114,7 +140,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: colors.white,
+    backgroundColor: colors.primary,
   },
   contentAbove: {
     flex: 1,
@@ -138,6 +164,18 @@ const styles = StyleSheet.create({
     lineHeight: 23,
     textAlign: "center",
     color: colors.primary,
+  },
+  title2: {
+    position: "absolute",
+    width: "90%",
+    top: "50%",
+    fontFamily: "Roboto",
+    fontStyle: "normal",
+    fontWeight: "bold",
+    fontSize: 22,
+    lineHeight: 23,
+    textAlign: "center",
+    color: colors.white,
   },
   textSentence1: {
     width: "90%",

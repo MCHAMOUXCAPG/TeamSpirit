@@ -1,7 +1,9 @@
 package services
 
 import (
+	"crypto/sha256"
 	"encoding/csv"
+	"encoding/hex"
 	"encoding/json"
 	"fmt"
 	"math/rand"
@@ -15,6 +17,7 @@ import (
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 	"github.com/robfig/cron"
+	_ "golang.org/x/crypto/bcrypt"
 )
 
 var (
@@ -120,6 +123,8 @@ func AddNotesToSurvey(c echo.Context) error {
 
 	json.NewDecoder(c.Request().Body).Decode(&notes)
 
+	notes = hashAndSaltUser(notes)
+
 	survey, _ := SurveyRepo.GetSurvey(surveyCode)
 
 	survey.Notes = notes
@@ -127,6 +132,21 @@ func AddNotesToSurvey(c echo.Context) error {
 	SurveyRepo.UpdateSurvey(surveyCode, survey)
 
 	return c.JSON(http.StatusOK, survey)
+}
+
+func hashAndSaltUser(notes []entities.Note) []entities.Note {
+	var result []entities.Note
+
+	for _, note := range notes {
+		hash := sha256.Sum256([]byte(note.User))
+		hashSlice := hash[:]
+		hashToString := hex.EncodeToString(hashSlice)
+
+		note.User = hashToString
+		result = append(result, note)
+	}
+
+	return result
 }
 
 // @Summary Survey result

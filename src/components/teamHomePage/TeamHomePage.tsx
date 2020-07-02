@@ -18,7 +18,6 @@ import { AuthContext } from "../../context/auth";
 
 const TeamHomePage = () => {
   const context = useContext(AuthContext);
-  const surveyCode = "SNCF-klmnp";
   const token = sessionStorage.getItem("token");
   const [currentDetailResultsUsers, setCurrentDetailResultsUsers] = useState<
     IResultsByUsers[]
@@ -43,9 +42,9 @@ const TeamHomePage = () => {
 
   const surveyService: SurveyService = new SurveyService();
 
-  async function getResults(surveyCode: string, token: string | null) {
+  async function getResults(teamName: string, token: string | null) {
     await surveyService
-      .getCurrentResult(surveyCode, token)
+      .getCurrentResult(teamName, token)
       .then((res) => {
         setCurrentSurveyResult(res.data);
         setLoading(false);
@@ -64,10 +63,6 @@ const TeamHomePage = () => {
         console.log(err);
       });
   }
-  useEffect(() => {
-    getResults(surveyCode, token);
-    getResultsByUser(context.currentTeam, token);
-  }, []);
 
   async function getResultsByQuestion(teamName: string, token: string | null) {
     await surveyService
@@ -80,7 +75,7 @@ const TeamHomePage = () => {
       });
   }
   useEffect(() => {
-    getResults(surveyCode, token);
+    getResults(context.currentTeam, token);
     getResultsByUser(context.currentTeam, token);
     getResultsByQuestion(context.currentTeam, token);
   }, []);

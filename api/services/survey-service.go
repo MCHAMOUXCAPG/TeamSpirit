@@ -128,12 +128,7 @@ func AddNotesToSurvey(c echo.Context) error {
 	survey, _ := SurveyRepo.GetSurvey(surveyCode)
 
 	if isNotAllowedToVote(survey.Notes, notes) {
-		return c.JSON(http.StatusNotAcceptable, echo.Map{
-			"Status":   http.StatusNotAcceptable,
-			"Message":  "You cannot send your feedback two times",
-			"path":     "api/services/survey-service.go",
-			"function": "AddNotesToSurvey",
-		})
+		return c.JSON(http.StatusNotAcceptable, echo.Map{"Error": "You cannot send your feedback two times"})
 	}
 
 	survey.Notes = notes

@@ -12,11 +12,11 @@ Gorn TeamSpirit backend project in Go [Golang](https://golang.org/)
 - Install CompileDaemon with $ go get github.com/githubnemo/CompileDaemon
 - Download and install Visual studio code ( if it's not installed in your machine )
 - Install go plugin in your Visual studio code
-- Clone teamspirit project in your dev environment : $ git clone ....
+- Clone teamspirit project in your dev environment : $ git clone https://github.com/MCHAMOUXCAPG/TeamSpirit.git
 - Compile the project :
   $ cd teamspirit_project
   $ CompileDaemon
-- Run the project : $ packer.exe
+- Run the project : $ team-spirit.exe
 
 
 ## Build and Run
@@ -30,5 +30,5 @@ to build the .exe from source
 
 and run it with a double click or by cmd with
 ```
-./packer.exe
+./team-spirit.exe
 ```

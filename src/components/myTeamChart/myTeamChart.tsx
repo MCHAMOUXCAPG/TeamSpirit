@@ -1,12 +1,10 @@
-import React, { useContext, useState, useEffect } from "react";
-import { Container, Paper, Grid } from "@material-ui/core";
+import React, { useState, useEffect } from "react";
+import { Grid } from "@material-ui/core";
 import { SurveyService } from "../../services/Services";
 import AverageChart from "../averageChart/Chart";
 import { ICurrentSurveyResult } from "../../models/interfaces";
-import { AuthContext } from "../../context/auth";
 import Schedule from "@material-ui/icons/Schedule";
 const MyTeamChart = (props: any) => {
-  const context = useContext(AuthContext);
   const token = sessionStorage.getItem("token");
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
     ICurrentSurveyResult

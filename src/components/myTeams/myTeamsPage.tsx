@@ -1,4 +1,4 @@
-import React, { useContext, useState, useEffect } from "react";
+import React, { useContext } from "react";
 import { Container, Paper, Grid } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
@@ -9,7 +9,6 @@ const MyTeamsPage = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   function handleClick(teamName: string) {
-    console.log(teamName);
     context.setCurrentTeam(teamName);
     navigate("/teamleader");
   }

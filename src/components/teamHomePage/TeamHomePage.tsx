@@ -2,7 +2,6 @@ import React, { useState, useEffect, useContext } from "react";
 import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
-
 import "./TeamHomePage.css";
 import "../surveyStatus/SurveyStatus.css";
 import SurveyStatus from "../surveyStatus/SurveySatus";

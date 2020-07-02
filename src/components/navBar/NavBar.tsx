@@ -17,6 +17,9 @@ function NavBar({ user }: { user: boolean }) {
 
   const handleClickExit = () => {
     context.setValid(false);
+    context.setMyTeams([{ Name: "" }]);
+    context.setCurrentTeam("");
+    context.setSurveyCode("");
     navigate("/");
   };
 

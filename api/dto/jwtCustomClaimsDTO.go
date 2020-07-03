@@ -7,3 +7,13 @@ type JwtCustomClaims struct {
 	Password string `json:"Password"`
 	jwt.StandardClaims
 }
+
+type AuthResponse struct {
+	Token string
+}
+
+type RegisterDTO struct {
+	Email     string
+	Full_name string
+	Password  string
+}

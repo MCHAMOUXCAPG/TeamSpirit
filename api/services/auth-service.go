@@ -24,7 +24,7 @@ var (
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param Code body dto.Access true "string"
+// @Param accessDTO body dto.Access true "accessDTO"
 // @Success 200 {object} entities.Survey
 // @Router /access [post]
 func AccessToSurvey(c echo.Context) error {
@@ -75,9 +75,8 @@ func CurrentUser(c echo.Context) error {
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param Email body dto.JwtCustomClaims true "String"
-// @Param Password body dto.JwtCustomClaims true "String"
-// @Success 200 {object} dto.JwtCustomClaims
+// @Param JwtCustomClaims body dto.JwtCustomClaims true "JwtCustomClaims"
+// @Success 200 {object} dto.AuthResponse
 // @Router /login [post]
 func Login(c echo.Context) error {
 
@@ -116,10 +115,7 @@ func Login(c echo.Context) error {
 // @Tags Authentication
 // @Accept json
 // @Produce json
-// @Param Full-name body entities.User true "string"
-// @Param Email body entities.User true "string"
-// @Param Password body entities.User true "string"
-// @Param Phone body entities.User true "int"
+// @Param RegisterDTO body dto.RegisterDTO true "RegisterDTO"
 // @Success 200 {object} entities.User
 // @Router /register [post]
 func Register(c echo.Context) error {

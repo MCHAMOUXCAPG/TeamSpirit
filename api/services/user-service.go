@@ -20,7 +20,7 @@ var (
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Success 200 {object} entities.User
+// @Success 200 {object} []entities.User
 // @Router /users [Get]
 func GetUsers(c echo.Context) error {
 
@@ -33,6 +33,7 @@ func GetUsers(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Produce json
+// @Param id path string true "id"
 // @Success 200 {object} entities.User
 // @Router /user/:id [Get]
 func GetUser(c echo.Context) error {
@@ -47,9 +48,7 @@ func GetUser(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param Full_name body entities.User true "String"
-// @Param Email body entities.User true "String"
-// @Param Password body entities.User true "String"
+// @Param UserDTO body dto.UserDTO true "UserDTO"
 // @Success 200 {object} entities.User
 // @Router /user/create [post]
 func CreateUser(c echo.Context) error {
@@ -66,9 +65,8 @@ func CreateUser(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param Full_name body entities.User true "String"
-// @Param Email body entities.User true "String"
-// @Param Password body entities.User true "String"
+// @Param id path string true "id"
+// @Param UserDTO body dto.UserDTO true "UserDTO"
 // @Success 200 {object} entities.User
 // @Router /user/:id [put]
 func UpdateUser(c echo.Context) error {
@@ -86,6 +84,7 @@ func UpdateUser(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Produce json
+// @Param id path string true "id"
 // @Success 200 {object} entities.User
 // @Router /user/:id [delete]
 func DeleteUser(c echo.Context) error {

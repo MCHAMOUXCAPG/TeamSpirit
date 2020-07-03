@@ -46,10 +46,10 @@ const SwiperComponent = (props: any) => {
       }
       dotColor={Colors.green}
       nextButton={
-        <AntDesign name="rightcircle" style={styles.buttonRight} size={60} />
+        <AntDesign name="rightcircle" style={styles.buttonRight} size={45} />
       }
       prevButton={
-        <AntDesign name="leftcircle" style={styles.buttonLeft} size={60} />
+        <AntDesign name="leftcircle" style={styles.buttonLeft} size={45} />
       }
       buttonWrapperStyle={{
         backgroundColor: Colors.transparent,
@@ -58,7 +58,7 @@ const SwiperComponent = (props: any) => {
         top: 210,
         left: 0,
         flex: 1,
-        paddingHorizontal: 80,
+        paddingHorizontal: 60,
         paddingVertical: 10,
         justifyContent: "space-between",
         alignItems: "center",
@@ -105,12 +105,12 @@ var styles = StyleSheet.create({
   },
   buttonRight: {
     top: 10,
-    left: 30,
+    left: 15,
     color: Colors.primary,
   },
   buttonLeft: {
     top: 10,
-    right: 30,
+    right: 15,
     color: Colors.primary,
   },
 });

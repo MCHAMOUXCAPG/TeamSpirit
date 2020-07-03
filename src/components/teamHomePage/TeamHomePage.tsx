@@ -125,6 +125,7 @@ const TeamHomePage = () => {
               completed={currentSurveyResult.Completed}
               currentResult={currentSurveyResult.CurrentResult}
               historicResult={currentSurveyResult.HistoricResult}
+              teamName={context.currentTeam}
             />
           </Grid>
           <Grid item xs={12}>

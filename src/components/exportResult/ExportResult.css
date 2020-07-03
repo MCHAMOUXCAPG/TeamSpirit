@@ -22,9 +22,49 @@
   left: 39%;
 }
 
-.formControl {
-  width: 100%;
+.bt {
+  width: 80%;
+  border-radius: 25px !important;
+  font-size: 1em !important;
+  text-transform: none !important;
+  top: -15%;
+  position: relative;
+  left: 80px;
 }
 
-#prueba {
+.btn-containe {
+  background-color: #79c0c6 !important;
+  color: #ffffff !important;
+  border-color: #79c0c6 !important;
+}
+
+.grid-content {
+  margin-top: 6%;
+  margin-bottom: 5%;
+  left: 10%;
+  position: relative;
+}
+
+.text {
+  color: #79c0c6;
+  font-family: "Roboto";
+  font-size: 16;
+  margin-left: 40px;
+  margin-top: -2%;
+  position: relative;
+}
+
+#p-position {
+  margin-left: 60px;
+}
+
+.info-text {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: center;
+  color: #919191;
+  margin-left: 35%;
 }

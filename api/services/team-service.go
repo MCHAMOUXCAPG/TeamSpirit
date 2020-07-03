@@ -19,11 +19,7 @@ var (
 // @Tags Teams
 // @Accept json
 // @Produce json
-// @Param Name body entities.Team true "String"
-// @Param Num_members body entities.Team true "int"
-// @Param Frequency body entities.Team true "int"
-// @Param StartDate body entities.Team true "Date"
-// @Success 200 {object} entities.Team
+// @Success 200 {object} []entities.Team
 // @Router /teams [Get]
 func GetTeams(c echo.Context) error {
 
@@ -36,6 +32,7 @@ func GetTeams(c echo.Context) error {
 // @Tags Teams
 // @Accept json
 // @Produce json
+// @Param teamName path string true "Team name"
 // @Success 200 {object} entities.Team
 // @Router /team/:teamName [Get]
 func GetTeam(c echo.Context) error {
@@ -50,10 +47,7 @@ func GetTeam(c echo.Context) error {
 // @Tags Teams
 // @Accept json
 // @Produce json
-// @Param Name body entities.Team true "String"
-// @Param Num_members body entities.Team true "int"
-// @Param Frequency body entities.Team true "int"
-// @Param StartDate body entities.Team true "Date"
+// @Param TeamDTO body dto.TeamDTO true "TeamDTO"
 // @Success 200 {object} entities.Team
 // @Router /team/create [post]
 func CreateTeam(c echo.Context) error {
@@ -70,10 +64,8 @@ func CreateTeam(c echo.Context) error {
 // @Tags Teams
 // @Accept json
 // @Produce json
-// @Param Name body entities.Team true "String"
-// @Param Num_members body entities.Team true "int"
-// @Param Frequency body entities.Team true "int"
-// @Param StartDate body entities.Team true "Date"
+// @Param teamName path string true "Team name"
+// @Param TeamDTO body dto.TeamDTO true "TeamDTO"
 // @Success 200 {object} entities.Team
 // @Router /team/:teamName [put]
 func UpdateTeam(c echo.Context) error {
@@ -91,6 +83,7 @@ func UpdateTeam(c echo.Context) error {
 // @Tags Teams
 // @Accept json
 // @Produce json
+// @Param teamName path string true "Team name"
 // @Success 200 {object} entities.Team
 // @Router /team/:teamName [delete]
 func DeleteTeam(c echo.Context) error {

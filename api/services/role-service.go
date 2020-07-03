@@ -20,7 +20,7 @@ var (
 // @Tags Roles
 // @Accept json
 // @Produce json
-// @Success 200 {object} entities.Role
+// @Success 200 {object} []entities.Role
 // @Router /roles [Get]
 func GetRoles(c echo.Context) error {
 
@@ -33,6 +33,7 @@ func GetRoles(c echo.Context) error {
 // @Tags Roles
 // @Accept json
 // @Produce json
+// @Param id path string true "id"
 // @Success 200 {object} entities.Role
 // @Router /role/:id [Get]
 func GetRole(c echo.Context) error {
@@ -47,8 +48,7 @@ func GetRole(c echo.Context) error {
 // @Tags Roles
 // @Accept json
 // @Produce json
-// @Param Name body entities.Role true "String"
-// @Param UserID body entities.Role true "int"
+// @Param RoleDTO body entities.Role true "RoleDTO"
 // @Success 200 {object} entities.Role
 // @Router /role/create [post]
 func CreateRole(c echo.Context) error {
@@ -65,8 +65,8 @@ func CreateRole(c echo.Context) error {
 // @Tags Roles
 // @Accept json
 // @Produce json
-// @Param Name body entities.Role true "String"
-// @Param UserID body entities.Role true "int"
+// @Param id path string true "id"
+// @Param RoleDTO body entities.Role true "RoleDTO"
 // @Success 200 {object} entities.Role
 // @Router /role/:id [put]
 func UpdateRole(c echo.Context) error {
@@ -84,6 +84,7 @@ func UpdateRole(c echo.Context) error {
 // @Tags Roles
 // @Accept json
 // @Produce json
+// @Param id path string true "id"
 // @Success 200 {object} entities.Role
 // @Router /role/:id [delete]
 func DeleteRole(c echo.Context) error {

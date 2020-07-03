@@ -29,7 +29,7 @@ var (
 // @Tags Survies
 // @Accept json
 // @Produce json
-// @Success 200 {object} entities.Survey
+// @Success 200 {object} []entities.Survey
 // @Router /survies [Get]
 func GetSurvies(c echo.Context) error {
 
@@ -42,6 +42,7 @@ func GetSurvies(c echo.Context) error {
 // @Tags Survies
 // @Accept json
 // @Produce json
+// @Param surveyCode path string true "survey Code"
 // @Success 200 {object} entities.Survey
 // @Router /survey/:surveyCode [Get]
 func GetSurvey(c echo.Context) error {
@@ -56,10 +57,7 @@ func GetSurvey(c echo.Context) error {
 // @Tags Survies
 // @Accept json
 // @Produce json
-// @Param StartDate body entities.Survey true "Date"
-// @Param EndDate body entities.Survey true "Date"
-// @Param Code body entities.Survey true "String"
-// @Param TeamName body entities.Survey true "String"
+// @Param SurveyDTO body dto.SurveyDTO true "SurveyDTO"
 // @Success 200 {object} entities.Survey
 // @Router /survey/create [post]
 func CreateSurvey(c echo.Context) error {
@@ -76,10 +74,8 @@ func CreateSurvey(c echo.Context) error {
 // @Tags Survies
 // @Accept json
 // @Produce json
-// @Param StartDate body entities.Survey true "Date"
-// @Param EndDate body entities.Survey true "Date"
-// @Param Code body entities.Survey true "String"
-// @Param TeamName body entities.Survey true "String"
+// @Param surveyCode path string true "survey Code"
+// @Param SurveyDTO body dto.SurveyDTO true "SurveyDTO"
 // @Success 200 {object} entities.Survey
 // @Router /survey/:surveyCode [put]
 func UpdateSurvey(c echo.Context) error {
@@ -97,6 +93,7 @@ func UpdateSurvey(c echo.Context) error {
 // @Tags Survies
 // @Accept json
 // @Produce json
+// @Param surveyCode path string true "survey Code"
 // @Success 200 {object} entities.Survey
 // @Router /survey/:surveyCode [delete]
 func DeleteSurvey(c echo.Context) error {
@@ -111,9 +108,8 @@ func DeleteSurvey(c echo.Context) error {
 // @Tags Survies
 // @Accept json
 // @Produce json
-// @Param Number body entities.Note true "int"
-// @Param Note body entities.Note true "int"
-// @Param surveyCode body entities.Note true "string"
+// @Param surveyCode path string true "survey Code"
+// @Param []Notes body []entities.Note true "[]Notes"
 // @Success 200 {object} entities.Survey
 // @Router /survey/:surveyCode/addNotes [post]
 func AddNotesToSurvey(c echo.Context) error {
@@ -166,6 +162,7 @@ func hashAndSaltUser(notes []entities.Note) []entities.Note {
 // @Tags Survies
 // @Accept json
 // @Produce json
+// @Param teamName path string true "Team name"
 // @Success 200 {object} dto.Result
 // @Router /survey/result/:teamName [get]
 func GetResultSurvey(c echo.Context) error {
@@ -180,6 +177,7 @@ func GetResultSurvey(c echo.Context) error {
 // @Tags Survies
 // @Accept json
 // @Produce json
+// @Param teamName path string true "Team name"
 // @Success 200 {object} []dto.ResultByQuestions
 // @Router /resultByQuestions/:teamName [get]
 func GetHistoricSurveysByQuestions(c echo.Context) error {
@@ -208,6 +206,7 @@ func mapQuestionNotes(notes []*dto.ResultByQuestions, surveyCode string) []*dto.
 // @Tags Survies
 // @Accept json
 // @Produce json
+// @Param teamName path string true "Team name"
 // @Success 200 {object} []dto.ResultByUsers
 // @Router /resultByUsers/:teamName [get]
 func GetHistoricSurveysByusers(c echo.Context) error {

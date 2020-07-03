@@ -48,8 +48,8 @@ var doc = `{
                 "summary": "Access to survey",
                 "parameters": [
                     {
-                        "description": "string",
-                        "name": "Code",
+                        "description": "accessDTO",
+                        "name": "accessDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -82,17 +82,8 @@ var doc = `{
                 "summary": "Login",
                 "parameters": [
                     {
-                        "description": "String",
-                        "name": "Email",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/dto.JwtCustomClaims"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "Password",
+                        "description": "JwtCustomClaims",
+                        "name": "JwtCustomClaims",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -104,7 +95,7 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/dto.JwtCustomClaims"
+                            "$ref": "#/definitions/dto.AuthResponse"
                         }
                     }
                 }
@@ -148,39 +139,12 @@ var doc = `{
                 "summary": "Register",
                 "parameters": [
                     {
-                        "description": "string",
-                        "name": "Full-name",
+                        "description": "RegisterDTO",
+                        "name": "RegisterDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.User"
-                        }
-                    },
-                    {
-                        "description": "string",
-                        "name": "Email",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.User"
-                        }
-                    },
-                    {
-                        "description": "string",
-                        "name": "Password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.User"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "Phone",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.User"
+                            "$ref": "#/definitions/dto.RegisterDTO"
                         }
                     }
                 ],
@@ -207,6 +171,15 @@ var doc = `{
                     "Survies"
                 ],
                 "summary": "Survey resultByQuestions",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -233,6 +206,15 @@ var doc = `{
                     "Survies"
                 ],
                 "summary": "Survey resultByUsers",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -259,6 +241,15 @@ var doc = `{
                     "Roles"
                 ],
                 "summary": "Get one role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -282,17 +273,15 @@ var doc = `{
                 "summary": "Update a new role",
                 "parameters": [
                     {
-                        "description": "String",
-                        "name": "Name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Role"
-                        }
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     },
                     {
-                        "description": "int",
-                        "name": "UserID",
+                        "description": "RoleDTO",
+                        "name": "RoleDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -321,6 +310,15 @@ var doc = `{
                     "Roles"
                 ],
                 "summary": "Delete a role",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -346,17 +344,8 @@ var doc = `{
                 "summary": "Create a new role",
                 "parameters": [
                     {
-                        "description": "String",
-                        "name": "Name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Role"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "UserID",
+                        "description": "RoleDTO",
+                        "name": "RoleDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
@@ -391,7 +380,10 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entities.Role"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Role"
+                            }
                         }
                     }
                 }
@@ -410,6 +402,15 @@ var doc = `{
                     "Survies"
                 ],
                 "summary": "Get survey by it code",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "survey Code",
+                        "name": "surveyCode",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -433,39 +434,19 @@ var doc = `{
                 "summary": "Update a survey",
                 "parameters": [
                     {
-                        "description": "Date",
-                        "name": "StartDate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Survey"
-                        }
+                        "type": "string",
+                        "description": "survey Code",
+                        "name": "surveyCode",
+                        "in": "path",
+                        "required": true
                     },
                     {
-                        "description": "Date",
-                        "name": "EndDate",
+                        "description": "SurveyDTO",
+                        "name": "SurveyDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.Survey"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "Code",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Survey"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "TeamName",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Survey"
+                            "$ref": "#/definitions/dto.SurveyDTO"
                         }
                     }
                 ],
@@ -490,6 +471,15 @@ var doc = `{
                     "Survies"
                 ],
                 "summary": "Delete a survey",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "survey Code",
+                        "name": "surveyCode",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -515,30 +505,22 @@ var doc = `{
                 "summary": "Add notes to survey",
                 "parameters": [
                     {
-                        "description": "int",
-                        "name": "Number",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Note"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "Note",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Note"
-                        }
-                    },
-                    {
-                        "description": "string",
+                        "type": "string",
+                        "description": "survey Code",
                         "name": "surveyCode",
+                        "in": "path",
+                        "required": true
+                    },
+                    {
+                        "description": "[]Notes",
+                        "name": "[]Notes",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.Note"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Note"
+                            }
                         }
                     }
                 ],
@@ -567,39 +549,12 @@ var doc = `{
                 "summary": "Create a new survey",
                 "parameters": [
                     {
-                        "description": "Date",
-                        "name": "StartDate",
+                        "description": "SurveyDTO",
+                        "name": "SurveyDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.Survey"
-                        }
-                    },
-                    {
-                        "description": "Date",
-                        "name": "EndDate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Survey"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "Code",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Survey"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "TeamName",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Survey"
+                            "$ref": "#/definitions/dto.SurveyDTO"
                         }
                     }
                 ],
@@ -652,6 +607,15 @@ var doc = `{
                     "Survies"
                 ],
                 "summary": "Survey result",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -679,7 +643,10 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entities.Survey"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Survey"
+                            }
                         }
                     }
                 }
@@ -698,6 +665,15 @@ var doc = `{
                     "Teams"
                 ],
                 "summary": "Get one team",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -721,39 +697,19 @@ var doc = `{
                 "summary": "Update a team",
                 "parameters": [
                     {
-                        "description": "String",
-                        "name": "Name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
                     },
                     {
-                        "description": "int",
-                        "name": "Num_members",
+                        "description": "TeamDTO",
+                        "name": "TeamDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "Frequency",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "Date",
-                        "name": "StartDate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
+                            "$ref": "#/definitions/dto.TeamDTO"
                         }
                     }
                 ],
@@ -778,6 +734,15 @@ var doc = `{
                     "Teams"
                 ],
                 "summary": "Update a team",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -803,39 +768,12 @@ var doc = `{
                 "summary": "Create a new team",
                 "parameters": [
                     {
-                        "description": "String",
-                        "name": "Name",
+                        "description": "TeamDTO",
+                        "name": "TeamDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "Num_members",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "Frequency",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "Date",
-                        "name": "StartDate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
+                            "$ref": "#/definitions/dto.TeamDTO"
                         }
                     }
                 ],
@@ -862,49 +800,14 @@ var doc = `{
                     "Teams"
                 ],
                 "summary": "Get all teams",
-                "parameters": [
-                    {
-                        "description": "String",
-                        "name": "Name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "Num_members",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "int",
-                        "name": "Frequency",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    },
-                    {
-                        "description": "Date",
-                        "name": "StartDate",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.Team"
-                        }
-                    }
-                ],
                 "responses": {
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entities.Team"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.Team"
+                            }
                         }
                     }
                 }
@@ -923,6 +826,15 @@ var doc = `{
                     "Users"
                 ],
                 "summary": "Get one users",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -946,30 +858,19 @@ var doc = `{
                 "summary": "Update a new user",
                 "parameters": [
                     {
-                        "description": "String",
-                        "name": "Full_name",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.User"
-                        }
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
                     },
                     {
-                        "description": "String",
-                        "name": "Email",
+                        "description": "UserDTO",
+                        "name": "UserDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.User"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "Password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.User"
+                            "$ref": "#/definitions/dto.UserDTO"
                         }
                     }
                 ],
@@ -994,6 +895,15 @@ var doc = `{
                     "Users"
                 ],
                 "summary": "Delete a user",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "id",
+                        "name": "id",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -1019,30 +929,12 @@ var doc = `{
                 "summary": "Create a new user",
                 "parameters": [
                     {
-                        "description": "String",
-                        "name": "Full_name",
+                        "description": "UserDTO",
+                        "name": "UserDTO",
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/entities.User"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "Email",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.User"
-                        }
-                    },
-                    {
-                        "description": "String",
-                        "name": "Password",
-                        "in": "body",
-                        "required": true,
-                        "schema": {
-                            "$ref": "#/definitions/entities.User"
+                            "$ref": "#/definitions/dto.UserDTO"
                         }
                     }
                 ],
@@ -1073,7 +965,10 @@ var doc = `{
                     "200": {
                         "description": "OK",
                         "schema": {
-                            "$ref": "#/definitions/entities.User"
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/entities.User"
+                            }
                         }
                     }
                 }
@@ -1085,6 +980,14 @@ var doc = `{
             "type": "object",
             "properties": {
                 "code": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.AuthResponse": {
+            "type": "object",
+            "properties": {
+                "token": {
                     "type": "string"
                 }
             }
@@ -1107,6 +1010,20 @@ var doc = `{
                     "type": "string"
                 },
                 "startDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.RegisterDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }
@@ -1159,6 +1076,54 @@ var doc = `{
                     }
                 },
                 "user": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.SurveyDTO": {
+            "type": "object",
+            "properties": {
+                "code": {
+                    "type": "string"
+                },
+                "endDate": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "teamName": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.TeamDTO": {
+            "type": "object",
+            "properties": {
+                "frequency": {
+                    "type": "integer"
+                },
+                "name": {
+                    "type": "string"
+                },
+                "num_mumbers": {
+                    "type": "integer"
+                },
+                "startDate": {
+                    "type": "string"
+                }
+            }
+        },
+        "dto.UserDTO": {
+            "type": "object",
+            "properties": {
+                "email": {
+                    "type": "string"
+                },
+                "full_name": {
+                    "type": "string"
+                },
+                "password": {
                     "type": "string"
                 }
             }

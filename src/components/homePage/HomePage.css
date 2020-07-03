@@ -16,7 +16,8 @@
   margin-top: 35vh;
 }
 
-#outlined-required {
+#outlined-required,
+#outlined-required-2 {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;

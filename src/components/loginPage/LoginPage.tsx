@@ -164,7 +164,7 @@ const LoginPage = () => {
                           required
                           error={Err}
                           className={classes.root}
-                          id="outlined-required"
+                          id="outlined-required-2"
                           variant="outlined"
                           placeholder="Password"
                           type="password"

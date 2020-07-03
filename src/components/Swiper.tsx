@@ -9,7 +9,7 @@ import { AntDesign } from "@expo/vector-icons";
 const SwiperComponent = (props: any) => {
   return (
     <Swiper
-      style={{ ...styles.wrapper, ...props.style }}
+      style={{ ...props.style }}
       showsButtons
       loop={false}
       dot={
@@ -93,7 +93,6 @@ const SwiperComponent = (props: any) => {
 };
 
 var styles = StyleSheet.create({
-  wrapper: {},
   slide: {
     flex: 1,
     justifyContent: "center",

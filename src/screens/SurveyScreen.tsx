@@ -39,7 +39,9 @@ const SurveyScreen = ({
       .sendSurvey(surveyCode, body)
       .then((res) => {
         if ((res.status = 200)) {
-          navigation.navigate("SuccessScreen");
+          navigation.navigate("FinalScreen", {
+            message: "Thank you for submitting your answers!",
+          });
         }
       })
       .catch((err) => {
@@ -51,6 +53,10 @@ const SurveyScreen = ({
             [{ text: "Ok", style: "cancel" }],
             { cancelable: false }
           );
+        } else if (err.request.status == 406) {
+          navigation.navigate("FinalScreen", {
+            message: "You have already filled in a survey for this sprint!",
+          });
         } else {
           Alert.alert(
             "Oops!",

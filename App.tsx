@@ -4,7 +4,7 @@ import { createStackNavigator } from "@react-navigation/stack";
 
 import HomeScreen from "./src/screens/HomeScreen";
 import SurveyScreen from "./src/screens/SurveyScreen";
-import SuccessScreen from "./src/screens/SuccessScreen";
+import FinalScreen from "./src/screens/FinalScreen";
 
 export default function App() {
   const Stack = createStackNavigator();
@@ -17,7 +17,7 @@ export default function App() {
       >
         <Stack.Screen name="HomeScreen" component={HomeScreen} />
         <Stack.Screen name="SurveyScreen" component={SurveyScreen} />
-        <Stack.Screen name="SuccessScreen" component={SuccessScreen} />
+        <Stack.Screen name="FinalScreen" component={FinalScreen} />
       </Stack.Navigator>
     </NavigationContainer>
   );

@@ -9,7 +9,9 @@ import {
 
 import colors from "../config/colors";
 
-const SucessScreen = () => {
+const FinalScreen = ({ route }) => {
+  const { message } = route.params;
+
   useEffect(() => {
     const backAction = () => {
       BackHandler.exitApp();
@@ -27,9 +29,7 @@ const SucessScreen = () => {
         source={require("../assets/homeBackground.png")}
         style={styles.imgBackground}
       >
-        <Text style={styles.message}>
-          Thank you for submitting your answers!
-        </Text>
+        <Text style={styles.message}>{message}</Text>
       </ImageBackground>
     </View>
   );
@@ -64,4 +64,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SucessScreen;
+export default FinalScreen;

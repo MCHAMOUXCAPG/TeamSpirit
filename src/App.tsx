@@ -9,6 +9,7 @@ import PrivateRoute from "./auth/PrivateRoute";
 import { AuthContext } from "./context/auth";
 import TeamHomePage from "./components/teamHomePage/TeamHomePage";
 import MyTeamsPage from "./components/myTeams/myTeamsPage";
+import NoTeamPage from "./components/noTeamPage/NoTeamPage";
 
 function App() {
   const [valid, setValid] = useState(false);
@@ -47,6 +48,11 @@ function App() {
           <PrivateRoute
             path="/myTeams"
             element={<MyTeamsPage />}
+            alternativePath="/"
+          />
+          <PrivateRoute
+            path="/noTeam"
+            element={<NoTeamPage />}
             alternativePath="/"
           />
         </Routes>

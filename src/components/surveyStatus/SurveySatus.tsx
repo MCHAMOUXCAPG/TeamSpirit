@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import Paper from "@material-ui/core/Paper";
+import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
 import Button from "@material-ui/core/Button";
 import Settings from "@material-ui/icons/Settings";
@@ -59,6 +60,7 @@ function SurveyStatus({
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
   };
+  const classes = useStyles();
   return (
     <div>
       <Paper variant="outlined" className="paper">
@@ -149,6 +151,8 @@ function SurveyStatus({
                       <DialogTitle id="form-dialog-title">
                         Configure {teamName}
                       </DialogTitle>
+
+                      <br />
                       <DialogContent>
                         <DialogContentText>
                           Sprint length(total days-p.ex: 14 for 2 weeks sprint)
@@ -159,29 +163,25 @@ function SurveyStatus({
                           id="sprint-length"
                           fullWidth
                           variant="outlined"
+                          className={classes.root}
                         />
                         <br />
                         <br />
                         <DialogContentText>
                           First Sprint Start
                         </DialogContentText>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <Grid container justify="space-around">
-                            <KeyboardDatePicker
-                              disableToolbar
-                              variant="inline"
-                              fullWidth
-                              format="MM/dd/yyyy"
-                              margin="normal"
-                              id="date-picker-inline"
-                              value={selectedDate}
-                              onChange={handleDateChange}
-                              KeyboardButtonProps={{
-                                "aria-label": "change date",
-                              }}
-                            />
-                          </Grid>
-                        </MuiPickersUtilsProvider>
+                        <TextField
+                          id="date"
+                          type="date"
+                          fullWidth
+                          variant="outlined"
+                          defaultValue="2017-05-24"
+                          className={classes.root}
+                          InputLabelProps={{
+                            shrink: true,
+                          }}
+                        />
+                        <br />
                         <br />
                         <DialogContentText>
                           Number of members to vote
@@ -191,6 +191,7 @@ function SurveyStatus({
                           id="members-numbers"
                           fullWidth
                           variant="outlined"
+                          className={classes.root}
                         />
                       </DialogContent>
                       <DialogActions>
@@ -212,5 +213,21 @@ function SurveyStatus({
     </div>
   );
 }
-
+const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "& .MuiOutlinedInput-root": {
+        "& fieldset": {
+          borderColor: "#91919100",
+        },
+        "&:hover fieldset": {
+          borderColor: "#91919100",
+        },
+        "&.Mui-focused fieldset": {
+          borderColor: "#91919100",
+        },
+      },
+    },
+  })
+);
 export default SurveyStatus;

@@ -170,7 +170,9 @@ const SurveyScreen = ({
             />
           </View>
         ) : null}
-        <Text style={styles.project}>{projectName}</Text>
+        <View style={styles.projectView}>
+          <Text style={styles.project}>{projectName}</Text>
+        </View>
         <View style={styles.swiper}>
           <SwiperComponent
             activeIcon={activeIcon}
@@ -205,16 +207,19 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   project: {
-    flex: 0.1,
-    right: "37%",
     bottom: "5%",
     color: colors.primary,
     fontSize: 20,
     fontWeight: "bold",
   },
+  projectView: {
+    position: "absolute",
+    left: 25,
+    top: 40,
+  },
   swiper: {
     flex: 0.7,
-    bottom: "16%",
+    bottom: "12%",
   },
   circle: {
     alignItems: "center",

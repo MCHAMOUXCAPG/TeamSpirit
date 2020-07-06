@@ -207,15 +207,17 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   project: {
-    bottom: "5%",
     color: colors.primary,
     fontSize: 20,
     fontWeight: "bold",
+    textAlign: "left",
   },
   projectView: {
-    position: "absolute",
-    left: 25,
-    top: 40,
+    position: "relative",
+    top: -68,
+    marginLeft: -210,
+    width: "40%",
+    paddingLeft: 0,
   },
   swiper: {
     flex: 0.7,

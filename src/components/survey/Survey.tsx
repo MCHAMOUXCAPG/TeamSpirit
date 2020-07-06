@@ -35,6 +35,7 @@ const Survey = (props: any) => {
   const [success, setSuccess] = useState(false);
   const [repeated, setRepeated] = useState(false);
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [questionsState, setQuestionsState] = useState<IQuestionStatus[]>([
@@ -76,6 +77,7 @@ const Survey = (props: any) => {
   ]);
 
   function useForceUpdate() {
+    // eslint-disable-next-line
     const [value, setValue] = useState(0); // integer state
     return () => setValue((value) => ++value); // update the state to force render
   }
@@ -123,6 +125,7 @@ const Survey = (props: any) => {
       forceUpdate();
     }
     forceUpdate();
+    // eslint-disable-next-line
   }, [questionsState, activeIcon, currentQuestion]);
 
   const checkDisabled = () => {

@@ -36,6 +36,7 @@ const HomePage = () => {
    *********************************************************************************/
   useEffect(() => {
     context.setValid(false);
+    // eslint-disable-next-line
   }, []);
   // to make private route
 

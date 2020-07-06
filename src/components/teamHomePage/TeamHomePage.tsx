@@ -77,6 +77,7 @@ const TeamHomePage = () => {
     getResults(context.currentTeam, token);
     getResultsByUser(context.currentTeam, token);
     getResultsByQuestion(context.currentTeam, token);
+    // eslint-disable-next-line
   }, []);
 
   useEffect(() => {

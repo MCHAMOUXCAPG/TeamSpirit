@@ -4,6 +4,8 @@ definitions:
     properties:
       code:
         type: string
+      user:
+        type: string
     type: object
   dto.AuthResponse:
     properties:

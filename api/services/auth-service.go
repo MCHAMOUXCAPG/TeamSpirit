@@ -1,6 +1,8 @@
 package services
 
 import (
+	"crypto/sha256"
+	"encoding/hex"
 	"encoding/json"
 	"log"
 	"net/http"
@@ -34,17 +36,21 @@ func AccessToSurvey(c echo.Context) error {
 	survey, _ := SurveyRepo.GetSurvey(access.Code)
 
 	if survey.Code == "" {
-		return echo.NewHTTPError(http.StatusNotFound, "Invalid survey code, Please enter a valid code !")
+		return echo.NewHTTPError(http.StatusNotFound, "Invalid survey code")
+	}
+
+	if isNotAllowedToVote(survey.Notes, hashUser(access.User)) {
+		return echo.NewHTTPError(http.StatusNotAcceptable, "You have already completed the survey")
 	}
 
 	team, _ := TeamRepo.GetTeam(survey.TeamName)
 
 	if len(survey.Notes) >= (team.Num_mumbers * 6) {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Access not allowed! The maximum number of notes has been reached")
+		return echo.NewHTTPError(http.StatusUnauthorized, "The maximum number of notes has been reached")
 	}
 
 	if time.Now().After(survey.EndDate) {
-		return echo.NewHTTPError(http.StatusUnauthorized, "Acess not allowed! The deadline to complete the survey has passed")
+		return echo.NewHTTPError(http.StatusUnauthorized, "The deadline to complete the survey has passed")
 
 	}
 
@@ -156,4 +162,19 @@ func passwordMatch(checkedPwd string, foundPwd []byte) bool {
 	}
 
 	return true
+}
+
+func hashUser(user string) string {
+	hash := sha256.Sum256([]byte(user))
+	hashSlice := hash[:]
+	return hex.EncodeToString(hashSlice)
+}
+
+func isNotAllowedToVote(surveyNotes []entities.Note, user string) bool {
+	for _, note := range surveyNotes {
+		if note.User == user {
+			return true
+		}
+	}
+	return false
 }

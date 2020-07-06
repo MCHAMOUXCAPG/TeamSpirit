@@ -123,10 +123,6 @@ func AddNotesToSurvey(c echo.Context) error {
 
 	survey, _ := SurveyRepo.GetSurvey(surveyCode)
 
-	if isNotAllowedToVote(survey.Notes, notes) {
-		return c.JSON(http.StatusNotAcceptable, echo.Map{"Error": "You cannot send your feedback two times"})
-	}
-
 	survey.Notes = notes
 
 	SurveyRepo.UpdateSurvey(surveyCode, survey)
@@ -134,14 +130,6 @@ func AddNotesToSurvey(c echo.Context) error {
 	return c.JSON(http.StatusOK, survey)
 }
 
-func isNotAllowedToVote(surveyNotes []entities.Note, bodyNotes []entities.Note) bool {
-	for _, note := range surveyNotes {
-		if note.User == bodyNotes[0].User {
-			return true
-		}
-	}
-	return false
-}
 
 func hashAndSaltUser(notes []entities.Note) []entities.Note {
 	var result []entities.Note

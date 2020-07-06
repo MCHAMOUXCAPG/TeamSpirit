@@ -981,6 +981,9 @@ var doc = `{
             "properties": {
                 "code": {
                     "type": "string"
+                },
+                "user": {
+                    "type": "string"
                 }
             }
         },

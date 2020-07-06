@@ -3,6 +3,7 @@ import {
   IQuestionResponse,
   IValidationCode,
   IValidationUser,
+  ITeamDTO,
 } from "../models/interfaces";
 
 export class SurveyService {
@@ -46,6 +47,17 @@ export class SurveyService {
       },
     });
   }
+  public getResultSurveyConfig(
+    teamName: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/team/" + teamName;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }
 
 export class CodeValidationService {
@@ -58,6 +70,10 @@ export class CodeValidationService {
 export class UserValidationService {
   public sendUser(body: IValidationUser): Promise<any> {
     const endPoint = "/login";
+    return environment.post(endPoint, body);
+  }
+  public putTeamConfig(body: ITeamDTO): Promise<any> {
+    const endPoint = "/team";
     return environment.post(endPoint, body);
   }
   public getUser(token: string | null): Promise<any> {

@@ -52,3 +52,47 @@ export interface IResultsByQuestions {
   Notes: { Note: number; User: string }[];
   QuestionNumber: number;
 }
+export interface ITeamDTO {
+  frequency: number;
+  name: string; //TeamName
+  num_munbers: number;
+  startDate: string; // format "2number2number-number1-31"
+}
+export interface IOneTeamDTO {
+  frequency: number;
+  name: string;
+  num_mumbers: number;
+  startDate: string;
+  surveys: [
+    {
+      code: string;
+      endDate: string;
+      notes: [
+        {
+          Number: number;
+          SurveyCode: string;
+          User: string;
+          note: number;
+        }
+      ];
+      startDate: string;
+      teamName: string;
+    }
+  ];
+  users: [
+    {
+      email: string;
+      full_name: string;
+      id: number;
+      password: string;
+      roles: [
+        {
+          id: number;
+          name: string;
+          userID: number;
+        }
+      ];
+      teams: [];
+    }
+  ];
+}

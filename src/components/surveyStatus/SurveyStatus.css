@@ -51,7 +51,7 @@
   color: #79c0c6 !important;
   border-color: #79c0c6 !important;
 }
-.MuiDialogTitle-root {
+#dialog-title {
   background: #79c0c6;
   font-family: Roboto;
   font-style: normal;
@@ -67,7 +67,7 @@
 .MuiDialog-paperWidthSm {
   border-radius: 16px !important;
 }
-.MuiTypography-body1 {
+#text-dialog {
   font-family: Roboto !important;
   font-style: normal !important;
   font-weight: normal !important;
@@ -77,21 +77,24 @@
 
   color: #919191 !important;
 }
-.MuiInputBase-input {
+
+#outlined-required-survey {
   font-family: Roboto;
   font-style: normal;
   font-weight: normal;
-  font-size: 12px;
+  font-size: 14px;
   line-height: 14px;
-  /* identical to box height */
-
-  color: #000000;
+  position: relative;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  border-color: #919191;
+  padding: 13px;
+  width: 232px;
 }
+
 .MuiOutlinedInput-root {
   border-radius: 24px !important;
-  background: #ffffff !important;
-  border: 1px solid #919191 !important;
-  box-sizing: border-box !important;
 }
 .MuiButton-textPrimary {
   background: #79c0c6 !important;

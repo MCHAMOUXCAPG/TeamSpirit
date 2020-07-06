@@ -21,6 +21,7 @@ const TeamHomePage = () => {
   const [currentDetailResultsUsers, setCurrentDetailResultsUsers] = useState<
     IResultsByUsers[]
   >();
+
   const [
     currentDetailResultsQuestions,
     setCurrentDetailResultsQuestions,
@@ -73,6 +74,7 @@ const TeamHomePage = () => {
         console.log(err);
       });
   }
+
   useEffect(() => {
     getResults(context.currentTeam, token);
     getResultsByUser(context.currentTeam, token);
@@ -98,6 +100,7 @@ const TeamHomePage = () => {
 
     setPeriod(period);
   }, [currentSurveyResult]);
+
   return (
     <div>
       <NavBar user={true}></NavBar>

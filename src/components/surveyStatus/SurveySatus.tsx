@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -18,9 +18,12 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "./SurveyStatus.css";
 import colors from "../../config/colors";
+import { SurveyService } from "../../services/Services";
+import { ITeamDTO, IOneTeamDTO } from "../../models/interfaces";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
+  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 function SurveyStatus({
@@ -38,8 +41,48 @@ function SurveyStatus({
   historicResult: number;
   teamName: string;
 }) {
+  const token = sessionStorage.getItem("token");
+  const surveyService: SurveyService = new SurveyService();
   const [open, setOpen] = useState(false);
   const [openReset, setOpenReset] = useState(false);
+  const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
+    frequency: 0,
+    name: "", //TeamName
+    num_mumbers: 0,
+    startDate: "",
+    surveys: [
+      {
+        code: "",
+        endDate: "",
+        notes: [
+          {
+            Number: 0,
+            SurveyCode: "",
+            User: "",
+            note: 0,
+          },
+        ],
+        startDate: "",
+        teamName: "",
+      },
+    ],
+    users: [
+      {
+        email: "",
+        full_name: "",
+        id: 0,
+        password: "",
+        roles: [
+          {
+            id: 0,
+            name: "",
+            userID: 0,
+          },
+        ],
+        teams: [],
+      },
+    ],
+  });
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -59,8 +102,32 @@ function SurveyStatus({
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
+    console.log(date);
+  };
+  const handleDateChangeSprintLength = (length: any) => {
+    console.log(length);
+    // setCurrentTeamConfig({ ...currentTeamConfig, frequency: length });
+    // console.log(currentTeamConfig);
+    // console.log(currentTeamConfig.frequency);
   };
   const classes = useStyles();
+  async function getSurveyConfig(teamName: string, token: string | null) {
+    await surveyService
+      .getResultSurveyConfig(teamName, token)
+      .then((res) => {
+        setCurrentTeamConfig(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+  useEffect(() => {
+    getSurveyConfig(teamName, token);
+    console.log(currentTeamConfig.startDate);
+    var fecha = new Date(currentTeamConfig.startDate);
+    setSelectedDate(fecha);
+    console.log(fecha);
+  }, [open]);
   return (
     <div>
       <Paper variant="outlined" className="paper">
@@ -131,9 +198,7 @@ function SurveyStatus({
                       onClose={handleClickCloseReset}
                       aria-labelledby="form-dialog-title"
                     >
-                      <DialogTitle id="form-dialog-title">
-                        Are you sure?
-                      </DialogTitle>
+                      <DialogTitle id="dialog-title">Are you sure?</DialogTitle>
                       <DialogActions>
                         <Button onClick={handleClickCloseReset} color="primary">
                           Yes
@@ -148,50 +213,58 @@ function SurveyStatus({
                       onClose={handleClose}
                       aria-labelledby="form-dialog-title"
                     >
-                      <DialogTitle id="form-dialog-title">
+                      <DialogTitle id="dialog-title">
                         Configure {teamName}
                       </DialogTitle>
 
                       <br />
                       <DialogContent>
-                        <DialogContentText>
+                        <DialogContentText id="text-dialog">
                           Sprint length(total days-p.ex: 14 for 2 weeks sprint)
                         </DialogContentText>
                         <TextField
                           autoFocus
                           margin="dense"
-                          id="sprint-length"
+                          id="outlined-required-survey"
                           fullWidth
                           variant="outlined"
                           className={classes.root}
+                          value={currentTeamConfig.frequency}
+                          onChange={(e) =>
+                            handleDateChangeSprintLength(e.target.value)
+                          }
                         />
                         <br />
                         <br />
-                        <DialogContentText>
+                        <DialogContentText id="text-dialog">
                           First Sprint Start
                         </DialogContentText>
-                        <TextField
-                          id="date"
-                          type="date"
-                          fullWidth
-                          variant="outlined"
-                          defaultValue="2017-05-24"
-                          className={classes.root}
-                          InputLabelProps={{
-                            shrink: true,
-                          }}
-                        />
+                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                          <KeyboardDatePicker
+                            disableToolbar
+                            variant="inline"
+                            format="MM/dd/yyyy"
+                            margin="normal"
+                            id="date-picker-inline"
+                            value={selectedDate}
+                            onChange={handleDateChange}
+                            KeyboardButtonProps={{
+                              "aria-label": "change date",
+                            }}
+                          />
+                        </MuiPickersUtilsProvider>
                         <br />
                         <br />
-                        <DialogContentText>
+                        <DialogContentText id="text-dialog">
                           Number of members to vote
                         </DialogContentText>
                         <TextField
                           margin="dense"
-                          id="members-numbers"
+                          id="outlined-required-survey"
                           fullWidth
                           variant="outlined"
                           className={classes.root}
+                          value={currentTeamConfig.num_mumbers}
                         />
                       </DialogContent>
                       <DialogActions>
@@ -218,13 +291,13 @@ const useStyles = makeStyles((theme: Theme) =>
     root: {
       "& .MuiOutlinedInput-root": {
         "& fieldset": {
-          borderColor: "#91919100",
+          borderColor: "#919191",
         },
         "&:hover fieldset": {
-          borderColor: "#91919100",
+          borderColor: "#919191",
         },
         "&.Mui-focused fieldset": {
-          borderColor: "#91919100",
+          borderColor: "#919191",
         },
       },
     },

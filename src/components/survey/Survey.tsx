@@ -12,7 +12,7 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import AlertDialog from "../alertDialog/AlertDialog";
-import { v4 as uuidv4 } from "uuid";
+
 
 import colors from "../../config/colors";
 import NavBar from "../navBar/NavBar";
@@ -47,24 +47,16 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
   ]);
 
-  let uniqueId = undefined;
-  if (localStorage.getItem("uniqueIdTS")) {
-    uniqueId = localStorage.getItem("uniqueIdTS");
-  } else {
-    uniqueId = uuidv4();
-    localStorage.setItem("uniqueIdTS", uniqueId);
-  }
-  // get the uniqueId, if not exists, create a new one
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode, User: uniqueId },
-    { number: 2, note: 0, surveyCode: surveyCode, User: uniqueId },
-    { number: 3, note: 5, surveyCode: surveyCode, User: uniqueId },
-    { number: 4, note: 5, surveyCode: surveyCode, User: uniqueId },
-    { number: 5, note: 0, surveyCode: surveyCode, User: uniqueId },
-    { number: 6, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 1, note: 0, surveyCode: surveyCode },
+    { number: 2, note: 0, surveyCode: surveyCode },
+    { number: 3, note: 5, surveyCode: surveyCode },
+    { number: 4, note: 5, surveyCode: surveyCode },
+    { number: 5, note: 0, surveyCode: surveyCode },
+    { number: 6, note: 0, surveyCode: surveyCode },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([
@@ -270,6 +262,7 @@ const Survey = (props: any) => {
                           return (
                             <Grid item xs={2} key={index}>
                               <img
+                                className="icon-image"
                                 onClick={() => {
                                   if (question.number === 1) {
                                     handleClick5Icons(0, index);
@@ -326,9 +319,19 @@ const Survey = (props: any) => {
                       <>
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             src={question.images[0]}
                             style={{ height: 40, width: 40, padding: 10 }}
                             alt=""
+                            onClick={() => {
+                              if (question.number === 3) {
+                                setSlider1(0);
+                                handleClickSlider(2, 0);
+                              } else {
+                                setSlider2(0);
+                                handleClickSlider(3, 0);
+                              }
+                            }}
                           />
                         </Grid>
                         <Grid item xs={8}>
@@ -354,9 +357,19 @@ const Survey = (props: any) => {
                         </Grid>
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             src={question.images[1]}
                             style={{ height: 40, width: 40, padding: 10 }}
                             alt=""
+                            onClick={() => {
+                              if (question.number === 3) {
+                                setSlider1(10);
+                                handleClickSlider(2, 10);
+                              } else {
+                                setSlider2(10);
+                                handleClickSlider(3, 10);
+                              }
+                            }}
                           />
                         </Grid>
                       </>
@@ -366,6 +379,7 @@ const Survey = (props: any) => {
                         <Grid item xs={3} />
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             onClick={() => {
                               handleClick2Icons(0, 5);
                             }}
@@ -387,6 +401,7 @@ const Survey = (props: any) => {
                         <Grid item xs={2} />
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             onClick={() => {
                               handleClick2Icons(1, 7.5);
                             }}
@@ -395,12 +410,12 @@ const Survey = (props: any) => {
                               activeIcon[questions[5].number - 1][1]
                                 ? {
                                     height: 40,
-                                    width: 40,
+                                    width: 30,
                                     padding: 10,
                                     backgroundColor: colors.primary,
                                     borderRadius: 30,
                                   }
-                                : { height: 40, width: 40, padding: 10 }
+                                : { height: 40, width: 30, padding: 10 }
                             }
                             alt=""
                           />

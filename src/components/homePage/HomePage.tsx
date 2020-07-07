@@ -14,6 +14,7 @@ import Button from "@material-ui/core/Button";
 import { Grid, Paper, Container, Link } from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import { v4 as uuidv4 } from "uuid";
 
 import Colors from "../../config/colors";
 import { CodeValidationService } from "../../services/Services";
@@ -40,9 +41,18 @@ const HomePage = () => {
   }, []);
   // to make private route
 
+  let uniqueId: any = undefined;
+  if (localStorage.getItem("uniqueIdTS")) {
+    uniqueId = localStorage.getItem("uniqueIdTS");
+  } else {
+    uniqueId = uuidv4();
+    localStorage.setItem("uniqueIdTS", uniqueId);
+  }
+  // get the uniqueId, if not exists, create a new one
+
   const submitHandler = () => {
     setLoading(true);
-    sendCode({ code: search });
+    sendCode({ code: search, user: uniqueId });
   };
 
   // Fnction to valide the user input

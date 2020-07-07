@@ -39,6 +39,7 @@ const Question = ({
   const { questionsResponse, setQuestionsResponse, setDisabled } = useContext(
     questionsContext
   );
+  const [sliderValue, setSliderValue] = useState(2);
   const forceUpdate = useForceUpdate();
   const checkDisabled = () => {
     let count = 0;
@@ -147,11 +148,16 @@ const Question = ({
       ) : null}
       {type == questionType.slider ? (
         <View style={Styles.emojis}>
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setSliderValue(0);
+              handleClickSlider(0);
+            }}
+          >
             <Image style={{ height: 40, width: 40 }} source={images[0]} />
           </TouchableOpacity>
           <Slider
-            value={2}
+            value={sliderValue}
             minimumValue={0}
             maximumValue={4}
             step={1}
@@ -160,7 +166,12 @@ const Question = ({
             onSlidingComplete={(value) => handleClickSlider(value)}
             style={{ width: "50%" }}
           />
-          <TouchableOpacity>
+          <TouchableOpacity
+            onPress={() => {
+              setSliderValue(4);
+              handleClickSlider(4);
+            }}
+          >
             <Image style={{ height: 40, width: 40 }} source={images[1]} />
           </TouchableOpacity>
         </View>

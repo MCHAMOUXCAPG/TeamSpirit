@@ -13,7 +13,6 @@ import {
 import { Rating } from "@material-ui/lab";
 import AlertDialog from "../alertDialog/AlertDialog";
 
-
 import colors from "../../config/colors";
 import NavBar from "../navBar/NavBar";
 import questions from "../../models/questions";
@@ -47,16 +46,21 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
   ]);
 
+  let uniqueId: any = undefined;
+  if (localStorage.getItem("uniqueIdTS")) {
+    uniqueId = localStorage.getItem("uniqueIdTS");
+  }
+  // get the uniqueId
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode },
-    { number: 2, note: 0, surveyCode: surveyCode },
-    { number: 3, note: 5, surveyCode: surveyCode },
-    { number: 4, note: 5, surveyCode: surveyCode },
-    { number: 5, note: 0, surveyCode: surveyCode },
-    { number: 6, note: 0, surveyCode: surveyCode },
+    { number: 1, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 2, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 3, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 4, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 5, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 6, note: 0, surveyCode: surveyCode, User: uniqueId },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([

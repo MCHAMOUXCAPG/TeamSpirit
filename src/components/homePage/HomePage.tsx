@@ -51,8 +51,9 @@ const HomePage = () => {
   // get the uniqueId, if not exists, create a new one
 
   const submitHandler = () => {
+    console.log(uniqueId);
     setLoading(true);
-    sendCode({ code: search, user: uniqueId });
+    sendCode({ code: search, User: uniqueId });
   };
 
   // Fnction to valide the user input

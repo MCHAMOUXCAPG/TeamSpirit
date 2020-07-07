@@ -1,5 +1,5 @@
 Arguments: 
-  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add expo-constants@~9.0.0
+  C:\Program Files\nodejs\node.exe C:\Program Files (x86)\Yarn\bin\yarn.js add react-native-responsive-screen
 
 PATH: 
   C:\Program Files (x86)\Common Files\Oracle\Java\javapath;C:\WINDOWS\system32;C:\WINDOWS;C:\WINDOWS\System32\Wbem;C:\WINDOWS\System32\WindowsPowerShell\v1.0\;C:\WINDOWS\System32\OpenSSH\;C:\Program Files\OpenJDK12\Bin;C:\Program Files (x86)\Yarn\bin\;C:\Program Files\nodejs\;C:\Program Files\Docker\Docker\resources\bin;C:\ProgramData\DockerDesktop\version-bin;C:\Program Files\Microsoft SQL Server\130\Tools\Binn\;C:\Program Files (x86)\sqlLite3;C:\Go\bin;C:\Users\vvigertk\scripts;C:\Users\vvigertk\AppData\Local\Programs\Microsoft VS Code\bin;C:\Users\vvigertk\AppData\Local\Yarn\bin;C:\Users\vvigertk\AppData\Roaming\npm;C:\Users\vvigertk\.dotnet\tools;C:\Users\vvigertk\AppData\Local\Programs\Fiddler;C:\Users\vvigertk\go\bin;C:\Users\vvigertk\AppData\Local\GitHubDesktop\bin
@@ -14,7 +14,7 @@ Platform:
   win32 x64
 
 Trace: 
-  Error: EPERM: operation not permitted, unlink 'C:\gorn\TeamSpiritRNFE\node_modules\@babel\core\node_modules\json5\dist'
+  Error: EPERM: operation not permitted, unlink 'C:\gorn\TeamSpiritRNFE\node_modules\@ant-design\colors\lib'
 
 npm manifest: 
   {
@@ -27,16 +27,17 @@ npm manifest:
       "eject": "expo eject"
     },
     "dependencies": {
+      "@react-native-community/async-storage": "^1.11.0",
       "@react-native-community/masked-view": "0.1.6",
       "@react-native-community/slider": "^3.0.0",
       "@react-navigation/native": "^5.5.0",
       "@react-navigation/stack": "^5.4.1",
       "axios": "^0.19.2",
       "expo": "^37.0.12",
+      "expo-constants": "~9.0.0",
       "react": "~16.9.0",
       "react-dom": "~16.9.0",
       "react-native": "https://github.com/expo/react-native/archive/sdk-37.0.1.tar.gz",
-      "react-native-device-info": "^5.6.1",
       "react-native-elements": "^2.0.2",
       "react-native-gesture-handler": "~1.6.0",
       "react-native-ratings": "^7.2.0",
@@ -1116,6 +1117,13 @@ Lockfile:
       "@types/istanbul-reports" "^1.1.1"
       "@types/yargs" "^15.0.0"
       chalk "^3.0.0"
+  
+  "@react-native-community/async-storage@^1.11.0":
+    version "1.11.0"
+    resolved "https://registry.yarnpkg.com/@react-native-community/async-storage/-/async-storage-1.11.0.tgz#bf81b8813080846f150c67f531987c429b442166"
+    integrity sha512-Pq9LlmvtCEKAGdkyrgTcRxNh2fnHFykEj2qnRYijOl1pDIl2MkD5IxaXu5eOL0wgOtAl4U//ff4z40Td6XR5rw==
+    dependencies:
+      deep-assign "^3.0.0"
   
   "@react-native-community/cli-debugger-ui@^3.0.0":
     version "3.0.0"
@@ -4506,11 +4514,6 @@ Lockfile:
     version "16.13.1"
     resolved "https://registry.yarnpkg.com/react-is/-/react-is-16.13.1.tgz#789729a4dc36de2999dc156dd6c1d9c18cea56a4"
     integrity sha512-24e6ynE2H+OKt4kqsOvNd8kBpV65zoxbA4BVsEOB3ARVWQki/DHzaUoC5KuON/BiccDaCCTZBuOcfZs70kR8bQ==
-  
-  react-native-device-info@^5.6.1:
-    version "5.6.1"
-    resolved "https://registry.yarnpkg.com/react-native-device-info/-/react-native-device-info-5.6.1.tgz#3ae88d8659b7b64d204dbfc39f69126b769363d4"
-    integrity sha512-FxjenoDZJKT53pp/Tl5gMsw5DA82Y5tOuySQlKS5AaDmw+Bu6EqEJjt0z4TRhJOVoqVJ35oCiZ3xViVbz/hB0w==
   
   react-native-elements@^2.0.2:
     version "2.0.2"

@@ -5,73 +5,82 @@ import Question from "./Question";
 import Colors from "../config/colors";
 import questions from "../models/questions";
 import { AntDesign } from "@expo/vector-icons";
+import colors from "../config/colors";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 
 const SwiperComponent = (props: any) => {
   return (
-    <Swiper
-      style={{ ...props.style }}
-      showsButtons
-      loop={false}
-      dot={
-        <View
-          style={{
-            backgroundColor: Colors.transparent,
-            borderColor: Colors.transparent,
-          }}
-        />
-      }
-      activeDot={
-        <View
-          style={{
-            backgroundColor: Colors.transparent,
-            borderColor: Colors.transparent,
-          }}
-        />
-      }
-      nextButton={
-        <AntDesign name="rightcircle" style={styles.buttonRight} size={45} />
-      }
-      prevButton={
-        <AntDesign name="leftcircle" style={styles.buttonLeft} size={45} />
-      }
-      buttonWrapperStyle={{
-        backgroundColor: Colors.transparent,
-        flexDirection: "row",
-        position: "absolute",
-        top: 210,
-        left: 0,
-        flex: 1,
-        paddingHorizontal: 60,
-        paddingVertical: 10,
-        justifyContent: "space-between",
-        alignItems: "center",
-      }}
-      onIndexChanged={(index) => {
-        props.setCurrentQuestion(index);
-      }}
-    >
-      {questions.map((question) => {
-        return (
+    <View style={styles.container}>
+      <Swiper
+        style={{ ...props.style }}
+        showsButtons
+        loop={false}
+        dot={
           <View
-            testID={question.number.toString()}
-            style={styles.slide}
-            key={question.number}
-          >
-            <Question
-              activeIcon={props.activeIcon}
-              setActiveIcon={props.setActiveIcon}
-              setQuestionsState={props.setQuestionsState}
-              questionsState={props.questionsState}
-              number={question.number}
-              question={question.question}
-              type={question.type}
-              images={question.images}
-              useForceUpdate={props.useForceUpdate}
-            />
-          </View>
-        );
-      })}
-    </Swiper>
+            style={{
+              backgroundColor: Colors.transparent,
+              borderColor: Colors.transparent,
+            }}
+          />
+        }
+        activeDot={
+          <View
+            style={{
+              backgroundColor: Colors.transparent,
+              borderColor: Colors.transparent,
+            }}
+          />
+        }
+        nextButton={
+          <AntDesign name="rightcircle" style={styles.buttonRight} size={46} />
+        }
+        prevButton={
+          <AntDesign name="leftcircle" style={styles.buttonLeft} size={46} />
+        }
+        buttonWrapperStyle={{
+          backgroundColor: Colors.transparent,
+          flexDirection: "row",
+          position: "absolute",
+          top: hp("40%"),
+          width: wp("90%"),
+          height: hp("40%"),
+          left: wp("5"),
+          flex: 1,
+          paddingHorizontal: wp("8%"),
+          paddingBottom: 30,
+          justifyContent: "space-between",
+          alignItems: "center",
+        }}
+        onIndexChanged={(index) => {
+          props.setCurrentQuestion(index);
+        }}
+      >
+        {questions.map((question) => {
+          return (
+            <View
+              testID={question.number.toString()}
+              style={styles.slide}
+              key={question.number}
+            >
+              <Question
+                activeIcon={props.activeIcon}
+                setActiveIcon={props.setActiveIcon}
+                setQuestionsState={props.setQuestionsState}
+                questionsState={props.questionsState}
+                number={question.number}
+                question={question.question}
+                type={question.type}
+                images={question.images}
+                useForceUpdate={props.useForceUpdate}
+              />
+            </View>
+          );
+        })}
+      </Swiper>
+    </View>
   );
 };
 
@@ -87,14 +96,14 @@ var styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonRight: {
-    top: 10,
-    left: 15,
     color: Colors.primary,
   },
   buttonLeft: {
-    top: 10,
-    right: 15,
     color: Colors.primary,
+  },
+  container: {
+    flex: 1,
+    top: 18,
   },
 });
 

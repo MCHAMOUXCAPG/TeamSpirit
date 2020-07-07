@@ -46,10 +46,10 @@ function SurveyStatus({
   const [open, setOpen] = useState(false);
   const [openReset, setOpenReset] = useState(false);
   const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
-    frequency: 0,
-    name: "", //TeamName
-    num_mumbers: 0,
-    startDate: "",
+    Frequency: 0,
+    Name: "", //TeamName
+    Num_mumbers: 0,
+    StartDate: "",
     surveys: [
       {
         code: "",
@@ -116,6 +116,8 @@ function SurveyStatus({
       .getResultSurveyConfig(teamName, token)
       .then((res) => {
         setCurrentTeamConfig(res.data);
+        var fecha = new Date(res.data.StartDate);
+        setSelectedDate(fecha);
       })
       .catch((err) => {
         console.log(err);
@@ -123,11 +125,8 @@ function SurveyStatus({
   }
   useEffect(() => {
     getSurveyConfig(teamName, token);
-    console.log(currentTeamConfig.startDate);
-    var fecha = new Date(currentTeamConfig.startDate);
-    setSelectedDate(fecha);
-    console.log(fecha);
-  }, [open]);
+    // eslint-disable-next-line
+  }, []);
   return (
     <div>
       <Paper variant="outlined" className="paper">
@@ -229,7 +228,7 @@ function SurveyStatus({
                           fullWidth
                           variant="outlined"
                           className={classes.root}
-                          value={currentTeamConfig.frequency}
+                          value={currentTeamConfig.Frequency}
                           onChange={(e) =>
                             handleDateChangeSprintLength(e.target.value)
                           }
@@ -264,7 +263,7 @@ function SurveyStatus({
                           fullWidth
                           variant="outlined"
                           className={classes.root}
-                          value={currentTeamConfig.num_mumbers}
+                          value={currentTeamConfig.Num_mumbers}
                         />
                       </DialogContent>
                       <DialogActions>

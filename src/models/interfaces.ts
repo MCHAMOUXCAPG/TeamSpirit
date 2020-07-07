@@ -59,10 +59,10 @@ export interface ITeamDTO {
   startDate: string; // format "2number2number-number1-31"
 }
 export interface IOneTeamDTO {
-  frequency: number;
-  name: string;
-  num_mumbers: number;
-  startDate: string;
+  Frequency: number;
+  Name: string;
+  Num_mumbers: number;
+  StartDate: string;
   surveys: [
     {
       code: string;

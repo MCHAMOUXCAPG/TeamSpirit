@@ -27,4 +27,5 @@ export interface IQuestionResponse {
 
 export interface IValidationCode {
   code: string;
+  user: any;
 }

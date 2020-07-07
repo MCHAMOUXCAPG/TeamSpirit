@@ -16,7 +16,6 @@ import SwiperCircle from "../components/SwiperCircle";
 import { IQuestionStatus, IQuestionResponse } from "../models/interfaces";
 import { SurveyService } from "../services/Services";
 import QuestionsContext from "../context/questionsContext";
-import Constants from "expo-constants";
 
 function useForceUpdate() {
   const [value, setValue] = useState(0); // integer state
@@ -31,7 +30,7 @@ const SurveyScreen = ({
   route: any;
 }) => {
   const forceUpdate = useForceUpdate();
-  const { surveyCode, projectName } = route.params;
+  const { surveyCode, projectName, userId } = route.params;
   const surveyService: SurveyService = new SurveyService();
   const [loading, setLoading] = useState(false);
   async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
@@ -105,7 +104,7 @@ const SurveyScreen = ({
     { valid: false, status: "", touched: false },
   ]);
 
-  const uniqueUserId: any = Constants.deviceId;
+  const uniqueUserId: any = userId;
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]

@@ -16,12 +16,14 @@ import {
 import colors from "../config/colors";
 import { CodeValidationService } from "../services/Services";
 import { IValidationCode } from "../models/interfaces";
+import Constants from "expo-constants";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [inputText, setInputText] = useState("");
   const [loading, setLoading] = useState(false);
   const [keyboard, setKeyboard] = useState(false);
   const codeValidationService: CodeValidationService = new CodeValidationService();
+  const uniqueUserId: any = Constants.deviceId;
 
   const resetInputHandler = () => {
     setLoading(false);
@@ -36,6 +38,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
           navigation.navigate("SurveyScreen", {
             surveyCode: inputText,
             projectName: res.data.TeamName,
+            userId: uniqueUserId,
           });
         }
       })
@@ -62,7 +65,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const submitHandler = () => {
     setLoading(true);
     closeKeyboard();
-    sendCode({ code: inputText });
+    sendCode({ code: inputText, user: uniqueUserId });
   };
 
   const openKeyboard = () => {

@@ -16,15 +16,7 @@ const SwiperComponent = (props: any) => {
         <View
           style={{
             backgroundColor: Colors.transparent,
-            width: 14,
-            height: 14,
-            borderRadius: 14,
             borderColor: Colors.transparent,
-            borderWidth: 2,
-            marginLeft: 3,
-            marginRight: 3,
-            marginTop: 3,
-            marginBottom: 3,
           }}
         />
       }
@@ -32,19 +24,10 @@ const SwiperComponent = (props: any) => {
         <View
           style={{
             backgroundColor: Colors.transparent,
-            width: 15,
-            height: 15,
-            borderRadius: 15,
-            borderWidth: 2,
             borderColor: Colors.transparent,
-            marginLeft: 3,
-            marginRight: 3,
-            marginTop: 3,
-            marginBottom: 3,
           }}
         />
       }
-      dotColor={Colors.green}
       nextButton={
         <AntDesign name="rightcircle" style={styles.buttonRight} size={45} />
       }

@@ -23,7 +23,6 @@ import { ITeamDTO, IOneTeamDTO } from "../../models/interfaces";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
-  KeyboardTimePicker,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 function SurveyStatus({
@@ -45,6 +44,15 @@ function SurveyStatus({
   const surveyService: SurveyService = new SurveyService();
   const [open, setOpen] = useState(false);
   const [openReset, setOpenReset] = useState(false);
+  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
+    new Date("2014-08-18T21:11:54")
+  );
+  const [auxDate, setAuxDate] = React.useState<Date | null>(
+    new Date("2014-08-18T21:11:54")
+  );
+  const [sprintLength, setSpringLength] = React.useState<number>(0);
+  const [members_num, setMembers_num] = React.useState<number>(0);
+  const [loadingS, setLoading] = useState(true);
   const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
     Frequency: 0,
     Name: "", //TeamName
@@ -87,8 +95,22 @@ function SurveyStatus({
     setOpen(true);
   };
 
-  const handleClose = () => {
+  const handleClose = (guardar: any) => {
     setOpen(false);
+    var fecha = new Date(currentTeamConfig.StartDate);
+    setAuxDate(fecha);
+    if (guardar) {
+      setCurrentTeamConfig({
+        ...currentTeamConfig,
+        Frequency: sprintLength,
+        Num_mumbers: members_num,
+        StartDate: selectedDate
+          ? selectedDate.toString()
+          : currentTeamConfig.StartDate,
+      });
+    } else {
+      setSelectedDate(auxDate);
+    }
   };
   const handleClickOpenReset = () => {
     setOpenReset(true);
@@ -96,19 +118,15 @@ function SurveyStatus({
   const handleClickCloseReset = () => {
     setOpenReset(false);
   };
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
-  );
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
-    console.log(date);
   };
   const handleDateChangeSprintLength = (length: any) => {
-    console.log(length);
-    // setCurrentTeamConfig({ ...currentTeamConfig, frequency: length });
-    // console.log(currentTeamConfig);
-    // console.log(currentTeamConfig.frequency);
+    setSpringLength(length);
+  };
+  const handleDateChangeMembers = (members: any) => {
+    setMembers_num(members);
   };
   const classes = useStyles();
   async function getSurveyConfig(teamName: string, token: string | null) {
@@ -116,8 +134,12 @@ function SurveyStatus({
       .getResultSurveyConfig(teamName, token)
       .then((res) => {
         setCurrentTeamConfig(res.data);
+        setSpringLength(res.data.Frequency);
+        setMembers_num(res.data.Num_mumbers);
         var fecha = new Date(res.data.StartDate);
         setSelectedDate(fecha);
+        setAuxDate(fecha);
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
@@ -125,7 +147,6 @@ function SurveyStatus({
   }
   useEffect(() => {
     getSurveyConfig(teamName, token);
-    // eslint-disable-next-line
   }, []);
   return (
     <div>
@@ -197,7 +218,12 @@ function SurveyStatus({
                       onClose={handleClickCloseReset}
                       aria-labelledby="form-dialog-title"
                     >
-                      <DialogTitle id="dialog-title">Are you sure?</DialogTitle>
+                      <DialogTitle
+                        id="dialog-title"
+                        style={{ height: "200px" }}
+                      >
+                        Are you sure?
+                      </DialogTitle>
                       <DialogActions>
                         <Button onClick={handleClickCloseReset} color="primary">
                           Yes
@@ -207,74 +233,108 @@ function SurveyStatus({
                         </Button>
                       </DialogActions>
                     </Dialog>
-                    <Dialog
-                      open={open}
-                      onClose={handleClose}
-                      aria-labelledby="form-dialog-title"
-                    >
-                      <DialogTitle id="dialog-title">
-                        Configure {teamName}
-                      </DialogTitle>
-
-                      <br />
-                      <DialogContent>
-                        <DialogContentText id="text-dialog">
-                          Sprint length(total days-p.ex: 14 for 2 weeks sprint)
-                        </DialogContentText>
-                        <TextField
-                          autoFocus
-                          margin="dense"
-                          id="outlined-required-survey"
-                          fullWidth
-                          variant="outlined"
-                          className={classes.root}
-                          value={currentTeamConfig.Frequency}
-                          onChange={(e) =>
-                            handleDateChangeSprintLength(e.target.value)
-                          }
+                    {loadingS ? (
+                      <Grid
+                        container
+                        direction="column"
+                        justify="flex-start"
+                        style={{ paddingTop: 15, marginLeft: "-70wh" }}
+                      >
+                        <CircularProgress
+                          size={24}
+                          style={{
+                            color: colors.primary,
+                          }}
                         />
+                      </Grid>
+                    ) : (
+                      <Dialog
+                        open={open}
+                        onClose={handleClose}
+                        aria-labelledby="form-dialog-title"
+                      >
+                        <DialogTitle id="dialog-title">
+                          Configure {teamName}
+                        </DialogTitle>
+
                         <br />
-                        <br />
-                        <DialogContentText id="text-dialog">
-                          First Sprint Start
-                        </DialogContentText>
-                        <MuiPickersUtilsProvider utils={DateFnsUtils}>
-                          <KeyboardDatePicker
-                            disableToolbar
-                            variant="inline"
-                            format="MM/dd/yyyy"
-                            margin="normal"
-                            id="date-picker-inline"
-                            value={selectedDate}
-                            onChange={handleDateChange}
-                            KeyboardButtonProps={{
-                              "aria-label": "change date",
+                        <DialogContent>
+                          <DialogContentText id="text-dialog">
+                            Sprint length(total days-p.ex: 14 for 2 weeks
+                            sprint)
+                          </DialogContentText>
+                          <TextField
+                            autoFocus
+                            id="outlined-required-survey"
+                            fullWidth
+                            variant="outlined"
+                            className={classes.root}
+                            defaultValue={currentTeamConfig.Frequency}
+                            onChange={(freq) => {
+                              handleDateChangeSprintLength(freq.target.value);
                             }}
                           />
-                        </MuiPickersUtilsProvider>
-                        <br />
-                        <br />
-                        <DialogContentText id="text-dialog">
-                          Number of members to vote
-                        </DialogContentText>
-                        <TextField
-                          margin="dense"
-                          id="outlined-required-survey"
-                          fullWidth
-                          variant="outlined"
-                          className={classes.root}
-                          value={currentTeamConfig.Num_mumbers}
-                        />
-                      </DialogContent>
-                      <DialogActions>
-                        <Button onClick={handleClose} color="primary">
-                          Save
-                        </Button>
-                        <Button onClick={handleClose} color="primary">
-                          Cancel
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
+                          <br />
+                          <br />
+                          <DialogContentText id="text-dialog">
+                            First Sprint Start
+                          </DialogContentText>
+                          <MuiPickersUtilsProvider utils={DateFnsUtils}>
+                            <KeyboardDatePicker
+                              autoOk
+                              disableToolbar
+                              variant="inline"
+                              format="MM/dd/yyyy"
+                              inputVariant="outlined"
+                              margin="normal"
+                              className={classes.root}
+                              id="date-picker-inline"
+                              value={selectedDate}
+                              onChange={(date) => handleDateChange(date)}
+                              KeyboardButtonProps={{
+                                "aria-label": "change date",
+                              }}
+                            />
+                          </MuiPickersUtilsProvider>
+                          <br />
+                          <br />
+                          <DialogContentText id="text-dialog">
+                            Number of members to vote
+                          </DialogContentText>
+                          <TextField
+                            id="outlined-required-survey"
+                            fullWidth
+                            variant="outlined"
+                            className={classes.root}
+                            defaultValue={currentTeamConfig.Num_mumbers}
+                            onChange={(mem) =>
+                              handleDateChangeMembers(mem.target.value)
+                            }
+                          />
+                        </DialogContent>
+                        <DialogActions>
+                          <Button
+                            onClick={() => {
+                              handleClose(true);
+                            }}
+                            color="primary"
+                            type="submit"
+                            size="large"
+                          >
+                            Save
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              handleClose(false);
+                            }}
+                            size="large"
+                            color="primary"
+                          >
+                            Cancel
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+                    )}
                   </Grid>
                 </Grid>
               </Grid>

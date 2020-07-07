@@ -1,6 +1,10 @@
 import React, { useState } from "react";
 import { View, StyleSheet } from "react-native";
 import Colors from "../config/colors";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 
 const SwiperCircle = (props: any) => {
   return (
@@ -31,6 +35,8 @@ const SwiperCircle = (props: any) => {
 const styles = StyleSheet.create({
   container: {
     flexDirection: "row",
+    width: wp("32%"),
+    height: hp("3%"),
   },
   validCircle: {
     backgroundColor: Colors.transparent,

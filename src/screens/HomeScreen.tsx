@@ -16,6 +16,10 @@ import {
 import colors from "../config/colors";
 import { CodeValidationService } from "../services/Services";
 import { IValidationCode } from "../models/interfaces";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 
 const HomeScreen = ({ navigation }: { navigation: any }) => {
   const [inputText, setInputText] = useState("");
@@ -123,7 +127,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
               onFocus={openKeyboard}
               onChangeText={(inputText) => setInputText(inputText)}
               value={inputText}
-              maxLength={10}
             />
             <TouchableOpacity onPress={submitHandler} style={styles.submit}>
               <Text style={styles.insideButton}>Start</Text>
@@ -206,8 +209,8 @@ const styles = StyleSheet.create({
     paddingLeft: 10,
   },
   submit: {
-    width: "45%",
-    height: 70,
+    width: wp("45%"),
+    height: wp("15%"),
     borderColor: colors.white,
     borderWidth: 1,
     borderRadius: 50,
@@ -220,7 +223,8 @@ const styles = StyleSheet.create({
   insideButton: {
     textAlign: "center",
     fontSize: 24,
-    lineHeight: 65,
+    paddingBottom: 10,
+    paddingTop: 10,
     color: colors.white,
   },
   activityIndicator: {

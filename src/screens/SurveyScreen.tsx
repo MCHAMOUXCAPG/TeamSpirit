@@ -10,6 +10,10 @@ import {
   ActivityIndicator,
 } from "react-native";
 
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 import colors from "../config/colors";
 import SwiperComponent from "../components/Swiper";
 import SwiperCircle from "../components/SwiperCircle";
@@ -214,34 +218,37 @@ const styles = StyleSheet.create({
   },
   projectView: {
     position: "relative",
-    top: -68,
-    marginLeft: -210,
-    width: "40%",
+    top: -64,
+    marginLeft: wp("-50%"),
+    width: wp("40%"),
     paddingLeft: 0,
   },
   swiper: {
     flex: 0.7,
-    bottom: "12%",
+    bottom: "14%",
   },
   circle: {
     alignItems: "center",
     justifyContent: "center",
-    bottom: "7%",
+    top: hp("0%"),
+    left: wp("30%"),
+    width: wp("40%"),
+    backgroundColor: colors.transparent,
   },
   btn: {
     backgroundColor: colors.primary,
-    width: 160,
+    width: wp("40%"),
     alignItems: "center",
     justifyContent: "center",
-    height: 60,
+    height: hp("7%"),
     borderRadius: 30,
   },
   btnDisabled: {
     backgroundColor: colors.disabled,
-    width: 160,
+    width: wp("40%"),
     alignItems: "center",
     justifyContent: "center",
-    height: 60,
+    height: hp("7%"),
     borderRadius: 30,
   },
   btnTitle: {
@@ -257,8 +264,8 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: 0,
     left: 0,
-    width: "100%",
-    height: "100%",
+    width: wp("100%"),
+    height: hp("100%"),
     justifyContent: "center",
   },
 });

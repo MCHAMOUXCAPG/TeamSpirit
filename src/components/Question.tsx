@@ -10,6 +10,10 @@ import {
 } from "../models/interfaces";
 import colors from "../config/colors";
 import questionsContext from "../context/questionsContext";
+import {
+  heightPercentageToDP as hp,
+  widthPercentageToDP as wp,
+} from "react-native-responsive-screen";
 
 const Question = ({
   number,
@@ -212,13 +216,14 @@ const Styles = StyleSheet.create({
     borderRadius: 20,
     borderWidth: 1,
     backgroundColor: colors.white,
-    margin: 15,
-    height: 360,
-    width: "90%",
+    marginTop: hp("5%"),
+    marginBottom: hp("8%"),
+    height: hp("45%"),
+    width: wp("90%"),
     elevation: 3,
-    paddingTop: 50,
-    paddingBottom: 50,
-    paddingHorizontal: 10,
+    paddingTop: hp("8%"),
+    paddingBottom: hp("6%"),
+    paddingHorizontal: wp("3%"),
   },
   number: {
     fontWeight: "100",

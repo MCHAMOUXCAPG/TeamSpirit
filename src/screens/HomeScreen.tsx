@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   textSentence2: {
     width: "90%",
-    fontFamily: "Roboto",
+    fontFamily: "Roboto5",
     fontStyle: "normal",
     fontWeight: "normal",
     fontSize: 14,
@@ -213,7 +213,7 @@ const styles = StyleSheet.create({
   },
   submit: {
     width: wp("45%"),
-    height: wp("15%"),
+    height: hp("9%"),
     borderColor: colors.white,
     borderWidth: 1,
     borderRadius: 50,
@@ -226,8 +226,8 @@ const styles = StyleSheet.create({
   insideButton: {
     textAlign: "center",
     fontSize: 24,
-    paddingBottom: 10,
-    paddingTop: 10,
+    paddingBottom: hp("1.6%"),
+    paddingTop: hp("1.9%"),
     color: colors.white,
   },
   activityIndicator: {

@@ -56,10 +56,6 @@ const SurveyScreen = ({
             [{ text: "Ok", style: "cancel" }],
             { cancelable: false }
           );
-        } else if (err.request.status == 406) {
-          navigation.navigate("FinalScreen", {
-            message: "You have already filled in a survey for this sprint!",
-          });
         } else {
           Alert.alert(
             "Oops!",

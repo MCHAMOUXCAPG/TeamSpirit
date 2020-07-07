@@ -49,7 +49,7 @@ const SwiperComponent = (props: any) => {
           height: hp("40%"),
           left: wp("5"),
           flex: 1,
-          paddingHorizontal: wp("8%"),
+          paddingHorizontal: wp("6%"),
           paddingBottom: 30,
           justifyContent: "space-between",
           alignItems: "center",
@@ -96,9 +96,19 @@ var styles = StyleSheet.create({
     fontWeight: "bold",
   },
   buttonRight: {
+    backgroundColor: Colors.transparent,
+    height: 60,
+    paddingTop: 7,
+    paddingLeft: 7,
+    width: 60,
     color: Colors.primary,
   },
   buttonLeft: {
+    backgroundColor: Colors.transparent,
+    height: 60,
+    paddingTop: 7,
+    paddingLeft: 7,
+    width: 60,
     color: Colors.primary,
   },
   container: {

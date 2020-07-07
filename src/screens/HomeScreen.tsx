@@ -194,7 +194,7 @@ const styles = StyleSheet.create({
   },
   textSentence2: {
     width: "90%",
-    fontFamily: "Roboto5",
+    fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: "normal",
     fontSize: 14,

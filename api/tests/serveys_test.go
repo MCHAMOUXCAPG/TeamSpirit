@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
 	"capgemini.com/gorn/team-spirit/services"
@@ -176,11 +177,12 @@ func TestAddNotesToSurvey(t *testing.T) {
 
 }
 
-func TestGetResultSurvey(t *testing.T) {
+func TestGetResultSurvey(t *testing.T) { // Post a new team
+	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 5, Frequency: 14})
+	assert.Equal(t, team1.Name, "team1")
 	// Post a servey with some notes
 	survey1, _ := SurveyRepo.CreateSurvey(&entities.Survey{StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), EndDate: time.Date(2016, time.August, 30, 0, 0, 0, 0, time.UTC), Code: "code1", TeamName: "team1"})
 	assert.Equal(t, survey1.Code, "code1")
-
 	survey1.Notes = []entities.Note{{Number: 0, Note: 10, SurveyCode: "code1"}, {Number: 1, Note: 2, SurveyCode: "code1"}}
 	assert.Equal(t, survey1.Notes[0].Note, float64(10))
 	assert.Equal(t, survey1.Notes[1].Note, float64(2))
@@ -188,26 +190,26 @@ func TestGetResultSurvey(t *testing.T) {
 	survey2, _ := SurveyRepo.UpdateSurvey(survey1.Code, survey1)
 	assert.Equal(t, survey2.Notes[0].Note, float64(10))
 	assert.Equal(t, survey2.Notes[1].Note, float64(2))
-
 	// Create a new Request
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodGet, "/", nil)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
-	c.SetPath("/survey/result/:surveyCode")
-	c.SetParamNames("surveyCode")
-	c.SetParamValues(survey1.Code)
+	c.SetPath("/survey/result/:teamName")
+	c.SetParamNames("teamName")
+	c.SetParamValues(team1.Name)
 
 	// Assertions
 	if assert.NoError(t, services.GetResultSurvey(c)) {
-		var result float64
+		var result *dto.Result
 		json.NewDecoder(io.Reader(rec.Body)).Decode(&result)
 		assert.Equal(t, http.StatusOK, rec.Code)
-		assert.Equal(t, int(result), 6)
+		assert.Equal(t, int(result.CurrentResult), 6)
 	}
 
 	// clean databse
 	SurveyRepo.DeleteSurvey(survey1.Code)
+	TeamRepo.DeleteTeam(team1.Name)
 }
 
 func TestSurveyCodeLength(t *testing.T) {

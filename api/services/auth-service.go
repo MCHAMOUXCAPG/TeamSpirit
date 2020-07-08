@@ -39,7 +39,7 @@ func AccessToSurvey(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusNotFound, "Invalid survey code")
 	}
 
-	if isNotAllowedToVote(survey.Notes, hashUser(access.User)) {
+	if isNotAllowedToVote(survey.Notes, HashUser(access.User)) {
 		return echo.NewHTTPError(http.StatusNotAcceptable, "You have already completed the survey")
 	}
 
@@ -164,7 +164,7 @@ func passwordMatch(checkedPwd string, foundPwd []byte) bool {
 	return true
 }
 
-func hashUser(user string) string {
+func HashUser(user string) string {
 	hash := sha256.Sum256([]byte(user))
 	hashSlice := hash[:]
 	return hex.EncodeToString(hashSlice)

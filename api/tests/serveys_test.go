@@ -255,3 +255,203 @@ func TestBuildNextSurvey(t *testing.T) {
 	SurveyRepo.DeleteSurvey(team2.Surveys[0].Code)
 	TeamRepo.DeleteTeam(team2.Name)
 }
+
+func TestGetHistoricSurveysByUsers(t *testing.T) {
+	team1, _ := TeamRepo.CreateTeam(&entities.Team{
+		Name:        "team1",
+		StartDate:   time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
+		Num_mumbers: 5,
+		Frequency:   15,
+		Surveys: []entities.Survey{
+			{
+				StartDate: time.Date(2016, time.August, 01, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Date(2016, time.August, 14, 0, 0, 0, 0, time.UTC),
+				Code:      "code1",
+				TeamName:  "team1",
+				Notes: []entities.Note{
+					{
+						Number:     0,
+						Note:       10,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     1,
+						Note:       2,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     0,
+						Note:       10,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 2"),
+					},
+					{
+						Number:     1,
+						Note:       2,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 2"),
+					},
+				},
+			},
+			{
+				StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Now().Add(24 * time.Hour),
+				Code:      "code2",
+				TeamName:  "team1",
+				Notes: []entities.Note{
+					{
+						Number:     0,
+						Note:       10,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     1,
+						Note:       8,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     0,
+						Note:       6,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 2"),
+					},
+					{
+						Number:     1,
+						Note:       4,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 2"),
+					},
+				},
+			},
+		}})
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/resultByUsers/:teamName")
+	c.SetParamNames("teamName")
+	c.SetParamValues(team1.Name)
+
+	// Execute function and Assertions
+	if assert.NoError(t, services.GetHistoricSurveysByusers(c)) {
+		var result []dto.ResultByUsers
+		json.NewDecoder(io.Reader(rec.Body)).Decode(&result)
+		assert.Equal(t, http.StatusOK, rec.Code)
+		assert.Equal(t, len(result), 2)
+		assert.Equal(t, int(result[0].Average), 9)
+		assert.Equal(t, int(result[1].Average), 5)
+	}
+
+	// Clean database
+	var notes []*entities.Note
+	config.DB.Where("survey_code= ? ", "code1").Delete(&notes)
+	config.DB.Where("survey_code= ? ", "code2").Delete(&notes)
+	SurveyRepo.DeleteSurvey("code1")
+	SurveyRepo.DeleteSurvey("code2")
+	TeamRepo.DeleteTeam("team1")
+
+}
+
+func TestGetHistoricSurveysByQuestion(t *testing.T) {
+	team1, _ := TeamRepo.CreateTeam(&entities.Team{
+		Name:        "team1",
+		StartDate:   time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
+		Num_mumbers: 5,
+		Frequency:   15,
+		Surveys: []entities.Survey{
+			{
+				StartDate: time.Date(2016, time.August, 01, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Date(2016, time.August, 14, 0, 0, 0, 0, time.UTC),
+				Code:      "code1",
+				TeamName:  "team1",
+				Notes: []entities.Note{
+					{
+						Number:     0,
+						Note:       10,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     1,
+						Note:       2,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     0,
+						Note:       10,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 2"),
+					},
+					{
+						Number:     1,
+						Note:       2,
+						SurveyCode: "code1",
+						User:       services.HashUser("user 2"),
+					},
+				},
+			},
+			{
+				StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
+				EndDate:   time.Now().Add(24 * time.Hour),
+				Code:      "code2",
+				TeamName:  "team1",
+				Notes: []entities.Note{
+					{
+						Number:     0,
+						Note:       10,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     1,
+						Note:       8,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 1"),
+					},
+					{
+						Number:     0,
+						Note:       6,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 2"),
+					},
+					{
+						Number:     1,
+						Note:       4,
+						SurveyCode: "code2",
+						User:       services.HashUser("user 2"),
+					},
+				},
+			},
+		}})
+	e := echo.New()
+	req := httptest.NewRequest(http.MethodGet, "/", nil)
+	rec := httptest.NewRecorder()
+	c := e.NewContext(req, rec)
+	c.SetPath("/resultByQuestions/:teamName")
+	c.SetParamNames("teamName")
+	c.SetParamValues(team1.Name)
+
+	// Execute function and Assertions
+	if assert.NoError(t, services.GetHistoricSurveysByQuestions(c)) {
+		var result []dto.ResultByQuestions
+		json.NewDecoder(io.Reader(rec.Body)).Decode(&result)
+		assert.Equal(t, http.StatusOK, rec.Code)
+		assert.Equal(t, len(result), 2)
+		assert.Equal(t, int(result[0].Average), 8)
+		assert.Equal(t, int(result[1].Average), 6)
+	}
+
+	// Clean database
+	var notes []*entities.Note
+	config.DB.Where("survey_code= ? ", "code1").Delete(&notes)
+	config.DB.Where("survey_code= ? ", "code2").Delete(&notes)
+	SurveyRepo.DeleteSurvey("code1")
+	SurveyRepo.DeleteSurvey("code2")
+	TeamRepo.DeleteTeam("team1")
+
+}

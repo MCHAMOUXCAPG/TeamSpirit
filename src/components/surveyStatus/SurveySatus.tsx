@@ -18,6 +18,7 @@ import DialogContentText from "@material-ui/core/DialogContentText";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import "./SurveyStatus.css";
 import colors from "../../config/colors";
+import { UserValidationService } from "../../services/Services";
 import { SurveyService } from "../../services/Services";
 import { ITeamDTO, IOneTeamDTO } from "../../models/interfaces";
 import DateFnsUtils from "@date-io/date-fns";
@@ -42,6 +43,7 @@ function SurveyStatus({
 }) {
   const token = sessionStorage.getItem("token");
   const surveyService: SurveyService = new SurveyService();
+  const userValidationService: UserValidationService = new UserValidationService();
   const [open, setOpen] = useState(false);
   const [openReset, setOpenReset] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(
@@ -107,7 +109,16 @@ function SurveyStatus({
           ? selectedDate.toString()
           : currentTeamConfig.StartDate,
       });
-
+      putTeamConfig(
+        {
+          frequency: currentTeamConfig.Frequency,
+          name: currentTeamConfig.Name,
+          num_munbers: currentTeamConfig.Num_mumbers,
+          startDate: currentTeamConfig.StartDate,
+        },
+        teamName,
+        token
+      );
       setAuxDate(selectedDate);
     } else {
       setAuxDate(selectedDate);
@@ -130,7 +141,21 @@ function SurveyStatus({
   const handleDateChangeMembers = (members: any) => {
     setMembers_num(members);
   };
-  const classes = useStyles();
+
+  async function putTeamConfig(
+    body: ITeamDTO,
+    teamName: string,
+    token: string | null
+  ) {
+    await userValidationService
+      .putTeamConfig(body, teamName, token)
+      .then((res: any) => {
+        console.log(res.data);
+      })
+      .catch((err: any) => {
+        console.log(err);
+      });
+  }
   async function getSurveyConfig(teamName: string, token: string | null) {
     await surveyService
       .getResultSurveyConfig(teamName, token)
@@ -150,6 +175,7 @@ function SurveyStatus({
   useEffect(() => {
     getSurveyConfig(teamName, token);
   }, []);
+  const classes = useStyles();
   return (
     <div>
       <Paper variant="outlined" className="paper">
@@ -201,7 +227,6 @@ function SurveyStatus({
                     direction="row"
                     justify="center"
                     alignItems="center"
-                    xs={12}
                   >
                     <CircularProgress
                       size={24}

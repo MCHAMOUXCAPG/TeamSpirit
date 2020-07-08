@@ -72,9 +72,17 @@ export class UserValidationService {
     const endPoint = "/login";
     return environment.post(endPoint, body);
   }
-  public putTeamConfig(body: ITeamDTO): Promise<any> {
-    const endPoint = "/team";
-    return environment.post(endPoint, body);
+  public putTeamConfig(
+    body: ITeamDTO,
+    teamName: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/team/" + teamName;
+    return environment.put(endPoint, body, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
   }
   public getUser(token: string | null): Promise<any> {
     const endPoint = "/me";

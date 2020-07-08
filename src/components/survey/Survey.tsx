@@ -443,6 +443,7 @@ const Survey = (props: any) => {
             }}
           >
             <Button
+              id="submit-btn"
               variant="contained"
               size="large"
               disabled={disabled}

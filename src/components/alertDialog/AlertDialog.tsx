@@ -17,6 +17,7 @@ export default function AlertDialog(props: any) {
 
   return (
     <Dialog
+      id="pop-up-dialog"
       open={open}
       disableBackdropClick
       disableEscapeKeyDown
@@ -48,6 +49,7 @@ export default function AlertDialog(props: any) {
         }}
       >
         <Button
+          id="alert-dialog-button"
           variant="contained"
           style={{
             backgroundColor: colors.primary,

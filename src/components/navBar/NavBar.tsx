@@ -30,6 +30,7 @@ function NavBar({ user }: { user: boolean }) {
           {user && (
             <Grid item xs={5} sm={9} className="navBarButtons">
               <Button
+                id="exit-app-button"
                 color="inherit"
                 startIcon={<ExitToApp />}
                 onClick={() => {
@@ -40,6 +41,7 @@ function NavBar({ user }: { user: boolean }) {
               </Button>
               {context.myTeams[0].Name !== "" && (
                 <Button
+                  id="my-team-button"
                   color="inherit"
                   startIcon={<Group />}
                   onClick={() => {

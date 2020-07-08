@@ -66,10 +66,13 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
       });
   }
 
+  var Hashes = require("jshashes");
+  var SHA256 = new Hashes.SHA256();
+
   const submitHandler = () => {
     setLoading(true);
     closeKeyboard();
-    sendCode({ code: inputText, user: uniqueUserId });
+    sendCode({ code: inputText, user: SHA256.hex(uniqueUserId) });
   };
 
   const openKeyboard = () => {
@@ -194,7 +197,7 @@ const styles = StyleSheet.create({
   },
   textSentence2: {
     width: "90%",
-    fontFamily: "Roboto5",
+    fontFamily: "Roboto",
     fontStyle: "normal",
     fontWeight: "normal",
     fontSize: 14,

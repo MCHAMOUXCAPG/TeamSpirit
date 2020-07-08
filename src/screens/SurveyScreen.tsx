@@ -104,17 +104,50 @@ const SurveyScreen = ({
     { valid: false, status: "", touched: false },
   ]);
 
+  var Hashes = require("jshashes");
+  var SHA256 = new Hashes.SHA256();
+
   const uniqueUserId: any = userId;
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
   >([
-    { number: 1, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
-    { number: 2, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
-    { number: 3, note: 5, surveyCode: surveyCode.code, user: uniqueUserId },
-    { number: 4, note: 5, surveyCode: surveyCode.code, user: uniqueUserId },
-    { number: 5, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
-    { number: 6, note: 0, surveyCode: surveyCode.code, user: uniqueUserId },
+    {
+      number: 1,
+      note: 0,
+      surveyCode: surveyCode.code,
+      user: SHA256.hex(uniqueUserId),
+    },
+    {
+      number: 2,
+      note: 0,
+      surveyCode: surveyCode.code,
+      user: SHA256.hex(uniqueUserId),
+    },
+    {
+      number: 3,
+      note: 5,
+      surveyCode: surveyCode.code,
+      user: SHA256.hex(uniqueUserId),
+    },
+    {
+      number: 4,
+      note: 5,
+      surveyCode: surveyCode.code,
+      user: SHA256.hex(uniqueUserId),
+    },
+    {
+      number: 5,
+      note: 0,
+      surveyCode: surveyCode.code,
+      user: SHA256.hex(uniqueUserId),
+    },
+    {
+      number: 6,
+      note: 0,
+      surveyCode: surveyCode.code,
+      user: SHA256.hex(uniqueUserId),
+    },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([

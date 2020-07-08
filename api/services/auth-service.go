@@ -136,13 +136,13 @@ func Register(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, echo.Map{"Error": "This email already exist, please log in!"})
 	}
 
-	newUser.Password = hashAndSalt(newUser.Password)
+	newUser.Password = HashAndSalt(newUser.Password)
 
 	user, _ := UserRepo.CreateUser(newUser)
 	return c.JSON(http.StatusOK, user)
 }
 
-func hashAndSalt(password string) string {
+func HashAndSalt(password string) string {
 	pwd := []byte(password)
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {

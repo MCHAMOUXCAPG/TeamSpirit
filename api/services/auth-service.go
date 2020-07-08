@@ -39,7 +39,7 @@ func AccessToSurvey(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusNotFound, "Invalid survey code")
 	}
 
-	if isNotAllowedToVote(survey.Notes, hashUser(access.User)) {
+	if isNotAllowedToVote(survey.Notes, HashUser(access.User)) {
 		return echo.NewHTTPError(http.StatusNotAcceptable, "You have already completed the survey")
 	}
 
@@ -136,13 +136,13 @@ func Register(c echo.Context) error {
 		return c.JSON(http.StatusNotFound, echo.Map{"Error": "This email already exist, please log in!"})
 	}
 
-	newUser.Password = hashAndSalt(newUser.Password)
+	newUser.Password = HashAndSalt(newUser.Password)
 
 	user, _ := UserRepo.CreateUser(newUser)
 	return c.JSON(http.StatusOK, user)
 }
 
-func hashAndSalt(password string) string {
+func HashAndSalt(password string) string {
 	pwd := []byte(password)
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
@@ -164,7 +164,7 @@ func passwordMatch(checkedPwd string, foundPwd []byte) bool {
 	return true
 }
 
-func hashUser(user string) string {
+func HashUser(user string) string {
 	hash := sha256.Sum256([]byte(user))
 	hashSlice := hash[:]
 	return hex.EncodeToString(hashSlice)

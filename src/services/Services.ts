@@ -69,3 +69,5 @@ export class UserValidationService {
     });
   }
 }
+
+export class DownloadCSVService {}

@@ -138,7 +138,7 @@ func TestDeleteTeam(t *testing.T) {
 	c := e.NewContext(req, rec)
 	c.SetPath("/team/:teamName")
 	c.SetParamNames("teamName")
-	c.SetParamValues(team.Name)
+	c.SetParamValues(team1.Name)
 
 	// Assertions
 	if assert.NoError(t, services.DeleteTeam(c)) {

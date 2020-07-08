@@ -9,6 +9,7 @@ import (
 	"testing"
 	"time"
 
+	"capgemini.com/gorn/team-spirit/config"
 	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
@@ -120,7 +121,7 @@ func TestUpdateSurvey(t *testing.T) {
 		assert.Equal(t, survey.Code, "code2")
 	}
 
-	SurveyRepo.DeleteSurvey(survey1.Code)
+	SurveyRepo.DeleteSurvey(survey.Code)
 }
 
 func TestDeleteSurvey(t *testing.T) {
@@ -173,12 +174,14 @@ func TestAddNotesToSurvey(t *testing.T) {
 	}
 
 	// clean databse
+	var notes []*entities.Note
+	config.DB.Where("survey_code= ? ", survey1.Code).Delete(&notes)
 	SurveyRepo.DeleteSurvey(survey1.Code)
 
 }
 
 func TestGetResultSurvey(t *testing.T) { // Post a new team
-	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 5, Frequency: 14})
+	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 6, Frequency: 14})
 	assert.Equal(t, team1.Name, "team1")
 	// Post a servey with some notes
 	survey1, _ := SurveyRepo.CreateSurvey(&entities.Survey{StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), EndDate: time.Date(2016, time.August, 30, 0, 0, 0, 0, time.UTC), Code: "code1", TeamName: "team1"})
@@ -208,6 +211,8 @@ func TestGetResultSurvey(t *testing.T) { // Post a new team
 	}
 
 	// clean databse
+	var notes []*entities.Note
+	config.DB.Where("survey_code= ? ", "code1").Delete(&notes)
 	SurveyRepo.DeleteSurvey(survey1.Code)
 	TeamRepo.DeleteTeam(team1.Name)
 }
@@ -226,7 +231,7 @@ func TestSurveyCodesNotEqual(t *testing.T) {
 func TestBuildNextSurvey(t *testing.T) {
 	// Post 1 team in the mock database
 
-	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 5, Frequency: 15})
+	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 7, Frequency: 15})
 	assert.Equal(t, team1.Name, "team1")
 
 	// Post 1 survey in the mock database

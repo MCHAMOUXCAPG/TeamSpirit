@@ -97,8 +97,7 @@ function SurveyStatus({
 
   const handleClose = (guardar: any) => {
     setOpen(false);
-    var fecha = new Date(currentTeamConfig.StartDate);
-    setAuxDate(fecha);
+
     if (guardar) {
       setCurrentTeamConfig({
         ...currentTeamConfig,
@@ -108,14 +107,17 @@ function SurveyStatus({
           ? selectedDate.toString()
           : currentTeamConfig.StartDate,
       });
+
+      setAuxDate(selectedDate);
     } else {
+      setAuxDate(selectedDate);
       setSelectedDate(auxDate);
     }
   };
   const handleClickOpenReset = () => {
     setOpenReset(true);
   };
-  const handleClickCloseReset = () => {
+  const handleClickCloseReset = (borrar: any) => {
     setOpenReset(false);
   };
 
@@ -193,61 +195,84 @@ function SurveyStatus({
                 </p>
               </Grid>
               <Grid item xs={12}>
-                <Grid container spacing={4} style={{ marginTop: 10 }}>
-                  <Grid item xs={12} sm={6}>
-                    <Button
-                      variant="contained"
-                      className="btn btn-contained"
-                      startIcon={<Settings />}
-                      onClick={handleClickOpen}
-                    >
-                      Configure your team
-                    </Button>
+                {loadingS ? (
+                  <Grid
+                    container
+                    direction="row"
+                    justify="center"
+                    alignItems="center"
+                    xs={12}
+                  >
+                    <CircularProgress
+                      size={24}
+                      style={{
+                        color: colors.primary,
+                      }}
+                    />
                   </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <Button
-                      variant="outlined"
-                      className="btn btn-outlined"
-                      startIcon={<Delete />}
-                      onClick={handleClickOpenReset}
-                    >
-                      Reset current survey
-                    </Button>
-                    <Dialog
-                      open={openReset}
-                      onClose={handleClickCloseReset}
-                      aria-labelledby="form-dialog-title"
-                    >
-                      <DialogTitle
-                        id="dialog-title"
-                        style={{ height: "200px" }}
+                ) : (
+                  <Grid container spacing={4} style={{ marginTop: 10 }}>
+                    <Grid item xs={12} sm={6}>
+                      <Button
+                        variant="contained"
+                        className="btn btn-contained"
+                        startIcon={<Settings />}
+                        onClick={handleClickOpen}
                       >
-                        Are you sure?
-                      </DialogTitle>
-                      <DialogActions>
-                        <Button onClick={handleClickCloseReset} color="primary">
-                          Yes
-                        </Button>
-                        <Button onClick={handleClickCloseReset} color="primary">
-                          No
-                        </Button>
-                      </DialogActions>
-                    </Dialog>
-                    {loadingS ? (
-                      <Grid
-                        container
-                        direction="column"
-                        justify="flex-start"
-                        style={{ paddingTop: 15, marginLeft: "-70wh" }}
+                        Configure your team
+                      </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Button
+                        variant="outlined"
+                        className="btn btn-outlined"
+                        startIcon={<Delete />}
+                        onClick={handleClickOpenReset}
                       >
-                        <CircularProgress
-                          size={24}
+                        Reset current survey
+                      </Button>
+
+                      <Dialog
+                        open={openReset}
+                        onClose={handleClickCloseReset}
+                        aria-labelledby="form-dialog-title"
+                      >
+                        <DialogTitle id="dialog-title">
+                          Are you sure?
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="warnning-text">
+                            The actual result will be lost
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions
                           style={{
-                            color: colors.primary,
+                            height: "60px",
+                            width: "300px",
+                            margin: "15px",
                           }}
-                        />
-                      </Grid>
-                    ) : (
+                        >
+                          <Button
+                            onClick={() => {
+                              handleClickCloseReset(true);
+                            }}
+                            color="primary"
+                            size="large"
+                          >
+                            Yes
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              handleClickCloseReset(false);
+                            }}
+                            color="primary"
+                            size="large"
+                          >
+                            No
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
+
                       <Dialog
                         open={open}
                         onClose={handleClose}
@@ -318,7 +343,6 @@ function SurveyStatus({
                               handleClose(true);
                             }}
                             color="primary"
-                            type="submit"
                             size="large"
                           >
                             Save
@@ -334,9 +358,9 @@ function SurveyStatus({
                           </Button>
                         </DialogActions>
                       </Dialog>
-                    )}
+                    </Grid>
                   </Grid>
-                </Grid>
+                )}
               </Grid>
             </Grid>
           </>

@@ -6,7 +6,7 @@ import (
 
 var GETSURVEY_ACCESS = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method SurveyRepo.GetSurvey",
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurvey",
 	Path:     "api/services/auth-service.go",
 	Function: "AccessToSurvey",
 }
@@ -41,14 +41,14 @@ var DEADLINE_PASSED_ACCESS = &dto.Error{
 
 var GETUSERBYEMAIL_CURRENTUSER = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method AuthRepo.GetUserByEmail",
+	Message:  "Some error happened when calling the method AuthRepo.GetUserByEmail",
 	Path:     "api/services/auth-service.go",
 	Function: "CurrentUser",
 }
 
 var GETUSERBYEMAIL_LOGIN = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method AuthRepo.GetUserByEmail",
+	Message:  "Some error happened when calling the method AuthRepo.GetUserByEmail",
 	Path:     "api/services/auth-service.go",
 	Function: "Login",
 }
@@ -69,14 +69,14 @@ var INVALID_CREDENTIALS_LOGIN = &dto.Error{
 
 var TOKEN_SIGNED_LOGIN = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method token.SignedString",
+	Message:  "Some error happened when calling the method token.SignedString",
 	Path:     "api/services/auth-service.go",
 	Function: "Login",
 }
 
 var GETUSERBYEMAIL_REGISTER = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method AuthRepo.GetUserByEmail",
+	Message:  "Some error happened when calling the method AuthRepo.GetUserByEmail",
 	Path:     "api/services/auth-service.go",
 	Function: "Register",
 }
@@ -90,105 +90,105 @@ var EMAILEXISTS_REGISTER = &dto.Error{
 
 var CREATEUSER_REGISTER = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method UserRepo.CreateUser",
+	Message:  "Some error happened when calling the method UserRepo.CreateUser",
 	Path:     "api/services/auth-service.go",
 	Function: "Register",
 }
 
 var HASHPASSWORD_REGISTER = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method bcrypt.GenerateFromPassword of HashAndSalt",
+	Message:  "Some error happened when calling the method bcrypt.GenerateFromPassword of HashAndSalt",
 	Path:     "api/services/auth-service.go",
 	Function: "Register",
 }
 
 var GETS_GETROLES = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method RoleRepo.GetRoles",
+	Message:  "Some error happened when calling the method RoleRepo.GetRoles",
 	Path:     "api/services/role-service.go",
 	Function: "GetRoles",
 }
 
 var CONVERTPARAM_GETROLE = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method strconv.Atoi",
+	Message:  "Some error happened when calling the method strconv.Atoi",
 	Path:     "api/services/role-service.go",
 	Function: "GetRole",
 }
 
 var GET_GETROLE = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method RoleRepo.GetRole",
+	Message:  "Some error happened when calling the method RoleRepo.GetRole",
 	Path:     "api/services/role-service.go",
 	Function: "GetRole",
 }
 
 var CREATE_CREATEROLE = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method RoleRepo.CreateRole",
+	Message:  "Some error happened when calling the method RoleRepo.CreateRole",
 	Path:     "api/services/role-service.go",
 	Function: "CreateRole",
 }
 
 var CONVERTPARAM_UPDATEROLE = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method strconv.Atoi",
+	Message:  "Some error happened when calling the method strconv.Atoi",
 	Path:     "api/services/role-service.go",
 	Function: "UpdateRole",
 }
 
 var UPDATE_UPDATEROLE = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method RoleRepo.UpdateRole",
+	Message:  "Some error happened when calling the method RoleRepo.UpdateRole",
 	Path:     "api/services/role-service.go",
 	Function: "UpdateRole",
 }
 
 var CONVERTPARAM_DELETEROLE = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method strconv.Atoi",
+	Message:  "Some error happened when calling the method strconv.Atoi",
 	Path:     "api/services/role-service.go",
 	Function: "DeleteRole",
 }
 
 var DELETE_DELETEROLE = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method RoleRepo.DeleteRole",
+	Message:  "Some error happened when calling the method RoleRepo.DeleteRole",
 	Path:     "api/services/role-service.go",
 	Function: "DeleteRole",
 }
 
 var GETS_GETTEAMS = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method TeamRepo.GetTeams",
+	Message:  "Some error happened when calling the method TeamRepo.GetTeams",
 	Path:     "api/services/team-service.go",
 	Function: "GetTeams",
 }
 
 var GET_GETTEAM = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method TeamRepo.GetTeams",
+	Message:  "Some error happened when calling the method TeamRepo.GetTeam",
 	Path:     "api/services/team-service.go",
 	Function: "GetTeam",
 }
 
 var CREATE_CREATETEAM = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method TeamRepo.CreateTeam",
+	Message:  "Some error happened when calling the method TeamRepo.CreateTeam",
 	Path:     "api/services/team-service.go",
 	Function: "CreateRole",
 }
 
 var UPDATE_UPDATETEAM = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method TeamRepo.UpdateTeam",
+	Message:  "Some error happened when calling the method TeamRepo.UpdateTeam",
 	Path:     "api/services/team-service.go",
 	Function: "UpdateTeam",
 }
 
 var DELETE_DELETETEAM = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method TeamRepo.DeleteTeam",
+	Message:  "Some error happened when calling the method TeamRepo.DeleteTeam",
 	Path:     "api/services/team-service.go",
 	Function: "DeleteTeam",
 }

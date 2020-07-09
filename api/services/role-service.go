@@ -46,7 +46,12 @@ func GetRoles(c echo.Context) error {
 // @Router /role/:id [Get]
 func GetRole(c echo.Context) error {
 
-	roleID, _ := strconv.Atoi(c.Param("id"))
+	roleID, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_GETROLE)
+	}
+
 	role, err := RoleRepo.GetRole(roleID)
 
 	if err != nil {

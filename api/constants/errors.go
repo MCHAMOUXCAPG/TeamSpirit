@@ -109,6 +109,13 @@ var GETS_GETROLES = &dto.Error{
 	Function: "GetRoles",
 }
 
+var CONVERTPARAM_GETROLE = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method strconv.Atoi",
+	Path:     "api/services/role-service.go",
+	Function: "GetRole",
+}
+
 var GET_GETROLE = &dto.Error{
 	Status:   500,
 	Message:  "Some error hapenned when calling the method RoleRepo.GetRole",
@@ -149,4 +156,39 @@ var DELETE_DELETEROLE = &dto.Error{
 	Message:  "Some error hapenned when calling the method RoleRepo.DeleteRole",
 	Path:     "api/services/role-service.go",
 	Function: "DeleteRole",
+}
+
+var GETS_GETTEAMS = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method TeamRepo.GetTeams",
+	Path:     "api/services/team-service.go",
+	Function: "GetTeams",
+}
+
+var GET_GETTEAM = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method TeamRepo.GetTeams",
+	Path:     "api/services/team-service.go",
+	Function: "GetTeam",
+}
+
+var CREATE_CREATETEAM = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method TeamRepo.CreateTeam",
+	Path:     "api/services/team-service.go",
+	Function: "CreateRole",
+}
+
+var UPDATE_UPDATETEAM = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method TeamRepo.UpdateTeam",
+	Path:     "api/services/team-service.go",
+	Function: "UpdateTeam",
+}
+
+var DELETE_DELETETEAM = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method TeamRepo.DeleteTeam",
+	Path:     "api/services/team-service.go",
+	Function: "DeleteTeam",
 }

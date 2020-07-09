@@ -674,6 +674,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a team
       tags:
       - Teams
@@ -694,6 +698,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get one team
       tags:
       - Teams
@@ -720,6 +728,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a team
       tags:
       - Teams
@@ -742,6 +754,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new team
       tags:
       - Teams
@@ -759,6 +775,10 @@ paths:
             items:
               $ref: '#/definitions/entities.Team'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all teams
       tags:
       - Teams

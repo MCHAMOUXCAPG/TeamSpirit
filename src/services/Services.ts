@@ -46,6 +46,20 @@ export class SurveyService {
       },
     });
   }
+
+  public getCSV(
+    startDate: string,
+    endDate: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint =
+      "/survey/exportCsv?startDate=" + startDate + "&endDate=" + endDate;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }
 
 export class CodeValidationService {
@@ -69,5 +83,3 @@ export class UserValidationService {
     });
   }
 }
-
-export class DownloadCSVService {}

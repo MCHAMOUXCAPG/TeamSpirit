@@ -4,10 +4,10 @@ import (
 	"crypto/sha256"
 	"encoding/hex"
 	"encoding/json"
-	"log"
 	"net/http"
 	"time"
 
+	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
@@ -28,29 +28,36 @@ var (
 // @Produce json
 // @Param accessDTO body dto.Access true "accessDTO"
 // @Success 200 {object} entities.Survey
+// @Failure 500 {object} dto.Error
+// @Failure 406 {object} dto.Error
+// @Failure 401 {object} dto.Error
 // @Router /access [post]
 func AccessToSurvey(c echo.Context) error {
 	access := &dto.Access{}
 
 	json.NewDecoder(c.Request().Body).Decode(&access)
-	survey, _ := SurveyRepo.GetSurvey(access.Code)
+	survey, err := SurveyRepo.GetSurvey(access.Code)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETSURVEY_ACCESS)
+	}
 
 	if survey.Code == "" {
-		return echo.NewHTTPError(http.StatusNotFound, "Invalid survey code")
+		return echo.NewHTTPError(http.StatusNotFound, constants.INVALID_CODE_ACCESS)
 	}
 
 	if isNotAllowedToVote(survey.Notes, HashUser(access.User)) {
-		return echo.NewHTTPError(http.StatusNotAcceptable, "You have already completed the survey")
+		return echo.NewHTTPError(http.StatusNotAcceptable, constants.SURVEY_COMPLETED_ACCESS)
 	}
 
 	team, _ := TeamRepo.GetTeam(survey.TeamName)
 
 	if len(survey.Notes) >= (team.Num_mumbers * 6) {
-		return echo.NewHTTPError(http.StatusUnauthorized, "The maximum number of notes has been reached")
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.MAX_REACHED_ACCESS)
 	}
 
 	if time.Now().After(survey.EndDate) {
-		return echo.NewHTTPError(http.StatusUnauthorized, "The deadline to complete the survey has passed")
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.DEADLINE_PASSED_ACCESS)
 
 	}
 
@@ -64,15 +71,19 @@ func AccessToSurvey(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Success 200 {object} entities.User
+// @Failure 500 {object} dto.Error
 // @Router /me [Get]
 func CurrentUser(c echo.Context) error {
 
 	token := c.Get("user").(*jwt.Token)
 	claims := token.Claims.(*dto.JwtCustomClaims)
-	currentUser, _ := AuthRepo.GetUserByEmail(claims.Email)
+	currentUser, err := AuthRepo.GetUserByEmail(claims.Email)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETUSERBYEMAIL_CURRENTUSER)
+	}
 
 	return c.JSON(http.StatusOK, currentUser)
-
 }
 
 // Login godoc
@@ -83,6 +94,8 @@ func CurrentUser(c echo.Context) error {
 // @Produce json
 // @Param JwtCustomClaims body dto.JwtCustomClaims true "JwtCustomClaims"
 // @Success 200 {object} dto.AuthResponse
+// @Failure 500 {object} dto.Error
+// @Failure 404 {object} dto.Error
 // @Router /login [post]
 func Login(c echo.Context) error {
 
@@ -90,14 +103,18 @@ func Login(c echo.Context) error {
 
 	json.NewDecoder(c.Request().Body).Decode(&claims)
 
-	user, _ := AuthRepo.GetUserByEmail(claims.Email)
+	user, err := AuthRepo.GetUserByEmail(claims.Email)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETUSERBYEMAIL_LOGIN)
+	}
 
 	if user.Id == 0 {
-		return c.JSON(http.StatusNotFound, echo.Map{"Error": "This email doesn't exist, please register"})
+		return echo.NewHTTPError(http.StatusNotFound, constants.EMAILNOTEXISTS_LOGIN)
 	}
 
 	if passwordMatch(user.Password, []byte(claims.Password)) == false {
-		return c.JSON(http.StatusNotFound, echo.Map{"Error": "Invalid credentials"})
+		return echo.NewHTTPError(http.StatusNotFound, constants.INVALID_CREDENTIALS_LOGIN)
 	}
 
 	claims.StandardClaims = jwt.StandardClaims{
@@ -109,7 +126,7 @@ func Login(c echo.Context) error {
 	t, err := token.SignedString([]byte("secret"))
 
 	if err != nil {
-		return err
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.TOKEN_SIGNED_LOGIN)
 	}
 
 	return c.JSON(http.StatusOK, echo.Map{"token": t})
@@ -123,6 +140,8 @@ func Login(c echo.Context) error {
 // @Produce json
 // @Param RegisterDTO body dto.RegisterDTO true "RegisterDTO"
 // @Success 200 {object} entities.User
+// @Failure 500 {object} dto.Error
+// @Failure 404 {object} dto.Error
 // @Router /register [post]
 func Register(c echo.Context) error {
 
@@ -130,26 +149,39 @@ func Register(c echo.Context) error {
 
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
 
-	foundUser, _ := AuthRepo.GetUserByEmail(newUser.Email)
+	foundUser, err := AuthRepo.GetUserByEmail(newUser.Email)
 
-	if foundUser.Id != 0 {
-		return c.JSON(http.StatusNotFound, echo.Map{"Error": "This email already exist, please log in!"})
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETUSERBYEMAIL_REGISTER)
 	}
 
-	newUser.Password = HashAndSalt(newUser.Password)
+	if foundUser.Id != 0 {
+		return echo.NewHTTPError(http.StatusNotFound, constants.EMAILNOTEXISTS_REGISTER)
+	}
 
-	user, _ := UserRepo.CreateUser(newUser)
+	newUser.Password, err = HashAndSalt(newUser.Password)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.HASHPASSWORD_REGISTER)
+	}
+
+	user, err := UserRepo.CreateUser(newUser)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CREATEUSER_REGISTER)
+	}
+
 	return c.JSON(http.StatusOK, user)
 }
 
-func HashAndSalt(password string) string {
+func HashAndSalt(password string) (string, error) {
 	pwd := []byte(password)
 	hash, err := bcrypt.GenerateFromPassword(pwd, bcrypt.MinCost)
 	if err != nil {
-		log.Println(err)
+		return "", err
 	}
 
-	return string(hash)
+	return string(hash), nil
 }
 
 func passwordMatch(checkedPwd string, foundPwd []byte) bool {

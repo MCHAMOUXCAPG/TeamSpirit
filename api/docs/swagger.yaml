@@ -12,6 +12,17 @@ definitions:
       token:
         type: string
     type: object
+  dto.Error:
+    properties:
+      function:
+        type: string
+      message:
+        type: string
+      path:
+        type: string
+      status:
+        type: integer
+    type: object
   dto.JwtCustomClaims:
     properties:
       Email:
@@ -206,6 +217,18 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Access to survey
       tags:
       - Authentication
@@ -228,6 +251,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.AuthResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Login
       tags:
       - Authentication
@@ -243,6 +274,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Current User
       tags:
       - Authentication
@@ -265,6 +300,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Register
       tags:
       - Authentication

@@ -17,8 +17,8 @@ import DateFnsUtils from "@date-io/date-fns";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 
 function ExportResult() {
-  const [startDate, setStartDate] = React.useState<Date | null>(new Date());
-  const [endDate, setEndDate] = React.useState<Date | null>(new Date());
+  const [startDate, setStartDate] = useState<Date | null>(new Date());
+  const [endDate, setEndDate] = useState<Date | null>(new Date());
   const classes = useStyles();
 
   return (
@@ -56,7 +56,7 @@ function ExportResult() {
                           autoOk
                           disableToolbar
                           variant="inline"
-                          format="MM/dd/yyyy"
+                          format="yyyy/MM/dd"
                           inputVariant="outlined"
                           margin="normal"
                           className={classes.root}

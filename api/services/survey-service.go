@@ -286,8 +286,11 @@ func ExportSurveysCsv(c echo.Context) (err error) {
 
 	startDate := c.QueryParam("startDate")
 	endDate := c.QueryParam("endDate")
+	teamName := c.QueryParam("teamName")
+	
 	var headerCsv = []string{"StartDate", "EndDate", "Q.Number", "Note", "Code", "TeamName"}
-	surveys, _ := SurveyRepo.GetSurviesByPeriod(startDate, endDate)
+	surveys, _ := SurveyRepo.GetSurviesByPeriodAndTeamName(startDate, endDate, teamName)
+	
 	res := c.Response()
 	w := csv.NewWriter(res)
 	w.Comma = ';'

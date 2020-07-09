@@ -69,7 +69,7 @@ func HandleResquests() {
 	r.DELETE("/survey/:surveyCode", services.DeleteSurvey)
 	r.GET("/survey/result/:teamName", services.GetResultSurvey)
 	// Surveys CSV Export
-	r.GET("/survey/exportCsv", services.ExportSurveysCsv)
+	e.GET("/survey/exportCsv", services.ExportSurveysCsv)
 	r.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
 	r.GET("/resultByQuestions/:teamName", services.GetHistoricSurveysByQuestions)
 	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)

@@ -81,7 +81,7 @@ var GETUSERBYEMAIL_REGISTER = &dto.Error{
 	Function: "Register",
 }
 
-var EMAILNOTEXISTS_REGISTER = &dto.Error{
+var EMAILEXISTS_REGISTER = &dto.Error{
 	Status:   404,
 	Message:  "This email already exist, please log in!",
 	Path:     "api/services/auth-service.go",
@@ -97,7 +97,56 @@ var CREATEUSER_REGISTER = &dto.Error{
 
 var HASHPASSWORD_REGISTER = &dto.Error{
 	Status:   500,
-	Message:  "Some error hapenned when calling the method bcrypt.GenerateFromPassword",
+	Message:  "Some error hapenned when calling the method bcrypt.GenerateFromPassword of HashAndSalt",
 	Path:     "api/services/auth-service.go",
-	Function: "HashAndSalt",
+	Function: "Register",
+}
+
+var GETS_GETROLES = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method RoleRepo.GetRoles",
+	Path:     "api/services/role-service.go",
+	Function: "GetRoles",
+}
+
+var GET_GETROLE = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method RoleRepo.GetRole",
+	Path:     "api/services/role-service.go",
+	Function: "GetRole",
+}
+
+var CREATE_CREATEROLE = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method RoleRepo.CreateRole",
+	Path:     "api/services/role-service.go",
+	Function: "CreateRole",
+}
+
+var CONVERTPARAM_UPDATEROLE = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method strconv.Atoi",
+	Path:     "api/services/role-service.go",
+	Function: "UpdateRole",
+}
+
+var UPDATE_UPDATEROLE = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method RoleRepo.UpdateRole",
+	Path:     "api/services/role-service.go",
+	Function: "UpdateRole",
+}
+
+var CONVERTPARAM_DELETEROLE = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method strconv.Atoi",
+	Path:     "api/services/role-service.go",
+	Function: "DeleteRole",
+}
+
+var DELETE_DELETEROLE = &dto.Error{
+	Status:   500,
+	Message:  "Some error hapenned when calling the method RoleRepo.DeleteRole",
+	Path:     "api/services/role-service.go",
+	Function: "DeleteRole",
 }

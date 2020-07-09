@@ -375,6 +375,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Delete a role
       tags:
       - Roles
@@ -395,6 +399,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get one role
       tags:
       - Roles
@@ -421,6 +429,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a new role
       tags:
       - Roles
@@ -443,6 +455,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new role
       tags:
       - Roles
@@ -460,6 +476,10 @@ paths:
             items:
               $ref: '#/definitions/entities.Role'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all roles
       tags:
       - Roles

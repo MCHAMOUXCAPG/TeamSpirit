@@ -12,6 +12,7 @@ import (
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
 	"github.com/dgrijalva/jwt-go"
+	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 	"golang.org/x/crypto/bcrypt"
@@ -149,14 +150,14 @@ func Register(c echo.Context) error {
 
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
 
-	foundUser, err := AuthRepo.GetUserByEmail(newUser.Email)
+	_, err := AuthRepo.GetUserByEmail(newUser.Email)
 
-	if err != nil {
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETUSERBYEMAIL_REGISTER)
 	}
 
-	if foundUser.Id != 0 {
-		return echo.NewHTTPError(http.StatusNotFound, constants.EMAILNOTEXISTS_REGISTER)
+	if !gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.EMAILEXISTS_REGISTER)
 	}
 
 	newUser.Password, err = HashAndSalt(newUser.Password)

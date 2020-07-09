@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
 	"github.com/labstack/echo/v4"
@@ -21,10 +22,16 @@ var (
 // @Accept json
 // @Produce json
 // @Success 200 {object} []entities.Role
+// @Failure 500 {object} dto.Error
 // @Router /roles [Get]
 func GetRoles(c echo.Context) error {
 
-	roles, _ := RoleRepo.GetRoles()
+	roles, err := RoleRepo.GetRoles()
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETS_GETROLES)
+	}
+
 	return c.JSON(http.StatusOK, roles)
 }
 
@@ -35,11 +42,17 @@ func GetRoles(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.Role
+// @Failure 500 {object} dto.Error
 // @Router /role/:id [Get]
 func GetRole(c echo.Context) error {
 
 	roleID, _ := strconv.Atoi(c.Param("id"))
-	role, _ := RoleRepo.GetRole(roleID)
+	role, err := RoleRepo.GetRole(roleID)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETROLE)
+	}
+
 	return c.JSON(http.StatusOK, role)
 }
 
@@ -50,13 +63,18 @@ func GetRole(c echo.Context) error {
 // @Produce json
 // @Param RoleDTO body entities.Role true "RoleDTO"
 // @Success 200 {object} entities.Role
+// @Failure 500 {object} dto.Error
 // @Router /role/create [post]
 func CreateRole(c echo.Context) error {
 
 	var newRole = &entities.Role{}
 	json.NewDecoder(c.Request().Body).Decode(&newRole)
 
-	role, _ := RoleRepo.CreateRole(newRole)
+	role, err := RoleRepo.CreateRole(newRole)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CREATE_CREATEROLE)
+	}
 	return c.JSON(http.StatusOK, role)
 }
 
@@ -68,14 +86,25 @@ func CreateRole(c echo.Context) error {
 // @Param id path string true "id"
 // @Param RoleDTO body entities.Role true "RoleDTO"
 // @Success 200 {object} entities.Role
+// @Failure 500 {object} dto.Error
 // @Router /role/:id [put]
 func UpdateRole(c echo.Context) error {
 
-	roleID, _ := strconv.Atoi(c.Param("id"))
+	roleID, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_UPDATEROLE)
+	}
+
 	var updatedRole = &entities.Role{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedRole)
 
-	role, _ := RoleRepo.UpdateRole(roleID, updatedRole)
+	role, err := RoleRepo.UpdateRole(roleID, updatedRole)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.UPDATE_UPDATEROLE)
+	}
+
 	return c.JSON(http.StatusOK, role)
 }
 
@@ -86,10 +115,21 @@ func UpdateRole(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.Role
+// @Failure 500 {object} dto.Error
 // @Router /role/:id [delete]
 func DeleteRole(c echo.Context) error {
 
-	roleID, _ := strconv.Atoi(c.Param("id"))
-	role, _ := RoleRepo.DeleteRole(roleID)
+	roleID, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_DELETEROLE)
+	}
+
+	role, err := RoleRepo.DeleteRole(roleID)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.DELETE_DELETEROLE)
+	}
+
 	return c.JSON(http.StatusOK, role)
 }

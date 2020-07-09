@@ -22,38 +22,38 @@ func NewRoleRepository() RoleRepository {
 func (*RoleRepo) GetRoles() ([]*entities.Role, error) {
 
 	var roles []*entities.Role
-	config.DB.Find(&roles)
+	result := config.DB.Find(&roles)
 
-	return roles, nil
+	return roles, result.Error
 }
 
 func (*RoleRepo) GetRole(roleID int) (*entities.Role, error) {
 
 	var role = &entities.Role{}
-	config.DB.Where("id = ? ", roleID).Find(&role)
+	result := config.DB.Where("id = ? ", roleID).Find(&role)
 
-	return role, nil
+	return role, result.Error
 }
 
 func (*RoleRepo) CreateRole(role *entities.Role) (*entities.Role, error) {
 
-	config.DB.Create(&role)
+	result := config.DB.Create(&role)
 
-	return role, nil
+	return role, result.Error
 }
 
 func (*RoleRepo) UpdateRole(roleID int, role *entities.Role) (*entities.Role, error) {
 
 	var roleToUpdate = &entities.Role{}
-	config.DB.Model(&roleToUpdate).Where("id = ? ", roleID).Updates(&role)
+	result := config.DB.Model(&roleToUpdate).Where("id = ? ", roleID).Updates(&role)
 
-	return role, nil
+	return role, result.Error
 }
 
 func (*RoleRepo) DeleteRole(roleID int) (*entities.Role, error) {
 
 	var role = &entities.Role{}
-	config.DB.Where("id = ? ", roleID).Delete(&role)
+	result := config.DB.Where("id = ? ", roleID).Delete(&role)
 
-	return role, nil
+	return role, result.Error
 }

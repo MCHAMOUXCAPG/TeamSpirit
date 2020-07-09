@@ -1,5 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
-import { Container, Grid, Button } from "@material-ui/core";
+import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
 import "./TeamHomePage.css";
@@ -14,7 +14,6 @@ import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
 import { AuthContext } from "../../context/auth";
-import { CSVDownload } from "react-csv";
 
 const TeamHomePage = () => {
   const context = useContext(AuthContext);
@@ -40,18 +39,6 @@ const TeamHomePage = () => {
   const [period, setPeriod] = useState<string>("");
   const [loading, setLoading] = useState(true);
 
-  const downloadCSV = (data: any) => {
-    console.log(data);
-    return (
-      <CSVDownload
-        data={data}
-        target="_blank"
-        asyncOnClick={true}
-        filename="my-file.csv"
-      />
-    );
-  };
-
   const surveyService: SurveyService = new SurveyService();
 
   async function getResults(teamName: string, token: string | null) {
@@ -70,23 +57,6 @@ const TeamHomePage = () => {
       .getResultByUser(teamName, token)
       .then((res) => {
         setCurrentDetailResultsUsers(res.data);
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  }
-
-  async function getCSVdownload(
-    startDate: string,
-    endDate: string,
-    token: string | null
-  ) {
-    await surveyService
-      .getCSV(startDate, endDate, token)
-      .then((res) => {
-        console.log(res.data);
-        const data = res.data;
-        downloadCSV(data);
       })
       .catch((err) => {
         console.log(err);
@@ -159,11 +129,7 @@ const TeamHomePage = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <Button
-              onClick={() => getCSVdownload("2020-07-01", "2020-07-11", token)}
-            >
-              Download CSV
-            </Button>
+            <ExportResult />
           </Grid>
           <Grid item xs={12}>
             <DetailResults

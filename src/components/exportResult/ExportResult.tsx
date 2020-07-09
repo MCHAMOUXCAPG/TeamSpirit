@@ -1,25 +1,55 @@
 import React, { useState } from "react";
 import "./ExportResult.css";
 import NoteAddIcon from "@material-ui/icons/NoteAdd";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import { Container, Grid } from "@material-ui/core";
-import Button from "@material-ui/core/Button";
+import {
+  Container,
+  Grid,
+  Button,
+  Typography,
+  ExpansionPanel,
+  ExpansionPanelSummary,
+  ExpansionPanelDetails,
+} from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
 import DateFnsUtils from "@date-io/date-fns";
+import { format } from "date-fns";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { SurveyService } from "../../services/Services";
+import { CSVLink } from "react-csv";
 
 function ExportResult() {
-  const [startDate, setStartDate] = useState<Date | null>(new Date());
-  const [endDate, setEndDate] = useState<Date | null>(new Date());
+  const [startDate, setStartDate] = useState<Date | string>(new Date());
+  const [endDate, setEndDate] = useState<Date | string>(new Date());
   const classes = useStyles();
+  const token = sessionStorage.getItem("token");
+  const [data, setData] = useState("");
+
+  const surveyService: SurveyService = new SurveyService();
+
+  async function getCSVdownload(
+    startDate: string,
+    endDate: string,
+    token: string | null
+  ) {
+    await surveyService
+      .getCSV(startDate, endDate, token)
+      .then((res) => {
+        console.log("went in");
+        console.log(startDate);
+        console.log(endDate);
+        console.log(token);
+        setData(res.data);
+        console.log(data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
   return (
     <div>
@@ -56,13 +86,16 @@ function ExportResult() {
                           autoOk
                           disableToolbar
                           variant="inline"
-                          format="yyyy/MM/dd"
+                          format="yyyy-MM-dd"
                           inputVariant="outlined"
                           margin="normal"
                           className={classes.root}
                           id="date-picker-inline"
                           value={startDate}
-                          onChange={(date: any) => setStartDate(date)}
+                          onChange={(date: any) => {
+                            let formattedDate = format(date, "yyyy-MM-dd");
+                            setStartDate(formattedDate);
+                          }}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}
@@ -82,13 +115,16 @@ function ExportResult() {
                           autoOk
                           disableToolbar
                           variant="inline"
-                          format="MM/dd/yyyy"
+                          format="yyyy-MM-dd"
                           inputVariant="outlined"
                           margin="normal"
                           className={classes.root}
                           id="date-picker-inline"
                           value={endDate}
-                          onChange={(date: any) => setEndDate(date)}
+                          onChange={(date: any) => {
+                            let formattedDate = format(date, "yyyy-MM-dd");
+                            setEndDate(formattedDate);
+                          }}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
                           }}
@@ -100,10 +136,20 @@ function ExportResult() {
                     <Button
                       variant="outlined"
                       className="bt btn-containe"
+                      onClick={() =>
+                        getCSVdownload(
+                          startDate.toString(),
+                          endDate.toString(),
+                          token
+                        )
+                      }
                       startIcon={<GetAppIcon />}
                     >
                       Export
                     </Button>
+                    <CSVLink data={data} target="_blank" filename="myFile.csv">
+                      Download
+                    </CSVLink>
                   </Grid>
                 </Grid>
               </Container>

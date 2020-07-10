@@ -4,6 +4,32 @@ describe("Login Test", () => {
     cy.get("#outlined-required").type("user@mail.com");
     cy.get("#outlined-required-2").type("123456");
     cy.get("#ButtonStart").click();
+    // cy.server();
+    // cy.route({
+    //   method: "POST",
+    //   url: "/login",
+    //   response: [],
+    //   body: {
+    //     Email: "user@mail.com",
+    //     Password: "123456",
+    //   },
+    // }).as("login");
+
+    // cy.get("#ButtonStart").click();
+    // cy.wait(["@login"]).then((res) => {
+    //   window.localStorage.setItem(
+    //     "token",
+    //     "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InVzZXJAbWFpbC5jb20iLCJQYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTU5NDYyNTE0NH0.kodeO10P96tigWStQNFAqrKU28Ekutd9b4VDVXKlqNw"
+    //   );
+    //   cy.route({
+    //     method: "GET",
+    //     url: "/me",
+    //     headers: {
+    //       Authorization:
+    //         "Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJFbWFpbCI6InVzZXJAbWFpbC5jb20iLCJQYXNzd29yZCI6IjEyMzQ1NiIsImV4cCI6MTU5NDYyNTE0NH0.kodeO10P96tigWStQNFAqrKU28Ekutd9b4VDVXKlqNw",
+    //     },
+    //   }).as("me");
+    // });
     cy.url().should("include", "/teamleader");
     cy.get(".navBarButtons > button").should(($buttons) => {
       expect($buttons).to.have.length(1);

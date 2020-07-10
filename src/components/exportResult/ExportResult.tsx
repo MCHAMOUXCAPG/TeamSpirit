@@ -65,7 +65,7 @@ function ExportResult({ teamName }: { teamName: string }) {
           }, 5000);
         } else {
           setMessage(
-            "No data for this date interval. Please, choose another dates."
+            "No data for this date interval. Please, choose another date."
           );
           setColor("#f0c12d");
         }

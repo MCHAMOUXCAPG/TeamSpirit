@@ -377,8 +377,11 @@ func ExportSurveysCsv(c echo.Context) (err error) {
 
 	startDate := c.QueryParam("startDate")
 	endDate := c.QueryParam("endDate")
+	teamName := c.QueryParam("teamName")
+
 	var headerCsv = []string{"StartDate", "EndDate", "Q.Number", "Note", "Code", "TeamName"}
-	surveys, err := SurveyRepo.GetSurviesByPeriod(startDate, endDate)
+
+	surveys, err := SurveyRepo.GetSurviesByPeriodAndTeamName(startDate, endDate, teamName)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETSURVEYS_EXPORTSURVEYSCSV)

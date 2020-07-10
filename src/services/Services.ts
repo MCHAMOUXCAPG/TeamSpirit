@@ -47,6 +47,7 @@ export class SurveyService {
       },
     });
   }
+
   public getResultSurveyConfig(
     teamName: string,
     token: string | null
@@ -58,6 +59,21 @@ export class SurveyService {
       },
     });
   }
+
+  public getCSV(
+    startDate: string,
+    endDate: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint =
+      "/survey/exportCsv?startDate=" + startDate + "&endDate=" + endDate;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
   public deleteSurvey(token: string | null, surveyCode: string): Promise<any> {
     const endPoint = "/survey/" + surveyCode;
     return environment.delete(endPoint, {

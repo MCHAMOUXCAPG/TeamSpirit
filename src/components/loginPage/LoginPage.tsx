@@ -31,6 +31,7 @@ const LoginPage = () => {
 
   useEffect(() => {
     context.setValid(false);
+    // eslint-disable-next-line
   }, []);
   // to make private route
 
@@ -164,7 +165,7 @@ const LoginPage = () => {
                           required
                           error={Err}
                           className={classes.root}
-                          id="outlined-required"
+                          id="outlined-required-2"
                           variant="outlined"
                           placeholder="Password"
                           type="password"

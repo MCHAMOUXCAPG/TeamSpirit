@@ -33,6 +33,7 @@ const MyTeamChart = (props: any) => {
   }
   useEffect(() => {
     getResults(props.teamName, token);
+    // eslint-disable-next-line
   }, []);
 
   return (

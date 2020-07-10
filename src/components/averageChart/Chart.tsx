@@ -124,6 +124,7 @@ const AverageChart = (props: any) => {
   });
   useEffect(() => {
     updateCharts();
+    // eslint-disable-next-line
   }, [props]);
   function updateCharts() {
     setState({

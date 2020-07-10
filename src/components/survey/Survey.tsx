@@ -12,7 +12,6 @@ import {
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
 import AlertDialog from "../alertDialog/AlertDialog";
-import { v4 as uuidv4 } from "uuid";
 
 import colors from "../../config/colors";
 import NavBar from "../navBar/NavBar";
@@ -35,6 +34,7 @@ const Survey = (props: any) => {
   const [success, setSuccess] = useState(false);
   const [repeated, setRepeated] = useState(false);
   const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [questionsState, setQuestionsState] = useState<IQuestionStatus[]>([
@@ -46,14 +46,11 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
   ]);
 
-  let uniqueId = undefined;
+  let uniqueId: any = undefined;
   if (localStorage.getItem("uniqueIdTS")) {
     uniqueId = localStorage.getItem("uniqueIdTS");
-  } else {
-    uniqueId = uuidv4();
-    localStorage.setItem("uniqueIdTS", uniqueId);
   }
-  // get the uniqueId, if not exists, create a new one
+  // get the uniqueId
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
@@ -76,6 +73,7 @@ const Survey = (props: any) => {
   ]);
 
   function useForceUpdate() {
+    // eslint-disable-next-line
     const [value, setValue] = useState(0); // integer state
     return () => setValue((value) => ++value); // update the state to force render
   }
@@ -123,6 +121,7 @@ const Survey = (props: any) => {
       forceUpdate();
     }
     forceUpdate();
+    // eslint-disable-next-line
   }, [questionsState, activeIcon, currentQuestion]);
 
   const checkDisabled = () => {
@@ -267,6 +266,7 @@ const Survey = (props: any) => {
                           return (
                             <Grid item xs={2} key={index}>
                               <img
+                                className="icon-image"
                                 onClick={() => {
                                   if (question.number === 1) {
                                     handleClick5Icons(0, index);
@@ -323,9 +323,19 @@ const Survey = (props: any) => {
                       <>
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             src={question.images[0]}
                             style={{ height: 40, width: 40, padding: 10 }}
                             alt=""
+                            onClick={() => {
+                              if (question.number === 3) {
+                                setSlider1(0);
+                                handleClickSlider(2, 0);
+                              } else {
+                                setSlider2(0);
+                                handleClickSlider(3, 0);
+                              }
+                            }}
                           />
                         </Grid>
                         <Grid item xs={8}>
@@ -351,9 +361,19 @@ const Survey = (props: any) => {
                         </Grid>
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             src={question.images[1]}
                             style={{ height: 40, width: 40, padding: 10 }}
                             alt=""
+                            onClick={() => {
+                              if (question.number === 3) {
+                                setSlider1(10);
+                                handleClickSlider(2, 10);
+                              } else {
+                                setSlider2(10);
+                                handleClickSlider(3, 10);
+                              }
+                            }}
                           />
                         </Grid>
                       </>
@@ -363,6 +383,7 @@ const Survey = (props: any) => {
                         <Grid item xs={3} />
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             onClick={() => {
                               handleClick2Icons(0, 5);
                             }}
@@ -384,6 +405,7 @@ const Survey = (props: any) => {
                         <Grid item xs={2} />
                         <Grid item xs={2}>
                           <img
+                            className="icon-image"
                             onClick={() => {
                               handleClick2Icons(1, 7.5);
                             }}
@@ -392,12 +414,12 @@ const Survey = (props: any) => {
                               activeIcon[questions[5].number - 1][1]
                                 ? {
                                     height: 40,
-                                    width: 40,
+                                    width: 30,
                                     padding: 10,
                                     backgroundColor: colors.primary,
                                     borderRadius: 30,
                                   }
-                                : { height: 40, width: 40, padding: 10 }
+                                : { height: 40, width: 30, padding: 10 }
                             }
                             alt=""
                           />

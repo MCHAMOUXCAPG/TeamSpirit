@@ -27,6 +27,7 @@ export interface IQuestionResponse {
 
 export interface IValidationCode {
   code: string;
+  User: string | null;
 }
 
 export interface ICurrentSurveyResult {

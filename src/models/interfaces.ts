@@ -55,7 +55,7 @@ export interface IResultsByQuestions {
 export interface ITeamDTO {
   frequency: number;
   name: string; //TeamName
-  num_munbers: number;
+  num_mumbers: number;
   startDate: string; // format "2number2number-number1-31"
 }
 export interface IOneTeamDTO {

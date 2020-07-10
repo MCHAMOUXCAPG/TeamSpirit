@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from "react";
+import { createContext, useContext } from "react";
 import Paper from "@material-ui/core/Paper";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import Grid from "@material-ui/core/Grid";
@@ -26,6 +27,10 @@ import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+export const reRender = createContext({
+  render: false,
+  setRender: (valid: boolean) => {},
+});
 function SurveyStatus({
   loading,
   period,
@@ -41,10 +46,12 @@ function SurveyStatus({
   historicResult: number;
   teamName: string;
 }) {
+  const contextRender = useContext(reRender);
   const token = sessionStorage.getItem("token");
   const surveyService: SurveyService = new SurveyService();
   const userValidationService: UserValidationService = new UserValidationService();
   const [open, setOpen] = useState(false);
+
   const [openReset, setOpenReset] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(
     new Date("2014-08-18T21:11:54")
@@ -55,6 +62,12 @@ function SurveyStatus({
   const [sprintLength, setSpringLength] = React.useState<number>(0);
   const [members_num, setMembers_num] = React.useState<number>(0);
   const [loadingS, setLoading] = useState(true);
+  const [body, setBody] = useState<ITeamDTO>({
+    frequency: 14,
+    name: "SNCF",
+    num_mumbers: 4,
+    startDate: "2020-06-11T00:00:00Z",
+  });
   const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
     Frequency: 0,
     Name: "", //TeamName
@@ -97,51 +110,70 @@ function SurveyStatus({
     setOpen(true);
   };
 
-  const handleClose = (guardar: any) => {
+  const handleClose = () => {
     setOpen(false);
-
-    if (guardar) {
-      setCurrentTeamConfig({
-        ...currentTeamConfig,
-        Frequency: sprintLength,
-        Num_mumbers: members_num,
-        StartDate: selectedDate
-          ? selectedDate.toString()
-          : currentTeamConfig.StartDate,
-      });
-      putTeamConfig(
-        {
-          frequency: currentTeamConfig.Frequency,
-          name: currentTeamConfig.Name,
-          num_munbers: currentTeamConfig.Num_mumbers,
-          startDate: currentTeamConfig.StartDate,
-        },
-        teamName,
-        token
-      );
-      setAuxDate(selectedDate);
-    } else {
-      setAuxDate(selectedDate);
-      setSelectedDate(auxDate);
-    }
+    setSelectedDate(auxDate);
   };
   const handleClickOpenReset = () => {
     setOpenReset(true);
   };
   const handleClickCloseReset = (borrar: any) => {
     setOpenReset(false);
+    if (borrar) {
+      deleteSurvey(token, "SNCF-abcde");
+    }
   };
+  function formatDate(date: any) {
+    var d = new Date(date),
+      month = "" + (d.getMonth() + 1),
+      day = "" + d.getDate(),
+      year = d.getFullYear();
+    if (month.length < 2) month = "0" + month;
+    if (day.length < 2) day = "0" + day;
+    return [year, month, day].join("-");
+  }
 
   const handleDateChange = (date: Date | null) => {
     setSelectedDate(date);
+    var Fecha = formatDate(date) + "T00:00:00Z";
+
+    setBody({
+      ...body,
+      startDate: Fecha,
+    });
   };
   const handleDateChangeSprintLength = (length: any) => {
     setSpringLength(length);
+    setBody({
+      ...body,
+      frequency: length,
+    });
   };
   const handleDateChangeMembers = (members: any) => {
     setMembers_num(members);
+    setBody({
+      ...body,
+      num_mumbers: members,
+    });
   };
+  const onSubmit = () => {
+    setOpen(false);
+    setCurrentTeamConfig({
+      ...currentTeamConfig,
+      Frequency: sprintLength,
+      Num_mumbers: members_num,
+      StartDate: selectedDate
+        ? selectedDate.toString()
+        : currentTeamConfig.StartDate,
+    });
 
+    setAuxDate(selectedDate);
+    configTeam();
+    contextRender.setRender(true);
+  };
+  const configTeam = () => {
+    putTeamConfig(body, teamName, token);
+  };
   async function putTeamConfig(
     body: ITeamDTO,
     teamName: string,
@@ -149,9 +181,7 @@ function SurveyStatus({
   ) {
     await userValidationService
       .putTeamConfig(body, teamName, token)
-      .then((res: any) => {
-        console.log(res.data);
-      })
+      .then((res: any) => {})
       .catch((err: any) => {
         console.log(err);
       });
@@ -161,6 +191,12 @@ function SurveyStatus({
       .getResultSurveyConfig(teamName, token)
       .then((res) => {
         setCurrentTeamConfig(res.data);
+        setBody({
+          frequency: res.data.Frequency,
+          name: teamName,
+          num_mumbers: res.data.Num_mumbers,
+          startDate: res.data.StartDate,
+        });
         setSpringLength(res.data.Frequency);
         setMembers_num(res.data.Num_mumbers);
         var fecha = new Date(res.data.StartDate);
@@ -172,10 +208,21 @@ function SurveyStatus({
         console.log(err);
       });
   }
+  async function deleteSurvey(token: string | null, surveyCode: string) {
+    await surveyService
+      .deleteSurvey(token, surveyCode)
+      .then((res) => {
+        console.log(res);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   useEffect(() => {
     getSurveyConfig(teamName, token);
   }, []);
   const classes = useStyles();
+
   return (
     <div>
       <Paper variant="outlined" className="paper">
@@ -321,7 +368,9 @@ function SurveyStatus({
                             className={classes.root}
                             defaultValue={currentTeamConfig.Frequency}
                             onChange={(freq) => {
-                              handleDateChangeSprintLength(freq.target.value);
+                              handleDateChangeSprintLength(
+                                Number(freq.target.value)
+                              );
                             }}
                           />
                           <br />
@@ -340,7 +389,7 @@ function SurveyStatus({
                               className={classes.root}
                               id="date-picker-inline"
                               value={selectedDate}
-                              onChange={(date) => handleDateChange(date)}
+                              onChange={handleDateChange}
                               KeyboardButtonProps={{
                                 "aria-label": "change date",
                               }}
@@ -358,24 +407,20 @@ function SurveyStatus({
                             className={classes.root}
                             defaultValue={currentTeamConfig.Num_mumbers}
                             onChange={(mem) =>
-                              handleDateChangeMembers(mem.target.value)
+                              handleDateChangeMembers(Number(mem.target.value))
                             }
                           />
                         </DialogContent>
                         <DialogActions>
                           <Button
-                            onClick={() => {
-                              handleClose(true);
-                            }}
+                            onClick={onSubmit}
                             color="primary"
                             size="large"
                           >
                             Save
                           </Button>
                           <Button
-                            onClick={() => {
-                              handleClose(false);
-                            }}
+                            onClick={handleClose}
                             size="large"
                             color="primary"
                           >

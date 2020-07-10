@@ -58,6 +58,14 @@ export class SurveyService {
       },
     });
   }
+  public deleteSurvey(token: string | null, surveyCode: string): Promise<any> {
+    const endPoint = "/survey/" + surveyCode;
+    return environment.delete(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }
 
 export class CodeValidationService {

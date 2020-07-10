@@ -21,6 +21,7 @@ import { format } from "date-fns";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { SurveyService } from "../../services/Services";
 import { CSVLink } from "react-csv";
+import FileSaver from "file-saver";
 
 function ExportResult() {
   const [startDate, setStartDate] = useState<Date | string>(new Date());
@@ -31,11 +32,11 @@ function ExportResult() {
 
   const surveyService: SurveyService = new SurveyService();
 
-  async function getCSVdownload(
+  const getCSVdownload = async (
     startDate: string,
     endDate: string,
     token: string | null
-  ) {
+  ) => {
     await surveyService
       .getCSV(startDate, endDate, token)
       .then((res) => {
@@ -45,10 +46,16 @@ function ExportResult() {
         console.log(token);
         setData(res.data);
         console.log(data);
+        const csvData = new Blob([data], { type: "text/csv;charset=utf-8;" });
+        FileSaver.saveAs(csvData, "data.csv");
       })
       .catch((err) => {
         console.log(err);
       });
+  };
+
+  function handleExport() {
+    getCSVdownload(startDate.toString(), endDate.toString(), token);
   }
 
   return (
@@ -95,6 +102,7 @@ function ExportResult() {
                           onChange={(date: any) => {
                             let formattedDate = format(date, "yyyy-MM-dd");
                             setStartDate(formattedDate);
+                            console.log(formattedDate);
                           }}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
@@ -124,6 +132,7 @@ function ExportResult() {
                           onChange={(date: any) => {
                             let formattedDate = format(date, "yyyy-MM-dd");
                             setEndDate(formattedDate);
+                            console.log(formattedDate);
                           }}
                           KeyboardButtonProps={{
                             "aria-label": "change date",
@@ -133,23 +142,17 @@ function ExportResult() {
                     </div>
                   </Grid>
                   <Grid item xs={4}>
-                    <Button
-                      variant="outlined"
-                      className="bt btn-containe"
-                      onClick={() =>
-                        getCSVdownload(
-                          startDate.toString(),
-                          endDate.toString(),
-                          token
-                        )
-                      }
-                      startIcon={<GetAppIcon />}
-                    >
-                      Export
-                    </Button>
-                    <CSVLink data={data} target="_blank" filename="myFile.csv">
-                      Download
-                    </CSVLink>
+                    <div>
+                      <Button
+                        variant="outlined"
+                        className="bt btn-containe"
+                        onClick={() => handleExport()}
+                        startIcon={<GetAppIcon />}
+                      >
+                        Export
+                      </Button>
+                      <CSVLink data={data} filename="myFile.csv" />
+                    </div>
                   </Grid>
                 </Grid>
               </Container>

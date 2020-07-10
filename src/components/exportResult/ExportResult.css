@@ -19,7 +19,6 @@
 
 #title {
   text-align: center;
-  left: 39%;
 }
 
 .bt {
@@ -70,7 +69,8 @@
   position: relative;
 }
 
-#date-picker-inline {
+#date-picker-inline,
+#date-picker-inline-2 {
   font-family: "Roboto";
   font-style: normal;
   font-weight: normal;
@@ -89,4 +89,27 @@
 .date-position {
   margin-top: -11%;
   margin-left: 10%;
+}
+
+.latent {
+  animation: latency 2s infinite;
+}
+
+@keyframes latency {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#export-container .MuiExpansionPanelSummary-expandIcon {
+  display: none !important;
+}
+#export-container .MuiExpansionPanelSummary-content {
+  justify-content: center !important;
 }

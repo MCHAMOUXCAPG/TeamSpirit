@@ -129,7 +129,7 @@ const TeamHomePage = () => {
             />
           </Grid>
           <Grid item xs={12}>
-            <ExportResult />
+            <ExportResult teamName={context.currentTeam} />
           </Grid>
           <Grid item xs={12}>
             <DetailResults

@@ -10,6 +10,7 @@ import {
   ExpansionPanel,
   ExpansionPanelSummary,
   ExpansionPanelDetails,
+  CircularProgress,
 } from "@material-ui/core";
 import GetAppIcon from "@material-ui/icons/GetApp";
 import {
@@ -21,13 +22,23 @@ import { format } from "date-fns";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { SurveyService } from "../../services/Services";
 import FileSaver from "file-saver";
+import colors from "../../config/colors";
 
-function ExportResult() {
-  const [startDate, setStartDate] = useState<Date | string>(new Date());
-  const [endDate, setEndDate] = useState<Date | string>(new Date());
+function ExportResult({ teamName }: { teamName: string }) {
+  const [startDate, setStartDate] = useState<Date | string>(
+    format(new Date(), "yyyy-MM-dd")
+  );
+  const [endDate, setEndDate] = useState<Date | string>(
+    format(new Date(), "yyyy-MM-dd")
+  );
+  const [message, setMessage] = useState(
+    "Please, select a date interval and export your CSV."
+  );
+  const [loading, setLoading] = useState(false);
+  const [color, setColor] = useState("#919191");
+  const [latent, setLatent] = useState(false);
   const classes = useStyles();
   const token = sessionStorage.getItem("token");
-  const [data, setData] = useState("");
 
   const surveyService: SurveyService = new SurveyService();
 
@@ -39,18 +50,32 @@ function ExportResult() {
     await surveyService
       .getCSV(startDate, endDate, token)
       .then((res) => {
-        console.log(startDate);
-        console.log(endDate);
-        console.log(token);
-        setData(res.data);
-        console.log(data);
-        const csvData = new Blob([data], { type: "text/csv;charset=utf-8;" });
-        FileSaver.saveAs(csvData, "data.csv");
-
-        // Works perfectly on second attemp, First attemp doesn't store the data correctly.
+        if (res.data !== "") {
+          const csvData = new Blob([res.data], {
+            type: "text/csv;charset=utf-8;",
+          });
+          FileSaver.saveAs(csvData, teamName + startDate + endDate + ".csv");
+          setMessage("File successfully donwloaded.");
+          setColor("#9BC183");
+          setLatent(true);
+          setTimeout(() => {
+            setMessage("Please, select a date interval and export your CSV.");
+            setColor("#919191");
+            setLatent(false);
+          }, 5000);
+        } else {
+          setMessage(
+            "No data for this date interval. Please, choose another dates."
+          );
+          setColor("#f0c12d");
+        }
+        setLoading(false);
       })
       .catch((err) => {
         console.log(err);
+        setMessage("Network Error. Please, try again later.");
+        setColor("#FE5454");
+        setLoading(false);
       });
   };
 
@@ -68,9 +93,23 @@ function ExportResult() {
           </Typography>
         </ExpansionPanelSummary>
         <ExpansionPanelDetails>
-          <Typography>
-            <p className="info-text">
-              Please, select the Sprints and export your CSV.
+          {loading && (
+            <CircularProgress
+              size={24}
+              style={{
+                color: colors.primary,
+                position: "absolute",
+                top: "50%",
+                left: "50%",
+              }}
+            />
+          )}
+          <Typography style={{ opacity: loading ? 0.5 : 1 }}>
+            <p
+              className={latent ? "info-text latent" : "info-text"}
+              style={{ color: color }}
+            >
+              {message}
             </p>
             <div>
               <Container
@@ -122,7 +161,7 @@ function ExportResult() {
                           inputVariant="outlined"
                           margin="normal"
                           className={classes.root}
-                          id="date-picker-inline"
+                          id="date-picker-inline-2"
                           value={endDate}
                           onChange={(date: any) => {
                             let formattedDate = format(date, "yyyy-MM-dd");
@@ -139,13 +178,14 @@ function ExportResult() {
                     <Button
                       variant="outlined"
                       className="bt btn-containe"
-                      onClick={() =>
+                      onClick={() => {
+                        setLoading(true);
                         getCSVdownload(
                           startDate.toString(),
                           endDate.toString(),
                           token
-                        )
-                      }
+                        );
+                      }}
                       startIcon={<GetAppIcon />}
                     >
                       Export

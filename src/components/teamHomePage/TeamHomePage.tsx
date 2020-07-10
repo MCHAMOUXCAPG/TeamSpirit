@@ -17,6 +17,7 @@ import { AuthContext } from "../../context/auth";
 import { reRender } from "../../components/surveyStatus/SurveySatus";
 const TeamHomePage = () => {
   function useForceUpdate() {
+    // eslint-disable-next-line
     const [value, setValue] = useState(0); // integer state
     return () => setValue((value) => ++value); // update the state to force render
   }
@@ -112,6 +113,7 @@ const TeamHomePage = () => {
     getResults(context.currentTeam, token);
     forceUpdate();
     contextRender.setRender(false);
+    // eslint-disable-next-line
   }, [contextRender.render]);
   return (
     <div>

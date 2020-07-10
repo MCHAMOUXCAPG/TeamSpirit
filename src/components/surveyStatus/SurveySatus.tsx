@@ -221,6 +221,7 @@ function SurveyStatus({
   }
   useEffect(() => {
     getSurveyConfig(teamName, token);
+    // eslint-disable-next-line
   }, []);
   const classes = useStyles();
 

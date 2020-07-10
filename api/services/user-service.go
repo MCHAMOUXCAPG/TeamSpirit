@@ -5,6 +5,7 @@ import (
 	"net/http"
 	"strconv"
 
+	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
 	"github.com/labstack/echo/v4"
@@ -21,10 +22,16 @@ var (
 // @Accept json
 // @Produce json
 // @Success 200 {object} []entities.User
+// @Failure 500 {object} dto.Error
 // @Router /users [Get]
 func GetUsers(c echo.Context) error {
 
-	users, _ := UserRepo.GetUsers()
+	users, err := UserRepo.GetUsers()
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETS_GETUSERS)
+	}
+
 	return c.JSON(http.StatusOK, users)
 }
 
@@ -35,11 +42,22 @@ func GetUsers(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.User
+// @Failure 500 {object} dto.Error
 // @Router /user/:id [Get]
 func GetUser(c echo.Context) error {
 
-	userID, _ := strconv.Atoi(c.Param("id"))
-	user, _ := UserRepo.GetUser(userID)
+	userID, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_GETUSER)
+	}
+
+	user, err := UserRepo.GetUser(userID)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETUSER)
+	}
+
 	return c.JSON(http.StatusOK, user)
 }
 
@@ -50,13 +68,19 @@ func GetUser(c echo.Context) error {
 // @Produce json
 // @Param UserDTO body dto.UserDTO true "UserDTO"
 // @Success 200 {object} entities.User
+// @Failure 500 {object} dto.Error
 // @Router /user/create [post]
 func CreateUser(c echo.Context) error {
 
 	var newUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
 
-	user, _ := UserRepo.CreateUser(newUser)
+	user, err := UserRepo.CreateUser(newUser)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CREATE_CREATEUSER)
+	}
+
 	return c.JSON(http.StatusOK, user)
 }
 
@@ -68,14 +92,25 @@ func CreateUser(c echo.Context) error {
 // @Param id path string true "id"
 // @Param UserDTO body dto.UserDTO true "UserDTO"
 // @Success 200 {object} entities.User
+// @Failure 500 {object} dto.Error
 // @Router /user/:id [put]
 func UpdateUser(c echo.Context) error {
 
-	userID, _ := strconv.Atoi(c.Param("id"))
+	userID, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_UPDATEUSER)
+	}
+
 	var updatedUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedUser)
 
-	user, _ := UserRepo.UpdateUser(userID, updatedUser)
+	user, err := UserRepo.UpdateUser(userID, updatedUser)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.UPDATE_UPDATEUSER)
+	}
+
 	return c.JSON(http.StatusOK, user)
 }
 
@@ -86,10 +121,21 @@ func UpdateUser(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.User
+// @Failure 500 {object} dto.Error
 // @Router /user/:id [delete]
 func DeleteUser(c echo.Context) error {
 
-	userID, _ := strconv.Atoi(c.Param("id"))
-	user, _ := UserRepo.DeleteUser(userID)
+	userID, err := strconv.Atoi(c.Param("id"))
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_DELETEUSER)
+	}
+
+	user, err := UserRepo.DeleteUser(userID)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.DELETE_DELETEUSER)
+	}
+
 	return c.JSON(http.StatusOK, user)
 }

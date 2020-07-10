@@ -73,7 +73,9 @@ func TestRegister(t *testing.T) {
 }
 
 func TestLogin(t *testing.T) {
-	user, _ := UserRepo.CreateUser(&entities.User{Email: "user1@gmail.com", Full_name: "user1", Password: services.HashAndSalt("pwd1")})
+	var userMock = &entities.User{Email: "user1@gmail.com", Full_name: "user1"}
+	userMock.Password, _ = services.HashAndSalt("pwd1")
+	user, _ := UserRepo.CreateUser(userMock)
 	assert.Equal(t, user.Full_name, "user1")
 	loginBody := `{"Email":"user1@gmail.com","Password":"pwd1"}`
 	e := echo.New()

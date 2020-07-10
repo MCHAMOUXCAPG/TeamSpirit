@@ -33,9 +33,9 @@ func NewSurveyRepository() SurveyRepository {
 func (*SurveyRepo) GetSurvies() ([]*entities.Survey, error) {
 
 	var survies []*entities.Survey
-	config.DB.Preload("Notes").Find(&survies)
+	result := config.DB.Preload("Notes").Find(&survies)
 
-	return survies, nil
+	return survies, result.Error
 }
 
 func (*SurveyRepo) GetSurviesByPeriodAndTeamName(startDate string, endDate string, teamName string) ([]*entities.Survey, error) {
@@ -44,40 +44,40 @@ func (*SurveyRepo) GetSurviesByPeriodAndTeamName(startDate string, endDate strin
 	endD, _ := time.Parse(layoutISO, endDate)
 	endD = endD.AddDate(0, 0, 1)
 	var survies []*entities.Survey
-	config.DB.Where("start_date >= ? AND start_date < ? AND team_name = ?", startD, endD, teamName).Or("end_date >= ? AND end_date < ? AND team_name = ?", startD, endD, teamName).Preload("Notes").Find(&survies)
+	result := config.DB.Where("start_date >= ? AND start_date < ? AND team_name = ?", startD, endD, teamName).Or("end_date >= ? AND end_date < ? AND team_name = ?", startD, endD, teamName).Preload("Notes").Find(&survies)
 
-	return survies, nil
+	return survies, result.Error
 }
 
 func (*SurveyRepo) GetSurvey(surveyCode string) (*entities.Survey, error) {
 
 	var survey = &entities.Survey{}
-	config.DB.Where("code = ? ", surveyCode).Preload("Notes").Find(&survey)
+	result := config.DB.Where("code = ? ", surveyCode).Preload("Notes").Find(&survey)
 
-	return survey, nil
+	return survey, result.Error
 }
 
 func (*SurveyRepo) CreateSurvey(survey *entities.Survey) (*entities.Survey, error) {
 
-	config.DB.Create(&survey)
+	result := config.DB.Create(&survey)
 
-	return survey, nil
+	return survey, result.Error
 }
 
 func (*SurveyRepo) UpdateSurvey(surveyCode string, survey *entities.Survey) (*entities.Survey, error) {
 
 	var surveyToUpdate = &entities.Survey{}
-	config.DB.Model(&surveyToUpdate).Where("code = ? ", surveyCode).Updates(&survey)
+	result := config.DB.Model(&surveyToUpdate).Where("code = ? ", surveyCode).Updates(&survey)
 
-	return survey, nil
+	return survey, result.Error
 }
 
 func (*SurveyRepo) DeleteSurvey(surveyCode string) (*entities.Survey, error) {
 
 	var survey = &entities.Survey{}
-	config.DB.Where("code = ? ", surveyCode).Delete(&survey)
+	result := config.DB.Where("code = ? ", surveyCode).Delete(&survey)
 
-	return survey, nil
+	return survey, result.Error
 }
 
 func (*SurveyRepo) GetResultSurvey(surveyCode string) (float64, error) {
@@ -100,13 +100,13 @@ func (*SurveyRepo) GetHistoricResult(teamName string) (float64, error) {
 
 func (*SurveyRepo) GetLastSurvey(teamName string) (*entities.Survey, error) {
 	var survey = &entities.Survey{}
-	config.DB.Where("end_date = ? AND team_name = ?", config.DB.Table("surveys").Select("max(end_date)").Where("team_name = ?", teamName).SubQuery(), teamName).Preload("Notes").Find(&survey)
-	return survey, nil
+	result := config.DB.Where("end_date = ? AND team_name = ?", config.DB.Table("surveys").Select("max(end_date)").Where("team_name = ?", teamName).SubQuery(), teamName).Preload("Notes").Find(&survey)
+	return survey, result.Error
 }
 
 func (*SurveyRepo) GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers, error) {
 
-	rows, _ := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("user as user ,avg(note) as average").Group("user").Rows()
+	rows, err := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("user as user ,avg(note) as average").Group("user").Rows()
 
 	var response = &dto.ResultByUsers{}
 	var result []*dto.ResultByUsers
@@ -118,18 +118,18 @@ func (*SurveyRepo) GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers
 			Notes:   nil,
 		})
 	}
-	return result, nil
+	return result, err
 }
 
 func (*SurveyRepo) GetNotesBySurveyAndUser(surveyCode string, user string) ([]*entities.Note, error) {
 	var notes []*entities.Note
-	config.DB.Select("number, note, survey_code").Where("survey_code = ? and user = ?", surveyCode, user).Find(&notes)
-	return notes, nil
+	result := config.DB.Select("number, note, survey_code").Where("survey_code = ? and user = ?", surveyCode, user).Find(&notes)
+	return notes, result.Error
 }
 
 func (*SurveyRepo) GetNotesGroupByQuestions(surveyCode string) ([]*dto.ResultByQuestions, error) {
 	// var notes []*entities.Note
-	rows, _ := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("number as number ,avg(note) as average").Group("number").Rows()
+	rows, err := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("number as number ,avg(note) as average").Group("number").Rows()
 
 	var response = &dto.ResultByQuestions{}
 	var result []*dto.ResultByQuestions
@@ -141,11 +141,11 @@ func (*SurveyRepo) GetNotesGroupByQuestions(surveyCode string) ([]*dto.ResultByQ
 			Notes:          nil,
 		})
 	}
-	return result, nil
+	return result, err
 }
 
 func (*SurveyRepo) GetNotesBySurveyAndQuestion(number int, surveyCode string) ([]*entities.Note, error) {
 	var notes []*entities.Note
-	config.DB.Select("user, note").Where("number = ? and survey_code = ?", number, surveyCode).Find(&notes)
-	return notes, nil
+	result := config.DB.Select("user, note").Where("number = ? and survey_code = ?", number, surveyCode).Find(&notes)
+	return notes, result.Error
 }

@@ -18,7 +18,6 @@ func NewAuthRepository() AuthRepository {
 func (*AuthRepo) GetUserByEmail(email string) (*entities.User, error) {
 
 	var foundUser = &entities.User{}
-	config.DB.Where("email = ?", email).Preload("Roles").Preload("Teams").Find(&foundUser)
-
-	return foundUser, nil
+	result := config.DB.Where("email = ?", email).Preload("Roles").Preload("Teams").Find(&foundUser)
+	return foundUser, result.Error
 }

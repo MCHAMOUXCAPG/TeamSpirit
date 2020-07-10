@@ -11,6 +11,7 @@ import (
 	"strconv"
 	"time"
 
+	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
@@ -30,10 +31,16 @@ var (
 // @Accept json
 // @Produce json
 // @Success 200 {object} []entities.Survey
+// @Failure 500 {object} dto.Error
 // @Router /survies [Get]
 func GetSurvies(c echo.Context) error {
 
-	survies, _ := SurveyRepo.GetSurvies()
+	survies, err := SurveyRepo.GetSurvies()
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETS_GETSURVEYS)
+	}
+
 	return c.JSON(http.StatusOK, survies)
 }
 
@@ -44,11 +51,17 @@ func GetSurvies(c echo.Context) error {
 // @Produce json
 // @Param surveyCode path string true "survey Code"
 // @Success 200 {object} entities.Survey
+// @Failure 500 {object} dto.Error
 // @Router /survey/:surveyCode [Get]
 func GetSurvey(c echo.Context) error {
 
 	surveyCode := c.Param("surveyCode")
-	survey, _ := SurveyRepo.GetSurvey(surveyCode)
+	survey, err := SurveyRepo.GetSurvey(surveyCode)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETSURVEY)
+	}
+
 	return c.JSON(http.StatusOK, survey)
 }
 
@@ -59,13 +72,19 @@ func GetSurvey(c echo.Context) error {
 // @Produce json
 // @Param SurveyDTO body dto.SurveyDTO true "SurveyDTO"
 // @Success 200 {object} entities.Survey
+// @Failure 500 {object} dto.Error
 // @Router /survey/create [post]
 func CreateSurvey(c echo.Context) error {
 
 	var newSurvey = &entities.Survey{}
 	json.NewDecoder(c.Request().Body).Decode(&newSurvey)
 
-	survey, _ := SurveyRepo.CreateSurvey(newSurvey)
+	survey, err := SurveyRepo.CreateSurvey(newSurvey)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.CREATE_CREATESURVEY)
+	}
+
 	return c.JSON(http.StatusOK, survey)
 }
 
@@ -77,6 +96,7 @@ func CreateSurvey(c echo.Context) error {
 // @Param surveyCode path string true "survey Code"
 // @Param SurveyDTO body dto.SurveyDTO true "SurveyDTO"
 // @Success 200 {object} entities.Survey
+// @Failure 500 {object} dto.Error
 // @Router /survey/:surveyCode [put]
 func UpdateSurvey(c echo.Context) error {
 
@@ -84,7 +104,12 @@ func UpdateSurvey(c echo.Context) error {
 	var updatedSurvey = &entities.Survey{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedSurvey)
 
-	survey, _ := SurveyRepo.UpdateSurvey(surveyCode, updatedSurvey)
+	survey, err := SurveyRepo.UpdateSurvey(surveyCode, updatedSurvey)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.UPDATE_UPDATESURVEY)
+	}
+
 	return c.JSON(http.StatusOK, survey)
 }
 
@@ -95,11 +120,17 @@ func UpdateSurvey(c echo.Context) error {
 // @Produce json
 // @Param surveyCode path string true "survey Code"
 // @Success 200 {object} entities.Survey
+// @Failure 500 {object} dto.Error
 // @Router /survey/:surveyCode [delete]
 func DeleteSurvey(c echo.Context) error {
 
 	surveyCode := c.Param("surveyCode")
-	survey, _ := SurveyRepo.DeleteSurvey(surveyCode)
+	survey, err := SurveyRepo.DeleteSurvey(surveyCode)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.DELETE_DELETESURVEY)
+	}
+
 	return c.JSON(http.StatusOK, survey)
 }
 
@@ -111,6 +142,7 @@ func DeleteSurvey(c echo.Context) error {
 // @Param surveyCode path string true "survey Code"
 // @Param []Notes body []entities.Note true "[]Notes"
 // @Success 200 {object} entities.Survey
+// @Failure 500 {object} dto.Error
 // @Router /survey/:surveyCode/addNotes [post]
 func AddNotesToSurvey(c echo.Context) error {
 
@@ -121,15 +153,22 @@ func AddNotesToSurvey(c echo.Context) error {
 
 	notes = hashAndSaltUser(notes)
 
-	survey, _ := SurveyRepo.GetSurvey(surveyCode)
+	survey, err := SurveyRepo.GetSurvey(surveyCode)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_ADDNOTES)
+	}
 
 	survey.Notes = notes
 
-	SurveyRepo.UpdateSurvey(surveyCode, survey)
+	surveyUpdated, err := SurveyRepo.UpdateSurvey(surveyCode, survey)
 
-	return c.JSON(http.StatusOK, survey)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.UPDATE_ADDNOTES)
+	}
+
+	return c.JSON(http.StatusOK, surveyUpdated)
 }
-
 
 func hashAndSaltUser(notes []entities.Note) []entities.Note {
 	var result []entities.Note
@@ -152,11 +191,22 @@ func hashAndSaltUser(notes []entities.Note) []entities.Note {
 // @Produce json
 // @Param teamName path string true "Team name"
 // @Success 200 {object} dto.Result
+// @Failure 500 {object} dto.Error
 // @Router /survey/result/:teamName [get]
 func GetResultSurvey(c echo.Context) error {
 	teamName := c.Param("teamName")
-	lastSurvey, _ := SurveyRepo.GetLastSurvey(teamName)
-	team, _ := TeamRepo.GetTeam(lastSurvey.TeamName)
+	lastSurvey, err := SurveyRepo.GetLastSurvey(teamName)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETLASTSURVEY_GETRESULTSURVEY)
+	}
+
+	team, err := TeamRepo.GetTeam(lastSurvey.TeamName)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETTEAM_GETRESULTSURVEY)
+	}
+
 	return c.JSON(http.StatusOK, mapResult(team, lastSurvey))
 }
 
@@ -167,26 +217,47 @@ func GetResultSurvey(c echo.Context) error {
 // @Produce json
 // @Param teamName path string true "Team name"
 // @Success 200 {object} []dto.ResultByQuestions
+// @Failure 500 {object} dto.Error
 // @Router /resultByQuestions/:teamName [get]
 func GetHistoricSurveysByQuestions(c echo.Context) error {
 	teamName := c.Param("teamName")
-	lastSurvey, _ := SurveyRepo.GetLastSurvey(teamName)
-	notes, _ := SurveyRepo.GetNotesGroupByQuestions(lastSurvey.Code)
-	result := mapQuestionNotes(notes, lastSurvey.Code)
+	lastSurvey, err := SurveyRepo.GetLastSurvey(teamName)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETLASTSURVEY_GETHISTORICSURVEYSBYQUESTIONS)
+	}
+
+	notes, err := SurveyRepo.GetNotesGroupByQuestions(lastSurvey.Code)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.NOTESBYQUESTIONS_GETHISTORICSURVEYSBYQUESTIONS)
+	}
+
+	result, err := mapQuestionNotes(notes, lastSurvey.Code)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.QUESTIONNOTES_GETHISTORICSURVEYSBYQUESTIONS)
+	}
+
 	return c.JSON(http.StatusOK, result)
 }
 
-func mapQuestionNotes(notes []*dto.ResultByQuestions, surveyCode string) []*dto.ResultByQuestions {
+func mapQuestionNotes(notes []*dto.ResultByQuestions, surveyCode string) ([]*dto.ResultByQuestions, error) {
 	var result []*dto.ResultByQuestions
 	for _, note := range notes {
-		notes, _ := SurveyRepo.GetNotesBySurveyAndQuestion(note.QuestionNumber, surveyCode)
+		notes, err := SurveyRepo.GetNotesBySurveyAndQuestion(note.QuestionNumber, surveyCode)
+
+		if err != nil {
+			return nil, err
+		}
+
 		result = append(result, &dto.ResultByQuestions{
 			QuestionNumber: note.QuestionNumber,
 			Average:        note.Average,
 			Notes:          notes,
 		})
 	}
-	return result
+	return result, nil
 }
 
 // @Summary Survey resultByUsers
@@ -196,26 +267,45 @@ func mapQuestionNotes(notes []*dto.ResultByQuestions, surveyCode string) []*dto.
 // @Produce json
 // @Param teamName path string true "Team name"
 // @Success 200 {object} []dto.ResultByUsers
+// @Failure 500 {object} dto.Error
 // @Router /resultByUsers/:teamName [get]
 func GetHistoricSurveysByusers(c echo.Context) error {
 	teamName := c.Param("teamName")
-	lastSurvey, _ := SurveyRepo.GetLastSurvey(teamName)
-	notes, _ := SurveyRepo.GetNotesGroupByUsers(lastSurvey.Code)
-	result := mapNotes(notes, lastSurvey.Code)
+	lastSurvey, err := SurveyRepo.GetLastSurvey(teamName)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETLASTSURVEY_GETHISTORICSURVEYSBYUSERS)
+	}
+
+	notes, err := SurveyRepo.GetNotesGroupByUsers(lastSurvey.Code)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.NOTESBYUSERS_GETHISTORICSURVEYSBYUSERS)
+	}
+
+	result, err := mapNotes(notes, lastSurvey.Code)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.MAPNOTES_GETHISTORICSURVEYSBYUSERS)
+	}
+
 	return c.JSON(http.StatusOK, result)
 }
 
-func mapNotes(notes []*dto.ResultByUsers, surveyCode string) []*dto.ResultByUsers {
+func mapNotes(notes []*dto.ResultByUsers, surveyCode string) ([]*dto.ResultByUsers, error) {
 	var result []*dto.ResultByUsers
 	for i, note := range notes {
-		notes, _ := SurveyRepo.GetNotesBySurveyAndUser(surveyCode, note.User)
+		notes, err := SurveyRepo.GetNotesBySurveyAndUser(surveyCode, note.User)
+		if err != nil {
+			return nil, err
+		}
 		result = append(result, &dto.ResultByUsers{
 			User:    "User " + strconv.Itoa(i+1),
 			Average: note.Average,
 			Notes:   notes,
 		})
 	}
-	return result
+	return result, nil
 }
 
 func mapResult(team *entities.Team, currentSurvey *entities.Survey) *dto.Result {
@@ -281,13 +371,19 @@ func CreateSurveyAutomatically() {
 // @Produce octet-stream
 // @Param startDate query string false "start date"
 // @Param endDate query string false "end date"
+// @Failure 500 {object} dto.Error
 // @Router /survey/exportCsv [get]
 func ExportSurveysCsv(c echo.Context) (err error) {
 
 	startDate := c.QueryParam("startDate")
 	endDate := c.QueryParam("endDate")
 	var headerCsv = []string{"StartDate", "EndDate", "Q.Number", "Note", "Code", "TeamName"}
-	surveys, _ := SurveyRepo.GetSurviesByPeriod(startDate, endDate)
+	surveys, err := SurveyRepo.GetSurviesByPeriod(startDate, endDate)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETSURVEYS_EXPORTSURVEYSCSV)
+	}
+
 	res := c.Response()
 	w := csv.NewWriter(res)
 	w.Comma = ';'

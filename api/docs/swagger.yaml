@@ -12,6 +12,17 @@ definitions:
       token:
         type: string
     type: object
+  dto.Error:
+    properties:
+      function:
+        type: string
+      message:
+        type: string
+      path:
+        type: string
+      status:
+        type: integer
+    type: object
   dto.JwtCustomClaims:
     properties:
       Email:
@@ -206,6 +217,18 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Access to survey
       tags:
       - Authentication
@@ -228,6 +251,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.AuthResponse'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Login
       tags:
       - Authentication
@@ -243,6 +274,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Current User
       tags:
       - Authentication
@@ -265,6 +300,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Register
       tags:
       - Authentication
@@ -288,6 +331,10 @@ paths:
             items:
               $ref: '#/definitions/dto.ResultByQuestions'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Survey resultByQuestions
       tags:
       - Survies
@@ -311,6 +358,10 @@ paths:
             items:
               $ref: '#/definitions/dto.ResultByUsers'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Survey resultByUsers
       tags:
       - Survies
@@ -332,6 +383,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Delete a role
       tags:
       - Roles
@@ -352,6 +407,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get one role
       tags:
       - Roles
@@ -378,6 +437,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a new role
       tags:
       - Roles
@@ -400,6 +463,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new role
       tags:
       - Roles
@@ -417,6 +484,10 @@ paths:
             items:
               $ref: '#/definitions/entities.Role'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all roles
       tags:
       - Roles
@@ -438,6 +509,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Delete a survey
       tags:
       - Survies
@@ -458,6 +533,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get survey by it code
       tags:
       - Survies
@@ -484,6 +563,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a survey
       tags:
       - Survies
@@ -513,6 +596,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Add notes to survey
       tags:
       - Survies
@@ -535,6 +622,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new survey
       tags:
       - Survies
@@ -552,6 +643,11 @@ paths:
         type: string
       produces:
       - application/octet-stream
+      responses:
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Surveys export
       tags:
       - Survies
@@ -573,6 +669,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.Result'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Survey result
       tags:
       - Survies
@@ -590,6 +690,10 @@ paths:
             items:
               $ref: '#/definitions/entities.Survey'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all survies
       tags:
       - Survies
@@ -611,6 +715,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a team
       tags:
       - Teams
@@ -631,6 +739,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get one team
       tags:
       - Teams
@@ -657,6 +769,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a team
       tags:
       - Teams
@@ -679,6 +795,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new team
       tags:
       - Teams
@@ -696,6 +816,10 @@ paths:
             items:
               $ref: '#/definitions/entities.Team'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all teams
       tags:
       - Teams
@@ -717,6 +841,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Delete a user
       tags:
       - Users
@@ -737,6 +865,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get one users
       tags:
       - Users
@@ -763,6 +895,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a new user
       tags:
       - Users
@@ -785,6 +921,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new user
       tags:
       - Users
@@ -802,6 +942,10 @@ paths:
             items:
               $ref: '#/definitions/entities.User'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all users
       tags:
       - Users

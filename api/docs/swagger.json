@@ -48,6 +48,24 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Survey"
                         }
+                    },
+                    "401": {
+                        "description": "Unauthorized",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "406": {
+                        "description": "Not Acceptable",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -82,6 +100,18 @@
                         "schema": {
                             "$ref": "#/definitions/dto.AuthResponse"
                         }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -104,6 +134,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -138,6 +174,18 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -174,6 +222,12 @@
                                 "$ref": "#/definitions/dto.ResultByQuestions"
                             }
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -209,6 +263,12 @@
                                 "$ref": "#/definitions/dto.ResultByUsers"
                             }
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -240,6 +300,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Role"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -280,6 +346,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Role"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             },
@@ -309,6 +381,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Role"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -344,6 +422,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Role"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -369,6 +453,12 @@
                             "items": {
                                 "$ref": "#/definitions/entities.Role"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -401,6 +491,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Survey"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -441,6 +537,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Survey"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             },
@@ -470,6 +572,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Survey"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -515,6 +623,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Survey"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -549,6 +663,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Survey"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -576,7 +696,15 @@
                         "name": "endDate",
                         "in": "query"
                     }
-                ]
+                ],
+                "responses": {
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    }
+                }
             }
         },
         "/survey/result/:teamName": {
@@ -607,6 +735,12 @@
                         "schema": {
                             "$ref": "#/definitions/dto.Result"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -632,6 +766,12 @@
                             "items": {
                                 "$ref": "#/definitions/entities.Survey"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -664,6 +804,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Team"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -704,6 +850,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Team"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             },
@@ -733,6 +885,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Team"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -768,6 +926,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.Team"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -793,6 +957,12 @@
                             "items": {
                                 "$ref": "#/definitions/entities.Team"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -825,6 +995,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -865,6 +1041,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.User"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             },
@@ -894,6 +1076,12 @@
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -929,6 +1117,12 @@
                         "schema": {
                             "$ref": "#/definitions/entities.User"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -955,6 +1149,12 @@
                                 "$ref": "#/definitions/entities.User"
                             }
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -977,6 +1177,23 @@
             "properties": {
                 "token": {
                     "type": "string"
+                }
+            }
+        },
+        "dto.Error": {
+            "type": "object",
+            "properties": {
+                "function": {
+                    "type": "string"
+                },
+                "message": {
+                    "type": "string"
+                },
+                "path": {
+                    "type": "string"
+                },
+                "status": {
+                    "type": "integer"
                 }
             }
         },

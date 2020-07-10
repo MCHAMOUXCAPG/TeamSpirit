@@ -192,3 +192,59 @@ var DELETE_DELETETEAM = &dto.Error{
 	Path:     "api/services/team-service.go",
 	Function: "DeleteTeam",
 }
+
+var GETS_GETUSERS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method UserRepo.GetUsers",
+	Path:     "api/services/user-service.go",
+	Function: "GetUsers",
+}
+
+var CONVERTPARAM_GETUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method strconv.Atoi",
+	Path:     "api/services/user-service.go",
+	Function: "GetUser",
+}
+
+var GET_GETUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method UserRepo.GetUser",
+	Path:     "api/services/user-service.go",
+	Function: "Getuser",
+}
+
+var CREATE_CREATEUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method UserRepo.CreateUser",
+	Path:     "api/services/user-service.go",
+	Function: "CreateUser",
+}
+
+var CONVERTPARAM_UPDATEUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method strconv.Atoi",
+	Path:     "api/services/user-service.go",
+	Function: "UpdateUser",
+}
+
+var UPDATE_UPDATEUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method Userepo.UpdateUser",
+	Path:     "api/services/user-service.go",
+	Function: "UpdateUser",
+}
+
+var CONVERTPARAM_DELETEUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method strconv.Atoi",
+	Path:     "api/services/role-service.go",
+	Function: "DeleteUser",
+}
+
+var DELETE_DELETEUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method UserRepo.DeleteUser",
+	Path:     "api/services/user-service.go",
+	Function: "DeleteUser",
+}

@@ -949,6 +949,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/entities.User"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             },
@@ -988,6 +994,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/entities.User"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             },
@@ -1017,6 +1029,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }
@@ -1052,6 +1070,12 @@ var doc = `{
                         "schema": {
                             "$ref": "#/definitions/entities.User"
                         }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
                     }
                 }
             }
@@ -1077,6 +1101,12 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/entities.User"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     }
                 }

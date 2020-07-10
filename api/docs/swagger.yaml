@@ -800,6 +800,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Delete a user
       tags:
       - Users
@@ -820,6 +824,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get one users
       tags:
       - Users
@@ -846,6 +854,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a new user
       tags:
       - Users
@@ -868,6 +880,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new user
       tags:
       - Users
@@ -885,6 +901,10 @@ paths:
             items:
               $ref: '#/definitions/entities.User'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all users
       tags:
       - Users

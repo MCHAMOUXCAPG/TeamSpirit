@@ -248,3 +248,115 @@ var DELETE_DELETEUSER = &dto.Error{
 	Path:     "api/services/user-service.go",
 	Function: "DeleteUser",
 }
+
+var GETS_GETSURVEYS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurveys",
+	Path:     "api/services/survey-service.go",
+	Function: "GetSurveys",
+}
+
+var GET_GETSURVEY = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "GetSurvey",
+}
+
+var CREATE_CREATESURVEY = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.CreateSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "CreateSurvey",
+}
+
+var UPDATE_UPDATESURVEY = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.UpdateSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "UpdateSurvey",
+}
+
+var DELETE_DELETESURVEY = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.DeleteSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "DeleteSurvey",
+}
+
+var GET_ADDNOTES = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "AddNotesToSurvey",
+}
+
+var UPDATE_ADDNOTES = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.UpdateSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "AddNotesToSurvey",
+}
+
+var GETLASTSURVEY_GETRESULTSURVEY = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetLastSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "GetResultSurvey",
+}
+
+var GETTEAM_GETRESULTSURVEY = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method TeamRepo.GetTeam",
+	Path:     "api/services/survey-service.go",
+	Function: "GetResultSurvey",
+}
+
+var GETLASTSURVEY_GETHISTORICSURVEYSBYQUESTIONS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetLastSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveysByQuestions",
+}
+
+var NOTESBYQUESTIONS_GETHISTORICSURVEYSBYQUESTIONS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetNotesGroupByQuestions",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveysByQuestions",
+}
+
+var QUESTIONNOTES_GETHISTORICSURVEYSBYQUESTIONS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method mapQuestionNotes",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveysByQuestions",
+}
+
+var GETLASTSURVEY_GETHISTORICSURVEYSBYUSERS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetLastSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveysByusers",
+}
+
+var NOTESBYUSERS_GETHISTORICSURVEYSBYUSERS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetNotesGroupByUsers",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveysByusers",
+}
+
+var MAPNOTES_GETHISTORICSURVEYSBYUSERS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method mapNotes",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveysByusers",
+}
+
+var GETSURVEYS_EXPORTSURVEYSCSV = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurviesByPeriod",
+	Path:     "api/services/survey-service.go",
+	Function: "ExportSurveysCsv",
+}

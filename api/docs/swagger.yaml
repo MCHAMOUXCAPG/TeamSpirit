@@ -331,6 +331,10 @@ paths:
             items:
               $ref: '#/definitions/dto.ResultByQuestions'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Survey resultByQuestions
       tags:
       - Survies
@@ -354,6 +358,10 @@ paths:
             items:
               $ref: '#/definitions/dto.ResultByUsers'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Survey resultByUsers
       tags:
       - Survies
@@ -501,6 +509,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Delete a survey
       tags:
       - Survies
@@ -521,6 +533,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get survey by it code
       tags:
       - Survies
@@ -547,6 +563,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Update a survey
       tags:
       - Survies
@@ -576,6 +596,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Add notes to survey
       tags:
       - Survies
@@ -598,6 +622,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Create a new survey
       tags:
       - Survies
@@ -615,6 +643,11 @@ paths:
         type: string
       produces:
       - application/octet-stream
+      responses:
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Surveys export
       tags:
       - Survies
@@ -636,6 +669,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/dto.Result'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Survey result
       tags:
       - Survies
@@ -653,6 +690,10 @@ paths:
             items:
               $ref: '#/definitions/entities.Survey'
             type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
       summary: Get all survies
       tags:
       - Survies

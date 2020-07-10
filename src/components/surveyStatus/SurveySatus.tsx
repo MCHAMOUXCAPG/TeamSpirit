@@ -68,6 +68,7 @@ function SurveyStatus({
     num_mumbers: 4,
     startDate: "2020-06-11T00:00:00Z",
   });
+
   const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
     Frequency: 0,
     Name: "", //TeamName

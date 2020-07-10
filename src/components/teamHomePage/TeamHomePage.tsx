@@ -14,9 +14,13 @@ import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
 import { AuthContext } from "../../context/auth";
-import useForceUpdate from "use-force-update";
 import { reRender } from "../../components/surveyStatus/SurveySatus";
 const TeamHomePage = () => {
+  function useForceUpdate() {
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue((value) => ++value); // update the state to force render
+  }
+
   const contextRender = useContext(reRender);
   const forceUpdate = useForceUpdate();
   const context = useContext(AuthContext);
@@ -104,12 +108,10 @@ const TeamHomePage = () => {
     setPeriod(period);
   }, [currentSurveyResult]);
   useEffect(() => {
-    if (contextRender.render === true) {
-      forceUpdate();
-      console.log(contextRender.render + "useEffect");
-      contextRender.setRender(false);
-    }
-  });
+    getResults(context.currentTeam, token);
+    forceUpdate();
+    contextRender.setRender(false);
+  }, [contextRender.render]);
   return (
     <div>
       <NavBar user={true}></NavBar>

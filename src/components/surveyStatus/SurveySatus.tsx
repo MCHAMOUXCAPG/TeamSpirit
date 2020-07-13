@@ -51,7 +51,7 @@ function SurveyStatus({
   const surveyService: SurveyService = new SurveyService();
   const userValidationService: UserValidationService = new UserValidationService();
   const [open, setOpen] = useState(false);
-
+  const [surveyCode, setSurveyCode] = useState<string>("");
   const [openReset, setOpenReset] = useState(false);
   const [selectedDate, setSelectedDate] = React.useState<Date | null>(
     new Date("2014-08-18T21:11:54")
@@ -121,7 +121,7 @@ function SurveyStatus({
   const handleClickCloseReset = (borrar: any) => {
     setOpenReset(false);
     if (borrar) {
-      deleteSurvey(token, "SNCF-abcde");
+      deleteSurvey(token, surveyCode);
     }
   };
   function formatDate(date: any) {
@@ -204,6 +204,8 @@ function SurveyStatus({
         setSelectedDate(fecha);
         setAuxDate(fecha);
         setLoading(false);
+        console.log(res.data.Surveys[res.data.Surveys.length - 1].Code);
+        setSurveyCode(res.data.Surveys[res.data.Surveys.length - 1].Code);
       })
       .catch((err) => {
         console.log(err);
@@ -221,7 +223,6 @@ function SurveyStatus({
   }
   useEffect(() => {
     getSurveyConfig(teamName, token);
-    // eslint-disable-next-line
   }, []);
   const classes = useStyles();
 

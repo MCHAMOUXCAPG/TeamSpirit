@@ -68,7 +68,8 @@ function SurveyStatus({
     num_mumbers: 4,
     startDate: "2020-06-11T00:00:00Z",
   });
-
+const [loadingDelete, setLoadingDelete]= useState(false);
+const [deleteMessage,setDeleteMessage]= usestate("");
   const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
     Frequency: 0,
     Name: "", //TeamName
@@ -121,7 +122,9 @@ function SurveyStatus({
   const handleClickCloseReset = (borrar: any) => {
     setOpenReset(false);
     if (borrar) {
+      setLoadingDelete(true);
       deleteSurvey(token, surveyCode);
+      contextRender.setRender(true);
     }
   };
   function formatDate(date: any) {
@@ -203,6 +206,7 @@ function SurveyStatus({
         var fecha = new Date(res.data.StartDate);
         setSelectedDate(fecha);
         setAuxDate(fecha);
+        setSurveyCode(res.data.Surveys[res.data.Surveys.length-1].Code)
         setLoading(false);
         console.log(res.data.Surveys[res.data.Surveys.length - 1].Code);
         setSurveyCode(res.data.Surveys[res.data.Surveys.length - 1].Code);
@@ -215,10 +219,12 @@ function SurveyStatus({
     await surveyService
       .deleteSurvey(token, surveyCode)
       .then((res) => {
-        console.log(res);
+        setLoadingDelete(false);
+        setDeleteMessage("Survey successfully deleted!");
       })
       .catch((err) => {
-        console.log(err);
+                setLoadingDelete(false);
+        setDeleteMessage("Error deleting the Survey. Please try again later.");
       });
   }
   useEffect(() => {

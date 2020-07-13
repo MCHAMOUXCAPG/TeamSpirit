@@ -14,13 +14,22 @@ import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
 import { AuthContext } from "../../context/auth";
-
+import { reRender } from "../../components/surveyStatus/SurveySatus";
 const TeamHomePage = () => {
+  function useForceUpdate() {
+    // eslint-disable-next-line
+    const [value, setValue] = useState(0); // integer state
+    return () => setValue((value) => ++value); // update the state to force render
+  }
+
+  const contextRender = useContext(reRender);
+  const forceUpdate = useForceUpdate();
   const context = useContext(AuthContext);
   const token = sessionStorage.getItem("token");
   const [currentDetailResultsUsers, setCurrentDetailResultsUsers] = useState<
     IResultsByUsers[]
   >();
+
   const [
     currentDetailResultsQuestions,
     setCurrentDetailResultsQuestions,
@@ -73,6 +82,7 @@ const TeamHomePage = () => {
         console.log(err);
       });
   }
+
   useEffect(() => {
     getResults(context.currentTeam, token);
     getResultsByUser(context.currentTeam, token);
@@ -99,6 +109,12 @@ const TeamHomePage = () => {
 
     setPeriod(period);
   }, [currentSurveyResult]);
+  useEffect(() => {
+    getResults(context.currentTeam, token);
+    forceUpdate();
+    contextRender.setRender(false);
+    // eslint-disable-next-line
+  }, [contextRender.render]);
   return (
     <div>
       <NavBar user={true}></NavBar>
@@ -126,10 +142,11 @@ const TeamHomePage = () => {
               completed={currentSurveyResult.Completed}
               currentResult={currentSurveyResult.CurrentResult}
               historicResult={currentSurveyResult.HistoricResult}
+              teamName={context.currentTeam}
             />
           </Grid>
           <Grid item xs={12}>
-            <ExportResult />
+            <ExportResult teamName={context.currentTeam} />
           </Grid>
           <Grid item xs={12}>
             <DetailResults

@@ -1,20 +1,115 @@
-#custom-export {
-  font-family: "Roboto";
-  font-style: normal;
-  font-size: 14px;
-  line-height: 49px;
-  text-align: center;
+#export-container {
   color: #79c0c6;
-  text-align: center;
   background: #ffffff;
   border: 1px solid #79c0c6;
   box-sizing: border-box;
   box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25);
   border-radius: 25px;
   padding-top: 10;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  font-family: "Roboto";
 }
 
 .export-icon {
   position: relative;
   top: 6px;
+}
+
+#title {
+  text-align: center;
+}
+
+.bt {
+  width: 70%;
+  border-radius: 24px !important;
+  font-size: 1em !important;
+  text-transform: none !important;
+  top: -15%;
+  position: relative;
+  left: 80px;
+}
+
+.btn-containe {
+  background-color: #79c0c6 !important;
+  color: #ffffff !important;
+  border-color: #79c0c6 !important;
+}
+
+.grid-content {
+  margin-top: 6%;
+  margin-bottom: 5%;
+  left: 10%;
+  position: relative;
+}
+
+.text {
+  color: #79c0c6;
+  font-family: "Roboto";
+  font-size: 16;
+  margin-left: 40px;
+  margin-top: -2%;
+  position: relative;
+}
+
+#p-position {
+  margin-left: 60px;
+}
+
+.info-text {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  text-align: center;
+  color: #919191;
+  margin-left: 26%;
+  position: relative;
+}
+
+#date-picker-inline,
+#date-picker-inline-2 {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  position: relative;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  border-color: #919191;
+  padding: 12px 0px 12px 0px;
+  width: 60%;
+  margin-left: 12%;
+}
+
+.date-position {
+  margin-top: -11%;
+  margin-left: 10%;
+}
+
+.latent {
+  animation: latency 2s infinite;
+}
+
+@keyframes latency {
+  0% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.6;
+  }
+  100% {
+    opacity: 1;
+  }
+}
+
+#export-container .MuiExpansionPanelSummary-expandIcon {
+  display: none !important;
+}
+#export-container .MuiExpansionPanelSummary-content {
+  justify-content: center !important;
 }

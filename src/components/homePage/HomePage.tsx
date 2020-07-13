@@ -73,7 +73,7 @@ const HomePage = () => {
             "Network Error! Please verify you have internet access."
           );
         } else {
-          setHelperTxt(err.response.data.message);
+          setHelperTxt(err.response.data.Message);
         }
         setLoading(false);
       });

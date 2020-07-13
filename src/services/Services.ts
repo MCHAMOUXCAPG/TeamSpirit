@@ -63,10 +63,11 @@ export class SurveyService {
   public getCSV(
     startDate: string,
     endDate: string,
+    teamName: string,
     token: string | null
   ): Promise<any> {
     const endPoint =
-      "/survey/exportCsv?startDate=" + startDate + "&endDate=" + endDate;
+      "/survey/exportCsv?startDate=" + startDate + "&endDate=" + endDate+ "&teamName=" + teamName;
     return environment.get(endPoint, {
       headers: {
         Authorization: "Bearer " + token,

@@ -48,7 +48,7 @@ function ExportResult({ teamName }: { teamName: string }) {
     token: string | null
   ) => {
     await surveyService
-      .getCSV(startDate, endDate, token)
+      .getCSV(startDate, endDate,teamName, token)
       .then((res) => {
         if (res.data !== "") {
           const csvData = new Blob([res.data], {
@@ -72,7 +72,6 @@ function ExportResult({ teamName }: { teamName: string }) {
         setLoading(false);
       })
       .catch((err) => {
-        console.log(err);
         setMessage("Network Error. Please, try again later.");
         setColor("#FE5454");
         setLoading(false);

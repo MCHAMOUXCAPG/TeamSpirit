@@ -59,7 +59,7 @@ function SurveyStatus({
     Name: "",
     Num_mumbers: 0,
     StartDate: "2020-06-11T00:00:00Z",
-  }); // input variables
+  }); // store input variables
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(""); // gets success o error message
@@ -157,7 +157,6 @@ function SurveyStatus({
         });
         setSurveyCode(res.data.Surveys[res.data.Surveys.length - 1].Code);
         setLoading(false);
-        console.log(res.data.Surveys[res.data.Surveys.length - 1].Code);
       })
       .catch((err) => {
         console.log(err);

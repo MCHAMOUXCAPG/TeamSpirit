@@ -374,7 +374,7 @@ function SurveyStatus({
                               inputVariant="outlined"
                               margin="normal"
                               className={classes.root}
-                              id="date-picker-inline"
+                              id="date-picker-inline-3"
                               value={body.StartDate}
                               onChange={handleDateChange}
                               KeyboardButtonProps={{
@@ -398,7 +398,7 @@ function SurveyStatus({
                             }
                           />
                         </DialogContent>
-                        <DialogActions>
+                        <DialogActions style={{ marginBottom: 10 }}>
                           <Button
                             onClick={onSubmit}
                             color="primary"

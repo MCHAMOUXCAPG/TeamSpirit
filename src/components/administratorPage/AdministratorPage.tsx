@@ -33,9 +33,19 @@ const AdministratorPage = () => {
         console.log(err);
       });
   }
+  async function getAllTeams(token: string | null) {
+    await usersList
+      .getTeams(token)
+      .then((res: any) => {
+        console.log(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
 
-  getAllUsers(token);
   console.log(getAllUsers(token));
+  console.log(getAllTeams(token));
   return (
     <div>
       <NavBar user={true}></NavBar>

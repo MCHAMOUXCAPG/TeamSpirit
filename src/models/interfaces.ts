@@ -97,3 +97,41 @@ export interface IOneTeamDTO {
     }
   ];
 }
+export interface ITeamsDTO {
+  frequency: number;
+  name: string;
+  num_mumbers: number;
+  startDate: string;
+  surveys: [
+    {
+      code: string;
+      endDate: string;
+      notes: [
+        {
+          Number: number;
+          SurveyCode: string;
+          User: string;
+          note: number;
+        }
+      ];
+      startDate: string;
+      teamName: string;
+    }
+  ];
+  users: [
+    {
+      email: string;
+      full_name: string;
+      id: number;
+      password: string;
+      roles: [
+        {
+          id: number;
+          name: string;
+          userID: number;
+        }
+      ];
+      teams: [];
+    }
+  ];
+}

@@ -48,7 +48,7 @@ function ExportResult({ teamName }: { teamName: string }) {
     token: string | null
   ) => {
     await surveyService
-      .getCSV(startDate, endDate,teamName, token)
+      .getCSV(startDate, endDate, teamName, token)
       .then((res) => {
         if (res.data !== "") {
           const csvData = new Blob([res.data], {
@@ -103,7 +103,7 @@ function ExportResult({ teamName }: { teamName: string }) {
               }}
             />
           )}
-          <Typography style={{ opacity: loading ? 0.5 : 1 }}>
+          <div style={{ opacity: loading ? 0.5 : 1 }}>
             <p
               className={latent ? "info-text latent" : "info-text"}
               style={{ color: color }}
@@ -193,7 +193,7 @@ function ExportResult({ teamName }: { teamName: string }) {
                 </Grid>
               </Container>
             </div>
-          </Typography>
+          </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>

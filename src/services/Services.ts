@@ -67,7 +67,12 @@ export class SurveyService {
     token: string | null
   ): Promise<any> {
     const endPoint =
-      "/survey/exportCsv?startDate=" + startDate + "&endDate=" + endDate+ "&teamName=" + teamName;
+      "/survey/exportCsv?startDate=" +
+      startDate +
+      "&endDate=" +
+      endDate +
+      "&teamName=" +
+      teamName;
     return environment.get(endPoint, {
       headers: {
         Authorization: "Bearer " + token,
@@ -112,6 +117,17 @@ export class UserValidationService {
   public getUser(token: string | null): Promise<any> {
     const endPoint = "/me";
     return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+}
+
+export class ManageUserService {
+  public deleteUser(token: string | null, userId: string): Promise<any> {
+    const endPoint = "/user/:" + userId;
+    return environment.delete(endPoint, {
       headers: {
         Authorization: "Bearer " + token,
       },

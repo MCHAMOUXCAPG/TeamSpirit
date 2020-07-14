@@ -15,6 +15,8 @@ func GetConnection() {
 	if ERR != nil {
 		panic("failed to connect database")
 	}
+	
+	DB.Exec("PRAGMA foreign_keys = ON;")
 
 	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
 }

@@ -58,44 +58,29 @@ export interface ITeamDTO {
   Name: string; //TeamName
   Num_mumbers: number;
   StartDate: string; // format "2number2number-number1-31"
+  Surveys?: any;
+  Users?: any;
 }
-export interface IOneTeamDTO {
-  Frequency: number;
+export interface IRoleDTO {
+  Id: number;
   Name: string;
-  Num_mumbers: number;
-  StartDate: string;
-  surveys: [
-    {
-      code: string;
-      endDate: string;
-      notes: [
-        {
-          Number: number;
-          SurveyCode: string;
-          User: string;
-          note: number;
-        }
-      ];
-      startDate: string;
-      teamName: string;
-    }
-  ];
-  users: [
-    {
-      email: string;
-      full_name: string;
-      id: number;
-      password: string;
-      roles: [
-        {
-          id: number;
-          name: string;
-          userID: number;
-        }
-      ];
-      teams: [];
-    }
-  ];
+  UserID: number;
+}
+export interface IUser {
+  Id: number;
+  Full_name: string;
+  Email: string;
+  Password: string;
+  Roles: IRoleDTO[];
+  Teams: ITeamDTO[];
+}
+
+export interface IUserDTO {
+  Full_name: string;
+  Email: string;
+  Password: string;
+  Roles: IRoleDTO[];
+  Teams: ITeamDTO[];
 }
 export interface ITeamsDTO {
   frequency: number;

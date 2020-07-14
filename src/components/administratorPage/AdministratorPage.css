@@ -16,7 +16,12 @@
 #container-adm {
   margin-left: 25px;
 }
-.MuiTab-textColorInherit {
-  color: black !important;
-  opacity: 0.7 !important;
+#Grid-adm-inner {
+  background: #ffffff;
+  border: 1px solid #79c0c6;
+  /* box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25); */
+  border-radius: 15px;
+  width: fit-content;
+  border-top-left-radius: 0;
 }

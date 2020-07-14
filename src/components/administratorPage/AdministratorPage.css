@@ -1,0 +1,22 @@
+.btn {
+  width: 100%;
+  border-radius: 25px !important;
+  font-size: 0.8em !important;
+  text-transform: none !important;
+}
+
+.btn-contained {
+  background-color: #79c0c6 !important;
+  color: #ffffff !important;
+}
+.btn-outlined {
+  color: #79c0c6 !important;
+  border-color: #79c0c6 !important;
+}
+#container-adm {
+  margin-left: 25px;
+}
+.MuiTab-textColorInherit {
+  color: black !important;
+  opacity: 0.7 !important;
+}

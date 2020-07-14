@@ -2,6 +2,7 @@ package repositories
 
 import (
 	"capgemini.com/gorn/team-spirit/config"
+	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
 )
 
@@ -52,7 +53,13 @@ func (*TeamRepo) UpdateTeam(teamName string, team *entities.Team) (*entities.Tea
 func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 
 	var team = &entities.Team{}
+	var teamUser []dto.TeamUser
+
 	result := config.DB.Where("name = ? ", teamName).Delete(&team)
+
+	if result.Error == nil {
+		result = config.DB.Table("teams_users").Where("team_name = ?", teamName).Delete(&teamUser)
+	}
 
 	return team, result.Error
 }

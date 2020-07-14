@@ -1,7 +1,8 @@
-import React, { useContext } from "react";
+import React from "react";
 import "./AdministratorPage.css";
 import { Button } from "@material-ui/core";
 import { ManageUserService } from "../../services/Services";
+import NavBar from "../navBar/NavBar";
 
 const AdministratorPage = () => {
   const usersList: ManageUserService = new ManageUserService();
@@ -18,14 +19,17 @@ const AdministratorPage = () => {
   }
 
   return (
-    <Button
-      onClick={() => {
-        getAllUsers(token);
-      }}
-      size="large"
-    >
-      getUsers
-    </Button>
+    <div>
+      <NavBar user={true}></NavBar>
+      <Button
+        onClick={() => {
+          getAllUsers(token);
+        }}
+        size="large"
+      >
+        getUsers
+      </Button>
+    </div>
   );
 };
 

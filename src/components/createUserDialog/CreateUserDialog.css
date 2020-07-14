@@ -1,0 +1,14 @@
+#input-num-1 {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  position: relative;
+  background: #ffffff;
+  border-radius: 24px;
+  overflow: hidden;
+  border-color: #919191;
+  padding: 13px;
+  width: 350px;
+}

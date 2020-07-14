@@ -68,8 +68,10 @@ function SurveyStatus({
     num_mumbers: 4,
     startDate: "2020-06-11T00:00:00Z",
   });
-const [loadingDelete, setLoadingDelete]= useState(false);
-const [deleteMessage,setDeleteMessage]= usestate("");
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState("");
+  const [successDialog, setSuccessDialog] = useState(false);
   const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
     Frequency: 0,
     Name: "", //TeamName
@@ -119,12 +121,16 @@ const [deleteMessage,setDeleteMessage]= usestate("");
   const handleClickOpenReset = () => {
     setOpenReset(true);
   };
+  const handleClickCloseResetSuccess = () => {
+    setSuccessDialog(false);
+    contextRender.setRender(true);
+  };
   const handleClickCloseReset = (borrar: any) => {
-    setOpenReset(false);
     if (borrar) {
       setLoadingDelete(true);
       deleteSurvey(token, surveyCode);
-      contextRender.setRender(true);
+    } else {
+      setOpenReset(false);
     }
   };
   function formatDate(date: any) {
@@ -161,7 +167,7 @@ const [deleteMessage,setDeleteMessage]= usestate("");
     });
   };
   const onSubmit = () => {
-    setOpen(false);
+    setLoadingUpdate(true);
     setCurrentTeamConfig({
       ...currentTeamConfig,
       Frequency: sprintLength,
@@ -170,7 +176,6 @@ const [deleteMessage,setDeleteMessage]= usestate("");
         ? selectedDate.toString()
         : currentTeamConfig.StartDate,
     });
-
     setAuxDate(selectedDate);
     configTeam();
     contextRender.setRender(true);
@@ -185,9 +190,17 @@ const [deleteMessage,setDeleteMessage]= usestate("");
   ) {
     await userValidationService
       .putTeamConfig(body, teamName, token)
-      .then((res: any) => {})
+      .then((res: any) => {
+        setLoadingUpdate(false);
+        setDeleteMessage("Survey successfully updated!");
+        setOpen(false);
+        setSuccessDialog(true);
+      })
       .catch((err: any) => {
-        console.log(err);
+        setLoadingUpdate(false);
+        setDeleteMessage("Error updating the Survey. Please try again later.");
+        setOpen(false);
+        setSuccessDialog(true);
       });
   }
   async function getSurveyConfig(teamName: string, token: string | null) {
@@ -206,7 +219,7 @@ const [deleteMessage,setDeleteMessage]= usestate("");
         var fecha = new Date(res.data.StartDate);
         setSelectedDate(fecha);
         setAuxDate(fecha);
-        setSurveyCode(res.data.Surveys[res.data.Surveys.length-1].Code)
+        setSurveyCode(res.data.Surveys[res.data.Surveys.length - 1].Code);
         setLoading(false);
         console.log(res.data.Surveys[res.data.Surveys.length - 1].Code);
         setSurveyCode(res.data.Surveys[res.data.Surveys.length - 1].Code);
@@ -221,14 +234,19 @@ const [deleteMessage,setDeleteMessage]= usestate("");
       .then((res) => {
         setLoadingDelete(false);
         setDeleteMessage("Survey successfully deleted!");
+        setSuccessDialog(true);
+        setOpenReset(false);
       })
       .catch((err) => {
-                setLoadingDelete(false);
+        setLoadingDelete(false);
         setDeleteMessage("Error deleting the Survey. Please try again later.");
+        setSuccessDialog(true);
+        setOpenReset(false);
       });
   }
   useEffect(() => {
     getSurveyConfig(teamName, token);
+    // eslint-disable-next-line
   }, []);
   const classes = useStyles();
 
@@ -314,6 +332,8 @@ const [deleteMessage,setDeleteMessage]= usestate("");
                       </Button>
 
                       <Dialog
+                        disableBackdropClick={true}
+                        disableEscapeKeyDown={true}
                         open={openReset}
                         onClose={handleClickCloseReset}
                         aria-labelledby="form-dialog-title"
@@ -323,7 +343,18 @@ const [deleteMessage,setDeleteMessage]= usestate("");
                         </DialogTitle>
                         <DialogContent>
                           <DialogContentText id="warnning-text">
-                            The actual result will be lost
+                            {loadingDelete ? (
+                              <Grid container direction="row" justify="center">
+                                <CircularProgress
+                                  size={24}
+                                  style={{
+                                    color: colors.primary,
+                                  }}
+                                />
+                              </Grid>
+                            ) : (
+                              <>The actual result will be lost</>
+                            )}
                           </DialogContentText>
                         </DialogContent>
                         <DialogActions
@@ -358,7 +389,20 @@ const [deleteMessage,setDeleteMessage]= usestate("");
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="form-dialog-title"
+                        disableBackdropClick={true}
+                        disableEscapeKeyDown={true}
                       >
+                        {loadingUpdate && (
+                          <CircularProgress
+                            size={24}
+                            style={{
+                              color: colors.primary,
+                              position: "absolute",
+                              left: "46%",
+                              top: "50%",
+                            }}
+                          />
+                        )}
                         <DialogTitle id="dialog-title">
                           Configure {teamName}
                         </DialogTitle>
@@ -445,6 +489,54 @@ const [deleteMessage,setDeleteMessage]= usestate("");
           </>
         )}
       </Paper>
+      {successDialog && (
+        <Dialog
+          open={successDialog}
+          disableBackdropClick={true}
+          disableEscapeKeyDown={true}
+          onClose={handleClickCloseResetSuccess}
+          BackdropProps={{
+            style: { backgroundColor: colors.white, opacity: 0.7 },
+          }}
+          PaperProps={{
+            style: {
+              borderRadius: 20,
+            },
+          }}
+        >
+          <DialogContent
+            style={{
+              color: colors.primary,
+              justifyContent: "center",
+              textAlign: "center",
+              fontWeight: "bold",
+              width: 250,
+              height: 80,
+            }}
+          >
+            <p>{deleteMessage}</p>
+          </DialogContent>
+          <DialogActions
+            style={{
+              justifyContent: "center",
+              paddingBottom: 30,
+            }}
+          >
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: colors.primary,
+                color: colors.white,
+                borderRadius: 20,
+                width: 60,
+              }}
+              onClick={handleClickCloseResetSuccess}
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 }

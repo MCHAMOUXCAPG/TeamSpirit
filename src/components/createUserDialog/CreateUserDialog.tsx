@@ -4,7 +4,6 @@ import {
   createStyles,
   Theme,
   withStyles,
-  useTheme,
 } from "@material-ui/core/styles";
 import TextField from "@material-ui/core/TextField";
 import Dialog from "@material-ui/core/Dialog";
@@ -16,15 +15,17 @@ import Select from "@material-ui/core/Select";
 import DialogTitle from "@material-ui/core/DialogTitle";
 import Button from "@material-ui/core/Button";
 import InputBase from "@material-ui/core/InputBase";
-import { IUserDTO } from "../../models/interfaces";
+import { IUserDTO, ITeamDTO } from "../../models/interfaces";
 import "./CreateUserDialog.css";
 
 const CreateUserDialog = ({
   open,
   handleClose,
+  teams,
 }: {
   open: boolean;
   handleClose: (bool: boolean) => void;
+  teams: ITeamDTO[];
 }) => {
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
@@ -63,22 +64,11 @@ const CreateUserDialog = ({
   const handleChangeRole = (event: React.ChangeEvent<{ value: unknown }>) => {
     setRole(event.target.value as string);
   };
-  const names = [
-    "Oliver Hansen",
-    "Van Henry",
-    "April Tucker",
-    "Ralph Hubbard",
-    "Omar Alexander",
-    "Carlos Abbott",
-    "Miriam Wagner",
-    "Bradley Wilkerson",
-    "Virginia Andrews",
-    "Kelly Snyder",
-  ];
-  const [personName, setPersonName] = React.useState<string[]>([]);
+
+  const [selectedTeams, setSelectedTeams] = React.useState<string[]>([]);
 
   const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
-    setPersonName(event.target.value as string[]);
+    setSelectedTeams(event.target.value as string[]);
   };
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -90,16 +80,7 @@ const CreateUserDialog = ({
       },
     },
   };
-  function getStyles(name: string, personName: string[], theme: Theme) {
-    return {
-      fontWeight:
-        personName.indexOf(name) === -1
-          ? theme.typography.fontWeightRegular
-          : theme.typography.fontWeightMedium,
-    };
-  }
   const classes = useStyles();
-  const theme = useTheme();
   const handleSubmit = () => {
     console.log(body);
   };
@@ -120,7 +101,9 @@ const CreateUserDialog = ({
       disableBackdropClick={true}
       disableEscapeKeyDown={true}
     >
-      <DialogTitle id="dialog-title">Insert a user</DialogTitle>
+      <DialogTitle id="dialog-title">
+        Fill this form to create a User
+      </DialogTitle>
       <DialogContent>
         <TextField
           required
@@ -183,14 +166,13 @@ const CreateUserDialog = ({
           <Select
             multiple
             displayEmpty
-            value={personName}
+            value={selectedTeams}
             onChange={handleChange}
             input={<CustomInput />}
             renderValue={(selected) => {
               if ((selected as string[]).length === 0) {
                 return <em>Choose one or more Teams</em>;
               }
-
               return (selected as string[]).join(", ");
             }}
             MenuProps={MenuProps}
@@ -199,13 +181,9 @@ const CreateUserDialog = ({
             <MenuItem disabled value="">
               <em>Placeholder</em>
             </MenuItem>
-            {names.map((name) => (
-              <MenuItem
-                key={name}
-                value={name}
-                style={getStyles(name, personName, theme)}
-              >
-                {name}
+            {teams.map((team: ITeamDTO) => (
+              <MenuItem key={team.Name} value={team.Name}>
+                {team.Name}
               </MenuItem>
             ))}
           </Select>

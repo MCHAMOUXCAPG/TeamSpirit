@@ -1,19 +1,27 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import "./AdministratorPage.css";
 import { Button, Container, Grid } from "@material-ui/core";
 import { ManageUserService } from "../../services/Services";
 import NavBar from "../navBar/NavBar";
+import CreateUserDialog from "../createUserDialog/CreateUserDialog";
+import { ITeamDTO } from "../../models/interfaces";
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
 
 const AdministratorPage = () => {
-  const [value, setValue] = React.useState(0);
+  const [value, setValue] = useState(0);
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
-
+  const [open, setOpen] = useState(false);
+  const handleClose = (bool: boolean) => {
+    setOpen(bool);
+  };
+  const [teams, setTeams] = useState<ITeamDTO[]>([
+    { Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" },
+  ]);
   function a11yProps(index: any) {
     return {
       id: `full-width-tab-${index}`,
@@ -38,14 +46,19 @@ const AdministratorPage = () => {
       .getTeams(token)
       .then((res: any) => {
         console.log(res.data);
+        setTeams(res.data);
       })
       .catch((err) => {
         console.log(err);
       });
   }
 
-  console.log(getAllUsers(token));
-  console.log(getAllTeams(token));
+  useEffect(() => {
+    getAllUsers(token);
+    getAllTeams(token);
+    // eslint-disable-next-line
+  }, []);
+
   return (
     <div>
       <NavBar user={true}></NavBar>
@@ -58,7 +71,16 @@ const AdministratorPage = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            <Button onClick={() => {}} size="large" color="primary">
+            <div className="team-name">TeamSpirit Admin</div>
+          </Grid>
+          <Grid item xs={12}>
+            <Button
+              onClick={() => {
+                setOpen(!open);
+              }}
+              size="large"
+              color="primary"
+            >
               Create User
             </Button>
           </Grid>
@@ -80,6 +102,7 @@ const AdministratorPage = () => {
           </Grid>
         </Grid>
       </Container>
+      <CreateUserDialog open={open} handleClose={handleClose} teams={teams} />
     </div>
   );
 };

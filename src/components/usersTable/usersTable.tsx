@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from "react";
-import { CircularProgress } from "@material-ui/core";
 import MaterialTable from "material-table";
 import { ManageUserService } from "../../services/Services";
 import { IUserTable, IUser } from "../../models/interfaces";
@@ -18,7 +17,7 @@ export default function MaterialTableDemo({
 }) {
   const token = sessionStorage.getItem("token");
   const [data, setData] = useState<IUser[]>([]);
-  const [loading, setLoading] = useState(false);
+  // eslint-disable-next-line
   const [state, setState] = useState<IUserTable>({
     columns: [
       { title: "FULL NAME", field: "Full_name" },
@@ -63,34 +62,23 @@ export default function MaterialTableDemo({
         rel="stylesheet"
         href="https://fonts.googleapis.com/icon?family=Material+Icons"
       />
-      {loading ? (
-        <CircularProgress
-          size={24}
-          style={{
-            position: "absolute",
-            left: "50%",
-            top: "50%",
-            color: "#000",
-          }}
-        />
-      ) : (
-        <MaterialTable
-          title=""
-          columns={state.columns}
-          data={data}
-          actions={[
-            {
-              icon: "edit",
-              tooltip: "edit user",
-              onClick: (event, rowData) => alert("edit"), //Must call edit PopUp here
-            },
-          ]}
-          options={{ search: true, actionsColumnIndex: -1 }}
-          editable={{
-            onRowDelete: (oldData) => delUser(token, oldData.Id.toString()),
-          }}
-        />
-      )}
+
+      <MaterialTable
+        title=""
+        columns={state.columns}
+        data={data}
+        actions={[
+          {
+            icon: "edit",
+            tooltip: "edit user",
+            onClick: (event, rowData) => alert("edit"), //Must call edit PopUp here
+          },
+        ]}
+        options={{ search: true, actionsColumnIndex: -1 }}
+        editable={{
+          onRowDelete: (oldData) => delUser(token, oldData.Id.toString()),
+        }}
+      />
     </>
   );
 }

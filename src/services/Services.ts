@@ -133,4 +133,22 @@ export class ManageUserService {
       },
     });
   }
+
+  public getUsers(token: string | null): Promise<any> {
+    const endPoint = "/users";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
+  public getTeams(token: string | null): Promise<any> {
+    const endPoint = "/teams";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }

@@ -1,0 +1,25 @@
+.btn {
+  width: 100%;
+  border-radius: 25px !important;
+  font-size: 0.8em !important;
+  text-transform: none !important;
+}
+
+.btn-contained {
+  background-color: #79c0c6 !important;
+  color: #ffffff !important;
+}
+.btn-outlined {
+  color: #79c0c6 !important;
+  border-color: #79c0c6 !important;
+}
+
+#Grid-adm-inner {
+  background: #ffffff;
+  border: 1px solid #79c0c6;
+  /* box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25); */
+  border-radius: 15px;
+  width: fit-content;
+  border-top-left-radius: 0;
+}

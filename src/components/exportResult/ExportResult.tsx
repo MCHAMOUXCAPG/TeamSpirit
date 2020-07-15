@@ -79,7 +79,7 @@ function ExportResult({ teamName }: { teamName: string }) {
   };
 
   return (
-    <div>
+    <div  ref={React.createRef()}>
       <ExpansionPanel id="export-container">
         <ExpansionPanelSummary
           aria-controls="panel1a-content"

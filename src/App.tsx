@@ -11,6 +11,7 @@ import { reRender } from "./components/surveyStatus/SurveySatus";
 import TeamHomePage from "./components/teamHomePage/TeamHomePage";
 import MyTeamsPage from "./components/myTeams/myTeamsPage";
 import NoTeamPage from "./components/noTeamPage/NoTeamPage";
+import AdministratorPage from "./components/administratorPage/AdministratorPage";
 
 function App() {
   const [valid, setValid] = useState(false);
@@ -38,6 +39,7 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/success" element={<ExitPage />} />
+            <Route path="/admin" element={<AdministratorPage />} />
             <PrivateRoute
               path="/survey"
               element={<Survey />}

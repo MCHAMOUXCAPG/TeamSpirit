@@ -69,7 +69,7 @@ const AdministratorPage = () => {
     getAllUsers(token);
     getAllTeams(token);
     // eslint-disable-next-line
-  }, []);
+  }, [openMessage]);
 
   return (
     <div>

@@ -17,6 +17,7 @@ import Button from "@material-ui/core/Button";
 import InputBase from "@material-ui/core/InputBase";
 import { IUserDTO, ITeamDTO } from "../../models/interfaces";
 import "./CreateUserDialog.css";
+import { ManageUserService } from "../../services/Services";
 
 const CreateUserDialog = ({
   open,
@@ -33,6 +34,7 @@ const CreateUserDialog = ({
   setMessage: any;
   setOpenMessage: any;
 }) => {
+  const token = sessionStorage.getItem("token");
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
     Email: "",
@@ -40,6 +42,23 @@ const CreateUserDialog = ({
     Roles: [{ Id: 0, Name: "", UserID: 0 }],
     Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
   });
+  const manageService: ManageUserService = new ManageUserService();
+
+  async function createUser(body: IUserDTO, token: string | null) {
+    await manageService
+      .createUser(body, token)
+      .then((res: any) => {
+        console.log(body);
+        setMessage("User succesfully created");
+        setLoading(false);
+        setOpenMessage(true);
+      })
+      .catch((err) => {
+        setMessage("Something went wrong. Try again later.");
+        setLoading(false);
+        setOpenMessage(true);
+      });
+  }
 
   const [role, setRole] = React.useState("");
   const handleChangeRole = (event: React.ChangeEvent<{ value: unknown }>) => {
@@ -57,7 +76,13 @@ const CreateUserDialog = ({
     teams.slice().forEach((team: ITeamDTO) => {
       teamsNames.forEach((teamName) => {
         if (team.Name === teamName) {
-          myTeams.push(team);
+          const newTeam: ITeamDTO = {
+            Frequency: team.Frequency,
+            Name: team.Name,
+            Num_mumbers: team.Num_mumbers,
+            StartDate: team.StartDate,
+          };
+          myTeams.push(newTeam);
         }
       });
     });
@@ -77,12 +102,7 @@ const CreateUserDialog = ({
   const handleSubmit = () => {
     setLoading(true);
     handleClose(!open);
-    setTimeout(() => {
-      console.log(body);
-      setMessage("User succesfully created");
-      setLoading(false);
-      setOpenMessage(true);
-    }, 1500); // mock the service
+    createUser(body, token);
   };
   return (
     <Dialog

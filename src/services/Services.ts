@@ -4,6 +4,7 @@ import {
   IValidationCode,
   IValidationUser,
   ITeamDTO,
+  IUserDTO,
 } from "../models/interfaces";
 
 export class SurveyService {
@@ -136,6 +137,15 @@ export class ManageUserService {
   public getTeams(token: string | null): Promise<any> {
     const endPoint = "/teams";
     return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
+  public createUser(body: IUserDTO, token: string | null): Promise<any> {
+    const endPoint = "/user/create";
+    return environment.post(endPoint, body, {
       headers: {
         Authorization: "Bearer " + token,
       },

@@ -3,6 +3,7 @@ import { CircularProgress } from "@material-ui/core";
 import MaterialTable from "material-table";
 import { ManageUserService } from "../../services/Services";
 import { IUserTable, IUser } from "../../models/interfaces";
+import "./usersTable.css";
 
 export default function MaterialTableDemo({
   users,
@@ -15,6 +16,7 @@ export default function MaterialTableDemo({
   setMessage: any;
   setOpenMessage: any;
 }) {
+  const token = sessionStorage.getItem("token");
   const [data, setData] = useState<IUser[]>([]);
   const [loading, setLoading] = useState(false);
   const [state, setState] = useState<IUserTable>({
@@ -22,8 +24,8 @@ export default function MaterialTableDemo({
       { title: "FULL NAME", field: "Full_name" },
       { title: "EMAIL", field: "Email" },
       {
-        title: "ROLES",
-        field: "Roles",
+        title: "ROLE",
+        field: "Roles.Name",
         lookup: { 1: "User", 2: "Team Leader", 3: "Administrator" },
       },
       {
@@ -35,31 +37,18 @@ export default function MaterialTableDemo({
   });
 
   const usersList: ManageUserService = new ManageUserService();
-  const token = sessionStorage.getItem("token");
-  async function getAllUsers(token: string | null) {
-    await usersList
-      .getUsers(token)
-      .then((res: any) => {
-        setData(res.data);
-        setLoading(false);
-      })
-      .catch((err) => {
-        console.log(err);
-        setLoading(false);
-      });
-  }
 
   async function delUser(token: string | null, userId: string) {
     await usersList
       .deleteUser(token, userId)
       .then((res: any) => {
         setMessage("User succesfully deleted");
-        setLoading(false);
+        setLoadingP(false);
         setOpenMessage(true);
       })
       .catch((err) => {
         setMessage("Something went wrong. Try again later.");
-        setLoading(false);
+        setLoadingP(false);
         setOpenMessage(true);
       });
   }

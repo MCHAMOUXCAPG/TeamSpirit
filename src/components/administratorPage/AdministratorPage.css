@@ -23,3 +23,6 @@
   width: fit-content;
   border-top-left-radius: 0;
 }
+#table-container {
+  margin-top: -53px;
+}

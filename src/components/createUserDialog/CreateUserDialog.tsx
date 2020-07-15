@@ -48,12 +48,29 @@ const CreateUserDialog = ({
     await manageService
       .createUser(body, token)
       .then((res: any) => {
-        console.log(body);
+        setBody({
+          Full_name: "",
+          Email: "",
+          Password: "",
+          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
+        });
+        setSelectedTeams([]);
+        setRole("");
         setMessage("User succesfully created");
         setLoading(false);
         setOpenMessage(true);
       })
       .catch((err) => {
+        setBody({
+          Full_name: "",
+          Email: "",
+          Password: "",
+          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
+        });
+        setSelectedTeams([]);
+        setRole("");
         setMessage("Something went wrong. Try again later.");
         setLoading(false);
         setOpenMessage(true);

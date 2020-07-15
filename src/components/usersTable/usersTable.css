@@ -1,0 +1,12 @@
+.MuiPaper-rounded {
+  border-radius: 12px !important;
+}
+
+.MuiTableCell-head {
+  color: #fff !important;
+  background-color: #79c0c6 !important;
+}
+
+#table-container .MuiToolbar-regular {
+  min-height: 75px !important;
+}

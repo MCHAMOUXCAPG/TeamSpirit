@@ -101,19 +101,6 @@ const AdministratorPage = () => {
             <div className="team-name">TeamSpirit Admin</div>
           </Grid>
           <Grid item xs={12}>
-            {value === 0 && (
-              <Button
-                onClick={() => {
-                  setOpen(!open);
-                }}
-                size="large"
-                color="primary"
-              >
-                Create User
-              </Button>
-            )}
-          </Grid>
-          <Grid item xs={12}>
             <Tabs
               value={value}
               onChange={handleChange}
@@ -124,14 +111,31 @@ const AdministratorPage = () => {
               <Tab label="Surveys" {...a11yProps(2)} id="question-tab" />
             </Tabs>
           </Grid>
-          <Grid item xs={12} id="Grid-adm-inner">
+          <Grid item xs={12} id="table-container">
             {value === 0 && (
-              <UsersTable
-                users={users}
-                setLoadingP={setLoading}
-                setMessage={setMessage}
-                setOpenMessage={setOpenMessage}
-              />
+              <>
+                <Button
+                  onClick={() => {
+                    setOpen(!open);
+                  }}
+                  size="large"
+                  color="primary"
+                  style={{
+                    position: "relative",
+                    top: 50,
+                    zIndex: 20,
+                    left: 20,
+                  }}
+                >
+                  Create User
+                </Button>
+                <UsersTable
+                  users={users}
+                  setLoadingP={setLoading}
+                  setMessage={setMessage}
+                  setOpenMessage={setOpenMessage}
+                />
+              </>
             )}
             {value === 1 && <div>Item 2</div>}
             {value === 2 && <div>Item 3</div>}

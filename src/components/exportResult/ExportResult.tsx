@@ -48,7 +48,7 @@ function ExportResult({ teamName }: { teamName: string }) {
     token: string | null
   ) => {
     await surveyService
-      .getCSV(startDate, endDate,teamName, token)
+      .getCSV(startDate, endDate, teamName, token)
       .then((res) => {
         if (res.data !== "") {
           const csvData = new Blob([res.data], {

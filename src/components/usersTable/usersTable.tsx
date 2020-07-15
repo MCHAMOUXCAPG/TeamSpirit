@@ -9,7 +9,6 @@ export default function MaterialTableDemo() {
   const [loading, setLoading] = useState(true);
   const [state, setState] = useState<IUserTable>({
     columns: [
-      { title: "ID", field: "Id", type: "numeric" },
       { title: "FULL NAME", field: "Full_name" },
       { title: "EMAIL", field: "Email" },
       {
@@ -31,14 +30,23 @@ export default function MaterialTableDemo() {
     await usersList
       .getUsers(token)
       .then((res: any) => {
-        console.log(res.data);
         setData(res.data);
-        console.log("data:", data);
         setLoading(false);
       })
       .catch((err) => {
         console.log(err);
         setLoading(false);
+      });
+  }
+
+  async function delUser(token: string | null, userId: string) {
+    await usersList
+      .deleteUser(token, userId)
+      .then((res: any) => {
+        getAllUsers(token);
+      })
+      .catch((err) => {
+        console.log(err);
       });
   }
 
@@ -74,13 +82,13 @@ export default function MaterialTableDemo() {
               onClick: (event, rowData) => alert("edit"), //Must call edit PopUp here
             },
           ]}
-          options={{ search: false }}
+          options={{ search: false, actionsColumnIndex: -1 }}
           editable={{
             onRowDelete: (oldData) =>
               new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  alert("deleted"); //Must implement deleteUser service here
+                  delUser(token, oldData.Id.toString());
                 }, 600);
               }),
           }}

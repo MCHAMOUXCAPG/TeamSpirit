@@ -126,6 +126,15 @@ export class UserValidationService {
 }
 
 export class ManageUserService {
+  public deleteUser(token: string | null, userId: string): Promise<any> {
+    const endPoint = "/user/" + userId;
+    return environment.delete(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
   public getUsers(token: string | null): Promise<any> {
     const endPoint = "/users";
     return environment.get(endPoint, {
@@ -134,6 +143,7 @@ export class ManageUserService {
       },
     });
   }
+
   public getTeams(token: string | null): Promise<any> {
     const endPoint = "/teams";
     return environment.get(endPoint, {

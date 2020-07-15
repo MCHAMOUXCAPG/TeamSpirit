@@ -4,10 +4,10 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
-
 	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
+	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -42,6 +42,7 @@ func GetUsers(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.User
+// @Failure 404 {object} dto.Error
 // @Failure 500 {object} dto.Error
 // @Router /user/:id [Get]
 func GetUser(c echo.Context) error {
@@ -53,6 +54,10 @@ func GetUser(c echo.Context) error {
 	}
 
 	user, err := UserRepo.GetUser(userID)
+
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETUSER)
+	}
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETUSER)
@@ -66,7 +71,7 @@ func GetUser(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param UserDTO body dto.UserDTO true "UserDTO"
+// @Param UserDTO body dto.UserDTO  true "UserDTO"
 // @Success 200 {object} entities.User
 // @Failure 500 {object} dto.Error
 // @Router /user/create [post]
@@ -74,6 +79,10 @@ func CreateUser(c echo.Context) error {
 
 	var newUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
+
+	if newUser.Password != "" {
+		newUser.Password, _ = HashAndSalt(newUser.Password)
+	}
 
 	user, err := UserRepo.CreateUser(newUser)
 
@@ -104,6 +113,9 @@ func UpdateUser(c echo.Context) error {
 
 	var updatedUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedUser)
+	if updatedUser.Password != "" {
+		updatedUser.Password, _ = updateHashPassword(userID, updatedUser.Password)
+	}
 
 	user, err := UserRepo.UpdateUser(userID, updatedUser)
 
@@ -138,4 +150,18 @@ func DeleteUser(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, user)
+}
+
+func updateHashPassword(userID int, password string) (string, error) {
+	user, err := UserRepo.GetUser(userID)
+
+	if err != nil {
+		return "", err
+	}
+
+	if user.Password == password {
+		return password, nil
+	}
+
+	return HashAndSalt(password)
 }

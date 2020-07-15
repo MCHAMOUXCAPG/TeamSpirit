@@ -116,6 +116,13 @@ var CONVERTPARAM_GETROLE = &dto.Error{
 	Function: "GetRole",
 }
 
+var NOTFOUND_GETROLE = &dto.Error{
+	Status:   404,
+	Message:  "No role with this id was found",
+	Path:     "api/services/role-service.go",
+	Function: "GetRole",
+}
+
 var GET_GETROLE = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method RoleRepo.GetRole",
@@ -165,6 +172,13 @@ var GETS_GETTEAMS = &dto.Error{
 	Function: "GetTeams",
 }
 
+var NOTFOUND_GETTEAM = &dto.Error{
+	Status:   404,
+	Message:  "No team with this name was found",
+	Path:     "api/services/team-service.go",
+	Function: "GetTeam",
+}
+
 var GET_GETTEAM = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method TeamRepo.GetTeam",
@@ -203,6 +217,13 @@ var GETS_GETUSERS = &dto.Error{
 var CONVERTPARAM_GETUSER = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method strconv.Atoi",
+	Path:     "api/services/user-service.go",
+	Function: "GetUser",
+}
+
+var NOTFOUND_GETUSER = &dto.Error{
+	Status:   404,
+	Message:  "No user with this id was found",
 	Path:     "api/services/user-service.go",
 	Function: "GetUser",
 }
@@ -254,6 +275,13 @@ var GETS_GETSURVEYS = &dto.Error{
 	Message:  "Some error happened when calling the method SurveyRepo.GetSurveys",
 	Path:     "api/services/survey-service.go",
 	Function: "GetSurveys",
+}
+
+var NOTFOUND_GETSURVEY = &dto.Error{
+	Status:   404,
+	Message:  "No survey with this code was found",
+	Path:     "api/services/survey-service.go",
+	Function: "GetSurvey",
 }
 
 var GET_GETSURVEY = &dto.Error{

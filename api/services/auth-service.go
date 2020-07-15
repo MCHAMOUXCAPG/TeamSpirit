@@ -39,12 +39,12 @@ func AccessToSurvey(c echo.Context) error {
 	json.NewDecoder(c.Request().Body).Decode(&access)
 	survey, err := SurveyRepo.GetSurvey(access.Code)
 
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETSURVEY_ACCESS)
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.INVALID_CODE_ACCESS)
 	}
 
-	if survey.Code == "" {
-		return echo.NewHTTPError(http.StatusNotFound, constants.INVALID_CODE_ACCESS)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETSURVEY_ACCESS)
 	}
 
 	if isNotAllowedToVote(survey.Notes, HashUser(access.User)) {
@@ -57,7 +57,7 @@ func AccessToSurvey(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusUnauthorized, constants.MAX_REACHED_ACCESS)
 	}
 
-	if time.Now().After(survey.EndDate) {
+	if time.Now().After(survey.EndDate.Add(24 * time.Hour)) {
 		return echo.NewHTTPError(http.StatusUnauthorized, constants.DEADLINE_PASSED_ACCESS)
 
 	}

@@ -21,7 +21,7 @@ import "./SurveyStatus.css";
 import colors from "../../config/colors";
 import { UserValidationService } from "../../services/Services";
 import { SurveyService } from "../../services/Services";
-import { ITeamDTO, IOneTeamDTO } from "../../models/interfaces";
+import { ITeamDTO } from "../../models/interfaces";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
@@ -51,77 +51,41 @@ function SurveyStatus({
   const surveyService: SurveyService = new SurveyService();
   const userValidationService: UserValidationService = new UserValidationService();
   const [open, setOpen] = useState(false);
-
+  const [surveyCode, setSurveyCode] = useState<string>("");
   const [openReset, setOpenReset] = useState(false);
-  const [selectedDate, setSelectedDate] = React.useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
-  );
-  const [auxDate, setAuxDate] = React.useState<Date | null>(
-    new Date("2014-08-18T21:11:54")
-  );
-  const [sprintLength, setSpringLength] = React.useState<number>(0);
-  const [members_num, setMembers_num] = React.useState<number>(0);
   const [loadingS, setLoading] = useState(true);
   const [body, setBody] = useState<ITeamDTO>({
-    frequency: 14,
-    name: "SNCF",
-    num_mumbers: 4,
-    startDate: "2020-06-11T00:00:00Z",
-  });
-
-  const [currentTeamConfig, setCurrentTeamConfig] = useState<IOneTeamDTO>({
     Frequency: 0,
-    Name: "", //TeamName
+    Name: "",
     Num_mumbers: 0,
-    StartDate: "",
-    surveys: [
-      {
-        code: "",
-        endDate: "",
-        notes: [
-          {
-            Number: 0,
-            SurveyCode: "",
-            User: "",
-            note: 0,
-          },
-        ],
-        startDate: "",
-        teamName: "",
-      },
-    ],
-    users: [
-      {
-        email: "",
-        full_name: "",
-        id: 0,
-        password: "",
-        roles: [
-          {
-            id: 0,
-            name: "",
-            userID: 0,
-          },
-        ],
-        teams: [],
-      },
-    ],
-  });
+    StartDate: "2020-06-11T00:00:00Z",
+  }); // store input variables
+  const [loadingDelete, setLoadingDelete] = useState(false);
+  const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [deleteMessage, setDeleteMessage] = useState(""); // gets success o error message
+  const [successDialog, setSuccessDialog] = useState(false); // final dialog (shows success or error message)
+  const [forceUpdate, setForceUpdate] = useState(false);
   const handleClickOpen = () => {
     setOpen(true);
   };
 
   const handleClose = () => {
     setOpen(false);
-    setSelectedDate(auxDate);
   };
   const handleClickOpenReset = () => {
     setOpenReset(true);
   };
+  const handleClickCloseResetSuccess = () => {
+    setSuccessDialog(false);
+    setForceUpdate(!forceUpdate); // to update de surveyCode to delete
+    contextRender.setRender(true); // to update de current shown values
+  };
   const handleClickCloseReset = (borrar: any) => {
-    setOpenReset(false);
     if (borrar) {
-      deleteSurvey(token, "SNCF-abcde");
+      setLoadingDelete(true);
+      deleteSurvey(token, surveyCode);
+    } else {
+      setOpenReset(false);
     }
   };
   function formatDate(date: any) {
@@ -135,40 +99,26 @@ function SurveyStatus({
   }
 
   const handleDateChange = (date: Date | null) => {
-    setSelectedDate(date);
     var Fecha = formatDate(date) + "T00:00:00Z";
-
     setBody({
       ...body,
-      startDate: Fecha,
+      StartDate: Fecha,
     });
   };
   const handleDateChangeSprintLength = (length: any) => {
-    setSpringLength(length);
     setBody({
       ...body,
-      frequency: length,
+      Frequency: length,
     });
   };
   const handleDateChangeMembers = (members: any) => {
-    setMembers_num(members);
     setBody({
       ...body,
-      num_mumbers: members,
+      Num_mumbers: members,
     });
   };
   const onSubmit = () => {
-    setOpen(false);
-    setCurrentTeamConfig({
-      ...currentTeamConfig,
-      Frequency: sprintLength,
-      Num_mumbers: members_num,
-      StartDate: selectedDate
-        ? selectedDate.toString()
-        : currentTeamConfig.StartDate,
-    });
-
-    setAuxDate(selectedDate);
+    setLoadingUpdate(true);
     configTeam();
     contextRender.setRender(true);
   };
@@ -182,27 +132,30 @@ function SurveyStatus({
   ) {
     await userValidationService
       .putTeamConfig(body, teamName, token)
-      .then((res: any) => {})
+      .then((res: any) => {
+        setLoadingUpdate(false);
+        setDeleteMessage("Survey successfully updated!");
+        setOpen(false);
+        setSuccessDialog(true);
+      })
       .catch((err: any) => {
-        console.log(err);
+        setLoadingUpdate(false);
+        setDeleteMessage("Error updating the Survey. Please try again later.");
+        setOpen(false);
+        setSuccessDialog(true);
       });
   }
   async function getSurveyConfig(teamName: string, token: string | null) {
     await surveyService
       .getResultSurveyConfig(teamName, token)
       .then((res) => {
-        setCurrentTeamConfig(res.data);
         setBody({
-          frequency: res.data.Frequency,
-          name: teamName,
-          num_mumbers: res.data.Num_mumbers,
-          startDate: res.data.StartDate,
+          Frequency: res.data.Frequency,
+          Name: teamName,
+          Num_mumbers: res.data.Num_mumbers,
+          StartDate: res.data.StartDate,
         });
-        setSpringLength(res.data.Frequency);
-        setMembers_num(res.data.Num_mumbers);
-        var fecha = new Date(res.data.StartDate);
-        setSelectedDate(fecha);
-        setAuxDate(fecha);
+        setSurveyCode(res.data.Surveys[res.data.Surveys.length - 1].Code);
         setLoading(false);
       })
       .catch((err) => {
@@ -213,16 +166,22 @@ function SurveyStatus({
     await surveyService
       .deleteSurvey(token, surveyCode)
       .then((res) => {
-        console.log(res);
+        setLoadingDelete(false);
+        setDeleteMessage("Survey successfully deleted!");
+        setSuccessDialog(true);
+        setOpenReset(false);
       })
       .catch((err) => {
-        console.log(err);
+        setLoadingDelete(false);
+        setDeleteMessage("Error deleting the Survey. Please try again later.");
+        setSuccessDialog(true);
+        setOpenReset(false);
       });
   }
   useEffect(() => {
     getSurveyConfig(teamName, token);
     // eslint-disable-next-line
-  }, []);
+  }, [forceUpdate]);
   const classes = useStyles();
 
   return (
@@ -306,6 +265,8 @@ function SurveyStatus({
                       </Button>
 
                       <Dialog
+                        disableBackdropClick={true}
+                        disableEscapeKeyDown={true}
                         open={openReset}
                         onClose={handleClickCloseReset}
                         aria-labelledby="form-dialog-title"
@@ -315,7 +276,18 @@ function SurveyStatus({
                         </DialogTitle>
                         <DialogContent>
                           <DialogContentText id="warnning-text">
-                            The actual result will be lost
+                            {loadingDelete ? (
+                              <Grid container direction="row" justify="center">
+                                <CircularProgress
+                                  size={24}
+                                  style={{
+                                    color: colors.primary,
+                                  }}
+                                />
+                              </Grid>
+                            ) : (
+                              <>The actual result will be lost</>
+                            )}
                           </DialogContentText>
                         </DialogContent>
                         <DialogActions
@@ -350,7 +322,20 @@ function SurveyStatus({
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="form-dialog-title"
+                        disableBackdropClick={true}
+                        disableEscapeKeyDown={true}
                       >
+                        {loadingUpdate && (
+                          <CircularProgress
+                            size={24}
+                            style={{
+                              color: colors.primary,
+                              position: "absolute",
+                              left: "46%",
+                              top: "50%",
+                            }}
+                          />
+                        )}
                         <DialogTitle id="dialog-title">
                           Configure {teamName}
                         </DialogTitle>
@@ -367,7 +352,7 @@ function SurveyStatus({
                             fullWidth
                             variant="outlined"
                             className={classes.root}
-                            defaultValue={currentTeamConfig.Frequency}
+                            defaultValue={body.Frequency}
                             onChange={(freq) => {
                               handleDateChangeSprintLength(
                                 Number(freq.target.value)
@@ -388,8 +373,8 @@ function SurveyStatus({
                               inputVariant="outlined"
                               margin="normal"
                               className={classes.root}
-                              id="date-picker-inline"
-                              value={selectedDate}
+                              id="date-picker-inline-3"
+                              value={body.StartDate}
                               onChange={handleDateChange}
                               KeyboardButtonProps={{
                                 "aria-label": "change date",
@@ -406,13 +391,13 @@ function SurveyStatus({
                             fullWidth
                             variant="outlined"
                             className={classes.root}
-                            defaultValue={currentTeamConfig.Num_mumbers}
+                            defaultValue={body.Num_mumbers}
                             onChange={(mem) =>
                               handleDateChangeMembers(Number(mem.target.value))
                             }
                           />
                         </DialogContent>
-                        <DialogActions>
+                        <DialogActions style={{ marginBottom: 10 }}>
                           <Button
                             onClick={onSubmit}
                             color="primary"
@@ -437,6 +422,54 @@ function SurveyStatus({
           </>
         )}
       </Paper>
+      {successDialog && (
+        <Dialog
+          open={successDialog}
+          disableBackdropClick={true}
+          disableEscapeKeyDown={true}
+          onClose={handleClickCloseResetSuccess}
+          BackdropProps={{
+            style: { backgroundColor: colors.white, opacity: 0.7 },
+          }}
+          PaperProps={{
+            style: {
+              borderRadius: 20,
+            },
+          }}
+        >
+          <DialogContent
+            style={{
+              color: colors.primary,
+              justifyContent: "center",
+              textAlign: "center",
+              fontWeight: "bold",
+              width: 250,
+              height: 80,
+            }}
+          >
+            <p>{deleteMessage}</p>
+          </DialogContent>
+          <DialogActions
+            style={{
+              justifyContent: "center",
+              paddingBottom: 30,
+            }}
+          >
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: colors.primary,
+                color: colors.white,
+                borderRadius: 20,
+                width: 60,
+              }}
+              onClick={handleClickCloseResetSuccess}
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
     </div>
   );
 }

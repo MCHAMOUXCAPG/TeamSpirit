@@ -79,7 +79,7 @@ function ExportResult({ teamName }: { teamName: string }) {
   };
 
   return (
-    <div>
+    <div  ref={React.createRef()}>
       <ExpansionPanel id="export-container">
         <ExpansionPanelSummary
           aria-controls="panel1a-content"
@@ -103,7 +103,7 @@ function ExportResult({ teamName }: { teamName: string }) {
               }}
             />
           )}
-          <Typography style={{ opacity: loading ? 0.5 : 1 }}>
+          <div style={{ opacity: loading ? 0.5 : 1 }}>
             <p
               className={latent ? "info-text latent" : "info-text"}
               style={{ color: color }}
@@ -193,7 +193,7 @@ function ExportResult({ teamName }: { teamName: string }) {
                 </Grid>
               </Container>
             </div>
-          </Typography>
+          </div>
         </ExpansionPanelDetails>
       </ExpansionPanel>
     </div>

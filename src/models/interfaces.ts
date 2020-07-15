@@ -85,14 +85,6 @@ export interface IUserDTO {
   Teams: ITeamDTO[];
 }
 
-export interface IUserRows {
-  Id: number;
-  full_name: string;
-  Email: string;
-  Roles: number;
-  Teams: number;
-}
-
 export interface IUserTable {
-  columns: Array<Column<IUserRows>>;
+  columns: Array<Column<IUser>>;
 }

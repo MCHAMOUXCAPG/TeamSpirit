@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from "react";
-import { Button, CircularProgress } from "@material-ui/core";
+import { CircularProgress } from "@material-ui/core";
 import MaterialTable from "material-table";
 import { ManageUserService } from "../../services/Services";
 import { IUserTable } from "../../models/interfaces";
@@ -71,7 +71,7 @@ export default function MaterialTableDemo() {
             {
               icon: "edit",
               tooltip: "edit user",
-              onClick: (event, rowData) => alert("edit"),
+              onClick: (event, rowData) => alert("edit"), //Must call edit PopUp here
             },
           ]}
           options={{ search: false }}
@@ -80,7 +80,7 @@ export default function MaterialTableDemo() {
               new Promise((resolve) => {
                 setTimeout(() => {
                   resolve();
-                  alert("deleted");
+                  alert("deleted"); //Must implement deleteUser service here
                 }, 600);
               }),
           }}

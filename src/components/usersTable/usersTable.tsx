@@ -2,11 +2,21 @@ import React, { useState, useEffect } from "react";
 import { CircularProgress } from "@material-ui/core";
 import MaterialTable from "material-table";
 import { ManageUserService } from "../../services/Services";
-import { IUserTable } from "../../models/interfaces";
+import { IUserTable, IUser } from "../../models/interfaces";
 
-export default function MaterialTableDemo() {
-  const [data, setData] = useState([]);
-  const [loading, setLoading] = useState(true);
+export default function MaterialTableDemo({
+  users,
+  setLoadingP,
+  setMessage,
+  setOpenMessage,
+}: {
+  users: IUser[];
+  setLoadingP: any;
+  setMessage: any;
+  setOpenMessage: any;
+}) {
+  const [data, setData] = useState<IUser[]>([]);
+  const [loading, setLoading] = useState(false);
   const [state, setState] = useState<IUserTable>({
     columns: [
       { title: "FULL NAME", field: "Full_name" },
@@ -43,16 +53,20 @@ export default function MaterialTableDemo() {
     await usersList
       .deleteUser(token, userId)
       .then((res: any) => {
-        getAllUsers(token);
+        setMessage("User succesfully deleted");
+        setLoading(false);
+        setOpenMessage(true);
       })
       .catch((err) => {
-        console.log(err);
+        setMessage("Something went wrong. Try again later.");
+        setLoading(false);
+        setOpenMessage(true);
       });
   }
 
   useEffect(() => {
-    getAllUsers(token);
-  }, []);
+    setData(users);
+  }, [users]);
 
   return (
     <>
@@ -82,15 +96,9 @@ export default function MaterialTableDemo() {
               onClick: (event, rowData) => alert("edit"), //Must call edit PopUp here
             },
           ]}
-          options={{ search: false, actionsColumnIndex: -1 }}
+          options={{ search: true, actionsColumnIndex: -1 }}
           editable={{
-            onRowDelete: (oldData) =>
-              new Promise((resolve) => {
-                setTimeout(() => {
-                  resolve();
-                  delUser(token, oldData.Id.toString());
-                }, 600);
-              }),
+            onRowDelete: (oldData) => delUser(token, oldData.Id.toString()),
           }}
         />
       )}

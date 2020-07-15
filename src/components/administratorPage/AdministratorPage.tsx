@@ -4,7 +4,7 @@ import { Button, Container, Grid } from "@material-ui/core";
 import { ManageUserService } from "../../services/Services";
 import NavBar from "../navBar/NavBar";
 import CreateUserDialog from "../createUserDialog/CreateUserDialog";
-import { ITeamDTO } from "../../models/interfaces";
+import { ITeamDTO, IUser } from "../../models/interfaces";
 import colors from "../../config/colors";
 
 import Tabs from "@material-ui/core/Tabs";
@@ -34,6 +34,7 @@ const AdministratorPage = () => {
   const [teams, setTeams] = useState<ITeamDTO[]>([
     { Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" },
   ]);
+  const [users, setUsers] = useState<IUser[]>([]);
   function a11yProps(index: any) {
     return {
       id: `full-width-tab-${index}`,
@@ -48,6 +49,7 @@ const AdministratorPage = () => {
       .getUsers(token)
       .then((res: any) => {
         console.log(res.data);
+        setUsers(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -123,7 +125,14 @@ const AdministratorPage = () => {
             </Tabs>
           </Grid>
           <Grid item xs={12} id="Grid-adm-inner">
-            {value === 0 && <UsersTable />}
+            {value === 0 && (
+              <UsersTable
+                users={users}
+                setLoadingP={setLoading}
+                setMessage={setMessage}
+                setOpenMessage={setOpenMessage}
+              />
+            )}
             {value === 1 && <div>Item 2</div>}
             {value === 2 && <div>Item 3</div>}
           </Grid>

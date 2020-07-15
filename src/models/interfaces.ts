@@ -1,3 +1,5 @@
+import { Column } from "material-table";
+
 export enum questionType {
   slider,
   fiveIcons,
@@ -81,4 +83,8 @@ export interface IUserDTO {
   Password: string;
   Roles: IRoleDTO[];
   Teams: ITeamDTO[];
+}
+
+export interface IUserTable {
+  columns: Array<Column<IUser>>;
 }

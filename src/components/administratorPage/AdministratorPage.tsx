@@ -13,6 +13,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import CircularProgress from "@material-ui/core/CircularProgress";
+import UsersTable from "../usersTable/usersTable";
 
 const AdministratorPage = () => {
   const [value, setValue] = useState(0);
@@ -98,15 +99,17 @@ const AdministratorPage = () => {
             <div className="team-name">TeamSpirit Admin</div>
           </Grid>
           <Grid item xs={12}>
-            <Button
-              onClick={() => {
-                setOpen(!open);
-              }}
-              size="large"
-              color="primary"
-            >
-              Create User
-            </Button>
+            {value === 0 && (
+              <Button
+                onClick={() => {
+                  setOpen(!open);
+                }}
+                size="large"
+                color="primary"
+              >
+                Create User
+              </Button>
+            )}
           </Grid>
           <Grid item xs={12}>
             <Tabs
@@ -120,7 +123,7 @@ const AdministratorPage = () => {
             </Tabs>
           </Grid>
           <Grid item xs={12} id="Grid-adm-inner">
-            {value === 0 && <div>Item 1</div>}
+            {value === 0 && <UsersTable />}
             {value === 1 && <div>Item 2</div>}
             {value === 2 && <div>Item 3</div>}
           </Grid>

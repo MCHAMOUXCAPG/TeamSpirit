@@ -8,6 +8,7 @@ import (
 	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
+	"github.com/jinzhu/gorm"
 	"github.com/labstack/echo/v4"
 	_ "github.com/mattn/go-sqlite3"
 )
@@ -43,6 +44,7 @@ func GetRoles(c echo.Context) error {
 // @Param id path string true "id"
 // @Success 200 {object} entities.Role
 // @Failure 500 {object} dto.Error
+// @Failure 404 {object} dto.Error
 // @Router /role/:id [Get]
 func GetRole(c echo.Context) error {
 
@@ -53,6 +55,10 @@ func GetRole(c echo.Context) error {
 	}
 
 	role, err := RoleRepo.GetRole(roleID)
+
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETROLE)
+	}
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETROLE)

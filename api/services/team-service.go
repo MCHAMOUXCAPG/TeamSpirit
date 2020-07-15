@@ -4,6 +4,8 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/jinzhu/gorm"
+
 	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
@@ -42,11 +44,16 @@ func GetTeams(c echo.Context) error {
 // @Param teamName path string true "Team name"
 // @Success 200 {object} entities.Team
 // @Failure 500 {object} dto.Error
+// @Failure 404 {object} dto.Error
 // @Router /team/:teamName [Get]
 func GetTeam(c echo.Context) error {
 
 	teamName := c.Param("teamName")
 	team, err := TeamRepo.GetTeam(teamName)
+
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETTEAM)
+	}
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETTEAM)

@@ -407,6 +407,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -533,6 +537,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -641,6 +649,10 @@ paths:
         in: query
         name: endDate
         type: string
+      - description: team name
+        in: query
+        name: teamName
+        type: string
       produces:
       - application/octet-stream
       responses:
@@ -739,6 +751,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -865,6 +881,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:

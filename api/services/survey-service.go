@@ -11,6 +11,8 @@ import (
 	"strconv"
 	"time"
 
+	"github.com/jinzhu/gorm"
+
 	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
@@ -52,11 +54,16 @@ func GetSurvies(c echo.Context) error {
 // @Param surveyCode path string true "survey Code"
 // @Success 200 {object} entities.Survey
 // @Failure 500 {object} dto.Error
+// @Failure 404 {object} dto.Error
 // @Router /survey/:surveyCode [Get]
 func GetSurvey(c echo.Context) error {
 
 	surveyCode := c.Param("surveyCode")
 	survey, err := SurveyRepo.GetSurvey(surveyCode)
+
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETSURVEY)
+	}
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETSURVEY)
@@ -371,6 +378,7 @@ func CreateSurveyAutomatically() {
 // @Produce octet-stream
 // @Param startDate query string false "start date"
 // @Param endDate query string false "end date"
+// @Param teamName query string false "team name"
 // @Failure 500 {object} dto.Error
 // @Router /survey/exportCsv [get]
 func ExportSurveysCsv(c echo.Context) (err error) {

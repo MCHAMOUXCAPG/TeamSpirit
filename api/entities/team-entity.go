@@ -3,10 +3,10 @@ package entities
 import "time"
 
 type Team struct {
-	Name        string `gorm:"primary_key";"size:255;unique"`
-	Num_mumbers int
-	StartDate   time.Time
-	Frequency   int
+	Name        string `gorm:"primary_key";"size:255;unique;not null;default:null"`
+	Num_mumbers int  `gorm:"not null;default:null"`
+	StartDate   time.Time `gorm:"not null;default:null"`
+	Frequency   int `gorm:"not null;default:null"`
 	Surveys     []Survey `gorm:"foreignkey:TeamName"`
-	Users       []*User  `gorm:"many2many:teams_users;"`
+	Users       []*User  `gorm:"many2many:teams_users;"foreignkey:Id"`
 }

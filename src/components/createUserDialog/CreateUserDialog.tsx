@@ -22,10 +22,16 @@ const CreateUserDialog = ({
   open,
   handleClose,
   teams,
+  setLoading,
+  setMessage,
+  setOpenMessage,
 }: {
   open: boolean;
   handleClose: (bool: boolean) => void;
   teams: ITeamDTO[];
+  setLoading: any;
+  setMessage: any;
+  setOpenMessage: any;
 }) => {
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
@@ -82,7 +88,14 @@ const CreateUserDialog = ({
   };
   const classes = useStyles();
   const handleSubmit = () => {
-    console.log(body);
+    setLoading(true);
+    handleClose(!open);
+    setTimeout(() => {
+      console.log(body);
+      setMessage("User succesfully created");
+      setLoading(false);
+      setOpenMessage(true);
+    }, 1500); // mock the service
   };
   return (
     <Dialog

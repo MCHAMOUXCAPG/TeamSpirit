@@ -5,9 +5,14 @@ import { ManageUserService } from "../../services/Services";
 import NavBar from "../navBar/NavBar";
 import CreateUserDialog from "../createUserDialog/CreateUserDialog";
 import { ITeamDTO } from "../../models/interfaces";
+import colors from "../../config/colors";
 
 import Tabs from "@material-ui/core/Tabs";
 import Tab from "@material-ui/core/Tab";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import CircularProgress from "@material-ui/core/CircularProgress";
 
 const AdministratorPage = () => {
   const [value, setValue] = useState(0);
@@ -15,9 +20,15 @@ const AdministratorPage = () => {
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
-  const [open, setOpen] = useState(false);
+  const [open, setOpen] = useState(false); // handles create user dialog
   const handleClose = (bool: boolean) => {
     setOpen(bool);
+  };
+  const [loading, setLoading] = useState(false); // if some service is awaiting
+  const [message, setMessage] = useState("Mensaje de prueba"); // message when resolve the service
+  const [openMessage, setOpenMessage] = useState(false); // handles the open/close message dialog
+  const handleClickCloseMessage = () => {
+    setOpenMessage(false);
   };
   const [teams, setTeams] = useState<ITeamDTO[]>([
     { Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" },
@@ -63,7 +74,20 @@ const AdministratorPage = () => {
     <div>
       <NavBar user={true}></NavBar>
       <Container maxWidth="lg" id="container-adm" disableGutters={true}>
+        {loading && (
+          <CircularProgress
+            size={24}
+            style={{
+              color: colors.primary,
+              position: "absolute",
+              top: "50%",
+              left: "50%",
+            }}
+          />
+        )}
+
         <Grid
+          style={{ opacity: loading ? 0.5 : 1 }}
           container
           direction="row"
           justify="flex-start"
@@ -102,7 +126,61 @@ const AdministratorPage = () => {
           </Grid>
         </Grid>
       </Container>
-      <CreateUserDialog open={open} handleClose={handleClose} teams={teams} />
+      <CreateUserDialog
+        open={open}
+        handleClose={handleClose}
+        teams={teams}
+        setLoading={setLoading}
+        setMessage={setMessage}
+        setOpenMessage={setOpenMessage}
+      />
+
+      <Dialog
+        open={openMessage}
+        disableBackdropClick={true}
+        disableEscapeKeyDown={true}
+        onClose={handleClickCloseMessage}
+        BackdropProps={{
+          style: { backgroundColor: colors.white, opacity: 0.7 },
+        }}
+        PaperProps={{
+          style: {
+            borderRadius: 20,
+          },
+        }}
+      >
+        <DialogContent
+          style={{
+            color: colors.primary,
+            justifyContent: "center",
+            textAlign: "center",
+            fontWeight: "bold",
+            width: 250,
+            height: 80,
+          }}
+        >
+          <p>{message}</p>
+        </DialogContent>
+        <DialogActions
+          style={{
+            justifyContent: "center",
+            paddingBottom: 30,
+          }}
+        >
+          <Button
+            variant="contained"
+            style={{
+              backgroundColor: colors.primary,
+              color: colors.white,
+              borderRadius: 20,
+              width: 60,
+            }}
+            onClick={handleClickCloseMessage}
+          >
+            OK
+          </Button>
+        </DialogActions>
+      </Dialog>
     </div>
   );
 };

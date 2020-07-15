@@ -62,9 +62,9 @@ export interface ITeamDTO {
   Users?: any;
 }
 export interface IRoleDTO {
-  Id: number;
+  Id?: number;
   Name: string;
-  UserID: number;
+  UserID?: number;
 }
 export interface IUser {
   Id: number;

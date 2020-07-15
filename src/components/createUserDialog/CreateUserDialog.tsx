@@ -40,41 +40,28 @@ const CreateUserDialog = ({
     Roles: [{ Id: 0, Name: "", UserID: 0 }],
     Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
   });
-  const CustomInput = withStyles((theme: Theme) =>
-    createStyles({
-      root: {
-        "label + &": {
-          marginTop: theme.spacing(3),
-        },
-      },
-      input: {
-        width: 350,
-        borderRadius: 25,
-        position: "relative",
-        backgroundColor: theme.palette.background.paper,
-        border: "1px solid #919191",
-        fontSize: 16,
-        padding: "10px 26px 10px 12px",
-        transition: theme.transitions.create(["border-color", "box-shadow"]),
-        // Use the system font instead of the default Roboto font.
-        fontFamily: ["Roboto"].join(","),
-        "&:focus": {
-          borderRadius: 25,
-          borderColor: "#80bdff",
-          boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
-        },
-      },
-    })
-  )(InputBase);
+
   const [role, setRole] = React.useState("");
   const handleChangeRole = (event: React.ChangeEvent<{ value: unknown }>) => {
     setRole(event.target.value as string);
+    const newRole = [{ Name: event.target.value as string }];
+    setBody({ ...body, Roles: newRole });
   };
 
   const [selectedTeams, setSelectedTeams] = React.useState<string[]>([]);
 
-  const handleChange = (event: React.ChangeEvent<{ value: unknown }>) => {
+  const handleChangeTeams = (event: React.ChangeEvent<{ value: unknown }>) => {
     setSelectedTeams(event.target.value as string[]);
+    const teamsNames = event.target.value as string[];
+    const myTeams: ITeamDTO[] = [];
+    teams.slice().forEach((team: ITeamDTO) => {
+      teamsNames.forEach((teamName) => {
+        if (team.Name === teamName) {
+          myTeams.push(team);
+        }
+      });
+    });
+    setBody({ ...body, Teams: myTeams });
   };
   const ITEM_HEIGHT = 48;
   const ITEM_PADDING_TOP = 8;
@@ -180,7 +167,7 @@ const CreateUserDialog = ({
             multiple
             displayEmpty
             value={selectedTeams}
-            onChange={handleChange}
+            onChange={handleChangeTeams}
             input={<CustomInput />}
             renderValue={(selected) => {
               if ((selected as string[]).length === 0) {
@@ -219,6 +206,33 @@ const CreateUserDialog = ({
     </Dialog>
   );
 };
+
+const CustomInput = withStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      "label + &": {
+        marginTop: theme.spacing(3),
+      },
+    },
+    input: {
+      width: 350,
+      borderRadius: 25,
+      position: "relative",
+      backgroundColor: theme.palette.background.paper,
+      border: "1px solid #919191",
+      fontSize: 16,
+      padding: "10px 26px 10px 12px",
+      transition: theme.transitions.create(["border-color", "box-shadow"]),
+      // Use the system font instead of the default Roboto font.
+      fontFamily: ["Roboto"].join(","),
+      "&:focus": {
+        borderRadius: 25,
+        borderColor: "#80bdff",
+        boxShadow: "0 0 0 0.2rem rgba(0,123,255,.25)",
+      },
+    },
+  })
+)(InputBase);
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({

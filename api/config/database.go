@@ -19,5 +19,4 @@ func GetConnection() {
 	DB.Exec("PRAGMA foreign_keys = ON;")
 
 	DB.AutoMigrate(&entities.Survey{}, &entities.Note{}, &entities.User{}, &entities.Role{}, &entities.Team{})
-	DB.LogMode(true)
 }

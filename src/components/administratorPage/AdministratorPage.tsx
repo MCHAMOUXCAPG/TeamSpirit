@@ -130,6 +130,7 @@ const AdministratorPage = () => {
                   Create User
                 </Button>
                 <UsersTable
+                  teams={teams}
                   users={users}
                   setLoadingP={setLoading}
                   setMessage={setMessage}

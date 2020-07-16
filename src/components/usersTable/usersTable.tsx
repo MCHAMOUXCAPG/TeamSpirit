@@ -3,13 +3,16 @@ import MaterialTable from "material-table";
 import { ManageUserService } from "../../services/Services";
 import { IUserTable, IUser, IUserData } from "../../models/interfaces";
 import "./usersTable.css";
+import EditUserDialog from "../editUserDialog/EditUserDialog";
 
 export default function MaterialTableDemo({
+  teams,
   users,
   setLoadingP,
   setMessage,
   setOpenMessage,
 }: {
+  teams: any;
   users: IUser[];
   setLoadingP: any;
   setMessage: any;
@@ -17,6 +20,11 @@ export default function MaterialTableDemo({
 }) {
   const token = sessionStorage.getItem("token");
   const [data, setData] = useState<IUserData[]>([]);
+  const [openEdit, setOpenEdit] = useState(false);
+  const handleClose = (bool: boolean) => {
+    setOpenEdit(bool);
+  };
+  const [currentUser, setCurrentUser] = useState<IUser>();
   // eslint-disable-next-line
   const [state, setState] = useState<IUserTable>({
     columns: [
@@ -99,13 +107,43 @@ export default function MaterialTableDemo({
           {
             icon: "edit",
             tooltip: "edit user",
-            onClick: (event, rowData) => alert("edit"), //Must call edit PopUp here
+            onClick: (event, rowData) => {
+              setOpenEdit(true);
+              let data: IUserData = {
+                Email: "",
+                Full_name: "",
+                Id: 0,
+                Roles: "",
+                Teams: "",
+                Password: "",
+                tableData: { id: 0 },
+              };
+              if (Array.isArray(rowData)) {
+                data = rowData[0];
+              } else {
+                data = rowData;
+              }
+              const index: number | undefined = data.tableData?.id;
+              if (index !== undefined) {
+                setCurrentUser(users[index]);
+                console.log(users[index]);
+              }
+            },
           },
         ]}
         options={{ search: true, actionsColumnIndex: -1 }}
         editable={{
           onRowDelete: (oldData) => delUser(token, oldData.Id.toString()),
         }}
+      />
+      <EditUserDialog
+        currentUser={currentUser}
+        handleClose={handleClose}
+        setLoading={setLoadingP}
+        open={openEdit}
+        teams={teams}
+        setMessage={setMessage}
+        setOpenMessage={setOpenMessage}
       />
     </>
   );

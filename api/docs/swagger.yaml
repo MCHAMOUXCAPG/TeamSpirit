@@ -80,43 +80,10 @@ definitions:
       user:
         type: string
     type: object
-  dto.SurveyDTO:
-    properties:
-      code:
-        type: string
-      endDate:
-        type: string
-      startDate:
-        type: string
-      teamName:
-        type: string
-    type: object
-  dto.TeamDTO:
-    properties:
-      frequency:
-        type: integer
-      name:
-        type: string
-      num_mumbers:
-        type: integer
-      startDate:
-        type: string
-    type: object
-  dto.UserDTO:
-    properties:
-      email:
-        type: string
-      full_name:
-        type: string
-      password:
-        type: string
-    type: object
   entities.Note:
     properties:
       Number:
         type: integer
-      SurveyCode:
-        type: string
       User:
         type: string
       note:
@@ -128,8 +95,6 @@ definitions:
         type: integer
       name:
         type: string
-      userID:
-        type: integer
     type: object
   entities.Survey:
     properties:
@@ -142,8 +107,6 @@ definitions:
           $ref: '#/definitions/entities.Note'
         type: array
       startDate:
-        type: string
-      teamName:
         type: string
     type: object
   entities.Team:
@@ -175,10 +138,9 @@ definitions:
         type: integer
       password:
         type: string
-      roles:
-        items:
-          $ref: '#/definitions/entities.Role'
-        type: array
+      role:
+        $ref: '#/definitions/entities.Role'
+        type: object
       teams:
         items:
           $ref: '#/definitions/entities.Team'
@@ -563,7 +525,7 @@ paths:
         name: SurveyDTO
         required: true
         schema:
-          $ref: '#/definitions/dto.SurveyDTO'
+          $ref: '#/definitions/entities.Survey'
       produces:
       - application/json
       responses:
@@ -622,7 +584,7 @@ paths:
         name: SurveyDTO
         required: true
         schema:
-          $ref: '#/definitions/dto.SurveyDTO'
+          $ref: '#/definitions/entities.Survey'
       produces:
       - application/json
       responses:
@@ -777,7 +739,7 @@ paths:
         name: TeamDTO
         required: true
         schema:
-          $ref: '#/definitions/dto.TeamDTO'
+          $ref: '#/definitions/entities.Team'
       produces:
       - application/json
       responses:
@@ -803,7 +765,7 @@ paths:
         name: TeamDTO
         required: true
         schema:
-          $ref: '#/definitions/dto.TeamDTO'
+          $ref: '#/definitions/entities.Team'
       produces:
       - application/json
       responses:
@@ -907,7 +869,7 @@ paths:
         name: UserDTO
         required: true
         schema:
-          $ref: '#/definitions/dto.UserDTO'
+          $ref: '#/definitions/entities.User'
       produces:
       - application/json
       responses:
@@ -933,7 +895,7 @@ paths:
         name: UserDTO
         required: true
         schema:
-          $ref: '#/definitions/dto.UserDTO'
+          $ref: '#/definitions/entities.User'
       produces:
       - application/json
       responses:

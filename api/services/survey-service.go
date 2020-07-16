@@ -77,7 +77,7 @@ func GetSurvey(c echo.Context) error {
 // @Tags Survies
 // @Accept json
 // @Produce json
-// @Param SurveyDTO body dto.SurveyDTO true "SurveyDTO"
+// @Param SurveyDTO body entities.Survey true "SurveyDTO"
 // @Success 200 {object} entities.Survey
 // @Failure 500 {object} dto.Error
 // @Router /survey/create [post]
@@ -101,7 +101,7 @@ func CreateSurvey(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param surveyCode path string true "survey Code"
-// @Param SurveyDTO body dto.SurveyDTO true "SurveyDTO"
+// @Param SurveyDTO body entities.Survey true "SurveyDTO"
 // @Success 200 {object} entities.Survey
 // @Failure 500 {object} dto.Error
 // @Router /survey/:surveyCode [put]

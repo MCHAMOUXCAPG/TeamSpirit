@@ -4,6 +4,7 @@ import (
 	"encoding/json"
 	"net/http"
 	"strconv"
+
 	"capgemini.com/gorn/team-spirit/constants"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
@@ -71,7 +72,7 @@ func GetUser(c echo.Context) error {
 // @Tags Users
 // @Accept json
 // @Produce json
-// @Param UserDTO body dto.UserDTO  true "UserDTO"
+// @Param UserDTO body entities.User  true "UserDTO"
 // @Success 200 {object} entities.User
 // @Failure 500 {object} dto.Error
 // @Router /user/create [post]
@@ -99,7 +100,7 @@ func CreateUser(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param id path string true "id"
-// @Param UserDTO body dto.UserDTO true "UserDTO"
+// @Param UserDTO body entities.User true "UserDTO"
 // @Success 200 {object} entities.User
 // @Failure 500 {object} dto.Error
 // @Router /user/:id [put]

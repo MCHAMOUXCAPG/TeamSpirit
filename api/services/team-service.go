@@ -67,7 +67,7 @@ func GetTeam(c echo.Context) error {
 // @Tags Teams
 // @Accept json
 // @Produce json
-// @Param TeamDTO body dto.TeamDTO true "TeamDTO"
+// @Param TeamDTO body entities.Team true "TeamDTO"
 // @Success 200 {object} entities.Team
 // @Failure 500 {object} dto.Error
 // @Router /team/create [post]
@@ -91,7 +91,7 @@ func CreateTeam(c echo.Context) error {
 // @Accept json
 // @Produce json
 // @Param teamName path string true "Team name"
-// @Param TeamDTO body dto.TeamDTO true "TeamDTO"
+// @Param TeamDTO body entities.Team true "TeamDTO"
 // @Success 200 {object} entities.Team
 // @Failure 500 {object} dto.Error
 // @Router /team/:teamName [put]

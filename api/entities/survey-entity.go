@@ -11,8 +11,8 @@ type Survey struct {
 }
 
 type Note struct {
-	User       string  `gorm:"not null;default:null" json:"User,omitempty"`
-	Number     int     `gorm:"not null;default:null" json:"Number,omitempty"`
-	Note       float64 `gorm:"not null;default:null"`
-	SurveyCode string  `sql:"type:varchar REFERENCES surveys(code) on update cascade on delete cascade" json:"-"`
+	User       string `gorm:"not null;default:null" json:"User,omitempty"`
+	Number     int    `gorm:"not null;default:null" json:"Number,omitempty"`
+	Note       float64
+	SurveyCode string `sql:"type:varchar REFERENCES surveys(code) on update cascade on delete cascade" json:"-"`
 }

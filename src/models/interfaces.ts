@@ -96,4 +96,5 @@ export interface IUserData {
   Password?: string;
   Roles: string;
   Teams: string;
+  tableData?: { id: number };
 }

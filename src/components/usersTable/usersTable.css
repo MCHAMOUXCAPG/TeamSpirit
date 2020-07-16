@@ -10,3 +10,20 @@
 #table-container .MuiToolbar-regular {
   min-height: 75px !important;
 }
+
+.MuiToolbar-root .MuiFormControl-root {
+  position: absolute;
+  border: 1px solid #79c0c6;
+  border-radius: 25px;
+}
+
+.MuiToolbar-root .MuiInputBase-root span {
+  color: #79c0c6 !important;
+}
+.MuiInput-underline:before {
+  border-bottom: none !important;
+}
+
+.MuiInput-underline:after {
+  border-bottom: none !important;
+}

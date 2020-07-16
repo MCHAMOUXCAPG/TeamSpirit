@@ -124,7 +124,7 @@ const AdministratorPage = () => {
                     position: "relative",
                     top: 50,
                     zIndex: 20,
-                    left: 20,
+                    left: "90%",
                   }}
                 >
                   Create User

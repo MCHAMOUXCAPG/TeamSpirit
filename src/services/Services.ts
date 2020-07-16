@@ -161,4 +161,16 @@ export class ManageUserService {
       },
     });
   }
+  public updateUser(
+    body: IUserDTO,
+    id: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/user/" + id;
+    return environment.put(endPoint, body, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
 }

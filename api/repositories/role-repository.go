@@ -3,6 +3,7 @@ package repositories
 import (
 	"capgemini.com/gorn/team-spirit/config"
 	"capgemini.com/gorn/team-spirit/entities"
+	"github.com/jinzhu/gorm"
 )
 
 type RoleRepository interface {
@@ -53,7 +54,25 @@ func (*RoleRepo) UpdateRole(roleID int, role *entities.Role) (*entities.Role, er
 func (*RoleRepo) DeleteRole(roleID int) (*entities.Role, error) {
 
 	var role = &entities.Role{}
-	result := config.DB.Where("id = ? ", roleID).Delete(&role)
+	err := deleteRoleTransaction(config.DB, roleID)
 
-	return role, result.Error
+	if err != nil {
+		return nil, err
+	}
+
+	return role, nil
+}
+
+func deleteRoleTransaction(db *gorm.DB, roleID int) error {
+	var role = &entities.Role{}
+	return db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("id = ? ", roleID).Delete(&role).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Table("users").Where("role_id = ?", roleID).Update("role_id", 0).Error; err != nil {
+			return err
+		}
+		return nil
+	})
 }

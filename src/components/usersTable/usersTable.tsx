@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from "react";
 import MaterialTable from "material-table";
 import { ManageUserService } from "../../services/Services";
-import { IUserTable, IUser } from "../../models/interfaces";
+import { IUserTable, IUser, IUserData } from "../../models/interfaces";
 import "./usersTable.css";
 
 export default function MaterialTableDemo({
@@ -16,7 +16,7 @@ export default function MaterialTableDemo({
   setOpenMessage: any;
 }) {
   const token = sessionStorage.getItem("token");
-  const [data, setData] = useState<IUser[]>([]);
+  const [data, setData] = useState<IUserData[]>([]);
   // eslint-disable-next-line
   const [state, setState] = useState<IUserTable>({
     columns: [
@@ -24,13 +24,11 @@ export default function MaterialTableDemo({
       { title: "EMAIL", field: "Email" },
       {
         title: "ROLE",
-        field: "Roles.Name",
-        lookup: { 1: "User", 2: "Team Leader", 3: "Administrator" },
+        field: "Roles",
       },
       {
         title: "TEAMS",
         field: "Teams",
-        lookup: { 1: "GORN", 2: "PINPLANE" },
       },
     ],
   });
@@ -53,7 +51,37 @@ export default function MaterialTableDemo({
   }
 
   useEffect(() => {
-    setData(users);
+    const transformedUsers: IUserData[] = [];
+    // tranform the data to display properly in the table
+    users.forEach((user) => {
+      const newUserData: IUserData = {
+        Email: "",
+        Full_name: "",
+        Id: 0,
+        Roles: "",
+        Teams: "",
+        Password: "",
+      };
+      newUserData.Id = user.Id;
+      newUserData.Email = user.Email;
+      newUserData.Full_name = user.Full_name;
+      newUserData.Password = user.Password;
+      newUserData.Roles = user.Roles[0].Name;
+      let teamsString = "";
+      if (user.Teams.length === 0) {
+        teamsString = "No Team";
+      }
+      user.Teams.forEach((team, index) => {
+        if (index === user.Teams.length - 1) {
+          teamsString += team.Name;
+        } else {
+          teamsString += team.Name + ", ";
+        }
+      });
+      newUserData.Teams = teamsString;
+      transformedUsers.push(newUserData);
+    });
+    setData(transformedUsers);
   }, [users]);
 
   return (

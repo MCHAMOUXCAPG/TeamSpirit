@@ -86,5 +86,14 @@ export interface IUserDTO {
 }
 
 export interface IUserTable {
-  columns: Array<Column<IUser>>;
+  columns: Array<Column<IUserData>>;
+}
+
+export interface IUserData {
+  Id: number;
+  Full_name: string;
+  Email: string;
+  Password?: string;
+  Roles: string;
+  Teams: string;
 }

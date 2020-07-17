@@ -62,7 +62,7 @@ func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 	result := config.DB.Where("name = ? ", teamName).Delete(&team)
 
 	if result.Error == nil {
-		result = config.DB.Table("teams_users").Where("team_name = ?", teamName).Delete(&teamUser)
+		result = config.DB.Table("team_users").Where("team_name = ?", teamName).Delete(&teamUser)
 	}
 
 	return team, result.Error

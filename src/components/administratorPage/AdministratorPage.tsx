@@ -4,7 +4,7 @@ import { Button, Container, Grid } from "@material-ui/core";
 import { ManageUserService } from "../../services/Services";
 import NavBar from "../navBar/NavBar";
 import CreateUserDialog from "../createUserDialog/CreateUserDialog";
-import { ITeamDTO, IUser } from "../../models/interfaces";
+import { ITeamDTO, IUser, IRole } from "../../models/interfaces";
 import colors from "../../config/colors";
 
 import Tabs from "@material-ui/core/Tabs";
@@ -17,7 +17,10 @@ import UsersTable from "../usersTable/usersTable";
 
 const AdministratorPage = () => {
   const [value, setValue] = useState(0);
-
+  const roles: IRole[] = [
+    { Id: 0, Name: "Admin" },
+    { Id: 1, Name: "TeamLeader" },
+  ];
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -147,6 +150,7 @@ const AdministratorPage = () => {
         open={open}
         handleClose={handleClose}
         teams={teams}
+        roles={roles}
         setLoading={setLoading}
         setMessage={setMessage}
         setOpenMessage={setOpenMessage}

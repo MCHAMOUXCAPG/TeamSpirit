@@ -73,7 +73,7 @@ export interface IUser {
   Full_name: string;
   Email: string;
   Password: string;
-  Roles: IRoleDTO[];
+  Role: IRole;
   Teams: ITeamDTO[];
 }
 
@@ -81,7 +81,7 @@ export interface IUserDTO {
   Full_name: string;
   Email: string;
   Password: string;
-  Roles: IRoleDTO[];
+  Role: IRole;
   Teams: ITeamDTO[];
 }
 
@@ -94,7 +94,7 @@ export interface IUserData {
   Full_name: string;
   Email: string;
   Password?: string;
-  Roles: string;
+  Role: string;
   Teams: string;
   tableData?: { id: number };
 }

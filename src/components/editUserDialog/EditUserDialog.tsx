@@ -41,7 +41,7 @@ const EditUserDialog = ({
     Full_name: "",
     Email: "",
     Password: "",
-    Roles: [{ Id: 0, Name: "", UserID: 0 }],
+    Role: { Id: 0, Name: "" },
     Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
   });
   const manageService: ManageUserService = new ManageUserService();
@@ -54,7 +54,7 @@ const EditUserDialog = ({
           Full_name: "",
           Email: "",
           Password: "",
-          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
         setSelectedTeams([]);
@@ -68,7 +68,7 @@ const EditUserDialog = ({
           Full_name: "",
           Email: "",
           Password: "",
-          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
         setSelectedTeams([]);
@@ -82,8 +82,8 @@ const EditUserDialog = ({
   const [role, setRole] = React.useState("");
   const handleChangeRole = (event: React.ChangeEvent<{ value: unknown }>) => {
     setRole(event.target.value as string);
-    const newRole = [{ Name: event.target.value as string }];
-    setBody({ ...body, Roles: newRole });
+    const newRole = { Name: event.target.value as string, Id: 0 };
+    setBody({ ...body, Role: newRole });
   };
 
   const [selectedTeams, setSelectedTeams] = React.useState<string[]>([]);
@@ -132,7 +132,7 @@ const EditUserDialog = ({
           Full_name: "",
           Email: "",
           Password: "",
-          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
       }}

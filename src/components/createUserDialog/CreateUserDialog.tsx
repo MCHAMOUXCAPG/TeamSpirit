@@ -33,7 +33,7 @@ const CreateUserDialog = ({
     Full_name: "",
     Email: "",
     Password: "",
-    Roles: [{ Id: 0, Name: "", UserID: 0 }],
+    Role: { Id: 0, Name: "" },
     Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
   });
   const manageService: ManageUserService = new ManageUserService();
@@ -46,7 +46,7 @@ const CreateUserDialog = ({
           Full_name: "",
           Email: "",
           Password: "",
-          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
         setMessage("User succesfully created");
@@ -58,7 +58,7 @@ const CreateUserDialog = ({
           Full_name: "",
           Email: "",
           Password: "",
-          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
         setMessage("Something went wrong. Try again later.");
@@ -67,15 +67,11 @@ const CreateUserDialog = ({
       });
   }
 
-  const handleChangeRole = (roles: IRole[]) => {
-    const newRole = [{ Name: roles[0].Name }];
-    setBody({ ...body, Roles: newRole });
-  };
-
   const classes = useStyles();
   const handleSubmit = () => {
     setLoading(true);
     handleClose(!open);
+    console.log(body);
     createUser(body, token);
   };
   return (
@@ -87,7 +83,7 @@ const CreateUserDialog = ({
           Full_name: "",
           Email: "",
           Password: "",
-          Roles: [{ Id: 0, Name: "", UserID: 0 }],
+          Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
       }}
@@ -147,7 +143,7 @@ const CreateUserDialog = ({
           dropdownPosition="top"
           options={roles}
           onChange={(values) => {
-            handleChangeRole(values);
+            setBody({ ...body, Role: values[0] });
           }}
           labelField="Name"
           valueField="Name"

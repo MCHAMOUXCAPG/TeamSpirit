@@ -67,6 +67,24 @@ const CreateUserDialog = ({
       });
   }
 
+  const handleChangeTeams = (teams: ITeamDTO[]) => {
+    let newTeams: ITeamDTO[] = [];
+    teams.forEach((team: ITeamDTO) => {
+      let newTeam: ITeamDTO = {
+        Frequency: 0,
+        Name: "",
+        Num_mumbers: 0,
+        StartDate: "",
+      };
+      newTeam.Frequency = team.Frequency;
+      newTeam.Name = team.Name;
+      newTeam.Num_mumbers = team.Num_mumbers;
+      newTeam.StartDate = team.StartDate;
+      newTeams.push(newTeam);
+    });
+    setBody({ ...body, Teams: newTeams });
+  };
+
   const classes = useStyles();
   const handleSubmit = () => {
     setLoading(true);
@@ -158,7 +176,7 @@ const CreateUserDialog = ({
           dropdownPosition="top"
           options={teams}
           onChange={(values) => {
-            setBody({ ...body, Teams: values });
+            handleChangeTeams(values);
           }}
           labelField="Name"
           valueField="Name"

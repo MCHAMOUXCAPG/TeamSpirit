@@ -98,3 +98,8 @@ export interface IUserData {
   Teams: string;
   tableData?: { id: number };
 }
+
+export interface IRole {
+  Id: number;
+  Name: string;
+}

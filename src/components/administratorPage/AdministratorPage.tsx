@@ -110,8 +110,8 @@ const AdministratorPage = () => {
               aria-label="simple tabs example"
             >
               <Tab label="Users" {...a11yProps(0)} id="user-tab" />
-              <Tab label="Teams" {...a11yProps(1)} id="question-tab" />
-              <Tab label="Surveys" {...a11yProps(2)} id="question-tab" />
+              {/* <Tab label="Teams" {...a11yProps(1)} id="question-tab" />
+              <Tab label="Surveys" {...a11yProps(2)} id="question-tab" /> */}
             </Tabs>
           </Grid>
           <Grid item xs={12} id="table-container">

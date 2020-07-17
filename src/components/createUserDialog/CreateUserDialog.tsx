@@ -102,7 +102,7 @@ const CreateUserDialog = ({
         <TextField
           required
           placeholder="Name"
-          id="input-num-1"
+          id="input-num-4"
           fullWidth
           variant="outlined"
           className={classes.root}
@@ -116,7 +116,7 @@ const CreateUserDialog = ({
           type="Email"
           required
           placeholder="Email"
-          id="input-num-1"
+          id="input-num-2"
           fullWidth
           variant="outlined"
           className={classes.root}
@@ -130,7 +130,7 @@ const CreateUserDialog = ({
           type="Password"
           required
           placeholder="Password"
-          id="input-num-1"
+          id="input-num-3"
           fullWidth
           variant="outlined"
           className={classes.root}

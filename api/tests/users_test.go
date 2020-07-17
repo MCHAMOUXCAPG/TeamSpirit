@@ -23,8 +23,8 @@ var (
 func TestGetUsers(t *testing.T) {
 
 	// Post 2 users in the mock database
-	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com"})
-	user2, _ := UserRepo.CreateUser(&entities.User{Full_name: "User2", Email: "user2@gmail.com"})
+	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com", Password: "pwd1"})
+	user2, _ := UserRepo.CreateUser(&entities.User{Full_name: "User2", Email: "user2@gmail.com", Password: "pwd2"})
 	assert.Equal(t, user1.Full_name, "User1")
 	assert.Equal(t, user2.Full_name, "User2")
 
@@ -50,7 +50,7 @@ func TestGetUsers(t *testing.T) {
 func TestGetUser(t *testing.T) {
 
 	// Post a user in the mock database
-	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com"})
+	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com", Password: "pwd1"})
 	assert.Equal(t, user1.Full_name, "User1")
 	// Create a new Request
 	e := echo.New()
@@ -77,7 +77,7 @@ func TestCreateUser(t *testing.T) {
 
 	// Create a new Request
 	var user entities.User
-	userJSON := `{"Full_name":"User1", "Email": "user1@gmail.com"}`
+	userJSON := `{"Full_name":"User1", "Email": "user1@gmail.com", "Password": "pwd1"}`
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/user/create", strings.NewReader(userJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -97,12 +97,12 @@ func TestCreateUser(t *testing.T) {
 func TestUpdateUser(t *testing.T) {
 
 	// Post a new user
-	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com"})
+	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com", Password: "pwd1"})
 	assert.Equal(t, user1.Full_name, "User1")
 
 	// Create a new Request
 	var user entities.User
-	userJSON := `{"Full_name":"User2", "Email": "user1@gmail.com"}`
+	userJSON := `{"Full_name":"User2", "Email": "user1@gmail.com", "Password": "pwd2"}`
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPut, "/", strings.NewReader(userJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -125,7 +125,7 @@ func TestUpdateUser(t *testing.T) {
 func TestDeleteUser(t *testing.T) {
 
 	// Post a new user
-	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com"})
+	user1, _ := UserRepo.CreateUser(&entities.User{Full_name: "User1", Email: "user1@gmail.com", Password: "pwd1"})
 	assert.Equal(t, user1.Full_name, "User1")
 
 	// Create a new Request

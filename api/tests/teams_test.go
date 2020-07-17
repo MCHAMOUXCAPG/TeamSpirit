@@ -78,7 +78,7 @@ func TestCreateTeam(t *testing.T) {
 
 	// Create a new Request
 	var team entities.Team
-	teamJSON := `{"Name": "team1"}`
+	teamJSON := `{"Name": "team1", "StartDate": "2020-07-16T00:00:00Z", "Num_mumbers": 5, "Frequency": 7}`
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/team/create", strings.NewReader(teamJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
@@ -103,7 +103,7 @@ func TestUpdateTeam(t *testing.T) {
 
 	// Create a new Request
 	var team entities.Team
-	teamJSON := `{"Name": "team1"}`
+	teamJSON := `{"Name": "team1", "StartDate": "2020-07-16T00:00:00Z", "Num_mumbers": 5, "Frequency": 7}`
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPut, "/", strings.NewReader(teamJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)

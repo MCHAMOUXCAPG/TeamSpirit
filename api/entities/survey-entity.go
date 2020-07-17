@@ -7,12 +7,12 @@ type Survey struct {
 	StartDate time.Time `gorm:"not null;default:null"`
 	EndDate   time.Time `gorm:"not null;default:null"`
 	Notes     []Note    `gorm:"foreignkey:SurveyCode"`
-	TeamName  string    `sql:"type:carchar REFERENCES teams(name) on update cascade on delete cascade" json:"-"`
+	TeamName  string    `sql:"type:varchar REFERENCES teams(name) on update cascade on delete cascade" json:"TeamName,omitempty"`
 }
 
 type Note struct {
 	User       string `gorm:"not null;default:null" json:"User,omitempty"`
 	Number     int    `gorm:"not null;default:null" json:"Number,omitempty"`
 	Note       float64
-	SurveyCode string `sql:"type:varchar REFERENCES surveys(code) on update cascade on delete cascade" json:"-"`
+	SurveyCode string `sql:"type:varchar REFERENCES surveys(code) on update cascade on delete cascade" json:"SurveyCode,omitempty"`
 }

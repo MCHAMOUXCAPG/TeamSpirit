@@ -17,10 +17,7 @@ import UsersTable from "../usersTable/usersTable";
 
 const AdministratorPage = () => {
   const [value, setValue] = useState(0);
-  const roles: IRole[] = [
-    { Id: 0, Name: "Admin" },
-    { Id: 1, Name: "TeamLeader" },
-  ];
+  const [roles, setRoles] = useState<IRole[]>([{ Id: 0, Name: "" }]);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -51,7 +48,6 @@ const AdministratorPage = () => {
     await usersList
       .getUsers(token)
       .then((res: any) => {
-        console.log(res.data);
         setUsers(res.data);
       })
       .catch((err) => {
@@ -62,8 +58,18 @@ const AdministratorPage = () => {
     await usersList
       .getTeams(token)
       .then((res: any) => {
-        console.log(res.data);
         setTeams(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  async function getAllRoles(token: string | null) {
+    await usersList
+      .getRoles(token)
+      .then((res: any) => {
+        setRoles(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -73,6 +79,7 @@ const AdministratorPage = () => {
   useEffect(() => {
     getAllUsers(token);
     getAllTeams(token);
+    getAllRoles(token);
     // eslint-disable-next-line
   }, [openMessage]);
 

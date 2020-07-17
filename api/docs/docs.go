@@ -554,7 +554,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.SurveyDTO"
+                            "$ref": "#/definitions/entities.Survey"
                         }
                     }
                 ],
@@ -680,7 +680,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.SurveyDTO"
+                            "$ref": "#/definitions/entities.Survey"
                         }
                     }
                 ],
@@ -879,7 +879,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.TeamDTO"
+                            "$ref": "#/definitions/entities.Team"
                         }
                     }
                 ],
@@ -955,7 +955,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.TeamDTO"
+                            "$ref": "#/definitions/entities.Team"
                         }
                     }
                 ],
@@ -1076,7 +1076,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserDTO"
+                            "$ref": "#/definitions/entities.User"
                         }
                     }
                 ],
@@ -1152,7 +1152,7 @@ var doc = `{
                         "in": "body",
                         "required": true,
                         "schema": {
-                            "$ref": "#/definitions/dto.UserDTO"
+                            "$ref": "#/definitions/entities.User"
                         }
                     }
                 ],
@@ -1330,62 +1330,11 @@ var doc = `{
                 }
             }
         },
-        "dto.SurveyDTO": {
-            "type": "object",
-            "properties": {
-                "code": {
-                    "type": "string"
-                },
-                "endDate": {
-                    "type": "string"
-                },
-                "startDate": {
-                    "type": "string"
-                },
-                "teamName": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.TeamDTO": {
-            "type": "object",
-            "properties": {
-                "frequency": {
-                    "type": "integer"
-                },
-                "name": {
-                    "type": "string"
-                },
-                "num_mumbers": {
-                    "type": "integer"
-                },
-                "startDate": {
-                    "type": "string"
-                }
-            }
-        },
-        "dto.UserDTO": {
-            "type": "object",
-            "properties": {
-                "email": {
-                    "type": "string"
-                },
-                "full_name": {
-                    "type": "string"
-                },
-                "password": {
-                    "type": "string"
-                }
-            }
-        },
         "entities.Note": {
             "type": "object",
             "properties": {
                 "Number": {
                     "type": "integer"
-                },
-                "SurveyCode": {
-                    "type": "string"
                 },
                 "User": {
                     "type": "string"
@@ -1403,9 +1352,6 @@ var doc = `{
                 },
                 "name": {
                     "type": "string"
-                },
-                "userID": {
-                    "type": "integer"
                 }
             }
         },
@@ -1425,9 +1371,6 @@ var doc = `{
                     }
                 },
                 "startDate": {
-                    "type": "string"
-                },
-                "teamName": {
                     "type": "string"
                 }
             }
@@ -1476,11 +1419,9 @@ var doc = `{
                 "password": {
                     "type": "string"
                 },
-                "roles": {
-                    "type": "array",
-                    "items": {
-                        "$ref": "#/definitions/entities.Role"
-                    }
+                "role": {
+                    "type": "object",
+                    "$ref": "#/definitions/entities.Role"
                 },
                 "teams": {
                     "type": "array",

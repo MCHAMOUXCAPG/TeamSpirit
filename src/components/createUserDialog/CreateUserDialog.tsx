@@ -49,7 +49,7 @@ const CreateUserDialog = ({
           Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
-        setMessage("User succesfully created");
+        setMessage("User succesfully created.");
         setLoading(false);
         setOpenMessage(true);
       })

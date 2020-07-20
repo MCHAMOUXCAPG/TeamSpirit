@@ -49,12 +49,13 @@ const EditUserDialog = ({
           Role: { Id: 0, Name: "" },
           Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
         });
-        setMessage("User succesfully created");
+        setMessage("User succesfully updated.");
         setLoading(false);
         setOpenMessage(true);
       })
       .catch((err) => {
         setBody({
+          Id: 0,
           Full_name: "",
           Email: "",
           Password: "",
@@ -82,6 +83,7 @@ const EditUserDialog = ({
       setEmail(currentUser?.Email);
       setRole(currentUser?.Role);
       setTeam(currentUser?.Teams);
+      setBody(currentUser);
     }
     // eslint-disable-next-line
   }, [open]);
@@ -139,6 +141,7 @@ const EditUserDialog = ({
           value={fullName}
           onChange={(name) => {
             setFullName(name.target.value);
+            setBody({ ...body, Full_name: name.target.value });
           }}
         />
         <br />
@@ -154,6 +157,7 @@ const EditUserDialog = ({
           value={email}
           onChange={(email) => {
             setEmail(email.target.value);
+            setBody({ ...body, Email: email.target.value });
           }}
         />
         <br />

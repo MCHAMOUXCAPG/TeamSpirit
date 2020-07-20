@@ -78,6 +78,7 @@ export interface IUser {
 }
 
 export interface IUserDTO {
+  Id?: number;
   Full_name: string;
   Email: string;
   Password: string;

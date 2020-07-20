@@ -102,19 +102,15 @@ func Login(c echo.Context) error {
 
 	var claims = &dto.JwtCustomClaims{}
 
-	json.NewDecoder(c.Request().Body).Decode(&claims)
+	err := json.NewDecoder(c.Request().Body).Decode(&claims)
 
 	user, err := AuthRepo.GetUserByEmail(claims.Email)
 
-	if err != nil {
+	if (err != nil && !gorm.IsRecordNotFoundError(err)) || (claims.Email == "" || claims.Password == "") {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETUSERBYEMAIL_LOGIN)
 	}
 
-	if user.Id == 0 {
-		return echo.NewHTTPError(http.StatusNotFound, constants.EMAILNOTEXISTS_LOGIN)
-	}
-
-	if passwordMatch(user.Password, []byte(claims.Password)) == false {
+	if gorm.IsRecordNotFoundError(err) || !passwordMatch(user.Password, []byte(claims.Password)) {
 		return echo.NewHTTPError(http.StatusNotFound, constants.INVALID_CREDENTIALS_LOGIN)
 	}
 

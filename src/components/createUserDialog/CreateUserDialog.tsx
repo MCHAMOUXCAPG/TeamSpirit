@@ -89,7 +89,6 @@ const CreateUserDialog = ({
   const handleSubmit = () => {
     setLoading(true);
     handleClose(!open);
-    console.log(body);
     createUser(body, token);
   };
   return (

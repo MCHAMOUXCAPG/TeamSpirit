@@ -5,6 +5,7 @@ import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
 import DialogTitle from "@material-ui/core/DialogTitle";
+import FormHelperText from "@material-ui/core/FormHelperText";
 import Button from "@material-ui/core/Button";
 import { IUserDTO, ITeamDTO, IRole } from "../../models/interfaces";
 import "./CreateUserDialog.css";
@@ -34,6 +35,8 @@ const CreateUserDialog = ({
   const [HelperTxt, setHelperTxt] = useState("");
   const [ErrEmail, setErrEmail] = useState(false);
   const [helperTxtEmail, setHelperTxtEmail] = useState("");
+  const [helperTxtRole, setHelperTxtRole] = useState("");
+  const [helperTxtTeam, setHelperTxtTeam] = useState("");
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
     Email: "",
@@ -90,21 +93,54 @@ const CreateUserDialog = ({
     setBody({ ...body, Teams: newTeams });
   };
   function allLetter(inputtxt: string) {
-    var letters = /^[A-Za-z]+$/;
+    var letters = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
     if (inputtxt.match(letters)) {
+      setErr(false);
+      setHelperTxt("");
       return setSubmit(true);
     } else {
       setErr(true);
-      setHelperTxt("Please input alphabet characters only");
+      setHelperTxt("Please input alphabet characters only!");
       return setSubmit(false);
     }
   }
   function validarEmail(valor: string) {
-    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor)) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(valor)) {
+      setErrEmail(false);
+      setHelperTxtEmail("");
       setSubmit(true);
     } else {
       setErrEmail(true);
-      setHelperTxtEmail("You have entered an invalid email address!.");
+      setHelperTxtEmail("Please enter a valid email address!");
+      return setSubmit(false);
+    }
+  }
+  function validateRole(valor: number) {
+    if (valor === 1) {
+      console.log(valor);
+      setHelperTxtRole("");
+      setHelperTxtTeam("");
+      setSubmit(true);
+    } else if (valor === 2) {
+      console.log(valor);
+      setHelperTxtRole("");
+      setSubmit(true);
+    } else {
+      setHelperTxtRole("You must choose a Role for the user!");
+      return setSubmit(false);
+    }
+  }
+  function validateTeams(r: number) {
+    if (r === 1 && body.Teams.length === 0) {
+      // En caso de ser admin
+      setSubmit(true);
+      setHelperTxtTeam("");
+    } else if (r === 2 && body.Teams.length > 0) {
+      // En caso de ser TeamLeader
+      setSubmit(true);
+      setHelperTxtTeam("");
+    } else {
+      setHelperTxtTeam("You must choose a Team for the user!");
       return setSubmit(false);
     }
   }
@@ -112,6 +148,8 @@ const CreateUserDialog = ({
   const handleSubmit = () => {
     allLetter(body.Full_name);
     validarEmail(body.Email);
+    validateRole(body.Role.Id);
+    validateTeams(body.Role.Id);
     if (submit) {
       setLoading(true);
       handleClose(!open);
@@ -199,6 +237,9 @@ const CreateUserDialog = ({
             labelField="Name"
             valueField="Name"
           />
+          <FormHelperText className={classes.error}>
+            {helperTxtRole}
+          </FormHelperText>
           <br />
           <Select
             values={[]}
@@ -214,6 +255,9 @@ const CreateUserDialog = ({
             labelField="Name"
             valueField="Name"
           />
+          <FormHelperText className={classes.error}>
+            {helperTxtTeam}
+          </FormHelperText>
         </DialogContent>
         <DialogActions style={{ marginBottom: 10 }}>
           <Button
@@ -231,6 +275,8 @@ const CreateUserDialog = ({
               setHelperTxt("");
               setErrEmail(false);
               setHelperTxtEmail("");
+              setHelperTxtRole("");
+              setHelperTxtTeam("");
             }}
             size="large"
             color="primary"
@@ -257,6 +303,9 @@ const useStyles = makeStyles((theme: Theme) =>
           borderColor: "#919191",
         },
       },
+    },
+    error: {
+      color: "#FF0000",
     },
   })
 );

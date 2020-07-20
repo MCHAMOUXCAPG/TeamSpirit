@@ -126,7 +126,6 @@ export default function MaterialTableDemo({
               const index: number | undefined = data.tableData?.id;
               if (index !== undefined) {
                 setCurrentUser(users[index]);
-                console.log(users[index]);
               }
             },
           },

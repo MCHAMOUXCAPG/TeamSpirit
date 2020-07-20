@@ -29,6 +29,11 @@ const CreateUserDialog = ({
   setOpenMessage: any;
 }) => {
   const token = sessionStorage.getItem("token");
+  const [submit, setSubmit] = useState(false);
+  const [Err, setErr] = useState(false);
+  const [HelperTxt, setHelperTxt] = useState("");
+  const [ErrEmail, setErrEmail] = useState(false);
+  const [helperTxtEmail, setHelperTxtEmail] = useState("");
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
     Email: "",
@@ -84,20 +89,36 @@ const CreateUserDialog = ({
     });
     setBody({ ...body, Teams: newTeams });
   };
-  function allLetter(inputtxt: any) {
+  function allLetter(inputtxt: string) {
     var letters = /^[A-Za-z]+$/;
-    if (inputtxt.value.match(letters)) {
-      return true;
+    if (inputtxt.match(letters)) {
+      return setSubmit(true);
     } else {
-      alert("Please input alphabet characters only");
-      return false;
+      setErr(true);
+      setHelperTxt("Please input alphabet characters only");
+      return setSubmit(false);
+    }
+  }
+  function validarEmail(valor: string) {
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3,4})+$/.test(valor)) {
+      setSubmit(true);
+    } else {
+      setErrEmail(true);
+      setHelperTxtEmail("You have entered an invalid email address!.");
+      return setSubmit(false);
     }
   }
   const classes = useStyles();
   const handleSubmit = () => {
-    setLoading(true);
-    handleClose(!open);
-    createUser(body, token);
+    allLetter(body.Full_name);
+    validarEmail(body.Email);
+    if (submit) {
+      setLoading(true);
+      handleClose(!open);
+      createUser(body, token);
+    } else {
+      handleClose(open);
+    }
   };
   return (
     <form>
@@ -123,6 +144,8 @@ const CreateUserDialog = ({
         <DialogContent>
           <TextField
             required
+            error={Err}
+            helperText={HelperTxt}
             placeholder="Name"
             id="input-num-4"
             fullWidth
@@ -137,6 +160,8 @@ const CreateUserDialog = ({
           <TextField
             type="email"
             required
+            error={ErrEmail}
+            helperText={helperTxtEmail}
             placeholder="Email"
             id="input-num-2"
             fullWidth
@@ -202,6 +227,10 @@ const CreateUserDialog = ({
           <Button
             onClick={() => {
               handleClose(!open);
+              setErr(false);
+              setHelperTxt("");
+              setErrEmail(false);
+              setHelperTxtEmail("");
             }}
             size="large"
             color="primary"

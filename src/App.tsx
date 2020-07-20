@@ -39,7 +39,6 @@ function App() {
             <Route path="/" element={<HomePage />} />
             <Route path="/login" element={<LoginPage />} />
             <Route path="/success" element={<ExitPage />} />
-            <Route path="/admin" element={<AdministratorPage />} />
             <PrivateRoute
               path="/survey"
               element={<Survey />}
@@ -58,6 +57,11 @@ function App() {
             <PrivateRoute
               path="/noTeam"
               element={<NoTeamPage />}
+              alternativePath="/"
+            />
+            <PrivateRoute
+              path="/admin"
+              element={<AdministratorPage />}
               alternativePath="/"
             />
           </Routes>

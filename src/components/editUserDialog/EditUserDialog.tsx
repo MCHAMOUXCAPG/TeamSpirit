@@ -150,7 +150,7 @@ const EditUserDialog = ({
           type="Email"
           required
           placeholder="Email"
-          id="input-num-1"
+          id="input-num-2"
           fullWidth
           variant="outlined"
           className={classes.root}

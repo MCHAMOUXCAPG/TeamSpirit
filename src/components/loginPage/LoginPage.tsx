@@ -56,17 +56,22 @@ const LoginPage = () => {
           .getUser(res.data.token)
           .then((res2: any) => {
             const teams = res2.data.Teams;
-            if (teams.length === 0) {
-              navigate("/noTeam");
-              //if no team, message requesting team
-            } else if (teams.length === 1) {
-              context.setCurrentTeam(res2.data.Teams[0].Name);
-              navigate("/teamleader");
-              //if one team go to see the results
-            } else {
-              context.setMyTeams(res2.data.Teams);
-              navigate("/myTeams");
-              // if more than 1 teams, go to coose your team
+            const role: number = res2.data.Role.Id;
+            if (role === 1) {
+              navigate("/admin");
+            } else if (role === 2) {
+              if (teams.length === 0) {
+                navigate("/noTeam");
+                //if no team, message requesting team
+              } else if (teams.length === 1) {
+                context.setCurrentTeam(res2.data.Teams[0].Name);
+                navigate("/teamleader");
+                //if one team go to see the results
+              } else {
+                context.setMyTeams(res2.data.Teams);
+                navigate("/myTeams");
+                // if more than 1 teams, go to coose your team
+              }
             }
           })
           .catch((err: any) => {

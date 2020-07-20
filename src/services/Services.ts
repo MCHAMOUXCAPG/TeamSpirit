@@ -4,6 +4,7 @@ import {
   IValidationCode,
   IValidationUser,
   ITeamDTO,
+  IUserDTO,
 } from "../models/interfaces";
 
 export class SurveyService {
@@ -67,7 +68,12 @@ export class SurveyService {
     token: string | null
   ): Promise<any> {
     const endPoint =
-      "/survey/exportCsv?startDate=" + startDate + "&endDate=" + endDate+ "&teamName=" + teamName;
+      "/survey/exportCsv?startDate=" +
+      startDate +
+      "&endDate=" +
+      endDate +
+      "&teamName=" +
+      teamName;
     return environment.get(endPoint, {
       headers: {
         Authorization: "Bearer " + token,
@@ -112,6 +118,65 @@ export class UserValidationService {
   public getUser(token: string | null): Promise<any> {
     const endPoint = "/me";
     return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+}
+
+export class ManageUserService {
+  public deleteUser(token: string | null, userId: string): Promise<any> {
+    const endPoint = "/user/" + userId;
+    return environment.delete(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
+  public getUsers(token: string | null): Promise<any> {
+    const endPoint = "/users";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
+  public getTeams(token: string | null): Promise<any> {
+    const endPoint = "/teams";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
+  public getRoles(token: string | null): Promise<any> {
+    const endPoint = "/roles";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
+  public createUser(body: IUserDTO, token: string | null): Promise<any> {
+    const endPoint = "/user/create";
+    return environment.post(endPoint, body, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+  public updateUser(
+    body: IUserDTO,
+    id: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/user/" + id;
+    return environment.put(endPoint, body, {
       headers: {
         Authorization: "Bearer " + token,
       },

@@ -1,3 +1,5 @@
+import { Column } from "material-table";
+
 export enum questionType {
   slider,
   fiveIcons,
@@ -58,42 +60,47 @@ export interface ITeamDTO {
   Name: string; //TeamName
   Num_mumbers: number;
   StartDate: string; // format "2number2number-number1-31"
+  Surveys?: any;
+  Users?: any;
 }
-export interface IOneTeamDTO {
-  Frequency: number;
+export interface IRoleDTO {
+  Id?: number;
   Name: string;
-  Num_mumbers: number;
-  StartDate: string;
-  surveys: [
-    {
-      code: string;
-      endDate: string;
-      notes: [
-        {
-          Number: number;
-          SurveyCode: string;
-          User: string;
-          note: number;
-        }
-      ];
-      startDate: string;
-      teamName: string;
-    }
-  ];
-  users: [
-    {
-      email: string;
-      full_name: string;
-      id: number;
-      password: string;
-      roles: [
-        {
-          id: number;
-          name: string;
-          userID: number;
-        }
-      ];
-      teams: [];
-    }
-  ];
+  UserID?: number;
+}
+export interface IUser {
+  Id: number;
+  Full_name: string;
+  Email: string;
+  Password: string;
+  Role: IRole;
+  Teams: ITeamDTO[];
+}
+
+export interface IUserDTO {
+  Id?: number;
+  Full_name: string;
+  Email: string;
+  Password: string;
+  Role: IRole;
+  Teams: ITeamDTO[];
+}
+
+export interface IUserTable {
+  columns: Array<Column<IUserData>>;
+}
+
+export interface IUserData {
+  Id: number;
+  Full_name: string;
+  Email: string;
+  Password?: string;
+  Role: string;
+  Teams: string;
+  tableData?: { id: number };
+}
+
+export interface IRole {
+  Id: number;
+  Name: string;
 }

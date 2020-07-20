@@ -56,15 +56,13 @@ func (*UserRepo) UpdateUser(userID int, user *entities.User) (*entities.User, er
 func (*UserRepo) DeleteUser(userID int) (*entities.User, error) {
 
 	var user = &entities.User{}
-	var teamUser []dto.TeamUser
+	err := deleteUserTransaction(config.DB, userID)
 
-	result := config.DB.Where("id = ? ", userID).Delete(&user)
-
-	if result.Error == nil {
-		config.DB.Table("team_users").Where("user_id = ?", userID).Delete(&teamUser)
+	if err != nil {
+		return nil, err
 	}
 
-	return user, result.Error
+	return user, nil
 }
 
 func updateUserTransaction(db *gorm.DB, userID int, user *entities.User) error {
@@ -89,6 +87,22 @@ func updateUserTransaction(db *gorm.DB, userID int, user *entities.User) error {
 			if err := tx.Exec("INSERT INTO team_users (user_id, team_name) VALUES (?, ?)", userID, team.Name).Error; err != nil {
 				return err
 			}
+		}
+		return nil
+	})
+}
+
+func deleteUserTransaction(db *gorm.DB, userID int) error {
+	var user = &entities.User{}
+	var teamUser []dto.TeamUser
+
+	return db.Transaction(func(tx *gorm.DB) error {
+		if err := tx.Where("id = ? ", userID).Delete(&user).Error; err != nil {
+			return err
+		}
+
+		if err := tx.Table("team_users").Where("user_id = ?", userID).Delete(&teamUser).Error; err != nil {
+			return err
 		}
 		return nil
 	})

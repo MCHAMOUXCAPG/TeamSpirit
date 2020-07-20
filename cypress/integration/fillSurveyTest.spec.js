@@ -1,18 +1,16 @@
 describe("Fill Survey Test", () => {
   it("Enter with invalid code", () => {
     cy.visit("/");
-    cy.get("#outlined-required").type("PRUEBA-mkdnr");
+    cy.get("#outlined-required").type("GORN-AAAA");
     cy.get("#ButtonStart").click();
     cy.get(".MuiFormHelperText-root.Mui-error").should(($error) => {
-      expect($error).to.contain(
-        "Some error happened when calling the method SurveyRepo.GetSurvey"
-      );
+      expect($error).to.contain("Invalid code");
     });
   });
 
   it("Enter with out of date code", () => {
     cy.visit("/");
-    cy.get("#outlined-required").type("FINEOS-abcd");
+    cy.get("#outlined-required").type("PRUEBA-ABCDE");
     cy.get("#ButtonStart").click();
     cy.get(".MuiFormHelperText-root.Mui-error").should(($error) => {
       expect($error).to.contain(
@@ -23,7 +21,7 @@ describe("Fill Survey Test", () => {
 
   it("Enter with all participants survey filled code", () => {
     cy.visit("/");
-    cy.get("#outlined-required").type("SNCF-klmnp");
+    cy.get("#outlined-required").type("SNCF-ABCDE");
     cy.get("#ButtonStart").click();
     cy.get(".MuiFormHelperText-root.Mui-error").should(($error) => {
       expect($error).to.contain("The maximum number of notes has been reached");
@@ -32,7 +30,7 @@ describe("Fill Survey Test", () => {
 
   it("Enter with valid code", () => {
     cy.visit("/");
-    cy.get("#outlined-required").type("PRUEBA-ABCDE");
+    cy.get("#outlined-required").type("GORN-ABCDE");
     cy.get("#ButtonStart").click();
     cy.url().should("include", "/survey");
     cy.get("#pop-up-dialog").should(($dialog) => {
@@ -42,7 +40,7 @@ describe("Fill Survey Test", () => {
 
     cy.get("#root > div > div > div").should(($items) => {
       expect($items).to.have.length(8);
-      expect($items.eq(0)).to.contain("PRUEBA");
+      expect($items.eq(0)).to.contain("GORN");
       expect($items.eq(1)).to.contain("1");
       expect($items.eq(2)).to.contain("2");
       expect($items.eq(3)).to.contain("3");

@@ -6,12 +6,14 @@ import "./usersTable.css";
 import EditUserDialog from "../editUserDialog/EditUserDialog";
 
 export default function MaterialTableDemo({
+  loadingService,
   teams,
   users,
   setLoadingP,
   setMessage,
   setOpenMessage,
 }: {
+  loadingService: boolean;
   teams: any;
   users: IUser[];
   setLoadingP: any;
@@ -19,7 +21,9 @@ export default function MaterialTableDemo({
   setOpenMessage: any;
 }) {
   const token = sessionStorage.getItem("token");
-  const [data, setData] = useState<IUserData[]>([]);
+  const [data, setData] = useState<IUserData[]>([
+    { Id: 0, Full_name: "", Email: "", Role: "", Teams: "" },
+  ]);
   const [openEdit, setOpenEdit] = useState(false);
   const handleClose = (bool: boolean) => {
     setOpenEdit(bool);
@@ -100,6 +104,7 @@ export default function MaterialTableDemo({
       />
 
       <MaterialTable
+        isLoading={loadingService}
         title=""
         columns={state.columns}
         data={data}

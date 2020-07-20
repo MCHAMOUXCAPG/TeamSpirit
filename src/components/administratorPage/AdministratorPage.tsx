@@ -25,6 +25,7 @@ const AdministratorPage = () => {
   const handleClose = (bool: boolean) => {
     setOpen(bool);
   };
+  const [loadingServiceUsers, setLoadingServiceUsers] = useState(true); // if get all users is loading
   const [loading, setLoading] = useState(false); // if some service is awaiting
   const [message, setMessage] = useState("Mensaje de prueba"); // message when resolve the service
   const [openMessage, setOpenMessage] = useState(false); // handles the open/close message dialog
@@ -49,6 +50,7 @@ const AdministratorPage = () => {
       .getUsers(token)
       .then((res: any) => {
         setUsers(res.data);
+        setLoadingServiceUsers(false);
       })
       .catch((err) => {
         console.log(err);
@@ -140,6 +142,7 @@ const AdministratorPage = () => {
                   Create User
                 </Button>
                 <UsersTable
+                  loadingService={loadingServiceUsers}
                   teams={teams}
                   users={users}
                   setLoadingP={setLoading}

@@ -84,7 +84,15 @@ const CreateUserDialog = ({
     });
     setBody({ ...body, Teams: newTeams });
   };
-
+  function allLetter(inputtxt: any) {
+    var letters = /^[A-Za-z]+$/;
+    if (inputtxt.value.match(letters)) {
+      return true;
+    } else {
+      alert("Please input alphabet characters only");
+      return false;
+    }
+  }
   const classes = useStyles();
   const handleSubmit = () => {
     setLoading(true);
@@ -92,110 +100,117 @@ const CreateUserDialog = ({
     createUser(body, token);
   };
   return (
-    <Dialog
-      open={open}
-      onClose={() => {
-        handleClose(!open);
-        setBody({
-          Full_name: "",
-          Email: "",
-          Password: "",
-          Role: { Id: 0, Name: "" },
-          Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
-        });
-      }}
-      aria-labelledby="form-dialog-title"
-      disableBackdropClick={true}
-      disableEscapeKeyDown={true}
-    >
-      <DialogTitle id="dialog-title">
-        Fill this form to create a User
-      </DialogTitle>
-      <DialogContent>
-        <TextField
-          required
-          placeholder="Name"
-          id="input-num-4"
-          fullWidth
-          variant="outlined"
-          className={classes.root}
-          onChange={(freq) => {
-            setBody({ ...body, Full_name: freq.target.value });
-          }}
-        />
-        <br />
-        <br />
-        <TextField
-          type="Email"
-          required
-          placeholder="Email"
-          id="input-num-2"
-          fullWidth
-          variant="outlined"
-          className={classes.root}
-          onChange={(freq) => {
-            setBody({ ...body, Email: freq.target.value });
-          }}
-        />
-        <br />
-        <br />
-        <TextField
-          type="Password"
-          required
-          placeholder="Password"
-          id="input-num-3"
-          fullWidth
-          variant="outlined"
-          className={classes.root}
-          onChange={(freq) => {
-            setBody({ ...body, Password: freq.target.value });
-          }}
-        />
-        <br />
-        <br />
-        <Select
-          values={[]}
-          placeholder="Choose a user Role"
-          dropdownHeight="200px"
-          dropdownPosition="top"
-          options={roles}
-          onChange={(values) => {
-            setBody({ ...body, Role: values[0] });
-          }}
-          labelField="Name"
-          valueField="Name"
-        />
-        <br />
-        <Select
-          values={[]}
-          multi
-          keepSelectedInList={false}
-          placeholder="Choose one or more Teams"
-          dropdownHeight="200px"
-          dropdownPosition="top"
-          options={teams}
-          onChange={(values) => {
-            handleChangeTeams(values);
-          }}
-          labelField="Name"
-          valueField="Name"
-        />
-      </DialogContent>
-      <DialogActions style={{ marginBottom: 10 }}>
-        <Button onClick={handleSubmit} color="primary" size="large">
-          Save
-        </Button>
-        <Button
-          onClick={() => {
-            handleClose(!open);
-          }}
-          size="large"
-          color="primary"
-        >
-          Cancel
-        </Button>
-      </DialogActions>
-    </Dialog>
+    <form>
+      <Dialog
+        open={open}
+        onClose={() => {
+          handleClose(!open);
+          setBody({
+            Full_name: "",
+            Email: "",
+            Password: "",
+            Role: { Id: 0, Name: "" },
+            Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
+          });
+        }}
+        aria-labelledby="form-dialog-title"
+        disableBackdropClick={true}
+        disableEscapeKeyDown={true}
+      >
+        <DialogTitle id="dialog-title">
+          Fill this form to create a User
+        </DialogTitle>
+        <DialogContent>
+          <TextField
+            required
+            placeholder="Name"
+            id="input-num-4"
+            fullWidth
+            variant="outlined"
+            className={classes.root}
+            onChange={(freq) => {
+              setBody({ ...body, Full_name: freq.target.value });
+            }}
+          />
+          <br />
+          <br />
+          <TextField
+            type="email"
+            required
+            placeholder="Email"
+            id="input-num-2"
+            fullWidth
+            variant="outlined"
+            className={classes.root}
+            onChange={(freq) => {
+              setBody({ ...body, Email: freq.target.value });
+            }}
+          />
+          <br />
+          <br />
+          <TextField
+            type="Password"
+            required
+            placeholder="Password"
+            id="input-num-3"
+            fullWidth
+            variant="outlined"
+            className={classes.root}
+            onChange={(freq) => {
+              setBody({ ...body, Password: freq.target.value });
+            }}
+          />
+          <br />
+          <br />
+          <Select
+            values={[]}
+            placeholder="Choose a user Role"
+            dropdownHeight="200px"
+            dropdownPosition="top"
+            options={roles}
+            onChange={(values) => {
+              setBody({ ...body, Role: values[0] });
+            }}
+            labelField="Name"
+            valueField="Name"
+          />
+          <br />
+          <Select
+            values={[]}
+            multi
+            keepSelectedInList={false}
+            placeholder="Choose one or more Teams"
+            dropdownHeight="200px"
+            dropdownPosition="top"
+            options={teams}
+            onChange={(values) => {
+              handleChangeTeams(values);
+            }}
+            labelField="Name"
+            valueField="Name"
+          />
+        </DialogContent>
+        <DialogActions style={{ marginBottom: 10 }}>
+          <Button
+            onClick={handleSubmit}
+            color="primary"
+            size="large"
+            type="submit"
+          >
+            Save
+          </Button>
+          <Button
+            onClick={() => {
+              handleClose(!open);
+            }}
+            size="large"
+            color="primary"
+          >
+            Cancel
+          </Button>
+        </DialogActions>
+      </Dialog>
+    </form>
   );
 };
 

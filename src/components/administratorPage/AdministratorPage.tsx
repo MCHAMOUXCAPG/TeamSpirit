@@ -4,7 +4,7 @@ import { Button, Container, Grid } from "@material-ui/core";
 import { ManageUserService } from "../../services/Services";
 import NavBar from "../navBar/NavBar";
 import CreateUserDialog from "../createUserDialog/CreateUserDialog";
-import { ITeamDTO, IUser } from "../../models/interfaces";
+import { ITeamDTO, IUser, IRole } from "../../models/interfaces";
 import colors from "../../config/colors";
 
 import Tabs from "@material-ui/core/Tabs";
@@ -17,7 +17,7 @@ import UsersTable from "../usersTable/usersTable";
 
 const AdministratorPage = () => {
   const [value, setValue] = useState(0);
-
+  const [roles, setRoles] = useState<IRole[]>([{ Id: 0, Name: "" }]);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -48,7 +48,6 @@ const AdministratorPage = () => {
     await usersList
       .getUsers(token)
       .then((res: any) => {
-        console.log(res.data);
         setUsers(res.data);
       })
       .catch((err) => {
@@ -59,8 +58,18 @@ const AdministratorPage = () => {
     await usersList
       .getTeams(token)
       .then((res: any) => {
-        console.log(res.data);
         setTeams(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  async function getAllRoles(token: string | null) {
+    await usersList
+      .getRoles(token)
+      .then((res: any) => {
+        setRoles(res.data);
       })
       .catch((err) => {
         console.log(err);
@@ -70,6 +79,7 @@ const AdministratorPage = () => {
   useEffect(() => {
     getAllUsers(token);
     getAllTeams(token);
+    getAllRoles(token);
     // eslint-disable-next-line
   }, [openMessage]);
 
@@ -107,8 +117,8 @@ const AdministratorPage = () => {
               aria-label="simple tabs example"
             >
               <Tab label="Users" {...a11yProps(0)} id="user-tab" />
-              <Tab label="Teams" {...a11yProps(1)} id="question-tab" />
-              <Tab label="Surveys" {...a11yProps(2)} id="question-tab" />
+              {/* <Tab label="Teams" {...a11yProps(1)} id="question-tab" />
+              <Tab label="Surveys" {...a11yProps(2)} id="question-tab" /> */}
             </Tabs>
           </Grid>
           <Grid item xs={12} id="table-container">
@@ -147,6 +157,7 @@ const AdministratorPage = () => {
         open={open}
         handleClose={handleClose}
         teams={teams}
+        roles={roles}
         setLoading={setLoading}
         setMessage={setMessage}
         setOpenMessage={setOpenMessage}

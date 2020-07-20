@@ -32,7 +32,7 @@ export default function MaterialTableDemo({
       { title: "EMAIL", field: "Email" },
       {
         title: "ROLE",
-        field: "Roles",
+        field: "Role",
       },
       {
         title: "TEAMS",
@@ -66,7 +66,7 @@ export default function MaterialTableDemo({
         Email: "",
         Full_name: "",
         Id: 0,
-        Roles: "",
+        Role: "",
         Teams: "",
         Password: "",
       };
@@ -74,7 +74,7 @@ export default function MaterialTableDemo({
       newUserData.Email = user.Email;
       newUserData.Full_name = user.Full_name;
       newUserData.Password = user.Password;
-      newUserData.Roles = user.Roles[0].Name;
+      newUserData.Role = user.Role.Name;
       let teamsString = "";
       if (user.Teams.length === 0) {
         teamsString = "No Team";
@@ -113,7 +113,7 @@ export default function MaterialTableDemo({
                 Email: "",
                 Full_name: "",
                 Id: 0,
-                Roles: "",
+                Role: "",
                 Teams: "",
                 Password: "",
                 tableData: { id: 0 },
@@ -126,7 +126,6 @@ export default function MaterialTableDemo({
               const index: number | undefined = data.tableData?.id;
               if (index !== undefined) {
                 setCurrentUser(users[index]);
-                console.log(users[index]);
               }
             },
           },

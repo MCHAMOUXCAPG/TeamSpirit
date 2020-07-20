@@ -56,10 +56,10 @@ const LoginPage = () => {
           .getUser(res.data.token)
           .then((res2: any) => {
             const teams = res2.data.Teams;
-            const role = res2.data.Roles[0].Name;
-            if (role === "Admin") {
+            const role: number = res2.data.Role.Id;
+            if (role === 1) {
               navigate("/admin");
-            } else if (role === "TeamLeader") {
+            } else if (role === 2) {
               if (teams.length === 0) {
                 navigate("/noTeam");
                 //if no team, message requesting team

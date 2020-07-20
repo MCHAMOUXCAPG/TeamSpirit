@@ -153,6 +153,15 @@ export class ManageUserService {
     });
   }
 
+  public getRoles(token: string | null): Promise<any> {
+    const endPoint = "/roles";
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
   public createUser(body: IUserDTO, token: string | null): Promise<any> {
     const endPoint = "/user/create";
     return environment.post(endPoint, body, {

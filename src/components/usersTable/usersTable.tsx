@@ -4,6 +4,8 @@ import { ManageUserService } from "../../services/Services";
 import { IUserTable, IUser, IUserData } from "../../models/interfaces";
 import "./usersTable.css";
 import EditUserDialog from "../editUserDialog/EditUserDialog";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import colors from "../../config/colors";
 
 export default function MaterialTableDemo({
   loadingService,
@@ -108,6 +110,19 @@ export default function MaterialTableDemo({
         title=""
         columns={state.columns}
         data={data}
+        components={{
+          OverlayLoading: (props) => (
+            <CircularProgress
+              size={24}
+              style={{
+                color: colors.primary,
+                position: "relative",
+                top: "50%",
+                left: "49%",
+              }}
+            />
+          ),
+        }}
         localization={{
           body: {
             editRow: {

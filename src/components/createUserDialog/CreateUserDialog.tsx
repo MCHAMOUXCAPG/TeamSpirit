@@ -74,35 +74,37 @@ const CreateUserDialog = ({
   });
   const manageService: ManageUserService = new ManageUserService();
 
+  const resetValues = () => {
+    setBody({
+      Full_name: "",
+      Email: "",
+      Password: "",
+      Role: { Id: 0, Name: "" },
+      Teams: [],
+    });
+    setValidateSubmit([false, false, false, false, false]);
+    setDisabledSubmit(true);
+    setDisabledTeams(true);
+    setErr(false);
+    setHelperTxt("");
+    setErrEmail(false);
+    setErrPass(false);
+    setHelperTxtPass("");
+    setHelperTxtEmail("");
+    setHelperTxtRole("");
+    setHelperTxtTeam("");
+  };
   async function createUser(body: IUserDTO, token: string | null) {
     await manageService
       .createUser(body, token)
       .then((res: any) => {
-        setBody({
-          Full_name: "",
-          Email: "",
-          Password: "",
-          Role: { Id: 0, Name: "" },
-          Teams: [],
-        });
-        setValidateSubmit([false, false, false, false, false]);
-        setDisabledSubmit(true);
-        setDisabledTeams(true);
+        resetValues();
         setMessage("User succesfully created.");
         setLoading(false);
         setOpenMessage(true);
       })
       .catch((err) => {
-        setBody({
-          Full_name: "",
-          Email: "",
-          Password: "",
-          Role: { Id: 0, Name: "" },
-          Teams: [],
-        });
-        setValidateSubmit([false, false, false, false, false]);
-        setDisabledSubmit(true);
-        setDisabledTeams(true);
+        resetValues();
         setMessage("Something went wrong. Try again later.");
         setLoading(false);
         setOpenMessage(true);
@@ -183,12 +185,9 @@ const CreateUserDialog = ({
       setDisabledTeams(true);
     }
   }
-  function validateTeams(r: number) {
-    if (r === 1 && body.Teams.length === 0) {
-      // En caso de ser admin
-      setHelperTxtTeam("");
-    } else if (r === 2 && body.Teams.length > 0) {
-      // En caso de ser TeamLeader
+  function validateTeams(teams: ITeamDTO[]) {
+    if (teams.length > 0) {
+      // En caso de ser TeamLeader y tener teams
       setHelperTxtTeam("");
       updateValidateSubmit(4, true);
     } else {
@@ -307,7 +306,7 @@ const CreateUserDialog = ({
             options={teams}
             onChange={(values) => {
               handleChangeTeams(values);
-              validateTeams(body.Role.Id);
+              validateTeams(values);
             }}
             labelField="Name"
             valueField="Name"
@@ -330,12 +329,7 @@ const CreateUserDialog = ({
           <Button
             onClick={() => {
               handleClose(!open);
-              setErr(false);
-              setHelperTxt("");
-              setErrEmail(false);
-              setHelperTxtEmail("");
-              setHelperTxtRole("");
-              setHelperTxtTeam("");
+              resetValues();
             }}
             size="large"
             color="primary"

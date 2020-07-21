@@ -17,7 +17,7 @@ import UsersTable from "../usersTable/usersTable";
 
 const AdministratorPage = () => {
   const [value, setValue] = useState(0);
-  const [roles, setRoles] = useState<IRole[]>([{ Id: 0, Name: "" }]);
+  const [roles, setRoles] = useState<IRole[]>([{ Id: 1, Name: "Admin" }]);
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };

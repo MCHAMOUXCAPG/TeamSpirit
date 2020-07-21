@@ -103,6 +103,13 @@ export default function MaterialTableDemo({
         title=""
         columns={state.columns}
         data={data}
+        localization={{
+          body: {
+            editRow: {
+              deleteText: "Are you sure you want to delete this user?",
+            },
+          },
+        }}
         actions={[
           {
             icon: "edit",

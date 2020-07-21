@@ -1,3 +1,5 @@
+@import "../../config/colors.css";
+
 #input-num-1 {
   font-family: "Roboto";
   font-style: normal;
@@ -5,7 +7,7 @@
   font-size: 14px;
   line-height: 14px;
   position: relative;
-  background: #ffffff;
+  background: var(--white);
   border-radius: 24px;
   overflow: hidden;
   border-color: #919191;

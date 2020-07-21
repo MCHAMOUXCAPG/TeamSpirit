@@ -1,3 +1,4 @@
+@import "../../config/colors.css";
 .btn {
   width: 100%;
   border-radius: 25px !important;
@@ -6,19 +7,17 @@
 }
 
 .btn-contained {
-  background-color: #79c0c6 !important;
-  color: #ffffff !important;
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
 }
 .btn-outlined {
-  color: #79c0c6 !important;
-  border-color: #79c0c6 !important;
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
 }
 
 #Grid-adm-inner {
-  background: #ffffff;
-  border: 1px solid #79c0c6;
-  /* box-sizing: border-box;
-  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25); */
+  background: var(--white);
+  border: 1px solid var(--primary);
   border-radius: 15px;
   width: fit-content;
   border-top-left-radius: 0;

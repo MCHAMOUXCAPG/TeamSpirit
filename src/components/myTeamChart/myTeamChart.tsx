@@ -4,6 +4,8 @@ import { SurveyService } from "../../services/Services";
 import AverageChart from "../averageChart/Chart";
 import { ICurrentSurveyResult } from "../../models/interfaces";
 import Schedule from "@material-ui/icons/Schedule";
+import colors from "../../config/colors";
+
 const MyTeamChart = (props: any) => {
   const token = sessionStorage.getItem("token");
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
@@ -48,10 +50,10 @@ const MyTeamChart = (props: any) => {
         />
       </Grid>
       <Grid item xs={12}>
-        <p style={{ color: "#79C0C6" }}>
+        <p style={{ color: colors.primary }}>
           <Schedule className="icon" />
           Historic result: &nbsp;
-          <span style={{ color: "#000000" }}>
+          <span style={{ color: colors.black }}>
             {parseFloat(currentSurveyResult.HistoricResult.toFixed(2))}/10
           </span>
         </p>

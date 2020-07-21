@@ -62,14 +62,12 @@ const CreateUserDialog = ({
     } else {
       setDisabledSubmit(true);
     }
-    console.log(newValidateSubmit);
-    console.log(body);
   };
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
     Email: "",
     Password: "",
-    Role: { Id: 0, Name: "" },
+    Role: roles[0],
     Teams: [],
   });
   const manageService: ManageUserService = new ManageUserService();
@@ -79,7 +77,7 @@ const CreateUserDialog = ({
       Full_name: "",
       Email: "",
       Password: "",
-      Role: { Id: 0, Name: "" },
+      Role: roles[0],
       Teams: [],
     });
     setValidateSubmit([false, false, false, false, false]);
@@ -164,9 +162,11 @@ const CreateUserDialog = ({
     }
   }
 
-  function validateRole(valor: number) {
+  function validateRole(role: IRole) {
+    const valor = role.Id;
+    console.log(valor);
+    console.log(body);
     if (valor === 1) {
-      setBody({ ...body });
       setBody({ ...body, Teams: [] });
       setHelperTxtRole("");
       setHelperTxtTeam("");
@@ -280,6 +280,7 @@ const CreateUserDialog = ({
           <br />
           <br />
           <Select
+            closeOnSelect
             values={[]}
             placeholder="Choose a user Role"
             dropdownHeight="200px"
@@ -287,7 +288,7 @@ const CreateUserDialog = ({
             options={roles}
             onChange={(values) => {
               setBody({ ...body, Role: values[0] });
-              validateRole(values[0].Id);
+              validateRole(values[0]);
             }}
             labelField="Name"
             valueField="Name"

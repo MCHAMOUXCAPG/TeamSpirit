@@ -24,6 +24,8 @@ func main() {
 
 	config.GetConnection()
 
+	services.VerifyRole()
+
 	services.CreateSurveyAutomatically()
 
 	config.ConfigSwagger()

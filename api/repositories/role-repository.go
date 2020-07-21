@@ -12,6 +12,7 @@ type RoleRepository interface {
 	CreateRole(role *entities.Role) (*entities.Role, error)
 	UpdateRole(roleID int, role *entities.Role) (*entities.Role, error)
 	DeleteRole(roleID int) (*entities.Role, error)
+	GetRoleByName(roleName string) (*entities.Role, error)
 }
 
 type RoleRepo struct{}
@@ -32,6 +33,14 @@ func (*RoleRepo) GetRole(roleID int) (*entities.Role, error) {
 
 	var role = &entities.Role{}
 	result := config.DB.Where("id = ? ", roleID).Find(&role)
+
+	return role, result.Error
+}
+
+func (*RoleRepo) GetRoleByName(roleName string) (*entities.Role, error) {
+
+	var role = &entities.Role{}
+	result := config.DB.Where("name = ? ", roleName).Find(&role)
 
 	return role, result.Error
 }

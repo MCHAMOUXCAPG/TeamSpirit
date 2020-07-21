@@ -388,3 +388,10 @@ var GETSURVEYS_EXPORTSURVEYSCSV = &dto.Error{
 	Path:     "api/services/survey-service.go",
 	Function: "ExportSurveysCsv",
 }
+
+var VERIFY_ROLE = &dto.Error{
+	Status:   406,
+	Message:  "TeamLeader without Teams cannot be created",
+	Path:     "api/services/user-service.go",
+	Function: "CreateUser",
+}

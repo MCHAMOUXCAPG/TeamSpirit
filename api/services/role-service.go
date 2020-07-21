@@ -144,3 +144,33 @@ func DeleteRole(c echo.Context) error {
 
 	return c.JSON(http.StatusOK, role)
 }
+
+func VerifyRole() {
+	var newRoleAdmin = &entities.Role{Name: "Admin"}
+	var newRoleTeamLeader = &entities.Role{Name: "TeamLeader"}
+
+	_, errAdmin := RoleRepo.GetRoleByName("Admin")
+
+	if errAdmin != nil && !gorm.IsRecordNotFoundError(errAdmin) {
+		panic("Error adding Admin role")
+	}
+
+	_, errTeamleader := RoleRepo.GetRoleByName("TeamLeader")
+
+	if errTeamleader != nil && !gorm.IsRecordNotFoundError(errTeamleader) {
+		panic("Error adding TeamLeader role")
+	}
+
+	if gorm.IsRecordNotFoundError(errAdmin) {
+		_, err := RoleRepo.CreateRole(newRoleAdmin)
+		if err != nil {
+			panic("Error creating Admin role")
+		}
+	}
+	if gorm.IsRecordNotFoundError(errTeamleader) {
+		_, err := RoleRepo.CreateRole(newRoleTeamLeader)
+		if err != nil {
+			panic("Error creating TeamLeader role")
+		}
+	}
+}

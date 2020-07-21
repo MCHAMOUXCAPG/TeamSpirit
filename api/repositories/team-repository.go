@@ -68,7 +68,7 @@ func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 }
 
 func updateTeamTransaction(db *gorm.DB, teamName string, team *entities.Team) error {
-	var teamToUpdate = &entities.User{}
+	var teamToUpdate = &entities.Team{}
 	var teamUser []dto.TeamUser
 
 	return db.Transaction(func(tx *gorm.DB) error {

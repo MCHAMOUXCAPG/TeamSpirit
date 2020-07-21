@@ -75,11 +75,16 @@ func GetUser(c echo.Context) error {
 // @Param UserDTO body entities.User  true "UserDTO"
 // @Success 200 {object} entities.User
 // @Failure 500 {object} dto.Error
+// @Failure 406 {object} dto.Error
 // @Router /user/create [post]
 func CreateUser(c echo.Context) error {
 
 	var newUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
+
+	if newUser.Role.Name == "TeamLeader" && (newUser.Teams == nil || len(newUser.Teams) == 0) {
+		return echo.NewHTTPError(http.StatusNotAcceptable, constants.VERIFY_ROLE)
+	}
 
 	if newUser.Password != "" {
 		newUser.Password, _ = HashAndSalt(newUser.Password)

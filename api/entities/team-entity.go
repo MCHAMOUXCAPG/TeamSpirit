@@ -8,5 +8,5 @@ type Team struct {
 	StartDate   time.Time `gorm:"not null;default:null"`
 	Frequency   int       `gorm:"not null;default:null"`
 	Surveys     []Survey  `gorm:"foreignkey:TeamName"`
-	Users       []*User   `gorm:"many2many:team_users;"foreignkey:Id"`
+	Users       []*User   `gorm:"many2many:team_users; "foreignkey:Id"`
 }

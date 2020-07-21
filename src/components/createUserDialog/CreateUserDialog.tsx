@@ -30,19 +30,47 @@ const CreateUserDialog = ({
   setOpenMessage: any;
 }) => {
   const token = sessionStorage.getItem("token");
-  const [submit, setSubmit] = useState(false);
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
   const [ErrEmail, setErrEmail] = useState(false);
+  const [ErrPass, setErrPass] = useState(false);
+  const [helperTxtPass, setHelperTxtPass] = useState("");
   const [helperTxtEmail, setHelperTxtEmail] = useState("");
   const [helperTxtRole, setHelperTxtRole] = useState("");
   const [helperTxtTeam, setHelperTxtTeam] = useState("");
+  const [validateSubmit, setValidateSubmit] = useState([
+    false,
+    false,
+    false,
+    false,
+    false,
+  ]);
+  const [disabledSubmit, setDisabledSubmit] = useState(true);
+  const [disabledTeams, setDisabledTeams] = useState(true);
+  const updateValidateSubmit = (index: number, value: boolean) => {
+    const newValidateSubmit = validateSubmit;
+    newValidateSubmit[index] = value;
+    setValidateSubmit(newValidateSubmit);
+    let count = 0;
+    newValidateSubmit.forEach((valid) => {
+      if (valid) {
+        count++;
+      }
+    });
+    if (count === 5) {
+      setDisabledSubmit(false);
+    } else {
+      setDisabledSubmit(true);
+    }
+    console.log(newValidateSubmit);
+    console.log(body);
+  };
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
     Email: "",
     Password: "",
     Role: { Id: 0, Name: "" },
-    Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
+    Teams: [],
   });
   const manageService: ManageUserService = new ManageUserService();
 
@@ -55,8 +83,11 @@ const CreateUserDialog = ({
           Email: "",
           Password: "",
           Role: { Id: 0, Name: "" },
-          Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
+          Teams: [],
         });
+        setValidateSubmit([false, false, false, false, false]);
+        setDisabledSubmit(true);
+        setDisabledTeams(true);
         setMessage("User succesfully created.");
         setLoading(false);
         setOpenMessage(true);
@@ -67,8 +98,11 @@ const CreateUserDialog = ({
           Email: "",
           Password: "",
           Role: { Id: 0, Name: "" },
-          Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
+          Teams: [],
         });
+        setValidateSubmit([false, false, false, false, false]);
+        setDisabledSubmit(true);
+        setDisabledTeams(true);
         setMessage("Something went wrong. Try again later.");
         setLoading(false);
         setOpenMessage(true);
@@ -97,66 +131,76 @@ const CreateUserDialog = ({
     if (inputtxt.match(letters)) {
       setErr(false);
       setHelperTxt("");
-      return setSubmit(true);
+      updateValidateSubmit(0, true);
     } else {
       setErr(true);
       setHelperTxt("Please input alphabet characters only!");
-      return setSubmit(false);
+      updateValidateSubmit(0, false);
     }
   }
   function validarEmail(valor: string) {
+    // eslint-disable-next-line
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(valor)) {
       setErrEmail(false);
       setHelperTxtEmail("");
-      setSubmit(true);
+      updateValidateSubmit(1, true);
     } else {
       setErrEmail(true);
       setHelperTxtEmail("Please enter a valid email address!");
-      return setSubmit(false);
+      updateValidateSubmit(0, false);
     }
   }
+  function validatePass(valor: string) {
+    if (/^.{6,}$/.test(valor)) {
+      setErrPass(false);
+      setHelperTxtPass("");
+      updateValidateSubmit(2, true);
+    } else {
+      setErrPass(true);
+      setHelperTxtPass("Password must have at least 6 characters!");
+      updateValidateSubmit(2, false);
+    }
+  }
+
   function validateRole(valor: number) {
     if (valor === 1) {
-      console.log(valor);
+      setBody({ ...body });
+      setBody({ ...body, Teams: [] });
       setHelperTxtRole("");
       setHelperTxtTeam("");
-      setSubmit(true);
+      updateValidateSubmit(3, true);
+      updateValidateSubmit(4, true);
+      setDisabledTeams(true);
     } else if (valor === 2) {
-      console.log(valor);
       setHelperTxtRole("");
-      setSubmit(true);
+      updateValidateSubmit(3, true);
+      updateValidateSubmit(4, false);
+      setDisabledTeams(false);
     } else {
       setHelperTxtRole("You must choose a Role for the user!");
-      return setSubmit(false);
+      updateValidateSubmit(3, false);
+      updateValidateSubmit(4, false);
+      setDisabledTeams(true);
     }
   }
   function validateTeams(r: number) {
     if (r === 1 && body.Teams.length === 0) {
       // En caso de ser admin
-      setSubmit(true);
       setHelperTxtTeam("");
     } else if (r === 2 && body.Teams.length > 0) {
       // En caso de ser TeamLeader
-      setSubmit(true);
       setHelperTxtTeam("");
+      updateValidateSubmit(4, true);
     } else {
       setHelperTxtTeam("You must choose a Team for the user!");
-      return setSubmit(false);
+      updateValidateSubmit(4, false);
     }
   }
   const classes = useStyles();
   const handleSubmit = () => {
-    allLetter(body.Full_name);
-    validarEmail(body.Email);
-    validateRole(body.Role.Id);
-    validateTeams(body.Role.Id);
-    if (submit) {
-      setLoading(true);
-      handleClose(!open);
-      createUser(body, token);
-    } else {
-      handleClose(open);
-    }
+    setLoading(true);
+    handleClose(!open);
+    createUser(body, token);
   };
   return (
     <form>
@@ -192,6 +236,9 @@ const CreateUserDialog = ({
             onChange={(freq) => {
               setBody({ ...body, Full_name: freq.target.value });
             }}
+            onBlur={() => {
+              allLetter(body.Full_name);
+            }}
           />
           <br />
           <br />
@@ -208,6 +255,9 @@ const CreateUserDialog = ({
             onChange={(freq) => {
               setBody({ ...body, Email: freq.target.value });
             }}
+            onBlur={() => {
+              validarEmail(body.Email);
+            }}
           />
           <br />
           <br />
@@ -217,10 +267,15 @@ const CreateUserDialog = ({
             placeholder="Password"
             id="input-num-3"
             fullWidth
+            error={ErrPass}
+            helperText={helperTxtPass}
             variant="outlined"
             className={classes.root}
             onChange={(freq) => {
               setBody({ ...body, Password: freq.target.value });
+            }}
+            onBlur={() => {
+              validatePass(body.Password);
             }}
           />
           <br />
@@ -233,6 +288,7 @@ const CreateUserDialog = ({
             options={roles}
             onChange={(values) => {
               setBody({ ...body, Role: values[0] });
+              validateRole(values[0].Id);
             }}
             labelField="Name"
             valueField="Name"
@@ -245,15 +301,17 @@ const CreateUserDialog = ({
             values={[]}
             multi
             keepSelectedInList={false}
-            placeholder="Choose one or more Teams"
+            placeholder="Choose one or more Teams (TeamLeader)"
             dropdownHeight="200px"
             dropdownPosition="top"
             options={teams}
             onChange={(values) => {
               handleChangeTeams(values);
+              validateTeams(body.Role.Id);
             }}
             labelField="Name"
             valueField="Name"
+            disabled={disabledTeams}
           />
           <FormHelperText className={classes.error}>
             {helperTxtTeam}
@@ -265,6 +323,7 @@ const CreateUserDialog = ({
             color="primary"
             size="large"
             type="submit"
+            disabled={disabledSubmit}
           >
             Save
           </Button>

@@ -388,7 +388,7 @@ function SurveyStatus({
                             Number of members to vote
                           </DialogContentText>
                           <TextField
-                            id="outlined-required-survey"
+                            id="outlined-required-survey-2"
                             fullWidth
                             variant="outlined"
                             className={classes.root}

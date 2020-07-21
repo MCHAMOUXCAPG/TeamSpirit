@@ -74,6 +74,7 @@ const EditUserDialog = ({
         setMessage("User succesfully updated.");
         setLoading(false);
         setOpenMessage(true);
+        setDisabledSubmit(true);
       })
       .catch((err) => {
         setBody({
@@ -87,6 +88,7 @@ const EditUserDialog = ({
         setMessage("Something went wrong. Try again later.");
         setLoading(false);
         setOpenMessage(true);
+        setDisabledSubmit(true);
       });
   }
   function allLetter(inputtxt: string) {

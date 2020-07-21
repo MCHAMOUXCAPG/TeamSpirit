@@ -147,7 +147,7 @@ const CreateUserDialog = ({
     } else {
       setErrEmail(true);
       setHelperTxtEmail("Please enter a valid email address!");
-      updateValidateSubmit(0, false);
+      updateValidateSubmit(1, false);
     }
   }
   function validatePass(valor: string) {
@@ -164,8 +164,6 @@ const CreateUserDialog = ({
 
   function validateRole(role: IRole) {
     const valor = role.Id;
-    console.log(valor);
-    console.log(body);
     if (valor === 1) {
       setBody({ ...body, Teams: [] });
       setHelperTxtRole("");

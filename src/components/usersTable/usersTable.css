@@ -1,10 +1,12 @@
-.MuiPaper-rounded {
+@import "../../config/colors.css";
+#table-container .MuiPaper-rounded {
   border-radius: 12px !important;
+  border-top-left-radius: 0px !important;
 }
 
 .MuiTableCell-head {
-  color: #fff !important;
-  background-color: #79c0c6 !important;
+  color: var(--white) !important;
+  background-color: var(--primary) !important;
 }
 
 #table-container .MuiToolbar-regular {
@@ -13,12 +15,12 @@
 
 .MuiToolbar-root .MuiFormControl-root {
   position: absolute;
-  border: 1px solid #79c0c6;
+  border: 1px solid var(--primary);
   border-radius: 25px;
 }
 
 .MuiToolbar-root .MuiInputBase-root span {
-  color: #79c0c6 !important;
+  color: var(--primary) !important;
 }
 .MuiInput-underline:before {
   border-bottom: none !important;
@@ -26,4 +28,8 @@
 
 .MuiInput-underline:after {
   border-bottom: none !important;
+}
+
+.MuiTableCell-paddingCheckbox {
+  text-transform: uppercase;
 }

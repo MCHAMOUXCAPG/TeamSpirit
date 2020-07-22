@@ -36,6 +36,28 @@ const EditUserDialog = ({
     Role: { Id: 0, Name: "" },
     Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
   });
+  const [Err, setErr] = useState(false);
+  const [HelperTxt, setHelperTxt] = useState("");
+  const [ErrEmail, setErrEmail] = useState(false);
+  const [helperTxtEmail, setHelperTxtEmail] = useState("");
+  const [validateSubmit, setValidateSubmit] = useState([true, true]);
+  const updateValidateSubmit = (index: number, value: boolean) => {
+    const newValidateSubmit = validateSubmit;
+    newValidateSubmit[index] = value;
+    setValidateSubmit(newValidateSubmit);
+    let count = 0;
+    newValidateSubmit.forEach((valid) => {
+      if (valid) {
+        count++;
+      }
+    });
+    if (count === 2) {
+      setDisabledSubmit(false);
+    } else {
+      setDisabledSubmit(true);
+    }
+  };
+  const [disabledSubmit, setDisabledSubmit] = useState(false);
   const manageService: ManageUserService = new ManageUserService();
 
   async function updateUser(body: IUserDTO, id: string, token: string | null) {
@@ -52,6 +74,7 @@ const EditUserDialog = ({
         setMessage("User succesfully updated.");
         setLoading(false);
         setOpenMessage(true);
+        setDisabledSubmit(false);
       })
       .catch((err) => {
         setBody({
@@ -65,7 +88,32 @@ const EditUserDialog = ({
         setMessage("Something went wrong. Try again later.");
         setLoading(false);
         setOpenMessage(true);
+        setDisabledSubmit(false);
       });
+  }
+  function allLetter(inputtxt: string) {
+    var letters = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
+    if (inputtxt.match(letters)) {
+      setErr(false);
+      setHelperTxt("");
+      updateValidateSubmit(0, true);
+    } else {
+      setErr(true);
+      setHelperTxt("Please input alphabet characters only!");
+      updateValidateSubmit(0, false);
+    }
+  }
+  function validarEmail(valor: string) {
+    // eslint-disable-next-line
+    if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(valor)) {
+      setErrEmail(false);
+      setHelperTxtEmail("");
+      updateValidateSubmit(1, true);
+    } else {
+      setErrEmail(true);
+      setHelperTxtEmail("Please enter a valid email address!");
+      updateValidateSubmit(1, false);
+    }
   }
 
   const [id, setId] = useState<string>("");
@@ -137,11 +185,16 @@ const EditUserDialog = ({
           id="input-num-1"
           fullWidth
           variant="outlined"
+          error={Err}
+          helperText={HelperTxt}
           className={classes.root}
           value={fullName}
           onChange={(name) => {
             setFullName(name.target.value);
             setBody({ ...body, Full_name: name.target.value });
+          }}
+          onBlur={() => {
+            allLetter(body.Full_name);
           }}
         />
         <br />
@@ -153,11 +206,16 @@ const EditUserDialog = ({
           id="input-num-2"
           fullWidth
           variant="outlined"
+          error={ErrEmail}
+          helperText={helperTxtEmail}
           className={classes.root}
           value={email}
           onChange={(email) => {
             setEmail(email.target.value);
             setBody({ ...body, Email: email.target.value });
+          }}
+          onBlur={() => {
+            validarEmail(body.Email);
           }}
         />
         <br />
@@ -174,6 +232,7 @@ const EditUserDialog = ({
         />
         <br />
         <Select
+          disabled={role.Id === 1 ? true : false}
           values={team}
           multi
           keepSelectedInList={false}
@@ -194,8 +253,9 @@ const EditUserDialog = ({
           color="primary"
           size="large"
           id="save-btn"
+          disabled={disabledSubmit}
         >
-          Save
+          Update
         </Button>
         <Button
           onClick={() => {

@@ -134,7 +134,7 @@ export default function MaterialTableDemo({
         actions={[
           {
             icon: "edit",
-            tooltip: "edit user",
+            tooltip: "Edit user",
             onClick: (event, rowData) => {
               setOpenEdit(true);
               let data: IUserData = {
@@ -158,7 +158,7 @@ export default function MaterialTableDemo({
             },
           },
         ]}
-        options={{ search: true, actionsColumnIndex: -1 }}
+        options={{ search: true, actionsColumnIndex: -1, draggable: false }}
         editable={{
           onRowDelete: (oldData) => delUser(token, oldData.Id.toString()),
         }}

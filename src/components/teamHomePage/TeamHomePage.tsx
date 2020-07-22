@@ -61,18 +61,17 @@ const TeamHomePage = () => {
       })
       .catch((err) => {
         setNotData(true);
-
-        console.log(err);
       });
   }
   async function getResultsByUser(teamName: string, token: string | null) {
     await surveyService
       .getResultByUser(teamName, token)
       .then((res) => {
+        setNotData(false);
         setCurrentDetailResultsUsers(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        setNotData(true);
       });
   }
 
@@ -80,10 +79,11 @@ const TeamHomePage = () => {
     await surveyService
       .getResultByQuestions(teamName, token)
       .then((res) => {
+        setNotData(false);
         setCurrentDetailResultsQuestions(res.data);
       })
       .catch((err) => {
-        console.log(err);
+        setNotData(true);
       });
   }
 

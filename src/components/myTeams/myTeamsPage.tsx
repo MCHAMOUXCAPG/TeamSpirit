@@ -42,16 +42,13 @@ const MyTeamsPage = () => {
                       borderRadius: 20,
                     }}
                     onClick={() => {
-                      console.log(allowClickTeams);
                       let show = true;
                       allowClickTeams.forEach((clickTeam) => {
                         if (clickTeam === team.Name) {
-                          console.log(clickTeam);
                           show = false;
                           return false;
                         }
                       });
-                      console.log(show);
                       if (show) {
                         handleClick(team.Name);
                       }

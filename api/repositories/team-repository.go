@@ -45,13 +45,10 @@ func (*TeamRepo) CreateTeam(team *entities.Team) (*entities.Team, error) {
 
 func (*TeamRepo) UpdateTeam(teamName string, team *entities.Team) (*entities.Team, error) {
 
-	err := updateTeamTransaction(config.DB, teamName, team)
+	var teamToUpdate = &entities.Team{}
+	result := config.DB.Model(&teamToUpdate).Where("name = ? ", teamName).Updates(&team)
+	return team, result.Error
 
-	if err != nil {
-		return nil, err
-	}
-
-	return team, nil
 }
 
 func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
@@ -65,28 +62,6 @@ func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 	}
 
 	return team, nil
-}
-
-func updateTeamTransaction(db *gorm.DB, teamName string, team *entities.Team) error {
-	var teamToUpdate = &entities.Team{}
-	var teamUser []dto.TeamUser
-
-	return db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&teamToUpdate).Where("name = ? ", teamName).Updates(&team).Error; err != nil {
-			return err
-		}
-
-		if err := tx.Table("team_users").Where("team_name = ?", teamName).Delete(&teamUser).Error; err != nil {
-			return err
-		}
-
-		for _, user := range team.Users {
-			if err := tx.Exec("INSERT INTO team_users (user_id, team_name) VALUES (?, ?)", user.Id, teamName).Error; err != nil {
-				return err
-			}
-		}
-		return nil
-	})
 }
 
 func deleteTeamTransaction(db *gorm.DB, teamName string) error {

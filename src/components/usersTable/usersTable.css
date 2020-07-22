@@ -1,6 +1,7 @@
 @import "../../config/colors.css";
 #table-container .MuiPaper-rounded {
   border-radius: 12px !important;
+  border-top-left-radius: 0px !important;
 }
 
 .MuiTableCell-head {

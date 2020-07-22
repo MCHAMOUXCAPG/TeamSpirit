@@ -22,6 +22,7 @@ const TeamHomePage = () => {
     return () => setValue((value) => ++value); // update the state to force render
   }
 
+  const [noData, setNotData] = useState(false);
   const contextRender = useContext(reRender);
   const forceUpdate = useForceUpdate();
   const context = useContext(AuthContext);
@@ -54,10 +55,13 @@ const TeamHomePage = () => {
     await surveyService
       .getCurrentResult(teamName, token)
       .then((res) => {
+        setNotData(false);
         setCurrentSurveyResult(res.data);
         setLoading(false);
       })
       .catch((err) => {
+        setNotData(true);
+
         console.log(err);
       });
   }
@@ -118,44 +122,58 @@ const TeamHomePage = () => {
   return (
     <div>
       <NavBar user={true}></NavBar>
-      <Container maxWidth="lg" className="content" disableGutters={true}>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={5}
-        >
+      {noData ? (
+        <Grid container direction="row" justify="center">
           <Grid item xs={12}>
             <div className="team-name">{context.currentTeam}</div>
           </Grid>
-          <Grid item xs={12} md={6}>
-            <AverageChart
-              loading={loading}
-              grade={parseFloat(currentSurveyResult.CurrentResult.toFixed(2))}
-            />
-          </Grid>
-          <Grid item xs={12} md={6}>
-            <SurveyStatus
-              loading={loading}
-              period={period}
-              completed={currentSurveyResult.Completed}
-              currentResult={currentSurveyResult.CurrentResult}
-              historicResult={currentSurveyResult.HistoricResult}
-              teamName={context.currentTeam}
-            />
-          </Grid>
           <Grid item xs={12}>
-            <ExportResult teamName={context.currentTeam} />
-          </Grid>
-          <Grid item xs={12}>
-            <DetailResults
-              usersResult={currentDetailResultsUsers}
-              questionsResult={currentDetailResultsQuestions}
-            />
+            <p className="error-message">
+              Please contact with the Team Spirit Administrator, you don't have
+              any surveys for this team.
+            </p>
           </Grid>
         </Grid>
-      </Container>
+      ) : (
+        <Container maxWidth="lg" className="content" disableGutters={true}>
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={5}
+          >
+            <Grid item xs={12}>
+              <div className="team-name">{context.currentTeam}</div>
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <AverageChart
+                loading={loading}
+                grade={parseFloat(currentSurveyResult.CurrentResult.toFixed(2))}
+              />
+            </Grid>
+            <Grid item xs={12} md={6}>
+              <SurveyStatus
+                loading={loading}
+                period={period}
+                completed={currentSurveyResult.Completed}
+                currentResult={currentSurveyResult.CurrentResult}
+                historicResult={currentSurveyResult.HistoricResult}
+                teamName={context.currentTeam}
+              />
+            </Grid>
+            <Grid item xs={12}>
+              <ExportResult teamName={context.currentTeam} />
+            </Grid>
+            <Grid item xs={12}>
+              <DetailResults
+                usersResult={currentDetailResultsUsers}
+                questionsResult={currentDetailResultsQuestions}
+              />
+            </Grid>
+          </Grid>
+        </Container>
+      )}
     </div>
   );
 };

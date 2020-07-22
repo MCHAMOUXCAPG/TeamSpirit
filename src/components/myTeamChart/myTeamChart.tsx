@@ -19,17 +19,21 @@ const MyTeamChart = (props: any) => {
     CurrentResult: 0,
     HistoricResult: 0,
   });
-
+  const [noData, setNotData] = useState(false);
   const [loading, setLoading] = useState(true);
   const surveyService: SurveyService = new SurveyService();
   async function getResults(teamName: string, token: string | null) {
     await surveyService
       .getCurrentResult(teamName, token)
       .then((res) => {
+        props.setAllowClick(true);
+        setNotData(false);
         setCurrentSurveyResult(res.data);
         setLoading(false);
       })
       .catch((err) => {
+        setNotData(true);
+        props.setAllowClick(false);
         console.log(err);
       });
   }
@@ -43,21 +47,35 @@ const MyTeamChart = (props: any) => {
       <Grid item xs={12} className="team">
         {props.teamName}
       </Grid>
-      <Grid item xs={12} className="grid-chart">
-        <AverageChart
-          loading={loading}
-          grade={parseFloat(currentSurveyResult.CurrentResult.toFixed(2))}
-        />
-      </Grid>
-      <Grid item xs={12}>
-        <p style={{ color: colors.primary }}>
-          <Schedule className="icon" />
-          Historic result: &nbsp;
-          <span style={{ color: colors.black }}>
-            {parseFloat(currentSurveyResult.HistoricResult.toFixed(2))}/10
-          </span>
-        </p>
-      </Grid>
+
+      {noData ? (
+        <Grid container direction="row" justify="center">
+          <Grid item xs={12}>
+            <p className="error-message">
+              Please contact with the Team Spirit Administrator, you don't have
+              any surveys for this team.
+            </p>
+          </Grid>
+        </Grid>
+      ) : (
+        <>
+          <Grid item xs={12} className="grid-chart">
+            <AverageChart
+              loading={loading}
+              grade={parseFloat(currentSurveyResult.CurrentResult.toFixed(2))}
+            />
+          </Grid>
+          <Grid item xs={12}>
+            <p style={{ color: colors.primary }}>
+              <Schedule className="icon" />
+              Historic result: &nbsp;
+              <span style={{ color: colors.black }}>
+                {parseFloat(currentSurveyResult.HistoricResult.toFixed(2))}/10
+              </span>
+            </p>
+          </Grid>
+        </>
+      )}
     </Grid>
   );
 };

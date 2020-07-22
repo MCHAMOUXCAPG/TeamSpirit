@@ -9,6 +9,7 @@ import colors from "../../config/colors";
 const MyTeamsPage = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
+  const [allowClick, setAllowClick] = React.useState(true);
   function handleClick(teamName: string) {
     context.setCurrentTeam(teamName);
     navigate("/teamleader");
@@ -41,10 +42,15 @@ const MyTeamsPage = () => {
                       borderRadius: 20,
                     }}
                     onClick={() => {
-                      handleClick(team.Name);
+                      if (allowClick) {
+                        handleClick(team.Name);
+                      }
                     }}
                   >
-                    <MyTeamChart teamName={team.Name} />
+                    <MyTeamChart
+                      teamName={team.Name}
+                      setAllowClick={setAllowClick}
+                    />
                   </Paper>
                 </Grid>
               );

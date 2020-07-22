@@ -29,7 +29,7 @@ describe("Login as Admin", () => {
     cy.get(".e1qjn9k90 > span").eq(1).click(); //select role teamLeader
     cy.get("input").eq(6).click().focus();
     cy.get(".e1qjn9k90 > span").eq(0).click(); //select team
-    cy.get("#save-btn").click();
+    cy.get("#save-btn").click({ force: true });
     cy.get("button")
       .should(
         "have.class",

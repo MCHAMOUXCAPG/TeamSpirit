@@ -322,6 +322,7 @@ const CreateUserDialog = ({
             size="large"
             type="submit"
             disabled={disabledSubmit}
+            id="save-btn"
           >
             Save
           </Button>

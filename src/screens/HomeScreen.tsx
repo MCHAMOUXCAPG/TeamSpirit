@@ -58,7 +58,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
         } else {
           Alert.alert(
             "Oops!",
-            err.response.data.message,
+            err.response.data.Message,
             [{ text: "Ok", style: "cancel" }],
             { cancelable: false }
           );

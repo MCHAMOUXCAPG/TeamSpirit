@@ -29,3 +29,7 @@
 .MuiInput-underline:after {
   border-bottom: none !important;
 }
+
+.MuiTableCell-paddingCheckbox {
+  text-transform: uppercase;
+}

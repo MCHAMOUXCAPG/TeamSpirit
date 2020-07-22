@@ -57,7 +57,7 @@ const EditUserDialog = ({
       setDisabledSubmit(true);
     }
   };
-  const [disabledSubmit, setDisabledSubmit] = useState(true);
+  const [disabledSubmit, setDisabledSubmit] = useState(false);
   const manageService: ManageUserService = new ManageUserService();
 
   async function updateUser(body: IUserDTO, id: string, token: string | null) {
@@ -74,7 +74,7 @@ const EditUserDialog = ({
         setMessage("User succesfully updated.");
         setLoading(false);
         setOpenMessage(true);
-        setDisabledSubmit(true);
+        setDisabledSubmit(false);
       })
       .catch((err) => {
         setBody({
@@ -88,7 +88,7 @@ const EditUserDialog = ({
         setMessage("Something went wrong. Try again later.");
         setLoading(false);
         setOpenMessage(true);
-        setDisabledSubmit(true);
+        setDisabledSubmit(false);
       });
   }
   function allLetter(inputtxt: string) {

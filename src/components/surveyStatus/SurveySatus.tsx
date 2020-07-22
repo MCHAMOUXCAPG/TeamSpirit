@@ -134,13 +134,13 @@ function SurveyStatus({
       .putTeamConfig(body, teamName, token)
       .then((res: any) => {
         setLoadingUpdate(false);
-        setDeleteMessage("Survey successfully updated!");
+        setDeleteMessage("Team successfully updated!");
         setOpen(false);
         setSuccessDialog(true);
       })
       .catch((err: any) => {
         setLoadingUpdate(false);
-        setDeleteMessage("Error updating the Survey. Please try again later.");
+        setDeleteMessage("Error updating the Team. Please try again later.");
         setOpen(false);
         setSuccessDialog(true);
       });

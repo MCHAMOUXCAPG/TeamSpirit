@@ -21,15 +21,14 @@ describe("Login as Admin", () => {
     cy.get("#outlined-required-2").type("admin123");
     cy.get("#ButtonStart").click();
     cy.url().should("include", "/admin");
-    cy.get("#root > div > div > div > div > button").eq(0).click(); // se abre "create"
-
+    cy.get("#root > div > div > div > div > button").eq(0).click(); // open "create"
     cy.get("#input-num-4").type("createUser");
     cy.get("#input-num-2").type("createUser@mail.com");
     cy.get("#input-num-3").type("123456");
     cy.get("input").eq(5).click().focus();
-    cy.get(".css-14hayre-DropDown > span").eq(1).click(); //select teamLeader
+    cy.get(".e1qjn9k90 > span").eq(1).click(); //select role teamLeader
     cy.get("input").eq(6).click().focus();
-    cy.get(".css-14hayre-DropDown > span").eq(0).click(); //select team PRUEBA
+    cy.get(".e1qjn9k90 > span").eq(0).click(); //select team
     cy.get("#save-btn").click();
     cy.get("button")
       .should(
@@ -40,7 +39,7 @@ describe("Login as Admin", () => {
       .click();
   });
 
-  it("Filter user and Delete", () => {
+  it("Edit user", () => {
     cy.visit("/Login");
     cy.get("#outlined-required").type("admin@gmail.com");
     cy.get("#outlined-required-2").type("admin123");
@@ -48,21 +47,20 @@ describe("Login as Admin", () => {
     cy.url().should("include", "/admin");
     cy.get("#root > div > div > div > div > div > div > div > button")
       .eq(0)
-      .click(); // boton de USERS
+      .click(); // USERS tab
     cy.get("#root > div > div > div > div > div > div > div > div > input")
       .eq(0)
       .click()
-      .type("createUser"); // filtrar por nombre user
+      .type("createUser"); // filter by user
     cy.contains("createUser")
       .parent("tr")
       .within(() => {
-        // all searches are automatically rooted to the found tr element
         cy.get("td > div > button").eq(0).click(); //edit table
       });
     cy.get("#input-num-1").clear().type("deleteUser");
     cy.get("#input-num-2").clear().type("deleteUser@mail.com");
     cy.get("input").eq(5).click().focus();
-    cy.get(".css-14hayre-DropDown > span").eq(1).click(); //select team PRUEBA
+    cy.get(".e1qjn9k90 > span").eq(1).click(); //select team
     cy.get("#save-btn").click();
     cy.get("button")
       .should(
@@ -90,11 +88,10 @@ describe("Login as Admin", () => {
     cy.get("#root > div > div > div > div > div > div > div > div > input")
       .eq(0)
       .click()
-      .type("deleteUser"); // filtrar por nombre user
+      .type("deleteUser"); // filter by user name
     cy.contains("deleteUser")
       .parent("tr")
       .within(() => {
-        // all searches are automatically rooted to the found tr element
         cy.get("td > div > button").eq(1).click(); //table delete button
       });
     cy.get("button")

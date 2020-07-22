@@ -5,6 +5,7 @@ import { AuthContext } from "../../context/auth";
 import NavBar from "../navBar/NavBar";
 import "./myTeamPage.css";
 import MyTeamChart from "../myTeamChart/myTeamChart";
+import colors from "../../config/colors";
 const MyTeamsPage = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
@@ -36,7 +37,7 @@ const MyTeamsPage = () => {
                     elevation={4}
                     style={{
                       padding: 20,
-                      boxShadow: "2px 3px 3px 3px #79C0C6",
+                      boxShadow: "2px 3px 3px 3px " + colors.primary,
                       borderRadius: 20,
                     }}
                     onClick={() => {

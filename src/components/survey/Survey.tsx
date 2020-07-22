@@ -251,7 +251,7 @@ const Survey = (props: any) => {
                   style={{
                     width: "70%",
                     padding: 20,
-                    boxShadow: "2px 3px 3px 3px #79C0C6",
+                    boxShadow: "2px 3px 3px 3px " + colors.primary,
                     borderRadius: 20,
                   }}
                 >
@@ -475,7 +475,7 @@ const Survey = (props: any) => {
                 <CircularProgress
                   size={24}
                   style={{
-                    color: "#fff",
+                    color: colors.white,
                   }}
                 />
               ) : (

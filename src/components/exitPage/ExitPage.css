@@ -1,3 +1,4 @@
+@import "../../config/colors.css";
 #bgImg {
   background-repeat: no-repeat;
   position: absolute;
@@ -13,13 +14,13 @@
 
 .headerSurvey {
   position: relative;
-  font-family: Roboto;
+  font-family: "Roboto";
   font-style: normal;
   font-weight: bold;
   font-size: 42px;
   line-height: 49px;
   text-align: right;
-  color: #ffffff;
+  color: var(--white);
   left: -3vw;
 }
 
@@ -27,13 +28,13 @@
   position: relative;
   width: 223px;
   height: 28px;
-  font-family: Roboto;
+  font-family: "Roboto";
   font-style: normal;
   font-weight: bold;
   font-size: 24px;
   line-height: 28px;
   text-align: right;
-  color: white;
+  color: var(--white);
   left: -4.3vw;
   top: -5vh;
 }

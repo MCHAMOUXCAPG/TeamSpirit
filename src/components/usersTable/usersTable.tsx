@@ -4,14 +4,18 @@ import { ManageUserService } from "../../services/Services";
 import { IUserTable, IUser, IUserData } from "../../models/interfaces";
 import "./usersTable.css";
 import EditUserDialog from "../editUserDialog/EditUserDialog";
+import CircularProgress from "@material-ui/core/CircularProgress";
+import colors from "../../config/colors";
 
 export default function MaterialTableDemo({
+  loadingService,
   teams,
   users,
   setLoadingP,
   setMessage,
   setOpenMessage,
 }: {
+  loadingService: boolean;
   teams: any;
   users: IUser[];
   setLoadingP: any;
@@ -19,7 +23,9 @@ export default function MaterialTableDemo({
   setOpenMessage: any;
 }) {
   const token = sessionStorage.getItem("token");
-  const [data, setData] = useState<IUserData[]>([]);
+  const [data, setData] = useState<IUserData[]>([
+    { Id: 0, Full_name: "", Email: "", Role: "", Teams: "" },
+  ]);
   const [openEdit, setOpenEdit] = useState(false);
   const handleClose = (bool: boolean) => {
     setOpenEdit(bool);
@@ -100,9 +106,31 @@ export default function MaterialTableDemo({
       />
 
       <MaterialTable
+        isLoading={loadingService}
         title=""
         columns={state.columns}
         data={data}
+        components={{
+          OverlayLoading: (props) => (
+            <CircularProgress
+              size={24}
+              style={{
+                color: colors.primary,
+                position: "relative",
+                top: "50%",
+                left: "49%",
+              }}
+            />
+          ),
+        }}
+        localization={{
+          body: {
+            editRow: {
+              deleteText: "Are you sure you want to delete this user?",
+            },
+            emptyDataSourceMessage: "",
+          },
+        }}
         actions={[
           {
             icon: "edit",

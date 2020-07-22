@@ -182,7 +182,12 @@ const CreateUserDialog = ({
         />
       </DialogContent>
       <DialogActions style={{ marginBottom: 10 }}>
-        <Button onClick={handleSubmit} color="primary" size="large">
+        <Button
+          onClick={handleSubmit}
+          color="primary"
+          size="large"
+          id="save-btn"
+        >
           Save
         </Button>
         <Button

@@ -252,6 +252,7 @@ const EditUserDialog = ({
           onClick={handleSubmit}
           color="primary"
           size="large"
+          id="save-btn"
           disabled={disabledSubmit}
         >
           Update
@@ -262,6 +263,7 @@ const EditUserDialog = ({
           }}
           size="large"
           color="primary"
+          id="cancel-btn"
         >
           Cancel
         </Button>

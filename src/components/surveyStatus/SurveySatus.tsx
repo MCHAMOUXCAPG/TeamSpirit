@@ -251,8 +251,7 @@ function SurveyStatus({
                         className="btn btn-contained"
                         startIcon={<Settings />}
                         onClick={handleClickOpen}
-                      >
-                        Configure your team
+                      >Configure your team
                       </Button>
                     </Grid>
                     <Grid item xs={12} sm={6}>

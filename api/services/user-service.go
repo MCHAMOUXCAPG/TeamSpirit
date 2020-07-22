@@ -76,11 +76,16 @@ func GetUser(c echo.Context) error {
 // @Success 200 {object} entities.User
 // @Failure 500 {object} dto.Error
 // @Failure 406 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /user/create [post]
 func CreateUser(c echo.Context) error {
 
 	var newUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
+
+	if newUser.Full_name == "" || newUser.Email == "" || newUser.Password == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_CREATEUSER)
+	}
 
 	if newUser.Role.Name == "TeamLeader" && (newUser.Teams == nil || len(newUser.Teams) == 0) {
 		return echo.NewHTTPError(http.StatusNotAcceptable, constants.VERIFY_ROLE)
@@ -108,6 +113,7 @@ func CreateUser(c echo.Context) error {
 // @Param UserDTO body entities.User true "UserDTO"
 // @Success 200 {object} entities.User
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /user/:id [put]
 func UpdateUser(c echo.Context) error {
 
@@ -119,8 +125,17 @@ func UpdateUser(c echo.Context) error {
 
 	var updatedUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedUser)
+
+	if updatedUser.Full_name == "" || updatedUser.Email == "" || updatedUser.Password == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_UPDATEUSER)
+	}
+
 	if updatedUser.Password != "" {
-		updatedUser.Password, _ = updateHashPassword(userID, updatedUser.Password)
+		updatedUser.Password, err = updateHashPassword(userID, updatedUser.Password)
+
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, constants.HASHPASSWORD_UPDATEUSER)
+		}
 	}
 
 	user, err := UserRepo.UpdateUser(userID, updatedUser)

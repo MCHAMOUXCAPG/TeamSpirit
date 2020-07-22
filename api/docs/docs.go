@@ -64,6 +64,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Survey"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -189,6 +195,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "404": {
@@ -368,6 +380,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Role"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -442,6 +460,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Role"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "500": {
@@ -565,6 +589,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Survey"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -651,6 +681,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Survey"
                         }
                     },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -689,6 +725,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Survey"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "500": {
@@ -731,6 +773,12 @@ var doc = `{
                     }
                 ],
                 "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -780,7 +828,7 @@ var doc = `{
         },
         "/survies": {
             "get": {
-                "description": "returns all survies",
+                "description": "returns all surveys",
                 "consumes": [
                     "application/json"
                 ],
@@ -790,7 +838,7 @@ var doc = `{
                 "tags": [
                     "Survies"
                 ],
-                "summary": "Get all survies",
+                "summary": "Get all surveys",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -890,6 +938,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Team"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -964,6 +1018,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Team"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "500": {
@@ -1087,6 +1147,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.User"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -1161,6 +1227,18 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "406": {
+                        "description": "Not Acceptable",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "500": {
@@ -1336,6 +1414,9 @@ var doc = `{
                 "Number": {
                     "type": "integer"
                 },
+                "SurveyCode": {
+                    "type": "string"
+                },
                 "User": {
                     "type": "string"
                 },
@@ -1358,6 +1439,9 @@ var doc = `{
         "entities.Survey": {
             "type": "object",
             "properties": {
+                "TeamName": {
+                    "type": "string"
+                },
                 "code": {
                     "type": "string"
                 },
@@ -1407,6 +1491,9 @@ var doc = `{
         "entities.User": {
             "type": "object",
             "properties": {
+                "RoleID": {
+                    "type": "integer"
+                },
                 "email": {
                     "type": "string"
                 },

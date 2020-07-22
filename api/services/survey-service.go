@@ -27,8 +27,8 @@ var (
 	SurveyRepo repositories.SurveyRepository = repositories.NewSurveyRepository()
 )
 
-// @Summary Get all survies
-// @Description returns all survies
+// @Summary Get all surveys
+// @Description returns all surveys
 // @Tags Survies
 // @Accept json
 // @Produce json
@@ -80,11 +80,32 @@ func GetSurvey(c echo.Context) error {
 // @Param SurveyDTO body entities.Survey true "SurveyDTO"
 // @Success 200 {object} entities.Survey
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /survey/create [post]
 func CreateSurvey(c echo.Context) error {
 
 	var newSurvey = &entities.Survey{}
 	json.NewDecoder(c.Request().Body).Decode(&newSurvey)
+
+	if newSurvey.Code == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CREATE_CREATESURVEY_EMPTY_FIELD)
+	}
+
+	if newSurvey.TeamName == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CREATE_CREATESURVEY_EMPTY_FIELD)
+	}
+
+	if newSurvey.StartDate.IsZero() {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CREATE_CREATESURVEY_EMPTY_FIELD)
+	}
+
+	if newSurvey.EndDate.IsZero() {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CREATE_CREATESURVEY_EMPTY_FIELD)
+	}
+
+	if newSurvey.EndDate.Before(newSurvey.StartDate) {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CREATE_CREATESURVEY_DATE_ERROR)
+	}
 
 	survey, err := SurveyRepo.CreateSurvey(newSurvey)
 
@@ -104,12 +125,33 @@ func CreateSurvey(c echo.Context) error {
 // @Param SurveyDTO body entities.Survey true "SurveyDTO"
 // @Success 200 {object} entities.Survey
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /survey/:surveyCode [put]
 func UpdateSurvey(c echo.Context) error {
 
 	surveyCode := c.Param("surveyCode")
 	var updatedSurvey = &entities.Survey{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedSurvey)
+
+	if updatedSurvey.Code == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.UPDATE_UPDATESURVEY_EMPTY_FIELD)
+	}
+
+	if updatedSurvey.TeamName == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.UPDATE_UPDATESURVEY_EMPTY_FIELD)
+	}
+
+	if updatedSurvey.StartDate.IsZero() {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.UPDATE_UPDATESURVEY_EMPTY_FIELD)
+	}
+
+	if updatedSurvey.EndDate.IsZero() {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.UPDATE_UPDATESURVEY_EMPTY_FIELD)
+	}
+
+	if updatedSurvey.EndDate.Before(updatedSurvey.StartDate) {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.UPDATE_UPDATESURVEY_DATE_ERROR)
+	}
 
 	survey, err := SurveyRepo.UpdateSurvey(surveyCode, updatedSurvey)
 
@@ -150,6 +192,7 @@ func DeleteSurvey(c echo.Context) error {
 // @Param []Notes body []entities.Note true "[]Notes"
 // @Success 200 {object} entities.Survey
 // @Failure 500 {object} dto.Error
+// @Failure 404 {object} dto.Error
 // @Router /survey/:surveyCode/addNotes [post]
 func AddNotesToSurvey(c echo.Context) error {
 
@@ -161,6 +204,10 @@ func AddNotesToSurvey(c echo.Context) error {
 	notes = hashAndSaltUser(notes)
 
 	survey, err := SurveyRepo.GetSurvey(surveyCode)
+
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETSURVEY)
+	}
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_ADDNOTES)
@@ -380,12 +427,33 @@ func CreateSurveyAutomatically() {
 // @Param endDate query string false "end date"
 // @Param teamName query string false "team name"
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /survey/exportCsv [get]
 func ExportSurveysCsv(c echo.Context) (err error) {
 
 	startDate := c.QueryParam("startDate")
 	endDate := c.QueryParam("endDate")
 	teamName := c.QueryParam("teamName")
+
+	layoutISO := "2006-01-02"
+	startDateParsed, _ := time.Parse(layoutISO, startDate)
+	endDateParsed, _ := time.Parse(layoutISO, endDate)
+
+	if teamName == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.EXPORT_EXPORTSURVEY_EMPTY_FIELD)
+	}
+
+	if startDateParsed.IsZero() {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.EXPORT_EXPORTSURVEY_EMPTY_FIELD)
+	}
+
+	if endDateParsed.IsZero() {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.EXPORT_EXPORTSURVEY_EMPTY_FIELD)
+	}
+
+	if endDateParsed.Before(startDateParsed) {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.EXPORT_EXPORTSURVEY_DATE_ERROR)
+	}
 
 	var headerCsv = []string{"StartDate", "EndDate", "Q.Number", "Note", "Code", "TeamName"}
 

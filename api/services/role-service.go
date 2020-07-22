@@ -75,11 +75,16 @@ func GetRole(c echo.Context) error {
 // @Param RoleDTO body entities.Role true "RoleDTO"
 // @Success 200 {object} entities.Role
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /role/create [post]
 func CreateRole(c echo.Context) error {
 
 	var newRole = &entities.Role{}
 	json.NewDecoder(c.Request().Body).Decode(&newRole)
+
+	if newRole.Name == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CREATE_CREATEROLE_NAME_EMPTY)
+	}
 
 	role, err := RoleRepo.CreateRole(newRole)
 
@@ -98,6 +103,7 @@ func CreateRole(c echo.Context) error {
 // @Param RoleDTO body entities.Role true "RoleDTO"
 // @Success 200 {object} entities.Role
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /role/:id [put]
 func UpdateRole(c echo.Context) error {
 
@@ -109,6 +115,10 @@ func UpdateRole(c echo.Context) error {
 
 	var updatedRole = &entities.Role{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedRole)
+
+	if updatedRole.Name == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CREATE_UPDATEROLE_NAME_EMPTY)
+	}
 
 	role, err := RoleRepo.UpdateRole(roleID, updatedRole)
 

@@ -13,6 +13,7 @@ type UserRepository interface {
 	CreateUser(user *entities.User) (*entities.User, error)
 	UpdateUser(userID int, user *entities.User) (*entities.User, error)
 	DeleteUser(userID int) (*entities.User, error)
+	GetUserByAdminRole() (*entities.User, error)
 }
 
 type UserRepo struct{}
@@ -33,6 +34,14 @@ func (*UserRepo) GetUser(userID int) (*entities.User, error) {
 
 	var user = &entities.User{}
 	result := config.DB.Where("id = ? ", userID).Preload("Role").Preload("Teams").Find(&user)
+
+	return user, result.Error
+}
+
+func (*UserRepo) GetUserByAdminRole() (*entities.User, error) {
+
+	var user = &entities.User{}
+	result := config.DB.Where("role_id = 1 ").Preload("Role").Preload("Teams").Find(&user)
 
 	return user, result.Error
 }

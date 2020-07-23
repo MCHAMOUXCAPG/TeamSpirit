@@ -64,6 +64,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Survey"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "401": {
                         "description": "Unauthorized",
                         "schema": {
@@ -191,6 +197,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.User"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "404": {
                         "description": "Not Found",
                         "schema": {
@@ -216,7 +228,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey resultByQuestions",
                 "parameters": [
@@ -257,7 +269,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey resultByUsers",
                 "parameters": [
@@ -368,6 +380,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Role"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -444,6 +462,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Role"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -495,7 +519,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Get survey by it code",
                 "parameters": [
@@ -537,7 +561,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Update a survey",
                 "parameters": [
@@ -565,6 +589,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Survey"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -582,7 +612,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Delete a survey",
                 "parameters": [
@@ -620,7 +650,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Add notes to survey",
                 "parameters": [
@@ -651,6 +681,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Survey"
                         }
                     },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -670,7 +706,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Create a new survey",
                 "parameters": [
@@ -691,6 +727,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Survey"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -707,7 +749,7 @@ var doc = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Surveys export",
                 "parameters": [
@@ -715,22 +757,31 @@ var doc = `{
                         "type": "string",
                         "description": "start date",
                         "name": "startDate",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "end date",
                         "name": "endDate",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "team name",
                         "name": "teamName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -750,7 +801,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey result",
                 "parameters": [
@@ -780,7 +831,7 @@ var doc = `{
         },
         "/survies": {
             "get": {
-                "description": "returns all survies",
+                "description": "returns all surveys",
                 "consumes": [
                     "application/json"
                 ],
@@ -788,9 +839,9 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
-                "summary": "Get all survies",
+                "summary": "Get all surveys",
                 "responses": {
                     "200": {
                         "description": "OK",
@@ -890,6 +941,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.Team"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -964,6 +1021,12 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.Team"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "500": {
@@ -1087,6 +1150,12 @@ var doc = `{
                             "$ref": "#/definitions/entities.User"
                         }
                     },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
                     "500": {
                         "description": "Internal Server Error",
                         "schema": {
@@ -1161,6 +1230,18 @@ var doc = `{
                         "description": "OK",
                         "schema": {
                             "$ref": "#/definitions/entities.User"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "406": {
+                        "description": "Not Acceptable",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "500": {
@@ -1336,6 +1417,9 @@ var doc = `{
                 "Number": {
                     "type": "integer"
                 },
+                "SurveyCode": {
+                    "type": "string"
+                },
                 "User": {
                     "type": "string"
                 },
@@ -1358,6 +1442,9 @@ var doc = `{
         "entities.Survey": {
             "type": "object",
             "properties": {
+                "TeamName": {
+                    "type": "string"
+                },
                 "code": {
                     "type": "string"
                 },
@@ -1407,6 +1494,9 @@ var doc = `{
         "entities.User": {
             "type": "object",
             "properties": {
+                "RoleID": {
+                    "type": "integer"
+                },
                 "email": {
                     "type": "string"
                 },

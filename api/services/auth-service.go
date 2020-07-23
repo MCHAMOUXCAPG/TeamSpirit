@@ -32,11 +32,17 @@ var (
 // @Failure 500 {object} dto.Error
 // @Failure 406 {object} dto.Error
 // @Failure 401 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /access [post]
 func AccessToSurvey(c echo.Context) error {
 	access := &dto.Access{}
 
 	json.NewDecoder(c.Request().Body).Decode(&access)
+
+	if access.Code == "" || access.User == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_ACCESS)
+	}
+
 	survey, err := SurveyRepo.GetSurvey(access.Code)
 
 	if gorm.IsRecordNotFoundError(err) {
@@ -51,7 +57,11 @@ func AccessToSurvey(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusNotAcceptable, constants.SURVEY_COMPLETED_ACCESS)
 	}
 
-	team, _ := TeamRepo.GetTeam(survey.TeamName)
+	team, err := TeamRepo.GetTeam(survey.TeamName)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETTEAM_ACCESS)
+	}
 
 	if len(survey.Notes) >= (team.Num_mumbers * 6) {
 		return echo.NewHTTPError(http.StatusUnauthorized, constants.MAX_REACHED_ACCESS)
@@ -139,12 +149,17 @@ func Login(c echo.Context) error {
 // @Success 200 {object} entities.User
 // @Failure 500 {object} dto.Error
 // @Failure 404 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /register [post]
 func Register(c echo.Context) error {
 
 	var newUser = &entities.User{}
 
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
+
+	if newUser.Full_name == "" || newUser.Password == "" || newUser.Email == "" {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_REGISTER)
+	}
 
 	_, err := AuthRepo.GetUserByEmail(newUser.Email)
 

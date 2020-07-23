@@ -11,6 +11,20 @@ var GETSURVEY_ACCESS = &dto.Error{
 	Function: "AccessToSurvey",
 }
 
+var CANNOT_BE_EMPTY_ACCESS = &dto.Error{
+	Status:   400,
+	Message:  "Code and User cannot be empty",
+	Path:     "api/services/auth-service.go",
+	Function: "AccessToSurvey",
+}
+
+var GETTEAM_ACCESS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method TeamRepo.GetTeam",
+	Path:     "api/services/auth-service.go",
+	Function: "AccessToSurvey",
+}
+
 var INVALID_CODE_ACCESS = &dto.Error{
 	Status:   404,
 	Message:  "Invalid code",
@@ -72,6 +86,13 @@ var TOKEN_SIGNED_LOGIN = &dto.Error{
 	Message:  "Some error happened when calling the method token.SignedString",
 	Path:     "api/services/auth-service.go",
 	Function: "Login",
+}
+
+var CANNOT_BE_EMPTY_REGISTER = &dto.Error{
+	Status:   400,
+	Message:  "FullName and Email and Password cannot be empty",
+	Path:     "api/services/auth-service.go",
+	Function: "Register",
 }
 
 var GETUSERBYEMAIL_REGISTER = &dto.Error{
@@ -165,6 +186,20 @@ var DELETE_DELETEROLE = &dto.Error{
 	Function: "DeleteRole",
 }
 
+var CREATE_CREATEROLE_NAME_EMPTY = &dto.Error{
+	Status:   400,
+	Message:  "Name cannot be empty",
+	Path:     "api/services/role-service.go",
+	Function: "CreateRole",
+}
+
+var CREATE_UPDATEROLE_NAME_EMPTY = &dto.Error{
+	Status:   400,
+	Message:  "Name cannot be empty",
+	Path:     "api/services/role-service.go",
+	Function: "UpdateRole",
+}
+
 var GETS_GETTEAMS = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method TeamRepo.GetTeams",
@@ -190,12 +225,26 @@ var CREATE_CREATETEAM = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method TeamRepo.CreateTeam",
 	Path:     "api/services/team-service.go",
-	Function: "CreateRole",
+	Function: "CreateTeam",
+}
+
+var CANNOT_BE_EMPTY_CREATETEAM = &dto.Error{
+	Status:   400,
+	Message:  "All fields cannot be empty or null",
+	Path:     "api/services/team-service.go",
+	Function: "CreateTeam",
 }
 
 var UPDATE_UPDATETEAM = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method TeamRepo.UpdateTeam",
+	Path:     "api/services/team-service.go",
+	Function: "UpdateTeam",
+}
+
+var CANNOT_BE_EMPTY_UPDATETEAM = &dto.Error{
+	Status:   400,
+	Message:  "All fields cannot be empty or null",
 	Path:     "api/services/team-service.go",
 	Function: "UpdateTeam",
 }
@@ -242,6 +291,13 @@ var CREATE_CREATEUSER = &dto.Error{
 	Function: "CreateUser",
 }
 
+var CANNOT_BE_EMPTY_CREATEUSER = &dto.Error{
+	Status:   400,
+	Message:  "All fields cannot be empty or null",
+	Path:     "api/services/user-service.go",
+	Function: "CreateUser",
+}
+
 var CONVERTPARAM_UPDATEUSER = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method strconv.Atoi",
@@ -252,6 +308,20 @@ var CONVERTPARAM_UPDATEUSER = &dto.Error{
 var UPDATE_UPDATEUSER = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method Userepo.UpdateUser",
+	Path:     "api/services/user-service.go",
+	Function: "UpdateUser",
+}
+
+var CANNOT_BE_EMPTY_UPDATEUSER = &dto.Error{
+	Status:   400,
+	Message:  "All fields cannot be empty or null",
+	Path:     "api/services/user-service.go",
+	Function: "UpdateUser",
+}
+
+var HASHPASSWORD_UPDATEUSER = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method updateHashPassword",
 	Path:     "api/services/user-service.go",
 	Function: "UpdateUser",
 }
@@ -394,4 +464,46 @@ var VERIFY_ROLE = &dto.Error{
 	Message:  "TeamLeader without Teams cannot be created",
 	Path:     "api/services/user-service.go",
 	Function: "CreateUser",
+}
+
+var CREATE_CREATESURVEY_EMPTY_FIELD = &dto.Error{
+	Status:   400,
+	Message:  "All mandatory fields must be completed to create the survey",
+	Path:     "api/services/survey-service.go",
+	Function: "CreateSurvey",
+}
+
+var CREATE_CREATESURVEY_DATE_ERROR = &dto.Error{
+	Status:   400,
+	Message:  "Start date must be before end date",
+	Path:     "api/services/survey-service.go",
+	Function: "CreateSurvey",
+}
+
+var UPDATE_UPDATESURVEY_EMPTY_FIELD = &dto.Error{
+	Status:   400,
+	Message:  "All mandatory fields must be completed to update the survey",
+	Path:     "api/services/survey-service.go",
+	Function: "UpdateSurvey",
+}
+
+var UPDATE_UPDATESURVEY_DATE_ERROR = &dto.Error{
+	Status:   400,
+	Message:  "Start date must be before end date",
+	Path:     "api/services/survey-service.go",
+	Function: "UpdateSurvey",
+}
+
+var EXPORT_EXPORTSURVEY_EMPTY_FIELD = &dto.Error{
+	Status:   400,
+	Message:  "All mandatory fields must be completed to export the surveys",
+	Path:     "api/services/survey-service.go",
+	Function: "ExportSurveysCsv",
+}
+
+var EXPORT_EXPORTSURVEY_DATE_ERROR = &dto.Error{
+	Status:   400,
+	Message:  "Start date must be before end date",
+	Path:     "api/services/survey-service.go",
+	Function: "ExportSurveysCsv",
 }

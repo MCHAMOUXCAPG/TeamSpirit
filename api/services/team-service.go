@@ -70,11 +70,16 @@ func GetTeam(c echo.Context) error {
 // @Param TeamDTO body entities.Team true "TeamDTO"
 // @Success 200 {object} entities.Team
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /team/create [post]
 func CreateTeam(c echo.Context) error {
 
 	var newTeam = &entities.Team{}
 	json.NewDecoder(c.Request().Body).Decode(&newTeam)
+
+	if newTeam.Name == "" || newTeam.Num_mumbers <= 0 || newTeam.StartDate.IsZero() || newTeam.Frequency <= 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_CREATETEAM)
+	}
 
 	team, err := TeamRepo.CreateTeam(newTeam)
 
@@ -94,12 +99,17 @@ func CreateTeam(c echo.Context) error {
 // @Param TeamDTO body entities.Team true "TeamDTO"
 // @Success 200 {object} entities.Team
 // @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
 // @Router /team/:teamName [put]
 func UpdateTeam(c echo.Context) error {
 
 	teamName := c.Param("teamName")
 	var updatedTeam = &entities.Team{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedTeam)
+
+	if updatedTeam.Name == "" || updatedTeam.Num_mumbers <= 0 || updatedTeam.StartDate.IsZero() || updatedTeam.Frequency <= 0 {
+		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_UPDATETEAM)
+	}
 
 	team, err := TeamRepo.UpdateTeam(teamName, updatedTeam)
 

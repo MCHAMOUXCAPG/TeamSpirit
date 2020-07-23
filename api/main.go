@@ -26,6 +26,8 @@ func main() {
 
 	services.VerifyRole()
 
+	services.CreateDefaultAdmin()
+
 	services.CreateSurveyAutomatically()
 
 	config.ConfigSwagger()

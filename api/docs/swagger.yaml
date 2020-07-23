@@ -84,6 +84,8 @@ definitions:
     properties:
       Number:
         type: integer
+      SurveyCode:
+        type: string
       User:
         type: string
       note:
@@ -98,6 +100,8 @@ definitions:
     type: object
   entities.Survey:
     properties:
+      TeamName:
+        type: string
       code:
         type: string
       endDate:
@@ -130,6 +134,8 @@ definitions:
     type: object
   entities.User:
     properties:
+      RoleID:
+        type: integer
       email:
         type: string
       full_name:
@@ -179,6 +185,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "401":
           description: Unauthorized
           schema:
@@ -262,6 +272,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "404":
           description: Not Found
           schema:
@@ -299,7 +313,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Survey resultByQuestions
       tags:
-      - Survies
+      - Surveys
   /resultByUsers/:teamName:
     get:
       consumes:
@@ -326,7 +340,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Survey resultByUsers
       tags:
-      - Survies
+      - Surveys
   /role/:id:
     delete:
       consumes:
@@ -403,6 +417,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -429,6 +447,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -481,7 +503,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Delete a survey
       tags:
-      - Survies
+      - Surveys
     get:
       consumes:
       - application/json
@@ -509,7 +531,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Get survey by it code
       tags:
-      - Survies
+      - Surveys
     put:
       consumes:
       - application/json
@@ -533,13 +555,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.Error'
       summary: Update a survey
       tags:
-      - Survies
+      - Surveys
   /survey/:surveyCode/addNotes:
     post:
       consumes:
@@ -566,13 +592,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.Error'
       summary: Add notes to survey
       tags:
-      - Survies
+      - Surveys
   /survey/create:
     post:
       consumes:
@@ -592,13 +622,17 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Survey'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.Error'
       summary: Create a new survey
       tags:
-      - Survies
+      - Surveys
   /survey/exportCsv:
     get:
       description: returns surveys export on csv stream
@@ -606,25 +640,32 @@ paths:
       - description: start date
         in: query
         name: startDate
+        required: true
         type: string
       - description: end date
         in: query
         name: endDate
+        required: true
         type: string
       - description: team name
         in: query
         name: teamName
+        required: true
         type: string
       produces:
       - application/octet-stream
       responses:
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.Error'
       summary: Surveys export
       tags:
-      - Survies
+      - Surveys
   /survey/result/:teamName:
     get:
       consumes:
@@ -649,12 +690,12 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Survey result
       tags:
-      - Survies
+      - Surveys
   /survies:
     get:
       consumes:
       - application/json
-      description: returns all survies
+      description: returns all surveys
       produces:
       - application/json
       responses:
@@ -668,9 +709,9 @@ paths:
           description: Internal Server Error
           schema:
             $ref: '#/definitions/dto.Error'
-      summary: Get all survies
+      summary: Get all surveys
       tags:
-      - Survies
+      - Surveys
   /team/:teamName:
     delete:
       consumes:
@@ -747,6 +788,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -773,6 +818,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Team'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -877,6 +926,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -903,6 +956,14 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "406":
+          description: Not Acceptable
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:

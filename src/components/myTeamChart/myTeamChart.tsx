@@ -26,15 +26,15 @@ const MyTeamChart = (props: any) => {
     await surveyService
       .getCurrentResult(teamName, token)
       .then((res) => {
-        props.setAllowClick(true);
         setNotData(false);
         setCurrentSurveyResult(res.data);
         setLoading(false);
       })
       .catch((err) => {
         setNotData(true);
-        props.setAllowClick(false);
-        console.log(err);
+        let newAllowClick: string[] = props.allowClickTeams;
+        newAllowClick.push(teamName);
+        props.setAllowClickTeams(newAllowClick);
       });
   }
   useEffect(() => {

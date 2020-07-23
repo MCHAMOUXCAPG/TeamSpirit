@@ -1,4 +1,4 @@
-import React, { useContext } from "react";
+import React, { useContext, useState } from "react";
 import { Container, Paper, Grid } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
@@ -9,7 +9,7 @@ import colors from "../../config/colors";
 const MyTeamsPage = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
-  const [allowClick, setAllowClick] = React.useState(true);
+  const [allowClickTeams, setAllowClickTeams] = useState<string[]>([]);
   function handleClick(teamName: string) {
     context.setCurrentTeam(teamName);
     navigate("/teamleader");
@@ -30,7 +30,7 @@ const MyTeamsPage = () => {
           </Grid>
 
           <Grid container spacing={8}>
-            {context.myTeams.map((team) => {
+            {context.myTeams.map((team, index) => {
               return (
                 <Grid key={team.Name} item xs={12} md={6}>
                   <Paper
@@ -42,14 +42,22 @@ const MyTeamsPage = () => {
                       borderRadius: 20,
                     }}
                     onClick={() => {
-                      if (allowClick) {
+                      let show = true;
+                      allowClickTeams.forEach((clickTeam) => {
+                        if (clickTeam === team.Name) {
+                          show = false;
+                          return false;
+                        }
+                      });
+                      if (show) {
                         handleClick(team.Name);
                       }
                     }}
                   >
                     <MyTeamChart
                       teamName={team.Name}
-                      setAllowClick={setAllowClick}
+                      setAllowClickTeams={setAllowClickTeams}
+                      allowClickTeams={allowClickTeams}
                     />
                   </Paper>
                 </Grid>

@@ -29,7 +29,7 @@ var (
 
 // @Summary Get all surveys
 // @Description returns all surveys
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Success 200 {object} []entities.Survey
@@ -48,7 +48,7 @@ func GetSurvies(c echo.Context) error {
 
 // @Summary Get survey by it code
 // @Description returns survey by it code
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param surveyCode path string true "survey Code"
@@ -74,7 +74,7 @@ func GetSurvey(c echo.Context) error {
 
 // @Summary Create a new survey
 // @Description returns the survey created
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param SurveyDTO body entities.Survey true "SurveyDTO"
@@ -118,7 +118,7 @@ func CreateSurvey(c echo.Context) error {
 
 // @Summary Update a survey
 // @Description returns the survey updated
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param surveyCode path string true "survey Code"
@@ -164,7 +164,7 @@ func UpdateSurvey(c echo.Context) error {
 
 // @Summary Delete a survey
 // @Description returns a empty survey
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param surveyCode path string true "survey Code"
@@ -185,7 +185,7 @@ func DeleteSurvey(c echo.Context) error {
 
 // @Summary Add notes to survey
 // @Description you should send an array of Notes. Those will be saved in the survey with code provided.
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param surveyCode path string true "survey Code"
@@ -240,7 +240,7 @@ func hashAndSaltUser(notes []entities.Note) []entities.Note {
 
 // @Summary Survey result
 // @Description returns the result survey
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param teamName path string true "Team name"
@@ -266,7 +266,7 @@ func GetResultSurvey(c echo.Context) error {
 
 // @Summary Survey resultByQuestions
 // @Description returns the result survey grouped by users
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param teamName path string true "Team name"
@@ -316,7 +316,7 @@ func mapQuestionNotes(notes []*dto.ResultByQuestions, surveyCode string) ([]*dto
 
 // @Summary Survey resultByUsers
 // @Description returns the result survey grouped by users
-// @Tags Survies
+// @Tags Surveys
 // @Accept json
 // @Produce json
 // @Param teamName path string true "Team name"
@@ -421,11 +421,11 @@ func CreateSurveyAutomatically() {
 
 // @Summary Surveys export
 // @Description returns surveys export on csv stream
-// @Tags Survies
+// @Tags Surveys
 // @Produce octet-stream
-// @Param startDate query string false "start date"
-// @Param endDate query string false "end date"
-// @Param teamName query string false "team name"
+// @Param startDate query string true "start date"
+// @Param endDate query string true "end date"
+// @Param teamName query string true "team name"
 // @Failure 500 {object} dto.Error
 // @Failure 400 {object} dto.Error
 // @Router /survey/exportCsv [get]

@@ -230,9 +230,9 @@ const styles = StyleSheet.create({
   },
   insideButton: {
     textAlign: "center",
-    fontSize: 24,
+    fontSize: hp('3%'),
     paddingBottom: hp("1.6%"),
-    paddingTop: hp("1.9%"),
+    paddingTop: hp("2.2%"),
     color: colors.white,
   },
   activityIndicator: {

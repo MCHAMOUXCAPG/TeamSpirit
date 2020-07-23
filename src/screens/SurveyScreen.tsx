@@ -89,7 +89,6 @@ const SurveyScreen = ({
     return () => backHandler.remove();
   }, []);
   const handleSurveyCompletion = () => {
-    console.log(questionsResponse);
     setLoading(true);
     sendSurvey(surveyCode.code, questionsResponse);
   };

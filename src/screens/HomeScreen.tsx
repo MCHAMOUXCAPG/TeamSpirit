@@ -133,6 +133,8 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
               onFocus={openKeyboard}
               onChangeText={(inputText) => setInputText(inputText)}
               value={inputText}
+              autoCapitalize="characters"
+
             />
             <TouchableOpacity onPress={submitHandler} style={styles.submit}>
               <Text style={styles.insideButton}>Start</Text>

@@ -147,3 +147,8 @@
 .MuiDialogActions-root {
   justify-content: center !important;
 }
+
+#update-team .MuiFormControl-marginNormal {
+  margin-top: 0px !important;
+  margin-bottom: 0px !important;
+}

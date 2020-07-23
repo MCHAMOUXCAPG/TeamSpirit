@@ -251,7 +251,8 @@ function SurveyStatus({
                         className="btn btn-contained"
                         startIcon={<Settings />}
                         onClick={handleClickOpen}
-                      >Configure your team
+                      >
+                        Configure your team
                       </Button>
                     </Grid>
                     <Grid item xs={12} sm={6}>
@@ -319,6 +320,7 @@ function SurveyStatus({
                       </Dialog>
 
                       <Dialog
+                        id="update-team"
                         open={open}
                         onClose={handleClose}
                         aria-labelledby="form-dialog-title"

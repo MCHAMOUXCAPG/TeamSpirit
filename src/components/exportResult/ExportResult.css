@@ -114,3 +114,7 @@
 #export-container .MuiExpansionPanelSummary-content {
   justify-content: center !important;
 }
+
+#export-container .MuiFormControl-marginNormal {
+  margin-top: 8px !important;
+}

@@ -79,7 +79,7 @@ function ExportResult({ teamName }: { teamName: string }) {
   };
 
   return (
-    <div  ref={React.createRef()}>
+    <div ref={React.createRef()}>
       <ExpansionPanel id="export-container">
         <ExpansionPanelSummary
           aria-controls="panel1a-content"
@@ -175,6 +175,7 @@ function ExportResult({ teamName }: { teamName: string }) {
                   </Grid>
                   <Grid item xs={4}>
                     <Button
+                      style={{ position: "relative", top: -10 }}
                       variant="outlined"
                       className="bt btn-containe"
                       onClick={() => {

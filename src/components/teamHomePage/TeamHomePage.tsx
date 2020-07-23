@@ -169,6 +169,8 @@ const TeamHomePage = () => {
               <DetailResults
                 usersResult={currentDetailResultsUsers}
                 questionsResult={currentDetailResultsQuestions}
+                completed={currentSurveyResult.Completed}
+                noData={noData}
               />
             </Grid>
           </Grid>

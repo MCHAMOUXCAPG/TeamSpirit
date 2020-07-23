@@ -313,7 +313,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Survey resultByQuestions
       tags:
-      - Survies
+      - Surveys
   /resultByUsers/:teamName:
     get:
       consumes:
@@ -340,7 +340,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Survey resultByUsers
       tags:
-      - Survies
+      - Surveys
   /role/:id:
     delete:
       consumes:
@@ -503,7 +503,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Delete a survey
       tags:
-      - Survies
+      - Surveys
     get:
       consumes:
       - application/json
@@ -531,7 +531,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Get survey by it code
       tags:
-      - Survies
+      - Surveys
     put:
       consumes:
       - application/json
@@ -565,7 +565,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Update a survey
       tags:
-      - Survies
+      - Surveys
   /survey/:surveyCode/addNotes:
     post:
       consumes:
@@ -602,7 +602,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Add notes to survey
       tags:
-      - Survies
+      - Surveys
   /survey/create:
     post:
       consumes:
@@ -632,7 +632,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Create a new survey
       tags:
-      - Survies
+      - Surveys
   /survey/exportCsv:
     get:
       description: returns surveys export on csv stream
@@ -640,14 +640,17 @@ paths:
       - description: start date
         in: query
         name: startDate
+        required: true
         type: string
       - description: end date
         in: query
         name: endDate
+        required: true
         type: string
       - description: team name
         in: query
         name: teamName
+        required: true
         type: string
       produces:
       - application/octet-stream
@@ -662,7 +665,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Surveys export
       tags:
-      - Survies
+      - Surveys
   /survey/result/:teamName:
     get:
       consumes:
@@ -687,7 +690,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Survey result
       tags:
-      - Survies
+      - Surveys
   /survies:
     get:
       consumes:
@@ -708,7 +711,7 @@ paths:
             $ref: '#/definitions/dto.Error'
       summary: Get all surveys
       tags:
-      - Survies
+      - Surveys
   /team/:teamName:
     delete:
       consumes:

@@ -228,7 +228,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey resultByQuestions",
                 "parameters": [
@@ -269,7 +269,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey resultByUsers",
                 "parameters": [
@@ -519,7 +519,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Get survey by it code",
                 "parameters": [
@@ -561,7 +561,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Update a survey",
                 "parameters": [
@@ -612,7 +612,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Delete a survey",
                 "parameters": [
@@ -650,7 +650,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Add notes to survey",
                 "parameters": [
@@ -706,7 +706,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Create a new survey",
                 "parameters": [
@@ -749,7 +749,7 @@ var doc = `{
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Surveys export",
                 "parameters": [
@@ -757,19 +757,22 @@ var doc = `{
                         "type": "string",
                         "description": "start date",
                         "name": "startDate",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "end date",
                         "name": "endDate",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "team name",
                         "name": "teamName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -798,7 +801,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey result",
                 "parameters": [
@@ -836,7 +839,7 @@ var doc = `{
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Get all surveys",
                 "responses": {

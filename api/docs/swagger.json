@@ -213,7 +213,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey resultByQuestions",
                 "parameters": [
@@ -254,7 +254,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey resultByUsers",
                 "parameters": [
@@ -504,7 +504,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Get survey by it code",
                 "parameters": [
@@ -546,7 +546,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Update a survey",
                 "parameters": [
@@ -597,7 +597,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Delete a survey",
                 "parameters": [
@@ -635,7 +635,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Add notes to survey",
                 "parameters": [
@@ -691,7 +691,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Create a new survey",
                 "parameters": [
@@ -734,7 +734,7 @@
                     "application/octet-stream"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Surveys export",
                 "parameters": [
@@ -742,19 +742,22 @@
                         "type": "string",
                         "description": "start date",
                         "name": "startDate",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "end date",
                         "name": "endDate",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     },
                     {
                         "type": "string",
                         "description": "team name",
                         "name": "teamName",
-                        "in": "query"
+                        "in": "query",
+                        "required": true
                     }
                 ],
                 "responses": {
@@ -783,7 +786,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Survey result",
                 "parameters": [
@@ -821,7 +824,7 @@
                     "application/json"
                 ],
                 "tags": [
-                    "Survies"
+                    "Surveys"
                 ],
                 "summary": "Get all surveys",
                 "responses": {

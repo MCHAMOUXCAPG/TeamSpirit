@@ -186,3 +186,21 @@ func updateHashPassword(userID int, password string) (string, error) {
 
 	return HashAndSalt(password)
 }
+
+func CreateDefaultAdmin() {
+
+	var newUser = &entities.User{Full_name: "DefaultAdmin", Email: "adminTeamSpirit@capgemini.com", Password: "TeamSpiritAdmin!", RoleID: 1}
+	_, err := UserRepo.GetUserByAdminRole()
+
+	if err != nil && !gorm.IsRecordNotFoundError(err) {
+		panic("Error adding default Admin")
+	}
+
+	if gorm.IsRecordNotFoundError(err) {
+		_, errAddAdmin := UserRepo.CreateUser(newUser)
+		if errAddAdmin != nil {
+			panic("Error creating default Admin")
+		}
+	}
+
+}

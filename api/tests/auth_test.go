@@ -22,7 +22,8 @@ func TestAccessToSurvey(t *testing.T) {
 	team1, _ := TeamRepo.CreateTeam(&entities.Team{
 		Name:        "team1",
 		StartDate:   time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
-		Num_mumbers: 5, Frequency: 15,
+		Num_mumbers: 5,
+		Frequency:   15,
 		Surveys: []entities.Survey{
 			{
 				StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC),
@@ -34,7 +35,7 @@ func TestAccessToSurvey(t *testing.T) {
 
 	// Create a new Request
 	survey2 := &entities.Survey{}
-	accessCodeJSON := `{"Code":"code1"}`
+	accessCodeJSON := `{"Code":"code1","User": "User 1"}`
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPost, "/access", strings.NewReader(accessCodeJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)

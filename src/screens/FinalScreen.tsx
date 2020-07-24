@@ -13,7 +13,13 @@ import {
 } from "react-native-responsive-screen";
 import colors from "../config/colors";
 
-const FinalScreen = ({ route, navigation }) => {
+const FinalScreen = ({
+  route,
+  navigation,
+}: {
+  route: any;
+  navigation: any;
+}) => {
   const { message } = route.params;
 
   useEffect(() => {
@@ -33,11 +39,16 @@ const FinalScreen = ({ route, navigation }) => {
         source={require("../assets/homeBackground.png")}
         style={styles.imgBackground}
       >
-      <TouchableOpacity onPress={() => navigation.reset({
-        routes:[{name:'HomeScreen'}],
-      })} style={styles.submit}>
-              <Text style={styles.insideButton}>Back</Text>
-      </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() =>
+            navigation.reset({
+              routes: [{ name: "HomeScreen" }],
+            })
+          }
+          style={styles.submit}
+        >
+          <Text style={styles.insideButton}>Back</Text>
+        </TouchableOpacity>
         <Text style={styles.message}>{message}</Text>
       </ImageBackground>
     </View>
@@ -74,14 +85,14 @@ const styles = StyleSheet.create({
   submit: {
     width: wp("35%"),
     height: hp("8%"),
-    top: hp('22%'),
+    top: hp("22%"),
     borderColor: colors.white,
     borderWidth: 1,
     borderRadius: 40,
   },
   insideButton: {
     textAlign: "center",
-    fontSize: hp('3.2%'),
+    fontSize: hp("3.2%"),
     paddingBottom: hp("1.5%"),
     paddingTop: hp("1.7%"),
     color: colors.white,

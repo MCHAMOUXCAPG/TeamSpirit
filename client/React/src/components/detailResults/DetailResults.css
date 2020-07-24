@@ -1,0 +1,105 @@
+@import "../../config/colors.css";
+#Header {
+  position: relative;
+  font-family: "Roboto";
+  font-style: normal;
+  font-size: 14px;
+  line-height: 14px;
+  color: var(--primary);
+  bottom: 5px;
+  text-align: center;
+}
+#mainPanel {
+  background: var(--white);
+  border: 1px solid var(--primary);
+  box-sizing: border-box;
+  box-shadow: 0px 4px 4px rgba(63, 134, 140, 0.25);
+  border-radius: 25px !important;
+}
+.loupe-icon {
+  top: 5px;
+  position: relative;
+}
+#user-tab {
+  border: 1px solid var(--primary);
+  background: var(--white);
+  border-radius: 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+.PrivateTabIndicator-colorSecondary-3 {
+  background-color: var(--white) !important;
+}
+.MuiSvgIcon-colorPrimary {
+  color: var(--primary) !important ;
+}
+.MuiSvgIcon-colorSecondary {
+  color: var(--white) !important ;
+}
+#question-tab {
+  border: 1px solid var(--primary);
+  background: var(--white);
+  border-radius: 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
+
+#second-panel {
+  background: var(--white);
+  box-sizing: border-box;
+  box-shadow: 0 0 0 1px var(--primary);
+  border-radius: 25px;
+  margin-bottom: 10px;
+}
+#panel2a-header {
+  background: var(--primary);
+  border: 1px solid var(--primary);
+  box-sizing: border-box;
+  border-radius: 25px;
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: bold;
+  font-size: 14px;
+  line-height: 14px;
+  /* identical to box height */
+
+  color: var(--white);
+  box-shadow: none;
+}
+.Mui-selected {
+  background-color: var(--primary) !important;
+  font-family: Roboto !important;
+  font-style: normal !important;
+  font-weight: bold !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  /* identical to box height */
+
+  text-align: center !important;
+
+  color: var(--white) !important;
+}
+.MuiExpansionPanelDetails-root {
+  font-family: "Roboto" !important;
+  font-style: normal !important;
+  font-weight: normal !important;
+  font-size: 14px !important;
+  line-height: 14px !important;
+  /* identical to box height */
+
+  color: #919191 !important;
+}
+.MuiTabs-indicator {
+  background-color: var(--white) 00 !important;
+}
+#inner-grid {
+  background: var(--white);
+  border: 1px solid var(--primary);
+  border-radius: 15px;
+  width: fit-content;
+  border-top-left-radius: 0;
+}
+
+.MuiExpansionPanel-root:before {
+  background-color: transparent !important;
+}

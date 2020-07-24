@@ -1,0 +1,27 @@
+@import "../../config/colors.css";
+.btn {
+  width: 100%;
+  border-radius: 25px !important;
+  font-size: 0.8em !important;
+  text-transform: none !important;
+}
+
+.btn-contained {
+  background-color: var(--primary) !important;
+  color: var(--white) !important;
+}
+.btn-outlined {
+  color: var(--primary) !important;
+  border-color: var(--primary) !important;
+}
+
+#Grid-adm-inner {
+  background: var(--white);
+  border: 1px solid var(--primary);
+  border-radius: 15px;
+  width: fit-content;
+  border-top-left-radius: 0;
+}
+#table-container {
+  margin-top: -53px;
+}

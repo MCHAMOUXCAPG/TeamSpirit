@@ -1,0 +1,25 @@
+@import "../../config/colors.css";
+.Ho {
+  color: #ffee00;
+}
+
+.noteicon {
+  margin-left: 44%;
+  position: relative;
+  width: 15%;
+}
+
+.grade {
+  margin-left: 46%;
+  position: relative;
+  font-family: Roboto;
+  font-style: normal;
+  font-weight: bold;
+  font-size: 32px;
+  margin-top: -10%;
+  color: #6f6f72;
+}
+
+#chart {
+  min-width: 500px;
+}

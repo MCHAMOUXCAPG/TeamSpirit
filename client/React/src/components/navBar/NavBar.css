@@ -1,0 +1,107 @@
+@import "../../config/colors.css";
+.navBar {
+  background-image: url("../../assets/header-xl.png");
+  background-color: transparent;
+  background-position: center top;
+  background-repeat: no-repeat;
+  background-size: contain;
+  height: 80;
+  color: "var(--white)";
+}
+
+.logoImg {
+  margin-left: 5%;
+  margin-top: -50px;
+  max-width: 180px;
+}
+
+.navBarButtons {
+  position: absolute;
+  left: 10%;
+  top: 25px;
+}
+
+.MuiAppBar-colorPrimary {
+  background-color: transparent !important;
+  box-shadow: none !important;
+}
+
+.MuiToolbar-regular {
+  min-height: 125px !important;
+}
+
+@media all and (max-width: 1920px) {
+  .MuiToolbar-regular {
+    min-height: 115px !important;
+  }
+
+  .logoImg {
+    margin-left: 3%;
+    margin-top: -55px;
+    max-width: 175px;
+  }
+}
+
+@media all and (max-width: 1440px) {
+  .MuiToolbar-regular {
+    min-height: 100px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-l.png");
+  }
+  .logoImg {
+    max-width: 160px;
+  }
+}
+
+@media all and (max-width: 1024px) {
+  .MuiToolbar-regular {
+    min-height: 90px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-md.png");
+  }
+  .logoImg {
+    margin-bottom: 10px;
+    max-width: 140px;
+  }
+  .navBarButtons {
+    left: 5%;
+    top: 15px;
+  }
+}
+
+@media all and (max-width: 768px) {
+  .MuiToolbar-regular {
+    min-height: 80px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-sm.png");
+  }
+  .logoImg {
+    max-width: 120px;
+  }
+
+  .navBarButtons {
+    left: 15px;
+    top: 15px;
+  }
+}
+
+@media all and (max-width: 500px) {
+  .MuiToolbar-regular {
+    min-height: 66px !important;
+  }
+  .navBar {
+    background-image: url("../../assets/header-xs.png");
+  }
+  .logoImg {
+    max-width: 100px;
+    margin-left: 5%;
+  }
+
+  .navBarButtons {
+    left: 10px;
+    top: -5px;
+  }
+}

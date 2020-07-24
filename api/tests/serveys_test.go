@@ -124,7 +124,7 @@ func TestUpdateSurvey(t *testing.T) {
 
 	// Create a new Request
 	var survey entities.Survey
-	surveyJSON := `{"Code": "code2", "TeamName": "team1"}`
+	surveyJSON := `{"Code": "code2", "StartDate":"2020-07-01T00:00:00Z", "EndDate":"2020-07-30T00:00:00Z", "TeamName": "team1"}`
 	e := echo.New()
 	req := httptest.NewRequest(http.MethodPut, "/", strings.NewReader(surveyJSON))
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)

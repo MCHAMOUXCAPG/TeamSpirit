@@ -1,5 +1,7 @@
 # React Frontend
 
+/!\ From https://github.com/jgimenoa/TeamSpiritRFE
+
 ### **Discover React**:
 
 For beginners: Learning React in 2020: https://www.youtube.com/watch?v=NJWI1b1upps&list=PLDIXF8nb0VG1v4S-smVy7GV0MHsJ3PJiL

@@ -9,6 +9,7 @@ import Delete from "@material-ui/icons/Delete";
 import Event from "@material-ui/icons/Event";
 import Group from "@material-ui/icons/Group";
 import Schedule from "@material-ui/icons/Schedule";
+import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import AssessmentOutlined from "@material-ui/icons/AssessmentOutlined";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
@@ -183,7 +184,7 @@ function SurveyStatus({
     // eslint-disable-next-line
   }, [forceUpdate]);
   const classes = useStyles();
-
+  console.log(surveyCode);
   return (
     <div>
       <Paper variant="outlined" className="paper">
@@ -226,6 +227,13 @@ function SurveyStatus({
                   <Schedule className="icon" />
                   Historic result:
                   <span>{parseFloat(historicResult.toFixed(2))}/10</span>
+                </p>
+              </Grid>
+              <Grid item xs={12}>
+                <p>
+                  <VpnKeyIcon className="icon" />
+                  Survey Code:
+                  <span>{surveyCode}</span>
                 </p>
               </Grid>
               <Grid item xs={12}>

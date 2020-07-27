@@ -32,7 +32,7 @@ func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
 func (*TeamRepo) GetTeam(teamName string) (*entities.Team, error) {
 
 	var team = &entities.Team{}
-	result := config.DB.Where("name = ? ", teamName).Preload("Surveys.Notes").Preload("Users").Find(&team)
+	result := config.DB.Where("name = ? ", teamName).Preload("Surveys.Notes").Preload("Users.Role").Preload("Users.Teams").Find(&team)
 
 	return team, result.Error
 }

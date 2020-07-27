@@ -1,0 +1,6 @@
+@import "../../config/colors.css";
+.error-message {
+  text-align: center;
+  font-size: 24px;
+  color: var(--primary);
+}

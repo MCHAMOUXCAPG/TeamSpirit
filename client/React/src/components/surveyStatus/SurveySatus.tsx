@@ -184,7 +184,6 @@ function SurveyStatus({
     // eslint-disable-next-line
   }, [forceUpdate]);
   const classes = useStyles();
-  console.log(surveyCode);
   return (
     <div>
       <Paper variant="outlined" className="paper">

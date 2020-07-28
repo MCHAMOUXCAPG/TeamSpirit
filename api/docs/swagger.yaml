@@ -666,6 +666,35 @@ paths:
       summary: Surveys export
       tags:
       - Surveys
+  /survey/resetSurvey/:surveyCode:
+    put:
+      consumes:
+      - application/json
+      description: returns a empty survey
+      parameters:
+      - description: survey Code
+        in: path
+        name: surveyCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Survey'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Reset a survey
+      tags:
+      - Surveys
   /survey/result/:teamName:
     get:
       consumes:

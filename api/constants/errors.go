@@ -382,6 +382,20 @@ var DELETE_DELETESURVEY = &dto.Error{
 	Function: "DeleteSurvey",
 }
 
+var NOTFOUND_GETNOTES = &dto.Error{
+	Status:   404,
+	Message:  "No survey with this survey_code was found",
+	Path:     "api/services/survey-service.go",
+	Function: "ResetSurvey",
+}
+
+var RESET_DELETENOTES = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.ResetSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "ResetSurvey",
+}
+
 var GET_ADDNOTES = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method SurveyRepo.GetSurvey",

@@ -15,6 +15,7 @@ type SurveyRepository interface {
 	CreateSurvey(survey *entities.Survey) (*entities.Survey, error)
 	UpdateSurvey(surveyCode string, survey *entities.Survey) (*entities.Survey, error)
 	DeleteSurvey(SurveyCode string) (*entities.Survey, error)
+	ResetSurvey(SurveyCode string, note *entities.Note) (*entities.Note, error)
 	GetResultSurvey(surveyCode string) (float64, error)
 	GetHistoricResult(teamName string) (float64, error)
 	GetLastSurvey(teamName string) (*entities.Survey, error)
@@ -78,6 +79,14 @@ func (*SurveyRepo) DeleteSurvey(surveyCode string) (*entities.Survey, error) {
 	result := config.DB.Where("code = ? ", surveyCode).Delete(&survey)
 
 	return survey, result.Error
+}
+
+func (*SurveyRepo) ResetSurvey(surveyCode string, note *entities.Note) (*entities.Note, error) {
+
+	var notes = &entities.Note{}
+	result := config.DB.Model(&notes).Where("survey_code = ? ", surveyCode).Delete(&note)
+
+	return note, result.Error
 }
 
 func (*SurveyRepo) GetResultSurvey(surveyCode string) (float64, error) {

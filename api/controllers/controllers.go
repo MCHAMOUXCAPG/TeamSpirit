@@ -67,6 +67,7 @@ func HandleResquests() {
 	r.POST("/survey/create", services.CreateSurvey)
 	r.PUT("/survey/:surveyCode", services.UpdateSurvey)
 	r.DELETE("/survey/:surveyCode", services.DeleteSurvey)
+	r.PUT("/survey/resetSurvey/:surveyCode", services.ResetSurvey)
 	r.GET("/survey/result/:teamName", services.GetResultSurvey)
 	// Surveys CSV Export
 	r.GET("/survey/exportCsv", services.ExportSurveysCsv)

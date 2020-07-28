@@ -791,6 +791,50 @@ var doc = `{
                 }
             }
         },
+        "/survey/resetSurvey/:surveyCode": {
+            "put": {
+                "description": "returns a empty survey",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Surveys"
+                ],
+                "summary": "Reset a survey",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "survey Code",
+                        "name": "surveyCode",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Survey"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/survey/result/:teamName": {
             "get": {
                 "description": "returns the result survey",

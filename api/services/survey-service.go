@@ -183,6 +183,39 @@ func DeleteSurvey(c echo.Context) error {
 	return c.JSON(http.StatusOK, survey)
 }
 
+// @Summary Reset a survey
+// @Description returns a empty survey
+// @Tags Surveys
+// @Accept json
+// @Produce json
+// @Param surveyCode path string true "survey Code"
+// @Success 200 {object} entities.Survey
+// @Failure 404 {object} dto.Error
+// @Failure 500 {object} dto.Error
+// @Router /survey/resetSurvey/:surveyCode [put]
+func ResetSurvey(c echo.Context) error {
+
+	surveyCode := c.Param("surveyCode")
+	var notes = &entities.Note{}
+	_, err := SurveyRepo.GetSurvey(surveyCode)
+
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETNOTES)
+	}
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETSURVEY)
+	}
+
+	note, err := SurveyRepo.ResetSurvey(surveyCode, notes)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.RESET_DELETENOTES)
+	}
+
+	return c.JSON(http.StatusOK, note)
+}
+
 // @Summary Add notes to survey
 // @Description you should send an array of Notes. Those will be saved in the survey with code provided.
 // @Tags Surveys

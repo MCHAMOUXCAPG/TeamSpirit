@@ -14,7 +14,7 @@ require (
 	github.com/robfig/cron v1.2.0
 	github.com/stretchr/testify v1.4.0
 	github.com/swaggo/echo-swagger v1.0.0
-	github.com/swaggo/swag v1.6.6
+	github.com/swaggo/swag v1.6.7
 	golang.org/x/crypto v0.0.0-20200604202706-70a84ac30bf9
 	golang.org/x/net v0.0.0-20200602114024-627f9648deb9 // indirect
 	golang.org/x/sys v0.0.0-20200602225109-6fdc65e7d980 // indirect

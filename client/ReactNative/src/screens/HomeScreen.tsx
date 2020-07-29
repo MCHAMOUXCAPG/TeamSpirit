@@ -134,7 +134,6 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
               onChangeText={(inputText) => setInputText(inputText)}
               value={inputText}
               autoCapitalize="characters"
-
             />
             <TouchableOpacity onPress={submitHandler} style={styles.submit}>
               <Text style={styles.insideButton}>Start</Text>
@@ -230,7 +229,7 @@ const styles = StyleSheet.create({
   },
   insideButton: {
     textAlign: "center",
-    fontSize: hp('3%'),
+    fontSize: hp("3%"),
     paddingBottom: hp("1.6%"),
     paddingTop: hp("2.2%"),
     color: colors.white,

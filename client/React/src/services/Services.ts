@@ -81,6 +81,15 @@ export class SurveyService {
     });
   }
 
+  public resetSurvey(token: string | null, surveyCode: string): Promise<any> {
+    const endPoint = "/survey/resetSurvey/" + surveyCode;
+    return environment.put(endPoint, null, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
   public deleteSurvey(token: string | null, surveyCode: string): Promise<any> {
     const endPoint = "/survey/" + surveyCode;
     return environment.delete(endPoint, {

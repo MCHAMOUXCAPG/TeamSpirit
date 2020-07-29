@@ -81,10 +81,10 @@ function SurveyStatus({
     setForceUpdate(!forceUpdate); // to update de surveyCode to delete
     contextRender.setRender(true); // to update de current shown values
   };
-  const handleClickCloseReset = (borrar: any) => {
-    if (borrar) {
+  const handleClickCloseReset = (reset: any) => {
+    if (reset) {
       setLoadingDelete(true);
-      deleteSurvey(token, surveyCode);
+      resetCurrentSurvey(token, surveyCode);
     } else {
       setOpenReset(false);
     }
@@ -163,18 +163,18 @@ function SurveyStatus({
         console.log(err);
       });
   }
-  async function deleteSurvey(token: string | null, surveyCode: string) {
+  async function resetCurrentSurvey(token: string | null, surveyCode: string) {
     await surveyService
-      .deleteSurvey(token, surveyCode)
+      .resetSurvey(token, surveyCode)
       .then((res) => {
         setLoadingDelete(false);
-        setDeleteMessage("Survey successfully deleted!");
+        setDeleteMessage("Survey successfully reset!");
         setSuccessDialog(true);
         setOpenReset(false);
       })
       .catch((err) => {
         setLoadingDelete(false);
-        setDeleteMessage("Error deleting the Survey. Please try again later.");
+        setDeleteMessage("Error resetting the Survey. Please try again later.");
         setSuccessDialog(true);
         setOpenReset(false);
       });
@@ -294,7 +294,7 @@ function SurveyStatus({
                                 />
                               </Grid>
                             ) : (
-                              <>The actual result will be lost</>
+                              <>All current marks will be lost.</>
                             )}
                           </DialogContentText>
                         </DialogContent>

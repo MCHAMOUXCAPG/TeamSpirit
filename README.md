@@ -7,10 +7,9 @@ The Team Knows Best: so what are they actually thinking?
 
 - **[Go](#go)** backend 
     - [Build and run](#build-and-run-the-app)
-- **[React](#react)** frontend for responsive Webapp
+- **[React][2]** frontend for responsive Webapp
    
-- **[ReactNative](#react-native)** application (only Android for now)
-    - [Build and run](#build-and-run)
+- **[ReactNative][3]** application (only Android for now)
 
 Both fronts share the same API
 
@@ -68,11 +67,5 @@ Prerequisite:  Golang must be installed and present in PATH
     for more info about CompileDaemon : https://github.com/githubnemo/CompileDaemon
     
 
-# Desktop Application - React
-
-- https://github.com/MCHAMOUXCAPG/TeamSpirit/blob/dev/client/React
-
-
-# Mobile Application - React Native 
-
-- https://github.com/MCHAMOUXCAPG/TeamSpirit/blob/dev/client/ReactNative
+[2]:https://github.com/MCHAMOUXCAPG/TeamSpirit/blob/dev/client/React
+[3]:https://github.com/MCHAMOUXCAPG/TeamSpirit/blob/dev/client/ReactNative

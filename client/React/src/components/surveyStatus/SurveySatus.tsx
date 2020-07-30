@@ -7,12 +7,14 @@ import Button from "@material-ui/core/Button";
 import Settings from "@material-ui/icons/Settings";
 import Delete from "@material-ui/icons/Delete";
 import Event from "@material-ui/icons/Event";
+import TimelineIcon from "@material-ui/icons/Timeline";
 import Group from "@material-ui/icons/Group";
 import Schedule from "@material-ui/icons/Schedule";
 import VpnKeyIcon from "@material-ui/icons/VpnKey";
 import AssessmentOutlined from "@material-ui/icons/AssessmentOutlined";
 import CircularProgress from "@material-ui/core/CircularProgress";
 import TextField from "@material-ui/core/TextField";
+import HistoricChart from "../historicAverageChart/historicAverage";
 import Dialog from "@material-ui/core/Dialog";
 import DialogActions from "@material-ui/core/DialogActions";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -55,6 +57,7 @@ function SurveyStatus({
   const [surveyCode, setSurveyCode] = useState<string>("");
   const [openReset, setOpenReset] = useState(false);
   const [loadingS, setLoading] = useState(true);
+  const [openChart, setOpenChart] = useState(false);
   const [body, setBody] = useState<ITeamDTO>({
     Frequency: 0,
     Name: "",
@@ -72,6 +75,9 @@ function SurveyStatus({
 
   const handleClose = () => {
     setOpen(false);
+  };
+  const habldeCloseChart = () => {
+    setOpenChart(false);
   };
   const handleClickOpenReset = () => {
     setOpenReset(true);
@@ -111,6 +117,9 @@ function SurveyStatus({
       ...body,
       Frequency: length,
     });
+  };
+  const openChartAverage = () => {
+    setOpenChart(true);
   };
   const handleDateChangeMembers = (members: any) => {
     setBody({
@@ -261,6 +270,74 @@ function SurveyStatus({
                       >
                         Configure your team
                       </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Button
+                        variant="outlined"
+                        className="btn btn-outlined"
+                        onClick={openChartAverage}
+                        startIcon={
+                          <TimelineIcon
+                            style={{
+                              color: colors.primary,
+                            }}
+                          />
+                        }
+                      >
+                        Historic Data
+                      </Button>
+                      <Dialog
+                        disableBackdropClick={true}
+                        disableEscapeKeyDown={true}
+                        open={openChart}
+                        onClose={habldeCloseChart}
+                        aria-labelledby="form-dialog-title"
+                      >
+                        <DialogTitle id="dialog-title">
+                          Historic Data
+                        </DialogTitle>
+                        <DialogContent style={{ width: "520px" }}>
+                          <DialogContentText>
+                            {loadingDelete ? (
+                              <Grid container direction="row" justify="center">
+                                <CircularProgress
+                                  size={24}
+                                  style={{
+                                    color: colors.primary,
+                                  }}
+                                />
+                              </Grid>
+                            ) : (
+                              <HistoricChart />
+                            )}
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions
+                          style={{
+                            height: "60px",
+                            width: "300px",
+                            margin: "15px",
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="center"
+                          >
+                            <Grid item xs={12} sm={6}>
+                              <Button
+                                onClick={habldeCloseChart}
+                                color="primary"
+                                variant="contained"
+                                className="btn btn-contained"
+                              >
+                                Close
+                              </Button>
+                            </Grid>{" "}
+                          </Grid>
+                        </DialogActions>
+                      </Dialog>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Button

@@ -1,10 +1,7 @@
 import React, { useState, useEffect } from "react";
 import "./historicAverageChart.css";
 import Chart from "react-apexcharts";
-import Grid from "@material-ui/core/Grid";
 
-import CircularProgress from "@material-ui/core/CircularProgress";
-import colors from "../../config/colors";
 const HistoricChart = (props: any) => {
   const [state, setState] = useState({
     series: [
@@ -68,16 +65,39 @@ const HistoricChart = (props: any) => {
       },
     },
   });
-
+  useEffect(() => {
+    updateCharts();
+    // eslint-disable-next-line
+  }, [props]);
+  function updateCharts() {
+    setState({
+      ...state,
+      series: [{ name: "Survey", data: props.Data }],
+      options: {
+        ...state.options,
+        yaxis: {
+          title: {
+            text: "Average",
+          },
+          min: Math.min(...props.Data),
+          max: Math.max(...props.Data),
+        },
+        xaxis: {
+          categories: props.period,
+          title: {
+            text: "Period",
+          },
+        },
+      },
+    });
+  }
   return (
-    <div id="AverageChart">
-      <Chart
-        options={state.options}
-        series={state.series}
-        type="line"
-        height={350}
-      />
-    </div>
+    <Chart
+      options={state.options}
+      series={state.series}
+      type="line"
+      height={350}
+    />
   );
 };
 export default HistoricChart;

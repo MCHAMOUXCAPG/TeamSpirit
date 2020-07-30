@@ -308,7 +308,16 @@ function SurveyStatus({
                                 />
                               </Grid>
                             ) : (
-                              <HistoricChart />
+                              <HistoricChart
+                                Data={[5.55, 9, 6.7, 3.55, 7.89]}
+                                period={[
+                                  "Ene-Feb",
+                                  "Mar-Abr",
+                                  "May-Jun",
+                                  "Jun-Ago",
+                                  "Ago-Sep",
+                                ]}
+                              />
                             )}
                           </DialogContentText>
                         </DialogContent>

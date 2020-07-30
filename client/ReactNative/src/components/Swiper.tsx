@@ -1,11 +1,10 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Swiper from "react-native-swiper";
 import Question from "./Question";
 import Colors from "../config/colors";
 import questions from "../models/questions";
 import { AntDesign } from "@expo/vector-icons";
-import colors from "../config/colors";
 import {
   heightPercentageToDP as hp,
   widthPercentageToDP as wp,

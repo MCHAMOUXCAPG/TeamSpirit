@@ -74,12 +74,12 @@ const styles = StyleSheet.create({
   message: {
     flex: 1,
     position: "absolute",
-    width: "80%",
-    top: "50%",
+    width: wp("83%"),
+    top: hp("52%"),
     fontFamily: "Roboto",
     fontStyle: "normal",
     textAlign: "center",
-    fontSize: 25,
+    fontSize: hp("3.6%"),
     color: colors.white,
   },
   submit: {

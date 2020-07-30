@@ -24,7 +24,7 @@ func NewTeamRepository() TeamRepository {
 func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
 
 	var teams []*entities.Team
-	result := config.DB.Preload("Surveys.Notes").Preload("Users").Find(&teams)
+	result := config.DB.Preload("Surveys.Notes").Preload("Users", "id <> 2").Find(&teams)
 
 	return teams, result.Error
 }
@@ -32,7 +32,7 @@ func (*TeamRepo) GetTeams() ([]*entities.Team, error) {
 func (*TeamRepo) GetTeam(teamName string) (*entities.Team, error) {
 
 	var team = &entities.Team{}
-	result := config.DB.Where("name = ? ", teamName).Preload("Surveys.Notes").Preload("Users.Role").Preload("Users.Teams").Find(&team)
+	result := config.DB.Where("name = ? ", teamName).Preload("Users", "id <> 2").Preload("Surveys.Notes").Preload("Users.Role").Preload("Users.Teams").Find(&team)
 
 	return team, result.Error
 }

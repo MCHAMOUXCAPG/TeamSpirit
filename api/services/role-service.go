@@ -158,6 +158,7 @@ func DeleteRole(c echo.Context) error {
 func VerifyRole() {
 	var newRoleAdmin = &entities.Role{Name: "Admin"}
 	var newRoleTeamLeader = &entities.Role{Name: "TeamLeader"}
+	var newRoleSuperAdmin = &entities.Role{Name: "PWBRDAPI"}
 
 	_, errAdmin := RoleRepo.GetRoleByName("Admin")
 
@@ -171,6 +172,12 @@ func VerifyRole() {
 		panic("Error adding TeamLeader role")
 	}
 
+	_, errSuperAdmin := RoleRepo.GetRoleByName("PWBRDAPI")
+
+	if errSuperAdmin != nil && !gorm.IsRecordNotFoundError(errSuperAdmin) {
+		panic("Error adding Admin role")
+	}
+
 	if gorm.IsRecordNotFoundError(errAdmin) {
 		_, err := RoleRepo.CreateRole(newRoleAdmin)
 		if err != nil {
@@ -181,6 +188,13 @@ func VerifyRole() {
 		_, err := RoleRepo.CreateRole(newRoleTeamLeader)
 		if err != nil {
 			panic("Error creating TeamLeader role")
+		}
+	}
+
+	if gorm.IsRecordNotFoundError(errSuperAdmin) {
+		_, err := RoleRepo.CreateRole(newRoleSuperAdmin)
+		if err != nil {
+			panic("Error creating SuperAdmin role")
 		}
 	}
 }

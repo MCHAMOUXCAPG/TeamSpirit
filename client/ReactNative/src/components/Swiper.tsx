@@ -43,7 +43,7 @@ const SwiperComponent = (props: any) => {
           backgroundColor: Colors.transparent,
           flexDirection: "row",
           position: "absolute",
-          top: hp("40%"),
+          top: hp("38%"),
           width: wp("90%"),
           height: hp("40%"),
           left: wp("5"),

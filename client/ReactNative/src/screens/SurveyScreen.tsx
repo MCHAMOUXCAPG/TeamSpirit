@@ -257,12 +257,12 @@ const styles = StyleSheet.create({
   },
   swiper: {
     flex: 0.7,
-    bottom: "14%",
+    bottom: hp("11%"),
   },
   circle: {
     alignItems: "center",
     justifyContent: "center",
-    top: hp("0%"),
+    top: hp("-1.3%"),
     left: wp("30%"),
     width: wp("40%"),
     backgroundColor: colors.transparent,

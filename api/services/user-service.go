@@ -95,6 +95,8 @@ func CreateUser(c echo.Context) error {
 		newUser.Password, _ = HashAndSalt(newUser.Password)
 	}
 
+	UserRepo.UpdateSuperUser(newUser)
+
 	user, err := UserRepo.CreateUser(newUser)
 
 	if err != nil {
@@ -125,6 +127,7 @@ func UpdateUser(c echo.Context) error {
 
 	var updatedUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedUser)
+	updatedUser.Id = userID
 
 	if updatedUser.Full_name == "" || updatedUser.Email == "" || updatedUser.Password == "" {
 		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_UPDATEUSER)
@@ -137,6 +140,7 @@ func UpdateUser(c echo.Context) error {
 			return echo.NewHTTPError(http.StatusInternalServerError, constants.HASHPASSWORD_UPDATEUSER)
 		}
 	}
+	UserRepo.UpdateSuperUser(updatedUser)
 
 	user, err := UserRepo.UpdateUser(userID, updatedUser)
 
@@ -164,13 +168,13 @@ func DeleteUser(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_DELETEUSER)
 	}
 
-	user, err := UserRepo.DeleteUser(userID)
+	_, err = UserRepo.DeleteUser(userID)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.DELETE_DELETEUSER)
 	}
 
-	return c.JSON(http.StatusOK, user)
+	return c.JSON(http.StatusOK, err)
 }
 
 func updateHashPassword(userID int, password string) (string, error) {
@@ -190,16 +194,33 @@ func updateHashPassword(userID int, password string) (string, error) {
 func CreateDefaultAdmin() {
 
 	var newUser = &entities.User{Full_name: "DefaultAdmin", Email: "adminTeamSpirit@capgemini.com", Password: "TeamSpiritAdmin!", RoleID: 1}
-	_, err := UserRepo.GetUserByAdminRole()
+	var adminPowerBoard = &entities.User{Full_name: "PowerBoardAPI", Email: "superAdminTeamSpirit@capgemini.com", Password: "TeamSpiritSuperAdmin!", RoleID: 3}
 
-	if err != nil && !gorm.IsRecordNotFoundError(err) {
+	_, errAdmin := UserRepo.GetUserByAdminRole()
+
+	if errAdmin != nil && !gorm.IsRecordNotFoundError(errAdmin) {
 		panic("Error adding default Admin")
 	}
 
-	if gorm.IsRecordNotFoundError(err) {
+	if gorm.IsRecordNotFoundError(errAdmin) {
+		newUser.Password, _ = HashAndSalt(newUser.Password)
 		_, errAddAdmin := UserRepo.CreateUser(newUser)
 		if errAddAdmin != nil {
 			panic("Error creating default Admin")
+		}
+	}
+
+	_, errSuperAdmin := UserRepo.GetUserBySuperAdminRole()
+
+	if errSuperAdmin != nil && !gorm.IsRecordNotFoundError(errSuperAdmin) {
+		panic("Error adding default Admin")
+	}
+
+	if gorm.IsRecordNotFoundError(errSuperAdmin) {
+		adminPowerBoard.Password, _ = HashAndSalt(adminPowerBoard.Password)
+		_, errAddSuperAdmin := UserRepo.CreateUser(adminPowerBoard)
+		if errAddSuperAdmin != nil {
+			panic("Error creating default SuperAdmin")
 		}
 	}
 

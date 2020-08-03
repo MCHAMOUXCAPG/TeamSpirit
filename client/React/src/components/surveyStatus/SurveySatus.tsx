@@ -323,9 +323,10 @@ function SurveyStatus({
                         </DialogContent>
                         <DialogActions
                           style={{
-                            height: "60px",
+                            height: "30px",
                             width: "300px",
-                            margin: "15px",
+                            margin: "10px",
+                            padding: "0px",
                           }}
                         >
                           <Grid
@@ -334,12 +335,15 @@ function SurveyStatus({
                             justify="flex-end"
                             alignItems="center"
                           >
-                            <Grid item xs={12} sm={6}>
+                            <Grid item xs={12} sm={4}>
                               <Button
                                 onClick={habldeCloseChart}
                                 color="primary"
                                 variant="contained"
                                 className="btn btn-contained"
+                                style={{
+                                  width: "150px",
+                                }}
                               >
                                 Close
                               </Button>

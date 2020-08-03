@@ -127,6 +127,7 @@ func UpdateUser(c echo.Context) error {
 
 	var updatedUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedUser)
+	updatedUser.Id = userID
 
 	if updatedUser.Full_name == "" || updatedUser.Email == "" || updatedUser.Password == "" {
 		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_UPDATEUSER)
@@ -139,6 +140,7 @@ func UpdateUser(c echo.Context) error {
 			return echo.NewHTTPError(http.StatusInternalServerError, constants.HASHPASSWORD_UPDATEUSER)
 		}
 	}
+	UserRepo.UpdateSuperUser(updatedUser)
 
 	user, err := UserRepo.UpdateUser(userID, updatedUser)
 
@@ -166,13 +168,13 @@ func DeleteUser(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_DELETEUSER)
 	}
 
-	user, err := UserRepo.DeleteUser(userID)
+	_, err = UserRepo.DeleteUser(userID)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.DELETE_DELETEUSER)
 	}
 
-	return c.JSON(http.StatusOK, user)
+	return c.JSON(http.StatusOK, err)
 }
 
 func updateHashPassword(userID int, password string) (string, error) {

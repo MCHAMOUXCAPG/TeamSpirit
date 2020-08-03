@@ -81,6 +81,7 @@ func CreateTeam(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_CREATETEAM)
 	}
 
+	err := TeamRepo.UpdateSuperUser(newTeam)
 	team, err := TeamRepo.CreateTeam(newTeam)
 
 	if err != nil {

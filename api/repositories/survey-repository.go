@@ -9,6 +9,7 @@ import (
 )
 
 type SurveyRepository interface {
+	GetSurveys(teamName string) ([]*entities.Survey, error)
 	GetSurvies() ([]*entities.Survey, error)
 	GetSurviesByPeriodAndTeamName(startDate string, endDate string, teamName string) ([]*entities.Survey, error)
 	GetSurvey(surveyCode string) (*entities.Survey, error)
@@ -29,6 +30,14 @@ type SurveyRepo struct{}
 
 func NewSurveyRepository() SurveyRepository {
 	return &SurveyRepo{}
+}
+
+func (*SurveyRepo) GetSurveys(teamName string) ([]*entities.Survey, error) {
+
+	var surveys []*entities.Survey
+	result := config.DB.Preload("Notes").Where("team_name = ?", teamName).Order("start_date DESC").Find(&surveys)
+
+	return surveys, result.Error
 }
 
 func (*SurveyRepo) GetSurvies() ([]*entities.Survey, error) {

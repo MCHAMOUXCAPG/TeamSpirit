@@ -73,6 +73,7 @@ func HandleResquests() {
 	r.GET("/survey/exportCsv", services.ExportSurveysCsv)
 	r.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
 	r.GET("/resultByQuestions/:teamName", services.GetHistoricSurveysByQuestions)
+	r.GET("/resultBySurveys/:teamName", services.GetHistoricSurveys)
 	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 
 	// **** Teams routes *****

@@ -66,24 +66,26 @@ const HistoricChart = (props: any) => {
     },
   });
   useEffect(() => {
+    console.log(props.historic);
     updateCharts();
     // eslint-disable-next-line
   }, [props]);
   function updateCharts() {
     setState({
       ...state,
-      series: [{ name: "Survey", data: props.Data }],
+      series: [{ name: "Survey", data: props.data }],
       options: {
         ...state.options,
         yaxis: {
           title: {
             text: "Average",
           },
-          min: Math.min(...props.Data),
-          max: Math.max(...props.Data),
+
+          min: Math.min(...props.data),
+          max: Math.max(...props.data),
         },
         xaxis: {
-          categories: props.period,
+          categories: props.fecha,
           title: {
             text: "Period",
           },

@@ -24,6 +24,7 @@ import "./SurveyStatus.css";
 import colors from "../../config/colors";
 import { UserValidationService } from "../../services/Services";
 import { SurveyService } from "../../services/Services";
+import { IHistoric } from "../../models/interfaces";
 import { ITeamDTO } from "../../models/interfaces";
 import DateFnsUtils from "@date-io/date-fns";
 import {
@@ -58,6 +59,7 @@ function SurveyStatus({
   const [openReset, setOpenReset] = useState(false);
   const [loadingS, setLoading] = useState(true);
   const [openChart, setOpenChart] = useState(false);
+  const [historic, setHistoric] = useState<IHistoric[]>([]);
   const [body, setBody] = useState<ITeamDTO>({
     Frequency: 0,
     Name: "",
@@ -172,6 +174,17 @@ function SurveyStatus({
         console.log(err);
       });
   }
+  async function getHistoric(teamName: string, token: string | null) {
+    await surveyService
+      .getHistoricSurveys(teamName, token)
+      .then((res) => {
+        setHistoric(res.data);
+        console.log(historic);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
   async function resetCurrentSurvey(token: string | null, surveyCode: string) {
     await surveyService
       .resetSurvey(token, surveyCode)
@@ -190,8 +203,12 @@ function SurveyStatus({
   }
   useEffect(() => {
     getSurveyConfig(teamName, token);
+    getHistoric(teamName, token);
     // eslint-disable-next-line
   }, [forceUpdate]);
+  useEffect(() => {
+    getHistoric(teamName, token);
+  }, []);
   const classes = useStyles();
   return (
     <div>
@@ -309,14 +326,9 @@ function SurveyStatus({
                               </Grid>
                             ) : (
                               <HistoricChart
-                                Data={[5.55, 9, 6.7, 3.55, 7.89]}
-                                period={[
-                                  "Ene-Feb",
-                                  "Mar-Abr",
-                                  "May-Jun",
-                                  "Jun-Ago",
-                                  "Ago-Sep",
-                                ]}
+                                data={[2, 34, 5, 6, 6]}
+                                fecha={["ene", "feb", "mar", "abril", "may"]}
+                                historic={historic}
                               />
                             )}
                           </DialogContentText>

@@ -8,6 +8,17 @@ import {
 } from "../models/interfaces";
 
 export class SurveyService {
+  public getHistoricSurveys(
+    teamName: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/resultBySurveys/" + teamName;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
   public sendSurvey(
     surveyCode: string,
     body: IQuestionResponse[]

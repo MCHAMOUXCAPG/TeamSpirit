@@ -104,3 +104,8 @@ export interface IRole {
   Id: number;
   Name: string;
 }
+export interface IHistoric {
+  endDate: string;
+  startDate: string;
+  totalAverage: number;
+}

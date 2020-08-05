@@ -410,6 +410,53 @@ func calculateCompleted(membersTeam int, notes []entities.Note) string {
 	return strconv.Itoa(membersVote) + "/" + strconv.Itoa(membersTeam)
 }
 
+// @Summary Survey resultByPeriod
+// @Description returns the result survey grouped by Period
+// @Tags Surveys
+// @Accept json
+// @Produce json
+// @Param teamName path string true "Team name"
+// @Success 200 {object} []dto.HistoricResult
+// @Failure 500 {object} dto.Error
+// @Router /historicResult/:teamName [get]
+func GetHistoricSurveys(c echo.Context) error {
+	teamName := c.Param("teamName")
+	var result []*dto.HistoricResult
+	count := 1
+	allSurveysTeam, err := SurveyRepo.GetSurveys(teamName)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETLASTSURVEY_GETHISTORICSURVEYS)
+	}
+
+	for _, eachSurvey := range allSurveysTeam {
+		surveyCode := eachSurvey.Code
+		startDate := eachSurvey.StartDate
+		endDate := eachSurvey.EndDate
+		averageSurvey, err := SurveyRepo.GetHistoricResult(surveyCode)
+
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, constants.GETLASTSURVEY_GETHISTORICRESULT)
+		}
+		result = append(result, &dto.HistoricResult{
+			StartDate:    startDate,
+			EndDate:      endDate,
+			TotalAverage: averageSurvey,
+		})
+		count++
+		// max of 5 historic results
+		if count > 5 {
+			/* terminate the loop using break statement */
+			break
+		}
+	}
+
+	return c.JSON(http.StatusOK, result)
+}
+
+// func mapResultHIstoric() *dto.HistoricResult{
+
+// }
 func CreateSurveyAtEndOfSprint() {
 
 	teams, _ := TeamRepo.GetTeams()

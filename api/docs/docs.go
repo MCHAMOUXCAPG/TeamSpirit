@@ -91,6 +91,47 @@ var doc = `{
                 }
             }
         },
+        "/historicResult/:teamName": {
+            "get": {
+                "description": "returns the result survey grouped by Period",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Surveys"
+                ],
+                "summary": "Survey resultByPeriod",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.HistoricResult"
+                            }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/login": {
             "post": {
                 "description": "Login",
@@ -1364,6 +1405,20 @@ var doc = `{
                 },
                 "status": {
                     "type": "integer"
+                }
+            }
+        },
+        "dto.HistoricResult": {
+            "type": "object",
+            "properties": {
+                "endDate": {
+                    "type": "string"
+                },
+                "startDate": {
+                    "type": "string"
+                },
+                "totalAverage": {
+                    "type": "number"
                 }
             }
         },

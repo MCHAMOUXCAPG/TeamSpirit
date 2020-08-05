@@ -24,6 +24,12 @@ type ResultByUsers struct {
 	Notes   []*entities.Note
 }
 
+type HistoricResult struct {
+	StartDate    time.Time
+	EndDate      time.Time
+	TotalAverage float64
+}
+
 type ResultByQuestions struct {
 	QuestionNumber int
 	Average        float64

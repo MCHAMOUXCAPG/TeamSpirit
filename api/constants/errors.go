@@ -452,6 +452,20 @@ var GETLASTSURVEY_GETHISTORICSURVEYSBYUSERS = &dto.Error{
 	Function: "GetHistoricSurveysByusers",
 }
 
+var GETLASTSURVEY_GETHISTORICSURVEYS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurveys",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveys",
+}
+
+var GETLASTSURVEY_GETHISTORICRESULT = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurveys",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricResult",
+}
+
 var NOTESBYUSERS_GETHISTORICSURVEYSBYUSERS = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method SurveyRepo.GetNotesGroupByUsers",

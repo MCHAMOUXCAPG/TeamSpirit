@@ -23,6 +23,15 @@ definitions:
       status:
         type: integer
     type: object
+  dto.HistoricResult:
+    properties:
+      endDate:
+        type: string
+      startDate:
+        type: string
+      totalAverage:
+        type: number
+    type: object
   dto.JwtCustomClaims:
     properties:
       Email:
@@ -204,6 +213,33 @@ paths:
       summary: Access to survey
       tags:
       - Authentication
+  /historicResult/:teamName:
+    get:
+      consumes:
+      - application/json
+      description: returns the result survey grouped by Period
+      parameters:
+      - description: Team name
+        in: path
+        name: teamName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.HistoricResult'
+            type: array
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Survey resultByPeriod
+      tags:
+      - Surveys
   /login:
     post:
       consumes:

@@ -213,33 +213,6 @@ paths:
       summary: Access to survey
       tags:
       - Authentication
-  /historicResult/:teamName:
-    get:
-      consumes:
-      - application/json
-      description: returns the result survey grouped by Period
-      parameters:
-      - description: Team name
-        in: path
-        name: teamName
-        required: true
-        type: string
-      produces:
-      - application/json
-      responses:
-        "200":
-          description: OK
-          schema:
-            items:
-              $ref: '#/definitions/dto.HistoricResult'
-            type: array
-        "500":
-          description: Internal Server Error
-          schema:
-            $ref: '#/definitions/dto.Error'
-      summary: Survey resultByPeriod
-      tags:
-      - Surveys
   /login:
     post:
       consumes:
@@ -348,6 +321,37 @@ paths:
           schema:
             $ref: '#/definitions/dto.Error'
       summary: Survey resultByQuestions
+      tags:
+      - Surveys
+  /resultBySurveys/:teamName:
+    get:
+      consumes:
+      - application/json
+      description: returns the result survey grouped by Period of startDate and EndDate
+      parameters:
+      - description: Team name
+        in: path
+        name: teamName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.HistoricResult'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Survey resultByPeriod
       tags:
       - Surveys
   /resultByUsers/:teamName:

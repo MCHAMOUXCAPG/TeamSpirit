@@ -91,47 +91,6 @@ var doc = `{
                 }
             }
         },
-        "/historicResult/:teamName": {
-            "get": {
-                "description": "returns the result survey grouped by Period",
-                "consumes": [
-                    "application/json"
-                ],
-                "produces": [
-                    "application/json"
-                ],
-                "tags": [
-                    "Surveys"
-                ],
-                "summary": "Survey resultByPeriod",
-                "parameters": [
-                    {
-                        "type": "string",
-                        "description": "Team name",
-                        "name": "teamName",
-                        "in": "path",
-                        "required": true
-                    }
-                ],
-                "responses": {
-                    "200": {
-                        "description": "OK",
-                        "schema": {
-                            "type": "array",
-                            "items": {
-                                "$ref": "#/definitions/dto.HistoricResult"
-                            }
-                        }
-                    },
-                    "500": {
-                        "description": "Internal Server Error",
-                        "schema": {
-                            "$ref": "#/definitions/dto.Error"
-                        }
-                    }
-                }
-            }
-        },
         "/login": {
             "post": {
                 "description": "Login",
@@ -289,6 +248,53 @@ var doc = `{
                             "items": {
                                 "$ref": "#/definitions/dto.ResultByQuestions"
                             }
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    }
+                }
+            }
+        },
+        "/resultBySurveys/:teamName": {
+            "get": {
+                "description": "returns the result survey grouped by Period of startDate and EndDate",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Surveys"
+                ],
+                "summary": "Survey resultByPeriod",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "Team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "type": "array",
+                            "items": {
+                                "$ref": "#/definitions/dto.HistoricResult"
+                            }
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
                         }
                     },
                     "500": {

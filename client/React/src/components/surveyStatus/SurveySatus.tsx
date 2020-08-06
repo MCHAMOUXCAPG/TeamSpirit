@@ -179,7 +179,6 @@ function SurveyStatus({
       .getHistoricSurveys(teamName, token)
       .then((res) => {
         setHistoric(res.data);
-        console.log(historic);
       })
       .catch((err) => {
         console.log(err);

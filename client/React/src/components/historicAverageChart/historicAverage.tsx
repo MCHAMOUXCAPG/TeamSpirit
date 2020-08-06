@@ -1,8 +1,10 @@
 import React, { useState, useEffect } from "react";
 import "./historicAverageChart.css";
 import Chart from "react-apexcharts";
+import { AnyARecord } from "dns";
 
 const HistoricChart = (props: any) => {
+  let averageNotes: number[] = [];
   const [state, setState] = useState({
     series: [
       {
@@ -65,15 +67,24 @@ const HistoricChart = (props: any) => {
       },
     },
   });
+
   useEffect(() => {
-    console.log(props.historic);
+    props.historic.map((s: any, index: any) => {
+      averageNotes.push(s.TotalAverage.toFixed(2));
+    });
+
     updateCharts();
     // eslint-disable-next-line
   }, [props]);
   function updateCharts() {
     setState({
       ...state,
-      series: [{ name: "Survey", data: props.data }],
+      series: [
+        {
+          name: "Survey",
+          data: averageNotes,
+        },
+      ],
       options: {
         ...state.options,
         yaxis: {
@@ -81,11 +92,11 @@ const HistoricChart = (props: any) => {
             text: "Average",
           },
 
-          min: Math.min(...props.data),
-          max: Math.max(...props.data),
+          min: Math.min(...averageNotes),
+          max: Math.max(...averageNotes),
         },
         xaxis: {
-          categories: props.fecha,
+          categories: [props.historic[0].StartDate, "ene", "feb"],
           title: {
             text: "Period",
           },

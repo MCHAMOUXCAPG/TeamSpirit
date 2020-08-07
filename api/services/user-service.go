@@ -27,6 +27,12 @@ var (
 // @Router /users [Get]
 func GetUsers(c echo.Context) error {
 
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_GETEUSER)
+	}
+
 	users, err := UserRepo.GetUsers()
 
 	if err != nil {
@@ -47,6 +53,12 @@ func GetUsers(c echo.Context) error {
 // @Failure 500 {object} dto.Error
 // @Router /user/:id [Get]
 func GetUser(c echo.Context) error {
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_GETEUSER)
+	}
 
 	userID, err := strconv.Atoi(c.Param("id"))
 
@@ -77,10 +89,16 @@ func GetUser(c echo.Context) error {
 // @Failure 500 {object} dto.Error
 // @Failure 406 {object} dto.Error
 // @Failure 400 {object} dto.Error
+// @Failure 401 {object} dto.Error
 // @Router /user/create [post]
 func CreateUser(c echo.Context) error {
 
 	var newUser = &entities.User{}
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_CREATEUSER)
+	}
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
 
 	if newUser.Full_name == "" || newUser.Email == "" || newUser.Password == "" {
@@ -118,6 +136,12 @@ func CreateUser(c echo.Context) error {
 // @Failure 400 {object} dto.Error
 // @Router /user/:id [put]
 func UpdateUser(c echo.Context) error {
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_UPDATEUSER)
+	}
 
 	userID, err := strconv.Atoi(c.Param("id"))
 
@@ -158,9 +182,16 @@ func UpdateUser(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.User
+// @Failure 401 {object} dto.Error
 // @Failure 500 {object} dto.Error
 // @Router /user/:id [delete]
 func DeleteUser(c echo.Context) error {
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_DELETEUSER)
+	}
 
 	userID, err := strconv.Atoi(c.Param("id"))
 

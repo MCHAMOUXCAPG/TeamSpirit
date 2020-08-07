@@ -399,6 +399,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -937,6 +941,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -1027,6 +1035,10 @@ paths:
             $ref: '#/definitions/entities.User'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/dto.Error'
         "406":

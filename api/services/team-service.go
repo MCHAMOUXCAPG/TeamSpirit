@@ -4,9 +4,11 @@ import (
 	"encoding/json"
 	"net/http"
 
+	"github.com/dgrijalva/jwt-go"
 	"github.com/jinzhu/gorm"
 
 	"capgemini.com/gorn/team-spirit/constants"
+	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
 	"github.com/labstack/echo/v4"
@@ -76,12 +78,17 @@ func CreateTeam(c echo.Context) error {
 
 	var newTeam = &entities.Team{}
 	json.NewDecoder(c.Request().Body).Decode(&newTeam)
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_CREATETEAM)
+	}
 
 	if newTeam.Name == "" || newTeam.Num_mumbers <= 0 || newTeam.StartDate.IsZero() || newTeam.Frequency <= 0 {
 		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_CREATETEAM)
 	}
 
-	err := TeamRepo.UpdateSuperUser(newTeam)
+	err = TeamRepo.UpdateSuperUser(newTeam)
 	team, err := TeamRepo.CreateTeam(newTeam)
 
 	if err != nil {
@@ -133,6 +140,12 @@ func UpdateTeam(c echo.Context) error {
 func DeleteTeam(c echo.Context) error {
 
 	teamName := c.Param("teamName")
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_DELETETEAM)
+	}
+
 	team, err := TeamRepo.DeleteTeam(teamName)
 
 	if err != nil {
@@ -140,4 +153,19 @@ func DeleteTeam(c echo.Context) error {
 	}
 
 	return c.JSON(http.StatusOK, team)
+}
+
+func CheckUserAuthority(c echo.Context) error {
+	token := c.Get("user").(*jwt.Token)
+	claims := token.Claims.(*dto.JwtCustomClaims)
+	currentUser, err := AuthRepo.GetUserByEmail(claims.Email)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETUSERBYEMAIL_CURRENTUSER)
+	}
+	roleId := currentUser.RoleID
+	if roleId != 2 {
+		return nil
+	}
+	return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_CREATETEAM)
 }

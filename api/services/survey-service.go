@@ -455,9 +455,6 @@ func GetHistoricSurveys(c echo.Context) error {
 	return c.JSON(http.StatusOK, result)
 }
 
-// func mapResultHIstoric() *dto.HistoricResult{
-
-// }
 func CreateSurveyAtEndOfSprint() {
 
 	teams, _ := TeamRepo.GetTeams()

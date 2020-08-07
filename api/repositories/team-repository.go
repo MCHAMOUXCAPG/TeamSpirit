@@ -85,16 +85,20 @@ func (*TeamRepo) DeleteTeam(teamName string) (*entities.Team, error) {
 func deleteTeamTransaction(db *gorm.DB, teamName string) error {
 	var team = &entities.Team{}
 	var teamUser []dto.TeamUser
+	var userPWBRD []*entities.User
+	var NotAvailableIds []int
 
 	return db.Transaction(func(tx *gorm.DB) error {
 		if err := tx.Where("name = ? ", teamName).Delete(&team).Error; err != nil {
 			return err
 		}
-		var users = &entities.User{}
-		config.DB.Where("role_id = 3 ").Preload("Role").Preload("Teams").Find(&users)
-		superAdminId := users.Id
+		config.DB.Where("role_id = 3 ").Preload("Role").Preload("Teams").Find(&userPWBRD)
+		for _, userAPI := range userPWBRD {
 
-		if err := tx.Table("team_users").Where("team_name = ? AND user_id <> ?", teamName, superAdminId).Delete(&teamUser).Error; err != nil {
+			NotAvailableIds = append(NotAvailableIds, userAPI.Id)
+		}
+
+		if err := tx.Table("team_users").Where("team_name = ?", teamName).Not("user_id", NotAvailableIds).Delete(&teamUser).Error; err != nil {
 			return err
 		}
 		return nil

@@ -324,20 +324,14 @@ function SurveyStatus({
                                 />
                               </Grid>
                             ) : (
-                              <HistoricChart
-                                data={[2, 34, 5, 6, 6]}
-                                fecha={["ene", "feb", "mar", "abril", "may"]}
-                                historic={historic}
-                              />
+                              <HistoricChart historic={historic} />
                             )}
                           </DialogContentText>
                         </DialogContent>
                         <DialogActions
                           style={{
-                            height: "30px",
-                            width: "300px",
-                            margin: "10px",
-                            padding: "0px",
+                            width: "53%",
+                            marginBottom: "3%",
                           }}
                         >
                           <Grid

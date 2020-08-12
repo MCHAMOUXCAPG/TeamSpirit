@@ -1,10 +1,9 @@
 import React, { useState, useEffect } from "react";
-import "./historicAverageChart.css";
 import Chart from "react-apexcharts";
-import { AnyARecord } from "dns";
 
 const HistoricChart = (props: any) => {
   let averageNotes: number[] = [];
+  let rangeDates: string[] = [];
   const [state, setState] = useState({
     series: [
       {
@@ -25,7 +24,26 @@ const HistoricChart = (props: any) => {
           opacity: 0.2,
         },
         toolbar: {
-          show: false,
+          show: true,
+          offsetX: 0,
+          offsetY: 0,
+          tools: {
+            download: true,
+            selection: false,
+            zoomin: true,
+            zoomout: true,
+            pan: false,
+            zoom: false,
+            reset: false,
+          },
+          export: {
+            csv: {
+              filename: undefined,
+              columnDelimiter: ",",
+              headerCategory: "category",
+              headerValue: "value",
+            },
+          },
         },
       },
       colors: ["#77B6EA", "#545454"],
@@ -37,6 +55,10 @@ const HistoricChart = (props: any) => {
       },
       grid: {
         borderColor: "#e7e7e7",
+        padding: {
+          left: 40,
+          right: 0,
+        },
         row: {
           colors: ["#f3f3f3", "transparent"], // takes an array which will be repeated on columns
           opacity: 0.5,
@@ -71,6 +93,15 @@ const HistoricChart = (props: any) => {
   useEffect(() => {
     props.historic.map((s: any, index: any) => {
       averageNotes.push(s.TotalAverage.toFixed(2));
+      rangeDates.push(
+        s.StartDate.substr(8, 2) +
+          "/" +
+          s.StartDate.substr(5, 2) +
+          " - " +
+          s.EndDate.substr(8, 2) +
+          "/" +
+          s.EndDate.substr(5, 2)
+      );
     });
 
     updateCharts();
@@ -82,7 +113,7 @@ const HistoricChart = (props: any) => {
       series: [
         {
           name: "Survey",
-          data: averageNotes,
+          data: averageNotes.reverse(),
         },
       ],
       options: {
@@ -91,12 +122,11 @@ const HistoricChart = (props: any) => {
           title: {
             text: "Average",
           },
-
-          min: Math.min(...averageNotes),
-          max: Math.max(...averageNotes),
+          min: props.historic.length === 1 ? 0 : Math.min(...averageNotes),
+          max: props.historic.length === 1 ? 10 : Math.max(...averageNotes),
         },
         xaxis: {
-          categories: [props.historic[0].StartDate, "ene", "feb"],
+          categories: rangeDates.reverse(),
           title: {
             text: "Period",
           },

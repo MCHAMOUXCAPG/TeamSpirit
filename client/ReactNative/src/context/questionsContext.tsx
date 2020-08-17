@@ -1,6 +1,7 @@
 import React from "react";
 import { IQuestionResponse } from "../models/interfaces";
 
+// Updates the notes constantly and helps with the management of the components. (SwiperCircle & SurveyScreen)
 export default React.createContext({
   questionsResponse: [
     { number: 1, note: 0, surveyCode: "", user: "" },

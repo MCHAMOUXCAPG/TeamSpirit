@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React from "react";
 import { View, StyleSheet } from "react-native";
 import Colors from "../config/colors";
 import {
@@ -6,6 +6,7 @@ import {
   widthPercentageToDP as wp,
 } from "react-native-responsive-screen";
 
+// Each circle can have a different state; activeCircle (filled grey), validCircle (bordered green), invalidCircle (bordered red) & inactiveCircle (bordered grey).
 const SwiperCircle = (props: any) => {
   return (
     <View style={styles.container}>
@@ -23,7 +24,7 @@ const SwiperCircle = (props: any) => {
           question.valid === false &&
           question.touched === true
         ) {
-          return <View style={styles.redCircle} key={index} />;
+          return <View style={styles.invalidCircle} key={index} />;
         } else if (question.status == "" && question.touched === false) {
           return <View style={styles.inactiveCircle} key={index} />;
         }
@@ -74,7 +75,7 @@ const styles = StyleSheet.create({
     marginTop: 3,
     marginBottom: 3,
   },
-  redCircle: {
+  invalidCircle: {
     backgroundColor: Colors.transparent,
     width: 14,
     height: 14,

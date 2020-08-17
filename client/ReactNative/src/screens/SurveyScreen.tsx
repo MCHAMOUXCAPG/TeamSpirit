@@ -37,6 +37,8 @@ const SurveyScreen = ({
   const { surveyCode, projectName, userId } = route.params;
   const surveyService: SurveyService = new SurveyService();
   const [loading, setLoading] = useState(false);
+
+  // Function that sends the notes to the database.
   async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
     await surveyService
       .sendSurvey(surveyCode, body)
@@ -66,6 +68,8 @@ const SurveyScreen = ({
         }
       });
   }
+
+  // Function that asks for your confirmation to leave when pressing the back buttton on the mobile device.
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -158,6 +162,7 @@ const SurveyScreen = ({
     [false, false],
   ]);
 
+  // Updates the cycle of life of the application.
   useEffect(() => {
     let count = 0;
     const currentQuestionStatus = questionsState;

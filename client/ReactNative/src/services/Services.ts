@@ -1,6 +1,7 @@
 import { environment } from "./environment/environment";
 import { IQuestionResponse, IValidationCode } from "../models/interfaces";
 
+// Service to send survey marks chosen by the user to the database.
 export class SurveyService {
   public sendSurvey(
     surveyCode: string,
@@ -11,6 +12,7 @@ export class SurveyService {
   }
 }
 
+// Service that validates the survey code sent by the user.
 export class CodeValidationService {
   public sendCode(code: IValidationCode): Promise<any> {
     const endPoint = "/access";

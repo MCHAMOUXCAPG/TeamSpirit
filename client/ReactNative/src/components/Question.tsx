@@ -3,11 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Slider } from "react-native-elements";
 import { AirbnbRating } from "react-native-ratings";
 
-import {
-  questionType,
-  IQuestionStatus,
-  IQuestionResponse,
-} from "../models/interfaces";
+import { questionType, IQuestionStatus } from "../models/interfaces";
 import colors from "../config/colors";
 import questionsContext from "../context/questionsContext";
 import {
@@ -41,6 +37,8 @@ const Question = ({
   );
   const [sliderValue, setSliderValue] = useState(2);
   const forceUpdate = useForceUpdate();
+
+  // Function to constantly check if all questions have been answered in order to activate the Submit button.
   const checkDisabled = () => {
     let count = 0;
     const currentQuestionStatus = questionsState;
@@ -51,11 +49,12 @@ const Question = ({
       }
     });
     if (count === questionsState.length) {
-      console.log("disabled false");
       setDisabled(false);
       forceUpdate();
     }
   };
+
+  // Function to manage the questions with 5 icons.
   const handleClick5Icons = (index: number) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -73,6 +72,8 @@ const Question = ({
     forceUpdate();
     checkDisabled();
   };
+
+  // Function to manage the questions with slider.
   const handleClickSlider = (value: number) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -87,6 +88,7 @@ const Question = ({
     checkDisabled();
   };
 
+  // Function to manage the questions with stars.
   const handleClickStars = (value: number) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -101,6 +103,7 @@ const Question = ({
     checkDisabled();
   };
 
+  // Function to manage the questions with 2 icons.
   const handleClick2Icons = (index: number, mark: number) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -118,6 +121,8 @@ const Question = ({
     forceUpdate();
     checkDisabled();
   };
+
+  // Conditional return applied because of variation of question type.
   return (
     <View style={{ ...Styles.container }}>
       <Text style={Styles.number}> Question {number} </Text>

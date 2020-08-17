@@ -1,5 +1,6 @@
 import { ISurveyQuestion, questionType } from "./interfaces";
 
+// Here we provide the content of every question, you can add or modify each one of them.
 const questions: ISurveyQuestion[] = [
   {
     number: 1,

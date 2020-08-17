@@ -243,10 +243,10 @@ const Styles = StyleSheet.create({
   },
   number: {
     fontWeight: "100",
-    fontSize: 18,
+    fontSize: hp("2.5%"),
   },
   question: {
-    fontSize: 24,
+    fontSize: hp("3%"),
     textAlign: "center",
   },
   emojis: {

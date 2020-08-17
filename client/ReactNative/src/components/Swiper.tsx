@@ -1,5 +1,5 @@
 import React from "react";
-import { Text, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import Swiper from "react-native-swiper";
 import Question from "./Question";
 import Colors from "../config/colors";
@@ -44,7 +44,7 @@ const SwiperComponent = (props: any) => {
           backgroundColor: Colors.transparent,
           flexDirection: "row",
           position: "absolute",
-          top: hp("40%"),
+          top: hp("38%"),
           width: wp("90%"),
           height: hp("40%"),
           left: wp("5"),

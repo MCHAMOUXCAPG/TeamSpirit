@@ -3,11 +3,7 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from "react-native";
 import { Slider } from "react-native-elements";
 import { AirbnbRating } from "react-native-ratings";
 
-import {
-  questionType,
-  IQuestionStatus,
-  IQuestionResponse,
-} from "../models/interfaces";
+import { questionType, IQuestionStatus } from "../models/interfaces";
 import colors from "../config/colors";
 import questionsContext from "../context/questionsContext";
 import {
@@ -238,10 +234,10 @@ const Styles = StyleSheet.create({
   },
   number: {
     fontWeight: "100",
-    fontSize: 18,
+    fontSize: hp("2.5%"),
   },
   question: {
-    fontSize: 24,
+    fontSize: hp("3%"),
     textAlign: "center",
   },
   emojis: {

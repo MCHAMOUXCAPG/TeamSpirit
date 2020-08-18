@@ -1,15 +1,17 @@
 import React, { useState, useEffect } from "react";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  TextField,
+} from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import Button from "@material-ui/core/Button";
 import { IUserDTO, ITeamDTO, IRole, IUser } from "../../models/interfaces";
-import "./EditUserDialog.css";
 import { ManageUserService } from "../../services/Services";
 import Select from "react-dropdown-select";
+import "./EditUserDialog.css";
 
 const EditUserDialog = ({
   currentUser,
@@ -36,11 +38,14 @@ const EditUserDialog = ({
     Role: { Id: 0, Name: "" },
     Teams: [{ Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" }],
   });
+
   const [Err, setErr] = useState(false);
   const [HelperTxt, setHelperTxt] = useState("");
   const [ErrEmail, setErrEmail] = useState(false);
   const [helperTxtEmail, setHelperTxtEmail] = useState("");
   const [validateSubmit, setValidateSubmit] = useState([true, true]);
+
+  // Function that disables the "Update" button if either name or email aren't considered as valid.
   const updateValidateSubmit = (index: number, value: boolean) => {
     const newValidateSubmit = validateSubmit;
     newValidateSubmit[index] = value;
@@ -57,9 +62,11 @@ const EditUserDialog = ({
       setDisabledSubmit(true);
     }
   };
+
   const [disabledSubmit, setDisabledSubmit] = useState(false);
   const manageService: ManageUserService = new ManageUserService();
 
+  // Function that updates the user and saves the user to the database with the new changes.
   async function updateUser(body: IUserDTO, id: string, token: string | null) {
     await manageService
       .updateUser(body, id, token)
@@ -91,6 +98,8 @@ const EditUserDialog = ({
         setDisabledSubmit(false);
       });
   }
+
+  // Function that validates if the full name of the user only contains alphabet characters.
   function allLetter(inputtxt: string) {
     var letters = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
     if (inputtxt.match(letters)) {
@@ -103,6 +112,8 @@ const EditUserDialog = ({
       updateValidateSubmit(0, false);
     }
   }
+
+  // Function that validates the email.
   function validarEmail(valor: string) {
     // eslint-disable-next-line
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(valor)) {
@@ -124,6 +135,7 @@ const EditUserDialog = ({
     { Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" },
   ]);
 
+  // Function that loads the information of the user we want to edit.
   useEffect(() => {
     if (currentUser) {
       setId(currentUser.Id.toString());
@@ -136,6 +148,7 @@ const EditUserDialog = ({
     // eslint-disable-next-line
   }, [open]);
 
+  // Function that adds new team/s to the array.
   const handleChangeTeams = (teams: ITeamDTO[]) => {
     let newTeams: ITeamDTO[] = [];
     teams.forEach((team: ITeamDTO) => {
@@ -160,6 +173,7 @@ const EditUserDialog = ({
     handleClose(!open);
     updateUser(body, id, token);
   };
+
   return (
     <Dialog
       open={open}

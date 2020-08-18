@@ -27,6 +27,12 @@ var (
 // @Router /users [Get]
 func GetUsers(c echo.Context) error {
 
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_GETEUSER)
+	}
+
 	users, err := UserRepo.GetUsers()
 
 	if err != nil {
@@ -47,6 +53,12 @@ func GetUsers(c echo.Context) error {
 // @Failure 500 {object} dto.Error
 // @Router /user/:id [Get]
 func GetUser(c echo.Context) error {
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_GETEUSER)
+	}
 
 	userID, err := strconv.Atoi(c.Param("id"))
 
@@ -77,10 +89,16 @@ func GetUser(c echo.Context) error {
 // @Failure 500 {object} dto.Error
 // @Failure 406 {object} dto.Error
 // @Failure 400 {object} dto.Error
+// @Failure 401 {object} dto.Error
 // @Router /user/create [post]
 func CreateUser(c echo.Context) error {
 
 	var newUser = &entities.User{}
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_CREATEUSER)
+	}
 	json.NewDecoder(c.Request().Body).Decode(&newUser)
 
 	if newUser.Full_name == "" || newUser.Email == "" || newUser.Password == "" {
@@ -94,6 +112,8 @@ func CreateUser(c echo.Context) error {
 	if newUser.Password != "" {
 		newUser.Password, _ = HashAndSalt(newUser.Password)
 	}
+
+	UserRepo.UpdateSuperUser(newUser)
 
 	user, err := UserRepo.CreateUser(newUser)
 
@@ -117,6 +137,12 @@ func CreateUser(c echo.Context) error {
 // @Router /user/:id [put]
 func UpdateUser(c echo.Context) error {
 
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_UPDATEUSER)
+	}
+
 	userID, err := strconv.Atoi(c.Param("id"))
 
 	if err != nil {
@@ -125,6 +151,7 @@ func UpdateUser(c echo.Context) error {
 
 	var updatedUser = &entities.User{}
 	json.NewDecoder(c.Request().Body).Decode(&updatedUser)
+	updatedUser.Id = userID
 
 	if updatedUser.Full_name == "" || updatedUser.Email == "" || updatedUser.Password == "" {
 		return echo.NewHTTPError(http.StatusBadRequest, constants.CANNOT_BE_EMPTY_UPDATEUSER)
@@ -137,6 +164,7 @@ func UpdateUser(c echo.Context) error {
 			return echo.NewHTTPError(http.StatusInternalServerError, constants.HASHPASSWORD_UPDATEUSER)
 		}
 	}
+	UserRepo.UpdateSuperUser(updatedUser)
 
 	user, err := UserRepo.UpdateUser(userID, updatedUser)
 
@@ -154,9 +182,16 @@ func UpdateUser(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.User
+// @Failure 401 {object} dto.Error
 // @Failure 500 {object} dto.Error
 // @Router /user/:id [delete]
 func DeleteUser(c echo.Context) error {
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_USER_DELETEUSER)
+	}
 
 	userID, err := strconv.Atoi(c.Param("id"))
 
@@ -164,13 +199,13 @@ func DeleteUser(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_DELETEUSER)
 	}
 
-	user, err := UserRepo.DeleteUser(userID)
+	_, err = UserRepo.DeleteUser(userID)
 
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.DELETE_DELETEUSER)
 	}
 
-	return c.JSON(http.StatusOK, user)
+	return c.JSON(http.StatusOK, err)
 }
 
 func updateHashPassword(userID int, password string) (string, error) {
@@ -190,16 +225,33 @@ func updateHashPassword(userID int, password string) (string, error) {
 func CreateDefaultAdmin() {
 
 	var newUser = &entities.User{Full_name: "DefaultAdmin", Email: "adminTeamSpirit@capgemini.com", Password: "TeamSpiritAdmin!", RoleID: 1}
-	_, err := UserRepo.GetUserByAdminRole()
+	var adminPowerBoard = &entities.User{Full_name: "PowerBoardAPI", Email: "superAdminTeamSpirit@capgemini.com", Password: "TeamSpiritSuperAdmin!", RoleID: 3}
 
-	if err != nil && !gorm.IsRecordNotFoundError(err) {
+	_, errAdmin := UserRepo.GetUserByAdminRole()
+
+	if errAdmin != nil && !gorm.IsRecordNotFoundError(errAdmin) {
 		panic("Error adding default Admin")
 	}
 
-	if gorm.IsRecordNotFoundError(err) {
+	if gorm.IsRecordNotFoundError(errAdmin) {
+		newUser.Password, _ = HashAndSalt(newUser.Password)
 		_, errAddAdmin := UserRepo.CreateUser(newUser)
 		if errAddAdmin != nil {
 			panic("Error creating default Admin")
+		}
+	}
+
+	_, errSuperAdmin := UserRepo.GetUserBySuperAdminRole()
+
+	if errSuperAdmin != nil && !gorm.IsRecordNotFoundError(errSuperAdmin) {
+		panic("Error adding default Admin")
+	}
+
+	if gorm.IsRecordNotFoundError(errSuperAdmin) {
+		adminPowerBoard.Password, _ = HashAndSalt(adminPowerBoard.Password)
+		_, errAddSuperAdmin := UserRepo.CreateUser(adminPowerBoard)
+		if errAddSuperAdmin != nil {
+			panic("Error creating default SuperAdmin")
 		}
 	}
 

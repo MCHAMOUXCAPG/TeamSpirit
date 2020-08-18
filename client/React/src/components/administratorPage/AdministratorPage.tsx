@@ -1,50 +1,61 @@
 import React, { useState, useEffect } from "react";
-import "./AdministratorPage.css";
-import { Button, Container, Grid } from "@material-ui/core";
+import {
+  Button,
+  Container,
+  CircularProgress,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  Grid,
+  Tab,
+  Tabs,
+} from "@material-ui/core";
 import { ManageUserService } from "../../services/Services";
-import NavBar from "../navBar/NavBar";
-import CreateUserDialog from "../createUserDialog/CreateUserDialog";
 import { ITeamDTO, IUser, IRole } from "../../models/interfaces";
-import colors from "../../config/colors";
-
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import CreateUserDialog from "../createUserDialog/CreateUserDialog";
+import NavBar from "../navBar/NavBar";
 import UsersTable from "../usersTable/usersTable";
+import colors from "../../config/colors";
+import "./AdministratorPage.css";
 
 const AdministratorPage = () => {
   const [value, setValue] = useState(0);
   const [roles, setRoles] = useState<IRole[]>([{ Id: 1, Name: "Admin" }]);
-  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
-    setValue(newValue);
-  };
-  const [open, setOpen] = useState(false); // handles create user dialog
-  const handleClose = (bool: boolean) => {
-    setOpen(bool);
-  };
+  const [open, setOpen] = useState(false); // Handles if the pop-up of create user dialog is open
   const [loadingServiceUsers, setLoadingServiceUsers] = useState(true); // if get all users is loading
   const [loading, setLoading] = useState(false); // if some service is awaiting
   const [message, setMessage] = useState("Mensaje de prueba"); // message when resolve the service
   const [openMessage, setOpenMessage] = useState(false); // handles the open/close message dialog
+
+  const handleClose = (bool: boolean) => {
+    setOpen(bool);
+  };
+
+  const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
+    setValue(newValue);
+  };
+
   const handleClickCloseMessage = () => {
     setOpenMessage(false);
   };
+
   const [teams, setTeams] = useState<ITeamDTO[]>([
     { Frequency: 0, Name: "", Num_mumbers: 0, StartDate: "" },
   ]);
+
   const [users, setUsers] = useState<IUser[]>([]);
+
   function a11yProps(index: any) {
     return {
       id: `full-width-tab-${index}`,
       "aria-controls": `full-width-tabpanel-${index}`,
     };
   }
+
   const usersList: ManageUserService = new ManageUserService();
   const token = sessionStorage.getItem("token");
 
+  // Function that retrieves all the users from the database.
   async function getAllUsers(token: string | null) {
     await usersList
       .getUsers(token)
@@ -56,6 +67,8 @@ const AdministratorPage = () => {
         console.log(err);
       });
   }
+
+  // Function that retrieves all the teams from the database.
   async function getAllTeams(token: string | null) {
     await usersList
       .getTeams(token)
@@ -67,6 +80,7 @@ const AdministratorPage = () => {
       });
   }
 
+  // Function that retrieves all the roles from the database.
   async function getAllRoles(token: string | null) {
     await usersList
       .getRoles(token)
@@ -78,6 +92,7 @@ const AdministratorPage = () => {
       });
   }
 
+  // Function to be recalling the services in case there have been any changes in the tables.
   useEffect(() => {
     getAllUsers(token);
     getAllTeams(token);

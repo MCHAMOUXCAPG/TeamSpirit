@@ -1,15 +1,18 @@
 import React, { useContext, useState } from "react";
 import { Container, Paper, Grid } from "@material-ui/core";
 import { useNavigate } from "react-router-dom";
+
 import { AuthContext } from "../../context/auth";
 import NavBar from "../navBar/NavBar";
-import "./myTeamPage.css";
+import "./myTeamsPage.css";
 import MyTeamChart from "../myTeamChart/myTeamChart";
 import colors from "../../config/colors";
+
 const MyTeamsPage = () => {
   const navigate = useNavigate();
   const context = useContext(AuthContext);
   const [allowClickTeams, setAllowClickTeams] = useState<string[]>([]);
+  // Fuction that handles click of each grid (myTeamChart.tsx). When clicked, it goes to TeamHomePage.tsx
   function handleClick(teamName: string) {
     context.setCurrentTeam(teamName);
     navigate("/teamleader");

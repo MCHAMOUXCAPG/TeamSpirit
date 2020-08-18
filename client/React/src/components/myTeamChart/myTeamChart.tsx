@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from "react";
 import { Grid } from "@material-ui/core";
+import { Schedule } from "@material-ui/icons";
+
 import { SurveyService } from "../../services/Services";
 import AverageChart from "../averageChart/Chart";
 import { ICurrentSurveyResult } from "../../models/interfaces";
-import Schedule from "@material-ui/icons/Schedule";
 import colors from "../../config/colors";
 
+// Component that shows the chart, the smiley face and the historic result (each grid of myTeamsPage.tsx)
 const MyTeamChart = (props: any) => {
   const token = sessionStorage.getItem("token");
   const [currentSurveyResult, setCurrentSurveyResult] = useState<
@@ -22,6 +24,8 @@ const MyTeamChart = (props: any) => {
   const [noData, setNotData] = useState(false);
   const [loading, setLoading] = useState(true);
   const surveyService: SurveyService = new SurveyService();
+
+  // Service to retrieve the corresponding data from a "teamName"
   async function getResults(teamName: string, token: string | null) {
     await surveyService
       .getCurrentResult(teamName, token)
@@ -37,6 +41,8 @@ const MyTeamChart = (props: any) => {
         props.setAllowClickTeams(newAllowClick);
       });
   }
+
+  // Hook to call service at the beginning
   useEffect(() => {
     getResults(props.teamName, token);
     // eslint-disable-next-line

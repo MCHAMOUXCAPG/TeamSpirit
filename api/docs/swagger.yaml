@@ -23,6 +23,15 @@ definitions:
       status:
         type: integer
     type: object
+  dto.HistoricResult:
+    properties:
+      endDate:
+        type: string
+      startDate:
+        type: string
+      totalAverage:
+        type: number
+    type: object
   dto.JwtCustomClaims:
     properties:
       Email:
@@ -314,6 +323,37 @@ paths:
       summary: Survey resultByQuestions
       tags:
       - Surveys
+  /resultBySurveys/:teamName:
+    get:
+      consumes:
+      - application/json
+      description: returns the result survey grouped by Period of startDate and EndDate
+      parameters:
+      - description: Team name
+        in: path
+        name: teamName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            items:
+              $ref: '#/definitions/dto.HistoricResult'
+            type: array
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Survey resultByPeriod
+      tags:
+      - Surveys
   /resultByUsers/:teamName:
     get:
       consumes:
@@ -359,6 +399,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.Role'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -666,6 +710,35 @@ paths:
       summary: Surveys export
       tags:
       - Surveys
+  /survey/resetSurvey/:surveyCode:
+    put:
+      consumes:
+      - application/json
+      description: returns a empty survey
+      parameters:
+      - description: survey Code
+        in: path
+        name: surveyCode
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Survey'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Reset a survey
+      tags:
+      - Surveys
   /survey/result/:teamName:
     get:
       consumes:
@@ -868,6 +941,10 @@ paths:
           description: OK
           schema:
             $ref: '#/definitions/entities.User'
+        "401":
+          description: Unauthorized
+          schema:
+            $ref: '#/definitions/dto.Error'
         "500":
           description: Internal Server Error
           schema:
@@ -958,6 +1035,10 @@ paths:
             $ref: '#/definitions/entities.User'
         "400":
           description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "401":
+          description: Unauthorized
           schema:
             $ref: '#/definitions/dto.Error'
         "406":

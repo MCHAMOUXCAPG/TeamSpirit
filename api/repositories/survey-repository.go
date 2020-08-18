@@ -9,12 +9,14 @@ import (
 )
 
 type SurveyRepository interface {
+	GetSurveys(teamName string) ([]*entities.Survey, error)
 	GetSurvies() ([]*entities.Survey, error)
 	GetSurviesByPeriodAndTeamName(startDate string, endDate string, teamName string) ([]*entities.Survey, error)
 	GetSurvey(surveyCode string) (*entities.Survey, error)
 	CreateSurvey(survey *entities.Survey) (*entities.Survey, error)
 	UpdateSurvey(surveyCode string, survey *entities.Survey) (*entities.Survey, error)
 	DeleteSurvey(SurveyCode string) (*entities.Survey, error)
+	ResetSurvey(SurveyCode string, note *entities.Note) (*entities.Note, error)
 	GetResultSurvey(surveyCode string) (float64, error)
 	GetHistoricResult(teamName string) (float64, error)
 	GetLastSurvey(teamName string) (*entities.Survey, error)
@@ -28,6 +30,14 @@ type SurveyRepo struct{}
 
 func NewSurveyRepository() SurveyRepository {
 	return &SurveyRepo{}
+}
+
+func (*SurveyRepo) GetSurveys(teamName string) ([]*entities.Survey, error) {
+
+	var surveys []*entities.Survey
+	result := config.DB.Preload("Notes").Where("team_name = ?", teamName).Order("start_date DESC").Find(&surveys)
+
+	return surveys, result.Error
 }
 
 func (*SurveyRepo) GetSurvies() ([]*entities.Survey, error) {
@@ -78,6 +88,14 @@ func (*SurveyRepo) DeleteSurvey(surveyCode string) (*entities.Survey, error) {
 	result := config.DB.Where("code = ? ", surveyCode).Delete(&survey)
 
 	return survey, result.Error
+}
+
+func (*SurveyRepo) ResetSurvey(surveyCode string, note *entities.Note) (*entities.Note, error) {
+
+	var notes = &entities.Note{}
+	result := config.DB.Model(&notes).Where("survey_code = ? ", surveyCode).Delete(&note)
+
+	return note, result.Error
 }
 
 func (*SurveyRepo) GetResultSurvey(surveyCode string) (float64, error) {

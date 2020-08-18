@@ -1,32 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { createContext, useContext } from "react";
-import Paper from "@material-ui/core/Paper";
+import React, { useState, useEffect, createContext, useContext } from "react";
+import {
+  Paper,
+  Grid,
+  Button,
+  CircularProgress,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Settings from "@material-ui/icons/Settings";
-import Delete from "@material-ui/icons/Delete";
-import Event from "@material-ui/icons/Event";
-import Group from "@material-ui/icons/Group";
-import Schedule from "@material-ui/icons/Schedule";
-import AssessmentOutlined from "@material-ui/icons/AssessmentOutlined";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import "./SurveyStatus.css";
-import colors from "../../config/colors";
-import { UserValidationService } from "../../services/Services";
-import { SurveyService } from "../../services/Services";
-import { ITeamDTO } from "../../models/interfaces";
+import {
+  Settings,
+  Delete,
+  Event,
+  Timeline,
+  Group,
+  Schedule,
+  VpnKey,
+  AssessmentOutlined,
+} from "@material-ui/icons";
 import DateFnsUtils from "@date-io/date-fns";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
+
+import "./SurveyStatus.css";
+import colors from "../../config/colors";
+import { UserValidationService } from "../../services/Services";
+import { SurveyService } from "../../services/Services";
+import { IHistoric } from "../../models/interfaces";
+import { ITeamDTO } from "../../models/interfaces";
+import HistoricChart from "../historicAverageChart/historicAverage";
+
 export const reRender = createContext({
   render: false,
   setRender: (valid: boolean) => {},
@@ -54,6 +63,8 @@ function SurveyStatus({
   const [surveyCode, setSurveyCode] = useState<string>("");
   const [openReset, setOpenReset] = useState(false);
   const [loadingS, setLoading] = useState(true);
+  const [openChart, setOpenChart] = useState(false);
+  const [historic, setHistoric] = useState<IHistoric[]>([]);
   const [body, setBody] = useState<ITeamDTO>({
     Frequency: 0,
     Name: "",
@@ -65,6 +76,7 @@ function SurveyStatus({
   const [deleteMessage, setDeleteMessage] = useState(""); // gets success o error message
   const [successDialog, setSuccessDialog] = useState(false); // final dialog (shows success or error message)
   const [forceUpdate, setForceUpdate] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -72,22 +84,33 @@ function SurveyStatus({
   const handleClose = () => {
     setOpen(false);
   };
+
+  const habldeCloseChart = () => {
+    setOpenChart(false);
+  };
+
   const handleClickOpenReset = () => {
     setOpenReset(true);
   };
+
+  // Function that updates the values when updated the configuration
   const handleClickCloseResetSuccess = () => {
     setSuccessDialog(false);
     setForceUpdate(!forceUpdate); // to update de surveyCode to delete
     contextRender.setRender(true); // to update de current shown values
   };
-  const handleClickCloseReset = (borrar: any) => {
-    if (borrar) {
+
+  // Function that handles the delete confirmation button clik
+  const handleClickCloseReset = (reset: any) => {
+    if (reset) {
       setLoadingDelete(true);
-      deleteSurvey(token, surveyCode);
+      resetCurrentSurvey(token, surveyCode);
     } else {
       setOpenReset(false);
     }
   };
+
+  //Function to format the dato eqaul to backend
   function formatDate(date: any) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -98,6 +121,7 @@ function SurveyStatus({
     return [year, month, day].join("-");
   }
 
+  // When configuring your team, function to change the date
   const handleDateChange = (date: Date | null) => {
     var Fecha = formatDate(date) + "T00:00:00Z";
     setBody({
@@ -105,12 +129,19 @@ function SurveyStatus({
       StartDate: Fecha,
     });
   };
+
+  // When configuring your team, function to change the frequency
   const handleDateChangeSprintLength = (length: any) => {
     setBody({
       ...body,
       Frequency: length,
     });
   };
+  const openChartAverage = () => {
+    setOpenChart(true);
+  };
+
+  // When configuring your team, function to change the number of members
   const handleDateChangeMembers = (members: any) => {
     setBody({
       ...body,
@@ -122,9 +153,13 @@ function SurveyStatus({
     configTeam();
     contextRender.setRender(true);
   };
+
+  // When configuring your team, function that handles the save button click
   const configTeam = () => {
     putTeamConfig(body, teamName, token);
   };
+
+  // When configuring your team, service to update the values
   async function putTeamConfig(
     body: ITeamDTO,
     teamName: string,
@@ -145,6 +180,8 @@ function SurveyStatus({
         setSuccessDialog(true);
       });
   }
+
+  //Fuction to call service that retrieve team data
   async function getSurveyConfig(teamName: string, token: string | null) {
     await surveyService
       .getResultSurveyConfig(teamName, token)
@@ -162,28 +199,49 @@ function SurveyStatus({
         console.log(err);
       });
   }
-  async function deleteSurvey(token: string | null, surveyCode: string) {
+
+  //Fuction to call service that retrieve historic surveys average
+  async function getHistoric(teamName: string, token: string | null) {
     await surveyService
-      .deleteSurvey(token, surveyCode)
+      .getHistoricSurveys(teamName, token)
+      .then((res) => {
+        setHistoric(res.data);
+      })
+      .catch((err) => {
+        console.log(err);
+      });
+  }
+
+  //Fuction to call service that deletes the filled survey
+  async function resetCurrentSurvey(token: string | null, surveyCode: string) {
+    await surveyService
+      .resetSurvey(token, surveyCode)
       .then((res) => {
         setLoadingDelete(false);
-        setDeleteMessage("Survey successfully deleted!");
+        setDeleteMessage("Survey successfully reset!");
         setSuccessDialog(true);
         setOpenReset(false);
       })
       .catch((err) => {
         setLoadingDelete(false);
-        setDeleteMessage("Error deleting the Survey. Please try again later.");
+        setDeleteMessage("Error resetting the Survey. Please try again later.");
         setSuccessDialog(true);
         setOpenReset(false);
       });
   }
+
   useEffect(() => {
     getSurveyConfig(teamName, token);
+    getHistoric(teamName, token);
     // eslint-disable-next-line
   }, [forceUpdate]);
-  const classes = useStyles();
 
+  useEffect(() => {
+    getHistoric(teamName, token);
+    // eslint-disable-next-line
+  }, []);
+
+  const classes = useStyles();
   return (
     <div>
       <Paper variant="outlined" className="paper">
@@ -229,6 +287,13 @@ function SurveyStatus({
                 </p>
               </Grid>
               <Grid item xs={12}>
+                <p>
+                  <VpnKey className="icon" />
+                  Survey Code:
+                  <span>{surveyCode}</span>
+                </p>
+              </Grid>
+              <Grid item xs={12}>
                 {loadingS ? (
                   <Grid
                     container
@@ -254,6 +319,76 @@ function SurveyStatus({
                       >
                         Configure your team
                       </Button>
+                    </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Button
+                        variant="outlined"
+                        className="btn btn-outlined"
+                        onClick={openChartAverage}
+                        startIcon={
+                          <Timeline
+                            style={{
+                              color: colors.primary,
+                            }}
+                          />
+                        }
+                      >
+                        Historic Data
+                      </Button>
+                      <Dialog
+                        disableBackdropClick={true}
+                        disableEscapeKeyDown={true}
+                        open={openChart}
+                        onClose={habldeCloseChart}
+                        aria-labelledby="form-dialog-title"
+                      >
+                        <DialogTitle id="dialog-title">
+                          Historic Data
+                        </DialogTitle>
+                        <DialogContent style={{ width: "520px" }}>
+                          <DialogContentText>
+                            {loadingDelete ? (
+                              <Grid container direction="row" justify="center">
+                                <CircularProgress
+                                  size={24}
+                                  style={{
+                                    color: colors.primary,
+                                  }}
+                                />
+                              </Grid>
+                            ) : (
+                              <HistoricChart historic={historic} />
+                            )}
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions
+                          style={{
+                            width: "53%",
+                            marginBottom: "3%",
+                          }}
+                        >
+                          <Grid
+                            container
+                            direction="row"
+                            justify="flex-end"
+                            alignItems="center"
+                          >
+                            <Grid item xs={12} sm={4}>
+                              <Button
+                                onClick={habldeCloseChart}
+                                color="primary"
+                                variant="contained"
+                                className="btn btn-contained"
+                                style={{
+                                  width: "150px",
+                                }}
+                              >
+                                Close
+                              </Button>
+                            </Grid>{" "}
+                          </Grid>
+                        </DialogActions>
+                      </Dialog>
                     </Grid>
                     <Grid item xs={12} sm={6}>
                       <Button
@@ -287,7 +422,7 @@ function SurveyStatus({
                                 />
                               </Grid>
                             ) : (
-                              <>The actual result will be lost</>
+                              <>All current marks will be lost.</>
                             )}
                           </DialogContentText>
                         </DialogContent>

@@ -1,8 +1,8 @@
 import React from "react";
-import { Grid, Container } from "@material-ui/core";
-
+import { Container, Grid } from "@material-ui/core";
 import "./ExitPage.css";
 
+// Page shown when user has finished submitting the survey.
 function ExitPage() {
   return (
     <Container id="bgImg" disableGutters={true}>
@@ -26,7 +26,7 @@ function ExitPage() {
             <Grid item xs={12} id="espacioTitle-Input"></Grid>
             <Grid item xs={2} sm={6} md={6} lg={6}></Grid>
             <Grid item xs={5} sm={5} md={5} lg={5}>
-              <div className="sentence">Your opinion counts!</div>
+              <div className="sentence">Your opinion matters!</div>
             </Grid>
             <Grid item xs={5} sm={1} md={1} lg={1}></Grid>
           </Grid>

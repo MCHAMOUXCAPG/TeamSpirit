@@ -1,3 +1,5 @@
+// Application's colour palette.
+
 export default {
   primary: "#79C0C6",
   disabled: "rgba(121, 192, 198, 0.5)",

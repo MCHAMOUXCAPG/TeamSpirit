@@ -1,18 +1,20 @@
 import React, { useState } from "react";
-import ExpansionPanel from "@material-ui/core/ExpansionPanel";
-import ExpansionPanelSummary from "@material-ui/core/ExpansionPanelSummary";
-import ExpansionPanelDetails from "@material-ui/core/ExpansionPanelDetails";
-import Typography from "@material-ui/core/Typography";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
-import Tabs from "@material-ui/core/Tabs";
-import Tab from "@material-ui/core/Tab";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import LoupeIcon from "@material-ui/icons/Loupe";
-import { Grid, Container } from "@material-ui/core";
-
-import "./DetailResults.css";
+import {
+  CircularProgress,
+  Container,
+  ExpansionPanel,
+  ExpansionPanelDetails,
+  ExpansionPanelSummary,
+  Grid,
+  Tab,
+  Tabs,
+  Typography,
+} from "@material-ui/core";
 import { IResultsByUsers, IResultsByQuestions } from "../../models/interfaces";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import LoupeIcon from "@material-ui/icons/Loupe";
 import colors from "../../config/colors";
+import "./DetailResults.css";
 
 function DetailResults({
   usersResult,
@@ -28,16 +30,19 @@ function DetailResults({
   const [value, setValue] = useState(0);
 
   const puntos =
-    "...................................................................................................................................................................................................................................................................................";
+    ".................................................................................................................................................................................................................................................................................  ";
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
+
+  // Function that helps differentiate the id between the tabs.
   function a11yProps(index: any) {
     return {
       id: `full-width-tab-${index}`,
       "aria-controls": `full-width-tabpanel-${index}`,
     };
   }
+
   return (
     <ExpansionPanel id="mainPanel">
       <ExpansionPanelSummary

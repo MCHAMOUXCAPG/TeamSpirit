@@ -1,13 +1,14 @@
 import React, { useState, useEffect } from "react";
+import { CircularProgress } from "@material-ui/core";
 import MaterialTable from "material-table";
-import { ManageUserService } from "../../services/Services";
-import { IUserTable, IUser, IUserData } from "../../models/interfaces";
+
 import "./usersTable.css";
 import EditUserDialog from "../editUserDialog/EditUserDialog";
-import CircularProgress from "@material-ui/core/CircularProgress";
+import { ManageUserService } from "../../services/Services";
+import { IUserTable, IUser, IUserData } from "../../models/interfaces";
 import colors from "../../config/colors";
 
-export default function MaterialTableDemo({
+export default function UsersTable({
   loadingService,
   teams,
   users,
@@ -49,6 +50,7 @@ export default function MaterialTableDemo({
 
   const usersList: ManageUserService = new ManageUserService();
 
+  // Fucntion that calls the service to delete a user
   async function delUser(token: string | null, userId: string) {
     await usersList
       .deleteUser(token, userId)
@@ -64,9 +66,9 @@ export default function MaterialTableDemo({
       });
   }
 
+  //Function that tranforms the data to display properly in the table each time users are updated
   useEffect(() => {
     const transformedUsers: IUserData[] = [];
-    // tranform the data to display properly in the table
     users.forEach((user) => {
       const newUserData: IUserData = {
         Email: "",

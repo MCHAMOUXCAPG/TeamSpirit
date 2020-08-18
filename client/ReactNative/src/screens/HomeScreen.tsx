@@ -29,11 +29,13 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   const codeValidationService: CodeValidationService = new CodeValidationService();
   const uniqueUserId: any = Constants.deviceId;
 
+  // Function that resets input when there has been an error with the code.
   const resetInputHandler = () => {
     setLoading(false);
     setInputText("");
   };
 
+  // Function that sends the code to the database in order to see if it exists.
   async function sendCode(inputText: IValidationCode) {
     await codeValidationService
       .sendCode(inputText)
@@ -69,6 +71,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
   var Hashes = require("jshashes");
   var SHA256 = new Hashes.SHA256();
 
+  // Function that sends the user hashed to the databse when the code is correctly inserted.
   const submitHandler = () => {
     setLoading(true);
     closeKeyboard();
@@ -84,6 +87,7 @@ const HomeScreen = ({ navigation }: { navigation: any }) => {
     setKeyboard(false);
   };
 
+  // Function that closes the keyboard when the user presses the back button on the mobile device.
   useEffect(() => {
     const handleBackButtonClick = () => {
       closeKeyboard();

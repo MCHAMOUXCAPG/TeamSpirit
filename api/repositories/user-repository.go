@@ -14,6 +14,8 @@ type UserRepository interface {
 	UpdateUser(userID int, user *entities.User) (*entities.User, error)
 	DeleteUser(userID int) (*entities.User, error)
 	GetUserByAdminRole() (*entities.User, error)
+	GetUserBySuperAdminRole() (*entities.User, error)
+	UpdateSuperUser(user *entities.User) error
 }
 
 type UserRepo struct{}
@@ -25,7 +27,7 @@ func NewUserRepository() UserRepository {
 func (*UserRepo) GetUsers() ([]*entities.User, error) {
 
 	var users []*entities.User
-	result := config.DB.Preload("Role").Preload("Teams").Find(&users)
+	result := config.DB.Preload("Role").Preload("Teams").Where("role_id <> 3").Find(&users)
 
 	return users, result.Error
 }
@@ -33,7 +35,7 @@ func (*UserRepo) GetUsers() ([]*entities.User, error) {
 func (*UserRepo) GetUser(userID int) (*entities.User, error) {
 
 	var user = &entities.User{}
-	result := config.DB.Where("id = ? ", userID).Preload("Role").Preload("Teams").Find(&user)
+	result := config.DB.Where("id = ? AND role_id <> 3", userID).Preload("Role").Preload("Teams").Find(&user)
 
 	return user, result.Error
 }
@@ -46,10 +48,40 @@ func (*UserRepo) GetUserByAdminRole() (*entities.User, error) {
 	return user, result.Error
 }
 
+func (*UserRepo) GetUserBySuperAdminRole() (*entities.User, error) {
+
+	var user = &entities.User{}
+	result := config.DB.Where("role_id = 3 ").Preload("Role").Preload("Teams").Find(&user)
+
+	return user, result.Error
+}
+
 func (*UserRepo) CreateUser(user *entities.User) (*entities.User, error) {
 
 	result := config.DB.Create(&user)
 	return user, result.Error
+}
+
+func (*UserRepo) UpdateSuperUser(user *entities.User) error {
+	var teamUser []dto.TeamUser
+	var users = &entities.User{}
+	var userPWBRD []*entities.User
+
+	userTeam := config.DB.Where("role_id = 3 ").Preload("Role").Preload("Teams").Find(&users)
+	if userTeam.RowsAffected > 0 {
+		config.DB.Where("role_id = 3 ").Preload("Role").Preload("Teams").Find(&userPWBRD)
+		for _, userAPI := range userPWBRD {
+			superAdminID := userAPI.Id
+			for _, team := range user.Teams {
+				result := config.DB.Table("team_users").Where("user_id = ? AND team_name = ?", superAdminID, team.Name).Find(&teamUser)
+				if result.RowsAffected == 0 {
+					config.DB.Exec("INSERT INTO team_users (user_id, team_name) VALUES (?,?)", superAdminID, team.Name)
+				}
+			}
+		}
+
+	}
+	return nil
 }
 
 func (*UserRepo) UpdateUser(userID int, user *entities.User) (*entities.User, error) {
@@ -78,12 +110,12 @@ func updateUserTransaction(db *gorm.DB, userID int, user *entities.User) error {
 	var userToUpdate = &entities.User{}
 	var teamUser []dto.TeamUser
 	return db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Model(&userToUpdate).Where("id = ? ", userID).Updates(&user).Error; err != nil {
+		if err := tx.Model(&userToUpdate).Where("id = ? AND role_id <> 3", userID).Updates(&user).Error; err != nil {
 			return err
 		}
 
 		if user.Role.Id == 0 {
-			if err := tx.Model(&userToUpdate).Where("id = ?", userID).Update("role_id", 0).Error; err != nil {
+			if err := tx.Model(&userToUpdate).Where("id = ? AND role_id <> 3", userID).Update("role_id", 0).Error; err != nil {
 				return err
 			}
 		}
@@ -104,15 +136,22 @@ func updateUserTransaction(db *gorm.DB, userID int, user *entities.User) error {
 func deleteUserTransaction(db *gorm.DB, userID int) error {
 	var user = &entities.User{}
 	var teamUser []dto.TeamUser
+	var userPWBRD []*entities.User
+	var NotAvailableIds []int
 
 	return db.Transaction(func(tx *gorm.DB) error {
-		if err := tx.Where("id = ? ", userID).Delete(&user).Error; err != nil {
+		if err := tx.Where("id = ? AND role_id <> 3", userID).Delete(&user).Error; err != nil {
+			return err
+		}
+		config.DB.Where("role_id = 3 ").Preload("Role").Preload("Teams").Find(&userPWBRD)
+		for _, userAPI := range userPWBRD {
+
+			NotAvailableIds = append(NotAvailableIds, userAPI.Id)
+		}
+		if err := tx.Table("team_users").Where("user_id = ?", userID).Not("user_id", NotAvailableIds).Delete(&teamUser).Error; err != nil {
 			return err
 		}
 
-		if err := tx.Table("team_users").Where("user_id = ?", userID).Delete(&teamUser).Error; err != nil {
-			return err
-		}
 		return nil
 	})
 }

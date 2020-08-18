@@ -80,6 +80,13 @@ func GetRole(c echo.Context) error {
 func CreateRole(c echo.Context) error {
 
 	var newRole = &entities.Role{}
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_CREATE_CREATEROLE)
+	}
+
 	json.NewDecoder(c.Request().Body).Decode(&newRole)
 
 	if newRole.Name == "" {
@@ -106,6 +113,12 @@ func CreateRole(c echo.Context) error {
 // @Failure 400 {object} dto.Error
 // @Router /role/:id [put]
 func UpdateRole(c echo.Context) error {
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_UPDATE_UPDATEROLE)
+	}
 
 	roleID, err := strconv.Atoi(c.Param("id"))
 
@@ -136,9 +149,16 @@ func UpdateRole(c echo.Context) error {
 // @Produce json
 // @Param id path string true "id"
 // @Success 200 {object} entities.Role
+// @Failure 401 {object} dto.Error
 // @Failure 500 {object} dto.Error
 // @Router /role/:id [delete]
 func DeleteRole(c echo.Context) error {
+
+	err := CheckUserAuthority(c)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusUnauthorized, constants.UNATHORIZED_DELETE_DELETEROLE)
+	}
 
 	roleID, err := strconv.Atoi(c.Param("id"))
 
@@ -158,6 +178,7 @@ func DeleteRole(c echo.Context) error {
 func VerifyRole() {
 	var newRoleAdmin = &entities.Role{Name: "Admin"}
 	var newRoleTeamLeader = &entities.Role{Name: "TeamLeader"}
+	var newRoleSuperAdmin = &entities.Role{Name: "PWBRDAPI"}
 
 	_, errAdmin := RoleRepo.GetRoleByName("Admin")
 
@@ -171,6 +192,12 @@ func VerifyRole() {
 		panic("Error adding TeamLeader role")
 	}
 
+	_, errSuperAdmin := RoleRepo.GetRoleByName("PWBRDAPI")
+
+	if errSuperAdmin != nil && !gorm.IsRecordNotFoundError(errSuperAdmin) {
+		panic("Error adding Admin role")
+	}
+
 	if gorm.IsRecordNotFoundError(errAdmin) {
 		_, err := RoleRepo.CreateRole(newRoleAdmin)
 		if err != nil {
@@ -181,6 +208,13 @@ func VerifyRole() {
 		_, err := RoleRepo.CreateRole(newRoleTeamLeader)
 		if err != nil {
 			panic("Error creating TeamLeader role")
+		}
+	}
+
+	if gorm.IsRecordNotFoundError(errSuperAdmin) {
+		_, err := RoleRepo.CreateRole(newRoleSuperAdmin)
+		if err != nil {
+			panic("Error creating SuperAdmin role")
 		}
 	}
 }

@@ -24,3 +24,5 @@ api/tests/database.db
 # Dependency directories (remove the comment below to include it)
 # vendor/
 api/.scannerwork
+api/.vscode/launch.json
+api/__debug_bin

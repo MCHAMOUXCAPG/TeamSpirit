@@ -1,10 +1,11 @@
 import React, { useState, useEffect, useContext } from "react";
 import { Container, Grid } from "@material-ui/core";
+
 import NavBar from "../navBar/NavBar";
 import AverageChart from "../averageChart/Chart";
 import "./TeamHomePage.css";
 import "../surveyStatus/SurveyStatus.css";
-import SurveyStatus from "../surveyStatus/SurveySatus";
+import SurveyStatus, { reRender } from "../surveyStatus/SurveyStatus";
 import {
   ICurrentSurveyResult,
   IResultsByUsers,
@@ -14,11 +15,11 @@ import { SurveyService } from "../../services/Services";
 import DetailResults from "../detailResults/DetailResults";
 import ExportResult from "../exportResult/ExportResult";
 import { AuthContext } from "../../context/auth";
-import { reRender } from "../../components/surveyStatus/SurveySatus";
+
 const TeamHomePage = () => {
   function useForceUpdate() {
     // eslint-disable-next-line
-    const [value, setValue] = useState(0); // integer state
+    const [value, setValue] = useState(0);
     return () => setValue((value) => ++value); // update the state to force render
   }
 
@@ -51,6 +52,7 @@ const TeamHomePage = () => {
 
   const surveyService: SurveyService = new SurveyService();
 
+  //Fuction that calls the service to retrive team and survey information
   async function getResults(teamName: string, token: string | null) {
     await surveyService
       .getCurrentResult(teamName, token)
@@ -63,6 +65,8 @@ const TeamHomePage = () => {
         setNotData(true);
       });
   }
+
+  // Function that calls the service to get the survey answers filtered by user
   async function getResultsByUser(teamName: string, token: string | null) {
     await surveyService
       .getResultByUser(teamName, token)
@@ -75,6 +79,7 @@ const TeamHomePage = () => {
       });
   }
 
+  // Function that calls the service to get the survey answers filtered by question
   async function getResultsByQuestion(teamName: string, token: string | null) {
     await surveyService
       .getResultByQuestions(teamName, token)
@@ -87,6 +92,7 @@ const TeamHomePage = () => {
       });
   }
 
+  // Hook to call services when loading page
   useEffect(() => {
     getResults(context.currentTeam, token);
     getResultsByUser(context.currentTeam, token);
@@ -94,6 +100,7 @@ const TeamHomePage = () => {
     // eslint-disable-next-line
   }, []);
 
+  // Hook to format the date when the survey data is loaded
   useEffect(() => {
     const startDate = new Date(currentSurveyResult.Period.StartDate);
     const endDate = new Date(currentSurveyResult.Period.EndDate);
@@ -113,12 +120,15 @@ const TeamHomePage = () => {
 
     setPeriod(period);
   }, [currentSurveyResult]);
+
+  // Hook that redenders when updated data
   useEffect(() => {
     getResults(context.currentTeam, token);
     forceUpdate();
     contextRender.setRender(false);
     // eslint-disable-next-line
   }, [contextRender.render]);
+
   return (
     <div>
       <NavBar user={true}></NavBar>

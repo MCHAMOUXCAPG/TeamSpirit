@@ -37,6 +37,8 @@ const SurveyScreen = ({
   const { surveyCode, projectName, userId } = route.params;
   const surveyService: SurveyService = new SurveyService();
   const [loading, setLoading] = useState(false);
+
+  // Function that sends the notes to the database.
   async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
     await surveyService
       .sendSurvey(surveyCode, body)
@@ -66,6 +68,8 @@ const SurveyScreen = ({
         }
       });
   }
+
+  // Function that asks for your confirmation to leave when pressing the back buttton on the mobile device.
   useEffect(() => {
     const backAction = () => {
       Alert.alert(
@@ -158,6 +162,7 @@ const SurveyScreen = ({
     [false, false],
   ]);
 
+  // Updates the cycle of life of the application.
   useEffect(() => {
     let count = 0;
     const currentQuestionStatus = questionsState;
@@ -236,28 +241,33 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     alignItems: "center",
     justifyContent: "center",
+    position: "absolute",
+    width: "100%",
+    height: "100%",
+    left: 0,
+    top: 0,
   },
   project: {
     color: colors.primary,
-    fontSize: 20,
+    fontSize: hp("3%"),
     fontWeight: "bold",
     textAlign: "left",
   },
   projectView: {
     position: "relative",
-    top: -64,
+    top: hp("-8%"),
     marginLeft: wp("-50%"),
     width: wp("40%"),
     paddingLeft: 0,
   },
   swiper: {
     flex: 0.7,
-    bottom: "14%",
+    bottom: hp("11%"),
   },
   circle: {
     alignItems: "center",
     justifyContent: "center",
-    top: hp("0%"),
+    top: hp("-1.3%"),
     left: wp("30%"),
     width: wp("40%"),
     backgroundColor: colors.transparent,

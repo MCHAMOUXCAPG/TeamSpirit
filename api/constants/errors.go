@@ -193,6 +193,27 @@ var CREATE_CREATEROLE_NAME_EMPTY = &dto.Error{
 	Function: "CreateRole",
 }
 
+var UNATHORIZED_DELETE_DELETEROLE = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "DeleteRole",
+}
+
+var UNATHORIZED_UPDATE_UPDATEROLE = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "UpdateRole",
+}
+
+var UNATHORIZED_CREATE_CREATEROLE = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "CreateRole",
+}
+
 var CREATE_UPDATEROLE_NAME_EMPTY = &dto.Error{
 	Status:   400,
 	Message:  "Name cannot be empty",
@@ -235,6 +256,19 @@ var CANNOT_BE_EMPTY_CREATETEAM = &dto.Error{
 	Function: "CreateTeam",
 }
 
+var UNATHORIZED_USER_CREATETEAM = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "CreateTeam",
+}
+
+var UNATHORIZED_USER_DELETETEAM = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "DeleteTeam",
+}
 var UPDATE_UPDATETEAM = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method TeamRepo.UpdateTeam",
@@ -296,6 +330,34 @@ var CANNOT_BE_EMPTY_CREATEUSER = &dto.Error{
 	Message:  "All fields cannot be empty or null",
 	Path:     "api/services/user-service.go",
 	Function: "CreateUser",
+}
+
+var UNATHORIZED_USER_CREATEUSER = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "CreateUser",
+}
+
+var UNATHORIZED_USER_UPDATEUSER = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "UpdateUser",
+}
+
+var UNATHORIZED_USER_DELETEUSER = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "DeleteUser",
+}
+
+var UNATHORIZED_USER_GETEUSER = &dto.Error{
+	Status:   401,
+	Message:  "This user has no authorization to execute this method",
+	Path:     "api/services/team-service.go",
+	Function: "GeteUser",
 }
 
 var CONVERTPARAM_UPDATEUSER = &dto.Error{
@@ -382,6 +444,20 @@ var DELETE_DELETESURVEY = &dto.Error{
 	Function: "DeleteSurvey",
 }
 
+var NOTFOUND_GETNOTES = &dto.Error{
+	Status:   404,
+	Message:  "No survey with this survey_code was found",
+	Path:     "api/services/survey-service.go",
+	Function: "ResetSurvey",
+}
+
+var RESET_DELETENOTES = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.ResetSurvey",
+	Path:     "api/services/survey-service.go",
+	Function: "ResetSurvey",
+}
+
 var GET_ADDNOTES = &dto.Error{
 	Status:   500,
 	Message:  "Some error happened when calling the method SurveyRepo.GetSurvey",
@@ -436,6 +512,20 @@ var GETLASTSURVEY_GETHISTORICSURVEYSBYUSERS = &dto.Error{
 	Message:  "Some error happened when calling the method SurveyRepo.GetLastSurvey",
 	Path:     "api/services/survey-service.go",
 	Function: "GetHistoricSurveysByusers",
+}
+
+var GETLASTSURVEY_GETHISTORICSURVEYS = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurveys",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricSurveys",
+}
+
+var GETLASTSURVEY_GETHISTORICRESULT = &dto.Error{
+	Status:   500,
+	Message:  "Some error happened when calling the method SurveyRepo.GetSurveys",
+	Path:     "api/services/survey-service.go",
+	Function: "GetHistoricResult",
 }
 
 var NOTESBYUSERS_GETHISTORICSURVEYSBYUSERS = &dto.Error{

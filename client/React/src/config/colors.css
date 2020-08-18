@@ -1,3 +1,4 @@
+/* global color variables for css files */
 :root {
   --primary: #79c0c6;
   --secondary: rgba(121, 192, 198, 0.4);

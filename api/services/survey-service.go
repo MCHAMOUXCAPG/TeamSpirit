@@ -183,6 +183,39 @@ func DeleteSurvey(c echo.Context) error {
 	return c.JSON(http.StatusOK, survey)
 }
 
+// @Summary Reset a survey
+// @Description returns a empty survey
+// @Tags Surveys
+// @Accept json
+// @Produce json
+// @Param surveyCode path string true "survey Code"
+// @Success 200 {object} entities.Survey
+// @Failure 404 {object} dto.Error
+// @Failure 500 {object} dto.Error
+// @Router /survey/resetSurvey/:surveyCode [put]
+func ResetSurvey(c echo.Context) error {
+
+	surveyCode := c.Param("surveyCode")
+	var notes = &entities.Note{}
+	_, err := SurveyRepo.GetSurvey(surveyCode)
+
+	if gorm.IsRecordNotFoundError(err) {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETNOTES)
+	}
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETSURVEY)
+	}
+
+	note, err := SurveyRepo.ResetSurvey(surveyCode, notes)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.RESET_DELETENOTES)
+	}
+
+	return c.JSON(http.StatusOK, note)
+}
+
 // @Summary Add notes to survey
 // @Description you should send an array of Notes. Those will be saved in the survey with code provided.
 // @Tags Surveys
@@ -377,6 +410,51 @@ func calculateCompleted(membersTeam int, notes []entities.Note) string {
 	return strconv.Itoa(membersVote) + "/" + strconv.Itoa(membersTeam)
 }
 
+// @Summary Survey resultByPeriod
+// @Description returns the result survey grouped by Period of startDate and EndDate
+// @Tags Surveys
+// @Accept json
+// @Produce json
+// @Param teamName path string true "Team name"
+// @Success 200 {object} []dto.HistoricResult
+// @Failure 400 {object} dto.Error
+// @Failure 500 {object} dto.Error
+// @Router /resultBySurveys/:teamName [get]
+func GetHistoricSurveys(c echo.Context) error {
+	teamName := c.Param("teamName")
+	var result []*dto.HistoricResult
+	count := 1
+	allSurveysTeam, err := SurveyRepo.GetSurveys(teamName)
+
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETLASTSURVEY_GETHISTORICSURVEYS)
+	}
+
+	for _, eachSurvey := range allSurveysTeam {
+		surveyCode := eachSurvey.Code
+		startDate := eachSurvey.StartDate
+		endDate := eachSurvey.EndDate
+		averageSurvey, err := SurveyRepo.GetHistoricResult(surveyCode)
+
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, constants.GETLASTSURVEY_GETHISTORICRESULT)
+		}
+		result = append(result, &dto.HistoricResult{
+			StartDate:    startDate,
+			EndDate:      endDate,
+			TotalAverage: averageSurvey,
+		})
+		count++
+		// max of 5 historic results
+		if count > 5 {
+			/* terminate the loop using break statement */
+			break
+		}
+	}
+
+	return c.JSON(http.StatusOK, result)
+}
+
 func CreateSurveyAtEndOfSprint() {
 
 	teams, _ := TeamRepo.GetTeams()
@@ -455,7 +533,7 @@ func ExportSurveysCsv(c echo.Context) (err error) {
 		return echo.NewHTTPError(http.StatusBadRequest, constants.EXPORT_EXPORTSURVEY_DATE_ERROR)
 	}
 
-	var headerCsv = []string{"StartDate", "EndDate", "Q.Number", "Note", "Code", "TeamName"}
+	var headerCsv = []string{"StartDate", "EndDate", "Q.Number", "User", "Note", "Code", "TeamName"}
 
 	surveys, err := SurveyRepo.GetSurviesByPeriodAndTeamName(startDate, endDate, teamName)
 
@@ -482,12 +560,28 @@ func ExportSurveysCsv(c echo.Context) (err error) {
 		surveyStartDate := survey.StartDate.String()
 		surveyEndDate := survey.EndDate.String()
 		surveyTeamName := survey.TeamName
+		count := 1
 		surveyCode := survey.Code
+		hashFirstUser := survey.Notes[0].User
 
 		for _, note := range survey.Notes {
-			line := []string{surveyStartDate, surveyEndDate, strconv.Itoa(note.Number), fmt.Sprintf("%g", note.Note), surveyCode, surveyTeamName}
-			if err = w.Write(line); err != nil {
-				return
+			hashUser := note.User
+			if hashUser == hashFirstUser {
+				normalizedUser := "User" + strconv.Itoa(count)
+				line := []string{surveyStartDate, surveyEndDate, strconv.Itoa(note.Number), normalizedUser, fmt.Sprintf("%g", note.Note), surveyCode, surveyTeamName}
+				if err = w.Write(line); err != nil {
+					return
+				}
+				// w.Flush()
+			} else {
+				count++
+				hashFirstUser = note.User
+				normalizedUser := "User" + strconv.Itoa(count)
+				line := []string{surveyStartDate, surveyEndDate, strconv.Itoa(note.Number), normalizedUser, fmt.Sprintf("%g", note.Note), surveyCode, surveyTeamName}
+				if err = w.Write(line); err != nil {
+					return
+				}
+				// w.Flush()
 			}
 			w.Flush()
 		}

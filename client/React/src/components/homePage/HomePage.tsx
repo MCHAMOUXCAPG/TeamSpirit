@@ -1,25 +1,21 @@
-/********************************************************************************
- *
- *
- *
- *                           Team Survey Home Page
- *
- *
- *
- *********************************************************************************/
 import React, { useState, useContext, useEffect } from "react";
-import "./HomePage.css";
 import TextField from "@material-ui/core/TextField";
-import Button from "@material-ui/core/Button";
-import { Grid, Paper, Container, Link } from "@material-ui/core";
+import {
+  Grid,
+  Paper,
+  Container,
+  Link,
+  Button,
+  CircularProgress,
+} from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import { v4 as uuidv4 } from "uuid";
+import { useNavigate } from "react-router-dom";
 
+import "./HomePage.css";
 import Colors from "../../config/colors";
 import { CodeValidationService } from "../../services/Services";
 import { IValidationCode } from "../../models/interfaces";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
 
 const HomePage = () => {
@@ -30,17 +26,14 @@ const HomePage = () => {
   const [HelperTxt, setHelperTxt] = useState("");
   const navigate = useNavigate();
   const codeValidationService: CodeValidationService = new CodeValidationService();
-  /********************************************************************************
-   *
-   *
-   *
-   *********************************************************************************/
+
+  // Function to make public route
   useEffect(() => {
     context.setValid(false);
     // eslint-disable-next-line
   }, []);
-  // to make private route
 
+  // Get the uniqueId from localStorage, if not exists, create a new one
   let uniqueId: any = undefined;
   if (localStorage.getItem("uniqueIdTS")) {
     uniqueId = localStorage.getItem("uniqueIdTS");
@@ -48,8 +41,8 @@ const HomePage = () => {
     uniqueId = uuidv4();
     localStorage.setItem("uniqueIdTS", uniqueId);
   }
-  // get the uniqueId, if not exists, create a new one
 
+  // Function to validate the input code
   const submitHandler = () => {
     setLoading(true);
     sendCode({ code: search, User: uniqueId });

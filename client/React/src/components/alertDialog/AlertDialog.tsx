@@ -9,7 +9,7 @@ import colors from "../../config/colors";
 import "./AlertDialog.css";
 
 export default function AlertDialog(props: any) {
-  const [open, setOpen] = useState(true); //On false for testing purposes
+  const [open, setOpen] = useState(true); //Set to true allows pop-ups to be visible.
 
   const handleClose = () => {
     setOpen(false);

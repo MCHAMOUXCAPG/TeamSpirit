@@ -1,7 +1,4 @@
 import React, { useState } from "react";
-import "./ExportResult.css";
-import NoteAddIcon from "@material-ui/icons/NoteAdd";
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import {
   Container,
   Grid,
@@ -12,28 +9,34 @@ import {
   ExpansionPanelDetails,
   CircularProgress,
 } from "@material-ui/core";
-import GetAppIcon from "@material-ui/icons/GetApp";
 import {
   MuiPickersUtilsProvider,
   KeyboardDatePicker,
 } from "@material-ui/pickers";
-import DateFnsUtils from "@date-io/date-fns";
-import { format } from "date-fns";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
 import { SurveyService } from "../../services/Services";
+import { format } from "date-fns";
+import DateFnsUtils from "@date-io/date-fns";
+import NoteAddIcon from "@material-ui/icons/NoteAdd";
+import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import GetAppIcon from "@material-ui/icons/GetApp";
 import FileSaver from "file-saver";
 import colors from "../../config/colors";
+import "./ExportResult.css";
 
 function ExportResult({ teamName }: { teamName: string }) {
   const [startDate, setStartDate] = useState<Date | string>(
     format(new Date(), "yyyy-MM-dd")
   );
+
   const [endDate, setEndDate] = useState<Date | string>(
     format(new Date(), "yyyy-MM-dd")
   );
+
   const [message, setMessage] = useState(
     "Please, select a date interval and export your CSV."
   );
+
   const [loading, setLoading] = useState(false);
   const [color, setColor] = useState("#919191");
   const [latent, setLatent] = useState(false);
@@ -42,6 +45,7 @@ function ExportResult({ teamName }: { teamName: string }) {
 
   const surveyService: SurveyService = new SurveyService();
 
+  // Function to get the date range of data to download into a CSV.
   const getCSVdownload = async (
     startDate: string,
     endDate: string,

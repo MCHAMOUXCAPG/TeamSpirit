@@ -90,6 +90,7 @@ const HistoricChart = (props: any) => {
     },
   });
 
+  // Adds into new arrays the data revieved from the service to be able to show in the chart.
   useEffect(() => {
     props.historic.map((s: any, index: any) => {
       averageNotes.push(s.TotalAverage.toFixed(2));
@@ -102,11 +103,14 @@ const HistoricChart = (props: any) => {
           "/" +
           s.EndDate.substr(5, 2)
       );
+      return null; //Placed here to avoid a warning.
     });
 
     updateCharts();
     // eslint-disable-next-line
   }, [props]);
+
+  // Function that updates the chart with the data that we want to provide.
   function updateCharts() {
     setState({
       ...state,
@@ -122,8 +126,14 @@ const HistoricChart = (props: any) => {
           title: {
             text: "Average",
           },
-          min: props.historic.length === 1 ? 0 : Math.min(...averageNotes),
-          max: props.historic.length === 1 ? 10 : Math.max(...averageNotes),
+          min:
+            Math.min(...averageNotes) === Math.max(...averageNotes)
+              ? 0
+              : Math.min(...averageNotes),
+          max:
+            Math.max(...averageNotes) === Math.min(...averageNotes)
+              ? 10
+              : Math.max(...averageNotes),
         },
         xaxis: {
           categories: rangeDates.reverse(),
@@ -134,6 +144,7 @@ const HistoricChart = (props: any) => {
       },
     });
   }
+
   return (
     <Chart
       options={state.options}
@@ -143,4 +154,5 @@ const HistoricChart = (props: any) => {
     />
   );
 };
+
 export default HistoricChart;

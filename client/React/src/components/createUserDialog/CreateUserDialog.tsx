@@ -1,16 +1,18 @@
 import React, { useState } from "react";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import TextField from "@material-ui/core/TextField";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogTitle from "@material-ui/core/DialogTitle";
-import FormHelperText from "@material-ui/core/FormHelperText";
-import Button from "@material-ui/core/Button";
+import {
+  Button,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogTitle,
+  FormHelperText,
+  TextField,
+} from "@material-ui/core";
 import { IUserDTO, ITeamDTO, IRole } from "../../models/interfaces";
-import "./CreateUserDialog.css";
 import { ManageUserService } from "../../services/Services";
 import Select from "react-dropdown-select";
+import "./CreateUserDialog.css";
 
 const CreateUserDialog = ({
   open,
@@ -47,6 +49,8 @@ const CreateUserDialog = ({
   ]);
   const [disabledSubmit, setDisabledSubmit] = useState(true);
   const [disabledTeams, setDisabledTeams] = useState(true);
+
+  // Function to enable "Save" button when user has finished filling in the form.
   const updateValidateSubmit = (index: number, value: boolean) => {
     const newValidateSubmit = validateSubmit;
     newValidateSubmit[index] = value;
@@ -63,6 +67,7 @@ const CreateUserDialog = ({
       setDisabledSubmit(true);
     }
   };
+
   const [body, setBody] = useState<IUserDTO>({
     Full_name: "",
     Email: "",
@@ -70,8 +75,10 @@ const CreateUserDialog = ({
     Role: roles[0],
     Teams: [],
   });
+
   const manageService: ManageUserService = new ManageUserService();
 
+  // Function to empty form in case the user saves or cancels the form submission.
   const resetValues = () => {
     setBody({
       Full_name: "",
@@ -92,6 +99,8 @@ const CreateUserDialog = ({
     setHelperTxtRole("");
     setHelperTxtTeam("");
   };
+
+  // Function that creates a user storing it in the database.
   async function createUser(body: IUserDTO, token: string | null) {
     await manageService
       .createUser(body, token)
@@ -109,6 +118,7 @@ const CreateUserDialog = ({
       });
   }
 
+  // Function to add team/s selected to the array.
   const handleChangeTeams = (teams: ITeamDTO[]) => {
     let newTeams: ITeamDTO[] = [];
     teams.forEach((team: ITeamDTO) => {
@@ -126,6 +136,8 @@ const CreateUserDialog = ({
     });
     setBody({ ...body, Teams: newTeams });
   };
+
+  // Function to validate that the full name of the user will only contain alphabet characters.
   function allLetter(inputtxt: string) {
     var letters = /^[a-zA-ZÀ-ÿ\u00f1\u00d1]+(\s*[a-zA-ZÀ-ÿ\u00f1\u00d1]*)*[a-zA-ZÀ-ÿ\u00f1\u00d1]+$/;
     if (inputtxt.match(letters)) {
@@ -138,6 +150,8 @@ const CreateUserDialog = ({
       updateValidateSubmit(0, false);
     }
   }
+
+  // Function to validate the email.
   function validarEmail(valor: string) {
     // eslint-disable-next-line
     if (/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(valor)) {
@@ -150,6 +164,8 @@ const CreateUserDialog = ({
       updateValidateSubmit(1, false);
     }
   }
+
+  // Function to validate that the password has to be at least 6 characters long.
   function validatePass(valor: string) {
     if (/^.{6,}$/.test(valor)) {
       setErrPass(false);
@@ -162,6 +178,7 @@ const CreateUserDialog = ({
     }
   }
 
+  // Function to validate Role, if TeamLeader allows user to choose the team/s that the user manages.
   function validateRole(role: IRole) {
     const valor = role.Id;
     if (valor === 1) {
@@ -177,12 +194,14 @@ const CreateUserDialog = ({
       updateValidateSubmit(4, false);
       setDisabledTeams(false);
     } else {
-      setHelperTxtRole("You must choose a Role for the user!");
+      setHelperTxtRole("You must choose a Role for the user!"); //ERROR MSG IS SHOWING WHEN CHOSING PWRBDAPI
       updateValidateSubmit(3, false);
       updateValidateSubmit(4, false);
       setDisabledTeams(true);
     }
   }
+
+  // Function to validate that the user being a TeamLeader has at least one team to manage.
   function validateTeams(teams: ITeamDTO[]) {
     if (teams.length > 0) {
       // En caso de ser TeamLeader y tener teams
@@ -193,12 +212,14 @@ const CreateUserDialog = ({
       updateValidateSubmit(4, false);
     }
   }
+
   const classes = useStyles();
   const handleSubmit = () => {
     setLoading(true);
     handleClose(!open);
     createUser(body, token);
   };
+
   return (
     <form>
       <Dialog

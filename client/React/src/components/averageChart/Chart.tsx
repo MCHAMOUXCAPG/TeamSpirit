@@ -1,16 +1,6 @@
-/********************************************************************************
- *
- *
- *
- *                           graphic component
- *
- *
- *
- *********************************************************************************/
 import React, { useState, useEffect } from "react";
-import "./Chart.css";
+import { CircularProgress, Grid } from "@material-ui/core";
 import Chart from "react-apexcharts";
-import Grid from "@material-ui/core/Grid";
 import cryface from "../../assets/emoji_1.png";
 import verysadface from "../../assets/emoji_3.png";
 import sadface from "../../assets/emoji_4.png";
@@ -18,8 +8,9 @@ import plainface from "../../assets/emoji_5.png";
 import smileface from "../../assets/emoji_7.png";
 import happyface from "../../assets/emoji_9.png";
 import bigsmileface from "../../assets/emoji_10.png";
-import CircularProgress from "@material-ui/core/CircularProgress";
 import colors from "../../config/colors";
+import "./Chart.css";
+
 const AverageChart = (props: any) => {
   let customGrade = props.grade * 10;
   /*List of emoticons to use to represent the team average*/

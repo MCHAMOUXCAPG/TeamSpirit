@@ -8,6 +8,7 @@ import {
 } from "../models/interfaces";
 
 export class SurveyService {
+  //Service to get historic survey average
   public getHistoricSurveys(
     teamName: string,
     token: string | null
@@ -19,6 +20,8 @@ export class SurveyService {
       },
     });
   }
+
+  // Service to add notes from a user
   public sendSurvey(
     surveyCode: string,
     body: IQuestionResponse[]
@@ -27,6 +30,7 @@ export class SurveyService {
     return environment.post(endPoint, body);
   }
 
+  // Service to get the currect survey result
   public getCurrentResult(
     surveyCode: string,
     token: string | null
@@ -39,6 +43,7 @@ export class SurveyService {
     });
   }
 
+  //Service to get the notes ordered by user
   public getResultByUser(teamName: string, token: string | null): Promise<any> {
     const endPoint = "/resultByUsers/" + teamName;
     return environment.get(endPoint, {
@@ -48,6 +53,7 @@ export class SurveyService {
     });
   }
 
+  //Service to get the notes ordered by question
   public getResultByQuestions(
     teamName: string,
     token: string | null
@@ -60,6 +66,7 @@ export class SurveyService {
     });
   }
 
+  // Service to get team details
   public getResultSurveyConfig(
     teamName: string,
     token: string | null
@@ -72,6 +79,7 @@ export class SurveyService {
     });
   }
 
+  // Service to get csv file
   public getCSV(
     startDate: string,
     endDate: string,
@@ -92,6 +100,7 @@ export class SurveyService {
     });
   }
 
+  // Service to delete the notes of a concrete survey
   public resetSurvey(token: string | null, surveyCode: string): Promise<any> {
     const endPoint = "/survey/resetSurvey/" + surveyCode;
     return environment.put(endPoint, null, {
@@ -101,6 +110,7 @@ export class SurveyService {
     });
   }
 
+  // Service to delete permanently a survey (surveyCode + notes)
   public deleteSurvey(token: string | null, surveyCode: string): Promise<any> {
     const endPoint = "/survey/" + surveyCode;
     return environment.delete(endPoint, {
@@ -112,6 +122,7 @@ export class SurveyService {
 }
 
 export class CodeValidationService {
+  // Service to access the survey
   public sendCode(code: IValidationCode): Promise<any> {
     const endPoint = "/access";
     return environment.post(endPoint, code);
@@ -119,10 +130,13 @@ export class CodeValidationService {
 }
 
 export class UserValidationService {
+  //Service to login in the application
   public sendUser(body: IValidationUser): Promise<any> {
     const endPoint = "/login";
     return environment.post(endPoint, body);
   }
+
+  //Service to update the team configuration
   public putTeamConfig(
     body: ITeamDTO,
     teamName: string,
@@ -135,6 +149,8 @@ export class UserValidationService {
       },
     });
   }
+
+  // Service to get the current user just with the token
   public getUser(token: string | null): Promise<any> {
     const endPoint = "/me";
     return environment.get(endPoint, {
@@ -146,6 +162,7 @@ export class UserValidationService {
 }
 
 export class ManageUserService {
+  // Service to delete a user
   public deleteUser(token: string | null, userId: string): Promise<any> {
     const endPoint = "/user/" + userId;
     return environment.delete(endPoint, {
@@ -155,6 +172,7 @@ export class ManageUserService {
     });
   }
 
+  //Service to get all users
   public getUsers(token: string | null): Promise<any> {
     const endPoint = "/users";
     return environment.get(endPoint, {
@@ -164,6 +182,7 @@ export class ManageUserService {
     });
   }
 
+  // Service to get all teams
   public getTeams(token: string | null): Promise<any> {
     const endPoint = "/teams";
     return environment.get(endPoint, {
@@ -173,6 +192,7 @@ export class ManageUserService {
     });
   }
 
+  // Service to get all roles
   public getRoles(token: string | null): Promise<any> {
     const endPoint = "/roles";
     return environment.get(endPoint, {
@@ -182,6 +202,7 @@ export class ManageUserService {
     });
   }
 
+  //Service to create a user
   public createUser(body: IUserDTO, token: string | null): Promise<any> {
     const endPoint = "/user/create";
     return environment.post(endPoint, body, {
@@ -190,6 +211,8 @@ export class ManageUserService {
       },
     });
   }
+
+  //Service to update a user
   public updateUser(
     body: IUserDTO,
     id: string,

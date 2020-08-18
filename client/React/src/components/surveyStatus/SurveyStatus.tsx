@@ -238,6 +238,7 @@ function SurveyStatus({
 
   useEffect(() => {
     getHistoric(teamName, token);
+    // eslint-disable-next-line
   }, []);
 
   const classes = useStyles();

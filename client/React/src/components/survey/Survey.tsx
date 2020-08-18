@@ -1,6 +1,5 @@
 import React, { useState, useEffect, useContext } from "react";
 import { useNavigate } from "react-router-dom";
-import { useAuth, AuthContext } from "../../context/auth";
 import "./Survey.css";
 import {
   Container,
@@ -11,12 +10,13 @@ import {
   CircularProgress,
 } from "@material-ui/core";
 import { Rating } from "@material-ui/lab";
-import AlertDialog from "../alertDialog/AlertDialog";
 
 import colors from "../../config/colors";
 import NavBar from "../navBar/NavBar";
+import AlertDialog from "../alertDialog/AlertDialog";
 import questions from "../../models/questions";
 import { SurveyService } from "../../services/Services";
+import { useAuth, AuthContext } from "../../context/auth";
 import {
   questionType,
   IQuestionStatus,
@@ -32,7 +32,6 @@ const Survey = (props: any) => {
   const [slider1, setSlider1] = useState<number | number[]>(5);
   const [slider2, setSlider2] = useState<number | number[]>(5);
   const [success, setSuccess] = useState(false);
-  const [repeated, setRepeated] = useState(false);
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const [currentQuestion, setCurrentQuestion] = useState(0);
@@ -46,11 +45,11 @@ const Survey = (props: any) => {
     { valid: false, status: "", touched: false },
   ]);
 
+  // Get the uniqueId from localStorage
   let uniqueId: any = undefined;
   if (localStorage.getItem("uniqueIdTS")) {
     uniqueId = localStorage.getItem("uniqueIdTS");
   }
-  // get the uniqueId
 
   const [questionsResponse, setQuestionsResponse] = useState<
     IQuestionResponse[]
@@ -74,27 +73,26 @@ const Survey = (props: any) => {
 
   function useForceUpdate() {
     // eslint-disable-next-line
-    const [value, setValue] = useState(0); // integer state
-    return () => setValue((value) => ++value); // update the state to force render
+    const [value, setValue] = useState(0);
+    return () => setValue((value) => ++value); // update the state to force render and see the clicked option
   }
 
   const forceUpdate = useForceUpdate();
 
   const navigate = useNavigate();
 
+  // Fuction that call the service to send the survey
   async function sendSurvey(surveyCode: string, body: IQuestionResponse[]) {
     await surveyService
       .sendSurvey(surveyCode, body)
       .then((res) => {
         if ((res.status = 200)) {
-          setSuccess(true);
+          setSuccess(true); // This opens the alertDialog.tsx
         }
       })
       .catch((err) => {
         if (err.request.status === 0) {
           alert("Please verify you have internet access!");
-        } else if (err.request.status === 406) {
-          setRepeated(true);
         } else {
           alert(err.Error);
         }
@@ -102,6 +100,7 @@ const Survey = (props: any) => {
     setLoading(false);
   }
 
+  // Hook that updates the questions state each time the user change the values
   useEffect(() => {
     let count = 0;
     const currentQuestionStatus = questionsState;
@@ -124,6 +123,7 @@ const Survey = (props: any) => {
     // eslint-disable-next-line
   }, [questionsState, activeIcon, currentQuestion]);
 
+  // Function that enables the submit button if all questions answered
   const checkDisabled = () => {
     let count = 0;
     const currentQuestionStatus = questionsState;
@@ -139,6 +139,7 @@ const Survey = (props: any) => {
     }
   };
 
+  // Function that updates the mark for a 5 icons question
   const handleClick5Icons = (questionNum: number, index: number) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -164,6 +165,7 @@ const Survey = (props: any) => {
     forceUpdate();
   };
 
+  // Function that updates the mark for a slider question
   const handleClickSlider = (index: number, value: number | any) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -178,6 +180,7 @@ const Survey = (props: any) => {
     forceUpdate();
   };
 
+  // Function that updates the mark for a rating question
   const handleClickStars = (value: number | any) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -193,6 +196,7 @@ const Survey = (props: any) => {
     forceUpdate();
   };
 
+  // Function that updates the mark for a 2 icons question
   const handleClick2Icons = (index: number, mark: number) => {
     const currentQuestionstate = questionsState;
     const currentQuestionsResponse = questionsResponse;
@@ -211,10 +215,12 @@ const Survey = (props: any) => {
     forceUpdate();
   };
 
+  // Function that hables the submit button click
   const handleSurveyCompletion = () => {
     setLoading(true);
     sendSurvey(surveyCode, questionsResponse);
   };
+
   return (
     <>
       <NavBar user={false} />
@@ -498,16 +504,6 @@ const Survey = (props: any) => {
           clicked={() => {
             context.setValid(false);
             navigate("/success");
-          }}
-        />
-      )}
-      {repeated && (
-        <AlertDialog
-          text1="You have already sent the survey"
-          text2="Please, wait until the next sprint"
-          clicked={() => {
-            context.setValid(false);
-            navigate("/");
           }}
         />
       )}

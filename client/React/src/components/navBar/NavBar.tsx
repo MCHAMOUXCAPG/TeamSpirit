@@ -1,20 +1,18 @@
 import React, { useContext } from "react";
-import AppBar from "@material-ui/core/AppBar";
-import Toolbar from "@material-ui/core/Toolbar";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import ExitToApp from "@material-ui/icons/ExitToApp";
-import Group from "@material-ui/icons/Group";
+import { AppBar, Toolbar, Grid, Button } from "@material-ui/core";
+import { ExitToApp, Group } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 
 import "./NavBar.css";
 import logo from "../../assets/logo.png";
 import { AuthContext } from "../../context/auth";
 
+// this component use the prop "user" to now if we are loggeg in or not
 function NavBar({ user }: { user: boolean }) {
   const context = useContext(AuthContext);
   const navigate = useNavigate();
 
+  //Functions that handlex the exit button
   const handleClickExit = () => {
     context.setValid(false);
     context.setMyTeams([{ Name: "" }]);

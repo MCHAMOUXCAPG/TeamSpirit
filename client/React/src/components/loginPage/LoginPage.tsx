@@ -8,15 +8,14 @@ import {
   CircularProgress,
   InputAdornment,
 } from "@material-ui/core";
-import { VpnKey } from "@material-ui/icons";
-import Person from "@material-ui/icons/Person";
+import { VpnKey, Person } from "@material-ui/icons";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
+import { useNavigate } from "react-router-dom";
 
 import "./LoginPage.css";
 import colors from "../../config/colors";
 import { UserValidationService } from "../../services/Services";
 import { IValidationUser } from "../../models/interfaces";
-import { useNavigate } from "react-router-dom";
 import { AuthContext } from "../../context/auth";
 
 const LoginPage = () => {
@@ -29,12 +28,13 @@ const LoginPage = () => {
   const navigate = useNavigate();
   const userValidationService: UserValidationService = new UserValidationService();
 
+  // Function to make public route
   useEffect(() => {
     context.setValid(false);
     // eslint-disable-next-line
   }, []);
-  // to make private route
 
+  // Function that handles the submit
   const submitHandler = () => {
     setLoading(true);
     const params = {
@@ -62,15 +62,15 @@ const LoginPage = () => {
             } else if (role === 2) {
               if (teams.length === 0) {
                 navigate("/noTeam");
-                //if no team, message requesting team
+                //if no team, message requesting team(NoTeamPage.tsx)
               } else if (teams.length === 1) {
                 context.setCurrentTeam(res2.data.Teams[0].Name);
                 navigate("/teamleader");
-                //if one team go to see the results
+                //if one team go to see the results(TeamHomePage.tsx)
               } else {
                 context.setMyTeams(res2.data.Teams);
                 navigate("/myTeams");
-                // if more than 1 teams, go to coose your team
+                // if more than 1 teams, go to choose your team (myTeamsPage.tsx)
               }
             }
           })
@@ -85,7 +85,6 @@ const LoginPage = () => {
             }
             setLoading(false);
           });
-        // If user valid, save the token and go to teamHomePage
       })
       .catch((err: any) => {
         setErr(true);

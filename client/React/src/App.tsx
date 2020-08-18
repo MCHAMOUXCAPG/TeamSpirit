@@ -7,7 +7,7 @@ import Survey from "./components/survey/Survey";
 import ExitPage from "./components/exitPage/ExitPage";
 import PrivateRoute from "./auth/PrivateRoute";
 import { AuthContext } from "./context/auth";
-import { reRender } from "./components/surveyStatus/SurveySatus";
+import { reRender } from "./components/surveyStatus/SurveyStatus";
 import TeamHomePage from "./components/teamHomePage/TeamHomePage";
 import MyTeamsPage from "./components/myTeams/myTeamsPage";
 import NoTeamPage from "./components/noTeamPage/NoTeamPage";

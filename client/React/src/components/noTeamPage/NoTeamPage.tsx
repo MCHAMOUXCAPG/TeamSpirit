@@ -4,6 +4,7 @@ import { Container, Grid } from "@material-ui/core";
 import NavBar from "../navBar/NavBar";
 import "./NoTeamPage.css";
 
+// Component to inform the user, just html
 const NoTeamPage = () => {
   return (
     <>

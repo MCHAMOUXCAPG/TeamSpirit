@@ -1,36 +1,41 @@
-import React, { useState, useEffect } from "react";
-import { createContext, useContext } from "react";
-import Paper from "@material-ui/core/Paper";
+import React, { useState, useEffect, createContext, useContext } from "react";
+import {
+  Paper,
+  Grid,
+  Button,
+  CircularProgress,
+  TextField,
+  Dialog,
+  DialogActions,
+  DialogContent,
+  DialogContentText,
+  DialogTitle,
+} from "@material-ui/core";
 import { makeStyles, createStyles, Theme } from "@material-ui/core/styles";
-import Grid from "@material-ui/core/Grid";
-import Button from "@material-ui/core/Button";
-import Settings from "@material-ui/icons/Settings";
-import Delete from "@material-ui/icons/Delete";
-import Event from "@material-ui/icons/Event";
-import TimelineIcon from "@material-ui/icons/Timeline";
-import Group from "@material-ui/icons/Group";
-import Schedule from "@material-ui/icons/Schedule";
-import VpnKeyIcon from "@material-ui/icons/VpnKey";
-import AssessmentOutlined from "@material-ui/icons/AssessmentOutlined";
-import CircularProgress from "@material-ui/core/CircularProgress";
-import TextField from "@material-ui/core/TextField";
-import HistoricChart from "../historicAverageChart/historicAverage";
-import Dialog from "@material-ui/core/Dialog";
-import DialogActions from "@material-ui/core/DialogActions";
-import DialogContent from "@material-ui/core/DialogContent";
-import DialogContentText from "@material-ui/core/DialogContentText";
-import DialogTitle from "@material-ui/core/DialogTitle";
+import {
+  Settings,
+  Delete,
+  Event,
+  Timeline,
+  Group,
+  Schedule,
+  VpnKey,
+  AssessmentOutlined,
+} from "@material-ui/icons";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+  MuiPickersUtilsProvider,
+  KeyboardDatePicker,
+} from "@material-ui/pickers";
+
 import "./SurveyStatus.css";
 import colors from "../../config/colors";
 import { UserValidationService } from "../../services/Services";
 import { SurveyService } from "../../services/Services";
 import { IHistoric } from "../../models/interfaces";
 import { ITeamDTO } from "../../models/interfaces";
-import DateFnsUtils from "@date-io/date-fns";
-import {
-  MuiPickersUtilsProvider,
-  KeyboardDatePicker,
-} from "@material-ui/pickers";
+import HistoricChart from "../historicAverageChart/historicAverage";
+
 export const reRender = createContext({
   render: false,
   setRender: (valid: boolean) => {},
@@ -71,6 +76,7 @@ function SurveyStatus({
   const [deleteMessage, setDeleteMessage] = useState(""); // gets success o error message
   const [successDialog, setSuccessDialog] = useState(false); // final dialog (shows success or error message)
   const [forceUpdate, setForceUpdate] = useState(false);
+
   const handleClickOpen = () => {
     setOpen(true);
   };
@@ -78,17 +84,23 @@ function SurveyStatus({
   const handleClose = () => {
     setOpen(false);
   };
+
   const habldeCloseChart = () => {
     setOpenChart(false);
   };
+
   const handleClickOpenReset = () => {
     setOpenReset(true);
   };
+
+  // Function that updates the values when updated the configuration
   const handleClickCloseResetSuccess = () => {
     setSuccessDialog(false);
     setForceUpdate(!forceUpdate); // to update de surveyCode to delete
     contextRender.setRender(true); // to update de current shown values
   };
+
+  // Function that handles the delete confirmation button clik
   const handleClickCloseReset = (reset: any) => {
     if (reset) {
       setLoadingDelete(true);
@@ -97,6 +109,8 @@ function SurveyStatus({
       setOpenReset(false);
     }
   };
+
+  //Function to format the dato eqaul to backend
   function formatDate(date: any) {
     var d = new Date(date),
       month = "" + (d.getMonth() + 1),
@@ -107,6 +121,7 @@ function SurveyStatus({
     return [year, month, day].join("-");
   }
 
+  // When configuring your team, function to change the date
   const handleDateChange = (date: Date | null) => {
     var Fecha = formatDate(date) + "T00:00:00Z";
     setBody({
@@ -114,6 +129,8 @@ function SurveyStatus({
       StartDate: Fecha,
     });
   };
+
+  // When configuring your team, function to change the frequency
   const handleDateChangeSprintLength = (length: any) => {
     setBody({
       ...body,
@@ -123,6 +140,8 @@ function SurveyStatus({
   const openChartAverage = () => {
     setOpenChart(true);
   };
+
+  // When configuring your team, function to change the number of members
   const handleDateChangeMembers = (members: any) => {
     setBody({
       ...body,
@@ -134,9 +153,13 @@ function SurveyStatus({
     configTeam();
     contextRender.setRender(true);
   };
+
+  // When configuring your team, function that handles the save button click
   const configTeam = () => {
     putTeamConfig(body, teamName, token);
   };
+
+  // When configuring your team, service to update the values
   async function putTeamConfig(
     body: ITeamDTO,
     teamName: string,
@@ -157,6 +180,8 @@ function SurveyStatus({
         setSuccessDialog(true);
       });
   }
+
+  //Fuction to call service that retrieve team data
   async function getSurveyConfig(teamName: string, token: string | null) {
     await surveyService
       .getResultSurveyConfig(teamName, token)
@@ -174,6 +199,8 @@ function SurveyStatus({
         console.log(err);
       });
   }
+
+  //Fuction to call service that retrieve historic surveys average
   async function getHistoric(teamName: string, token: string | null) {
     await surveyService
       .getHistoricSurveys(teamName, token)
@@ -184,6 +211,8 @@ function SurveyStatus({
         console.log(err);
       });
   }
+
+  //Fuction to call service that deletes the filled survey
   async function resetCurrentSurvey(token: string | null, surveyCode: string) {
     await surveyService
       .resetSurvey(token, surveyCode)
@@ -200,14 +229,17 @@ function SurveyStatus({
         setOpenReset(false);
       });
   }
+
   useEffect(() => {
     getSurveyConfig(teamName, token);
     getHistoric(teamName, token);
     // eslint-disable-next-line
   }, [forceUpdate]);
+
   useEffect(() => {
     getHistoric(teamName, token);
   }, []);
+
   const classes = useStyles();
   return (
     <div>
@@ -255,7 +287,7 @@ function SurveyStatus({
               </Grid>
               <Grid item xs={12}>
                 <p>
-                  <VpnKeyIcon className="icon" />
+                  <VpnKey className="icon" />
                   Survey Code:
                   <span>{surveyCode}</span>
                 </p>
@@ -293,7 +325,7 @@ function SurveyStatus({
                         className="btn btn-outlined"
                         onClick={openChartAverage}
                         startIcon={
-                          <TimelineIcon
+                          <Timeline
                             style={{
                               color: colors.primary,
                             }}

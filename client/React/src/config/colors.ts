@@ -1,3 +1,4 @@
+//global color variables for tsx files
 export default {
   primary: "#79C0C6",
   secondary: "rgba(121, 192, 198, 0.5)",

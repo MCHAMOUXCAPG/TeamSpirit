@@ -1,5 +1,6 @@
 import { createContext, useContext } from "react";
 
+// Context to keep the application data between components
 export const AuthContext = createContext({
   valid: false,
   surveyCode: "",

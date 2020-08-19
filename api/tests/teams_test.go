@@ -9,9 +9,11 @@ import (
 	"testing"
 	"time"
 
+	"capgemini.com/gorn/team-spirit/dto"
 	"capgemini.com/gorn/team-spirit/entities"
 	"capgemini.com/gorn/team-spirit/repositories"
 	"capgemini.com/gorn/team-spirit/services"
+	"github.com/dgrijalva/jwt-go"
 	"github.com/labstack/echo/v4"
 	"github.com/stretchr/testify/assert"
 )
@@ -76,6 +78,8 @@ func TestGetTeam(t *testing.T) {
 
 func TestCreateTeam(t *testing.T) {
 
+	createdUser, _ := UserRepo.CreateUser(&entities.User{Id: 1, Email: "user1@gmail.com", Full_name: "user1", Password: "pwd1", RoleID: 1})
+	assert.Equal(t, createdUser.Id, 1)
 	// Create a new Request
 	var team entities.Team
 	teamJSON := `{"Name": "team1", "StartDate": "2020-07-16T00:00:00Z", "Num_mumbers": 5, "Frequency": 7}`
@@ -84,6 +88,9 @@ func TestCreateTeam(t *testing.T) {
 	req.Header.Set(echo.HeaderContentType, echo.MIMEApplicationJSON)
 	rec := httptest.NewRecorder()
 	c := e.NewContext(req, rec)
+	var jwtToken = &jwt.Token{}
+	jwtToken.Claims = &dto.JwtCustomClaims{Email: "user1@gmail.com", Password: "pwd1"}
+	c.Set("user", jwtToken)
 
 	// Assertions
 	if assert.NoError(t, services.CreateTeam(c)) {
@@ -94,6 +101,7 @@ func TestCreateTeam(t *testing.T) {
 
 	// clean databse
 	TeamRepo.DeleteTeam(team.Name)
+	UserRepo.DeleteUser(1)
 }
 
 func TestUpdateTeam(t *testing.T) {
@@ -126,7 +134,9 @@ func TestUpdateTeam(t *testing.T) {
 
 func TestDeleteTeam(t *testing.T) {
 
-	// Post a new team
+	// Post a new user and role
+	createdUser, _ := UserRepo.CreateUser(&entities.User{Id: 1, Email: "user1@gmail.com", Full_name: "user1", Password: "pwd1", RoleID: 1})
+	assert.Equal(t, createdUser.Id, 1)
 	team1, _ := TeamRepo.CreateTeam(&entities.Team{Name: "team1", StartDate: time.Date(2016, time.August, 15, 0, 0, 0, 0, time.UTC), Num_mumbers: 5, Frequency: 14})
 	assert.Equal(t, team1.Name, "team1")
 
@@ -139,6 +149,9 @@ func TestDeleteTeam(t *testing.T) {
 	c.SetPath("/team/:teamName")
 	c.SetParamNames("teamName")
 	c.SetParamValues(team1.Name)
+	var jwtToken = &jwt.Token{}
+	jwtToken.Claims = &dto.JwtCustomClaims{Email: "user1@gmail.com", Password: "pwd1"}
+	c.Set("user", jwtToken)
 
 	// Assertions
 	if assert.NoError(t, services.DeleteTeam(c)) {
@@ -146,4 +159,6 @@ func TestDeleteTeam(t *testing.T) {
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, team.Name, "")
 	}
+
+	UserRepo.DeleteUser(1)
 }

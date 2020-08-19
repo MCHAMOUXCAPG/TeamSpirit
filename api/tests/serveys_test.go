@@ -50,6 +50,8 @@ func TestGetSurvies(t *testing.T) {
 
 	// clean databse
 	TeamRepo.DeleteTeam(team1.Name)
+	SurveyRepo.DeleteSurvey(survey1.Code)
+	SurveyRepo.DeleteSurvey(survey2.Code)
 
 }
 
@@ -83,6 +85,7 @@ func TestGetSurvey(t *testing.T) {
 
 	// clean databse
 	TeamRepo.DeleteTeam(team1.Name)
+	SurveyRepo.DeleteSurvey(survey1.Code)
 }
 
 func TestCreateSurvey(t *testing.T) {
@@ -109,6 +112,7 @@ func TestCreateSurvey(t *testing.T) {
 	}
 
 	TeamRepo.DeleteTeam(team1.Name)
+	SurveyRepo.DeleteSurvey(survey.Code)
 }
 
 func TestUpdateSurvey(t *testing.T) {
@@ -139,9 +143,12 @@ func TestUpdateSurvey(t *testing.T) {
 		json.NewDecoder(io.Reader(rec.Body)).Decode(&survey)
 		assert.Equal(t, http.StatusOK, rec.Code)
 		assert.Equal(t, survey.Code, "code2")
-	}
 
+	}
+	SurveyRepo.DeleteSurvey(survey1.Code)
+	SurveyRepo.DeleteSurvey(survey.Code)
 	TeamRepo.DeleteTeam(team1.Name)
+
 }
 
 func TestDeleteSurvey(t *testing.T) {
@@ -205,6 +212,7 @@ func TestAddNotesToSurvey(t *testing.T) {
 
 	// clean databse
 	TeamRepo.DeleteTeam(team1.Name)
+	SurveyRepo.DeleteSurvey(survey2.Code)
 
 }
 
@@ -240,6 +248,8 @@ func TestGetResultSurvey(t *testing.T) { // Post a new team
 
 	// clean databse
 	TeamRepo.DeleteTeam(team1.Name)
+	SurveyRepo.DeleteSurvey(survey1.Code)
+	SurveyRepo.DeleteSurvey(survey2.Code)
 }
 
 func TestSurveyCodeLength(t *testing.T) {
@@ -376,7 +386,9 @@ func TestGetHistoricSurveysByUsers(t *testing.T) {
 	}
 
 	// Clean database
-	TeamRepo.DeleteTeam("team1")
+	SurveyRepo.DeleteSurvey(survey1.Code)
+	SurveyRepo.DeleteSurvey(survey2.Code)
+	TeamRepo.DeleteTeam(team1.Name)
 
 }
 

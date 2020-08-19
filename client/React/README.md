@@ -29,10 +29,13 @@ Follow:
 
 Follow:
 
-- Use this database ()
+- Use this database [database.db](https://github.com/MCHAMOUXCAPG/TeamSpirit/blob/RN-testing/client/React/cypress/assets/database.db)
 - open cypress with `npx cypress open` for the first time
 - open cypress with `npm run cypress:open` if not the first time
 - A cypress window will be opened.
+
+![Cypress app](https://github.com/MCHAMOUXCAPG/TeamSpirit/blob/RN-testing/client/React/cypress/assets/cypress_app.JPG "Cypress application")
+
 - To run these tests, the application must be loaded. Ensure having access to http://localhost:4200
 - Run all tests clicking in "Running all specs"
 - A Chrome browser window will be opened with the tests.

@@ -23,3 +23,17 @@ Follow:
 - Run the App with `npm start`
 - A browser window will be opened.
 - Enjoy your app
+
+
+### **Testing** the app:
+
+Follow:
+
+- Use this database ()
+- open cypress with `npx cypress open` for the first time
+- open cypress with `npm run cypress:open` if not the first time
+- A cypress window will be opened.
+- To run these tests, the application must be loaded. Ensure having access to http://localhost:4200
+- Run all tests clicking in "Running all specs"
+- A Chrome browser window will be opened with the tests.
+- Wait until all are finished

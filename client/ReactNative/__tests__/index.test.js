@@ -12,9 +12,3 @@ test("HomeScreen snapShot", () => {
   const snap = render.create(<HomeScreen />).toJSON();
   expect(snap).toMatchSnapshot();
 });
-
-/* test("SurveyScreen snapShot", () => {
-  const snap = render.create(<SurveyScreen />).toJSON();
-  expect(snap).toMatchSnapshot(); 
-});
-*/

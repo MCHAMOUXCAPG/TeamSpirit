@@ -67,7 +67,7 @@ describe("Fill Survey Test", () => {
     cy.get("#alert-dialog-button").click();
     cy.url().should("include", "/success");
     cy.get(".sentence").should(($message) => {
-      expect($message).to.contain("Your opinion counts!");
+      expect($message).to.contain("Your opinion matters!");
     });
   });
 });

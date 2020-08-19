@@ -39,13 +39,14 @@ describe("Navigate beetwen screens", () => {
       expect($h2).to.contain("Team Status");
     });
     cy.get(".surveyStatusContainer > div").should(($divs) => {
-      expect($divs).to.have.length(5);
+      expect($divs).to.have.length(6);
       expect($divs.eq(0)).to.contain("Period:");
       expect($divs.eq(1)).to.contain("Completed:");
       expect($divs.eq(2)).to.contain("Current result:");
       expect($divs.eq(3)).to.contain("Historic result:");
-      expect($divs.eq(4)).to.contain("Configure your team");
-      expect($divs.eq(4)).to.contain("Reset current survey");
+      expect($divs.eq(4)).to.contain("Survey Code:");
+      expect($divs.eq(5)).to.contain("Configure your team");
+      expect($divs.eq(5)).to.contain("Reset current survey");
     });
     cy.get("#export-container").should(($button) => {
       expect($button).to.contain("PREPARE RESULTS TO EXPORT");
@@ -55,35 +56,36 @@ describe("Navigate beetwen screens", () => {
     });
     cy.get("#mainPanel").click();
     cy.get("button").should(($buttons) => {
-      expect($buttons).to.have.length(9);
+      expect($buttons).to.have.length(10);
       expect($buttons.eq(0)).to.contain("Sign Out");
       expect($buttons.eq(1)).to.contain("My Teams");
       expect($buttons.eq(2)).to.contain("Configure your team");
-      expect($buttons.eq(3)).to.contain("Reset current survey");
-      expect($buttons.eq(6)).to.contain("Export");
-      expect($buttons.eq(7)).to.contain("By User");
-      expect($buttons.eq(8)).to.contain("By Question");
+      expect($buttons.eq(3)).to.contain("Historic Data");
+      expect($buttons.eq(4)).to.contain("Reset current survey");
+      expect($buttons.eq(7)).to.contain("Export");
+      expect($buttons.eq(8)).to.contain("By User");
+      expect($buttons.eq(9)).to.contain("By Question");
     });
-    cy.get("button")
-      .eq(4)
-      .should("have.class", "MuiButtonBase-root MuiIconButton-root");
-    cy.get("button").eq(4).click({ force: true });
     cy.get("button")
       .eq(5)
       .should("have.class", "MuiButtonBase-root MuiIconButton-root");
     cy.get("button").eq(5).click({ force: true });
     cy.get("button")
-      .eq(6)
+      .eq(5)
+      .should("have.class", "MuiButtonBase-root MuiIconButton-root");
+    cy.get("button").eq(6).click({ force: true });
+    cy.get("button")
+      .eq(7)
       .should(
         "have.class",
         "MuiButtonBase-root MuiButton-root MuiButton-outlined bt btn-containe"
       );
-    cy.get("button").eq(6).click({ force: true });
-    cy.get("button").eq(7).should("have.class", "Mui-selected");
-    cy.get("button").eq(8).should("not.have.class", "Mui-selected");
-    cy.get("button").eq(8).click({ force: true });
+    cy.get("button").eq(7).click({ force: true });
     cy.get("button").eq(8).should("have.class", "Mui-selected");
-    cy.get("button").eq(7).should("not.have.class", "Mui-selected");
+    cy.get("button").eq(9).should("not.have.class", "Mui-selected");
+    cy.get("button").eq(9).click({ force: true });
+    cy.get("button").eq(9).should("have.class", "Mui-selected");
+    cy.get("button").eq(8).should("not.have.class", "Mui-selected");
   });
 
   it("Navigate from teamLeader to myTeams", () => {

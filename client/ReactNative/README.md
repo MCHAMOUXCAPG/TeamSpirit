@@ -39,3 +39,9 @@ Follow:
 - A browser window will be opened. 
 - Open Expo in your phone. Scan the QR code in the browser window and wait until it’s loaded (first times it can take some minutes) 
 - Enjoy your app
+
+Testing: 
+- Using Jest for testing
+- Run the tests with ```yarn test```
+- The tests will be opened in the same console. 
+

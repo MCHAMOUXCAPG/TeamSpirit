@@ -24,7 +24,7 @@ func NewRoleRepository() RoleRepository {
 func (*RoleRepo) GetRoles() ([]*entities.Role, error) {
 
 	var roles []*entities.Role
-	result := config.DB.Find(&roles)
+	result := config.DB.Where("id <> 3").Find(&roles)
 
 	return roles, result.Error
 }

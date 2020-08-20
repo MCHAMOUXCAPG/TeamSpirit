@@ -54,6 +54,10 @@ func GetRole(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.CONVERTPARAM_GETROLE)
 	}
 
+	if roleID == 3 {
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETROLE)
+	}
+
 	role, err := RoleRepo.GetRole(roleID)
 
 	if gorm.IsRecordNotFoundError(err) {

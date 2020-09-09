@@ -43,7 +43,8 @@ const HomePage = () => {
   }
 
   // Function to validate the input code
-  const submitHandler = () => {
+  const submitHandler = (event: any) => {
+    event.preventDefault();
     setLoading(true);
     sendCode({ code: search, User: uniqueId });
   };
@@ -100,13 +101,13 @@ const HomePage = () => {
               </div>
             </Grid>
             <Grid item xs={12}>
-              <form noValidate autoComplete="off">
-                <Paper
-                  id="Card"
-                  variant="elevation"
-                  elevation={3}
-                  style={{ height: 160 }}
-                >
+              <Paper
+                id="Card"
+                variant="elevation"
+                elevation={3}
+                style={{ height: 160 }}
+              >
+                <form onSubmit={submitHandler}>
                   <Grid
                     container
                     direction="row"
@@ -132,7 +133,7 @@ const HomePage = () => {
                   <Button
                     disabled={loading}
                     id="ButtonStart"
-                    onClick={submitHandler}
+                    type="submit"
                     size="small"
                     style={{
                       bottom: Err ? 15 : -12,
@@ -150,25 +151,25 @@ const HomePage = () => {
                       "Start"
                     )}
                   </Button>
-                  <Link
-                    component="button"
-                    style={
-                      Err
-                        ? { color: Colors.primary, width: "100%" }
-                        : {
-                            color: Colors.primary,
-                            marginTop: 25,
-                            width: "100%",
-                          }
-                    }
-                    onClick={() => {
-                      navigate("/Login");
-                    }}
-                  >
-                    Are you a Team Leader?
-                  </Link>
-                </Paper>
-              </form>
+                </form>
+                <Link
+                  component="button"
+                  style={
+                    Err
+                      ? { color: Colors.primary, width: "100%" }
+                      : {
+                          color: Colors.primary,
+                          marginTop: 25,
+                          width: "100%",
+                        }
+                  }
+                  onClick={() => {
+                    navigate("/Login");
+                  }}
+                >
+                  Are you a Team Leader?
+                </Link>
+              </Paper>
             </Grid>
           </Grid>
         </Grid>

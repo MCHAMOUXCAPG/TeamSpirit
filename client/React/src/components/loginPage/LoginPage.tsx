@@ -35,7 +35,8 @@ const LoginPage = () => {
   }, []);
 
   // Function that handles the submit
-  const submitHandler = () => {
+  const submitHandler = (event: any) => {
+    event.preventDefault();
     setLoading(true);
     const params = {
       Email: userValue,
@@ -127,13 +128,13 @@ const LoginPage = () => {
               </div>
             </Grid>
             <Grid item xs={12}>
-              <form noValidate autoComplete="off">
-                <Paper
-                  id="Card"
-                  variant="elevation"
-                  elevation={3}
-                  style={{ height: 180 }}
-                >
+              <Paper
+                id="Card"
+                variant="elevation"
+                elevation={3}
+                style={{ height: 180 }}
+              >
+                <form onSubmit={submitHandler}>
                   <Grid
                     container
                     direction="row"
@@ -153,6 +154,7 @@ const LoginPage = () => {
                           id="outlined-required"
                           variant="outlined"
                           placeholder="Username"
+                          type="text"
                           value={userValue}
                           onChange={(e) => setUserValue(e.target.value)}
                           InputProps={{
@@ -190,7 +192,7 @@ const LoginPage = () => {
                   <Button
                     disabled={loading}
                     id="ButtonStart"
-                    onClick={submitHandler}
+                    type="submit"
                     size="small"
                     style={{
                       bottom: Err ? -1 : -12,
@@ -208,8 +210,8 @@ const LoginPage = () => {
                       "Sign In"
                     )}
                   </Button>
-                </Paper>
-              </form>
+                </form>
+              </Paper>
             </Grid>
           </Grid>
         </Grid>

@@ -95,6 +95,8 @@ func CreateTeam(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.CREATE_CREATETEAM)
 	}
 
+	GetNewSurvey(team)
+
 	return c.JSON(http.StatusOK, team)
 }
 

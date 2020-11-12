@@ -28,7 +28,7 @@ func main() {
 
 	services.CreateDefaultAdmin()
 
-	services.CreateSurveyAutomatically()
+	// services.CreateSurveyAutomatically()
 
 	config.ConfigSwagger()
 

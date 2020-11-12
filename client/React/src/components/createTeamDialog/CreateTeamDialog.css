@@ -1,0 +1,53 @@
+@import "../../config/colors.css";
+#input-num-4,
+#input-num-2,
+#input-num-3 {
+  font-family: "Roboto";
+  font-style: normal;
+  font-weight: normal;
+  font-size: 14px;
+  line-height: 14px;
+  position: relative;
+  background: var(--white);
+  border-radius: 24px;
+  overflow: hidden;
+  border-color: #919191;
+  padding: 10px;
+  width: 350px;
+}
+#input-num-4::placeholder,
+#input-num-3::placeholder,
+#input-num-2::placeholder {
+  color: var(--black) !important;
+  font-size: 12px !important;
+  font: 400 13px Arial !important;
+  opacity: 0.7 !important;
+}
+
+.css-wmw4vi-ReactDropdownSelect {
+  border-radius: 25px !important;
+  border-color: #919191 !important;
+}
+
+.css-wmw4vi-ReactDropdownSelect:hover,
+.css-wmw4vi-ReactDropdownSelect:focus-within {
+  border-color: var(--primary) !important;
+}
+
+.css-148o527-ItemComponent:hover,
+.css-148o527-ItemComponent:focus {
+  background: var(--secondary) !important;
+}
+
+.css-148o527-ItemComponent.react-dropdown-select-item-selected {
+  background-color: var(--primary) !important;
+}
+
+.css-w3djcp-OptionComponent {
+  background-color: var(--primary) !important;
+  border-radius: 15px !important;
+}
+
+.MuiButton-root.Mui-disabled {
+  background-color: #79c0c666 !important;
+}

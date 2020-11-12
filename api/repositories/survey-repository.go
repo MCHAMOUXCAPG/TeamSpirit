@@ -124,7 +124,7 @@ func (*SurveyRepo) GetLastSurvey(teamName string) (*entities.Survey, error) {
 
 func (*SurveyRepo) GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers, error) {
 
-	rows, err := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("user as user ,avg(note) as average").Group("user").Rows()
+	rows, err := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("public.notes.user,avg(note) as average").Group("public.notes.user").Rows()
 
 	var response = &dto.ResultByUsers{}
 	var result []*dto.ResultByUsers
@@ -141,13 +141,13 @@ func (*SurveyRepo) GetNotesGroupByUsers(surveyCode string) ([]*dto.ResultByUsers
 
 func (*SurveyRepo) GetNotesBySurveyAndUser(surveyCode string, user string) ([]*entities.Note, error) {
 	var notes []*entities.Note
-	result := config.DB.Select("number, note, survey_code").Where("survey_code = ? and user = ?", surveyCode, user).Find(&notes)
+	result := config.DB.Select("number, note, survey_code").Where("survey_code = ? and public.notes.user = ?", surveyCode, user).Find(&notes)
 	return notes, result.Error
 }
 
 func (*SurveyRepo) GetNotesGroupByQuestions(surveyCode string) ([]*dto.ResultByQuestions, error) {
 	// var notes []*entities.Note
-	rows, err := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("number as number ,avg(note) as average").Group("number").Rows()
+	rows, err := config.DB.Table("notes").Where("survey_code = ?", surveyCode).Select("public.notes.number as number ,avg(note) as average").Group("number").Order("public.notes.number").Rows()
 
 	var response = &dto.ResultByQuestions{}
 	var result []*dto.ResultByQuestions
@@ -164,6 +164,6 @@ func (*SurveyRepo) GetNotesGroupByQuestions(surveyCode string) ([]*dto.ResultByQ
 
 func (*SurveyRepo) GetNotesBySurveyAndQuestion(number int, surveyCode string) ([]*entities.Note, error) {
 	var notes []*entities.Note
-	result := config.DB.Select("user, note").Where("number = ? and survey_code = ?", number, surveyCode).Find(&notes)
+	result := config.DB.Select("public.notes.user, note").Where("number = ? and survey_code = ?", number, surveyCode).Find(&notes)
 	return notes, result.Error
 }

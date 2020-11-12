@@ -55,6 +55,14 @@ export interface IResultsByQuestions {
   Notes: { Note: number; User: string }[];
   QuestionNumber: number;
 }
+
+export interface ITeam {
+  Frequency: number;
+  Name: string; //TeamName
+  Num_mumbers: number;
+  StartDate: string; // format "2number2number-number1-31"
+}
+
 export interface ITeamDTO {
   Frequency: number;
   Name: string; //TeamName
@@ -97,6 +105,18 @@ export interface IUserData {
   Password?: string;
   Role: string;
   Teams: string;
+  tableData?: { id: number };
+}
+
+export interface ITeamTable {
+  columns: Array<Column<ITeamData>>;
+}
+
+export interface ITeamData {
+  Frequency: number;
+  Name: string; //TeamName
+  Num_mumbers: number;
+  StartDate: string; // format "2number2number-number1-31"
   tableData?: { id: number };
 }
 

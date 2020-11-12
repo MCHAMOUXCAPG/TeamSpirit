@@ -115,6 +115,8 @@ definitions:
         type: string
       endDate:
         type: string
+      median:
+        type: number
       notes:
         items:
           $ref: '#/definitions/entities.Note'
@@ -175,6 +177,35 @@ info:
   title: Swagger Example API
   version: "1.0"
 paths:
+  /NewSurveyCode/:teamName:
+    get:
+      consumes:
+      - application/json
+      description: returns surveysCode
+      parameters:
+      - description: team name
+        in: query
+        name: teamName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Team'
+        "400":
+          description: Bad Request
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: NextSurveyCode
+      tags:
+      - Surveys
   /access:
     post:
       consumes:
@@ -708,6 +739,35 @@ paths:
           schema:
             $ref: '#/definitions/dto.Error'
       summary: Surveys export
+      tags:
+      - Surveys
+  /survey/new/:teamName:
+    get:
+      consumes:
+      - application/json
+      description: returns survey by it code
+      parameters:
+      - description: team name
+        in: path
+        name: teamName
+        required: true
+        type: string
+      produces:
+      - application/json
+      responses:
+        "200":
+          description: OK
+          schema:
+            $ref: '#/definitions/entities.Survey'
+        "404":
+          description: Not Found
+          schema:
+            $ref: '#/definitions/dto.Error'
+        "500":
+          description: Internal Server Error
+          schema:
+            $ref: '#/definitions/dto.Error'
+      summary: Get new survey by teamName
       tags:
       - Surveys
   /survey/resetSurvey/:surveyCode:

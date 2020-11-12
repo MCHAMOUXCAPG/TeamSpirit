@@ -32,3 +32,11 @@ and run it with a double click or by cmd with
 ```
 ./team-spirit.exe
 ```
+
+
+## Generate Swagger
+
+Need to update swagger docs
+```
+ swag init
+```

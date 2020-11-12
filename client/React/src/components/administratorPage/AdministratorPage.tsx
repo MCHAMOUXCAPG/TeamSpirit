@@ -13,8 +13,10 @@ import {
 import { ManageUserService } from "../../services/Services";
 import { ITeamDTO, IUser, IRole } from "../../models/interfaces";
 import CreateUserDialog from "../createUserDialog/CreateUserDialog";
+import CreateTeamDialog from "../createTeamDialog/CreateTeamDialog";
 import NavBar from "../navBar/NavBar";
 import UsersTable from "../usersTable/usersTable";
+import TeamsTable from "../teamsTable/teamsTable";
 import colors from "../../config/colors";
 import "./AdministratorPage.css";
 
@@ -22,13 +24,18 @@ const AdministratorPage = () => {
   const [value, setValue] = useState(0);
   const [roles, setRoles] = useState<IRole[]>([{ Id: 1, Name: "Admin" }]);
   const [open, setOpen] = useState(false); // Handles if the pop-up of create user dialog is open
+  const [openTeam, setOpenTeam] = useState(false); // Handles if the pop-up of create team dialog is open
   const [loadingServiceUsers, setLoadingServiceUsers] = useState(true); // if get all users is loading
+  const [loadingServiceTeams, setLoadingServiceTeams] = useState(true); // if get all teams is loading
   const [loading, setLoading] = useState(false); // if some service is awaiting
   const [message, setMessage] = useState("Mensaje de prueba"); // message when resolve the service
   const [openMessage, setOpenMessage] = useState(false); // handles the open/close message dialog
 
   const handleClose = (bool: boolean) => {
     setOpen(bool);
+  };
+  const handleCloseTeam = (bool: boolean) => {
+    setOpenTeam(bool);
   };
 
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
@@ -74,6 +81,7 @@ const AdministratorPage = () => {
       .getTeams(token)
       .then((res: any) => {
         setTeams(res.data);
+        setLoadingServiceTeams(false);
       })
       .catch((err) => {
         console.log(err);
@@ -125,7 +133,7 @@ const AdministratorPage = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            <div className="team-name">TeamSpirit Admin</div>
+            <div className="team-name">TeamSpirit Managment</div>
           </Grid>
           <Grid item xs={12}>
             <Tabs
@@ -134,8 +142,8 @@ const AdministratorPage = () => {
               aria-label="simple tabs example"
             >
               <Tab label="Users" {...a11yProps(0)} id="user-tab" />
-              {/* <Tab label="Teams" {...a11yProps(1)} id="question-tab" />
-              <Tab label="Surveys" {...a11yProps(2)} id="question-tab" /> */}
+               <Tab label="Teams" {...a11yProps(1)} id="team-tab" />
+              {/*<Tab label="Surveys" {...a11yProps(2)} id="question-tab" /> */}
             </Tabs>
           </Grid>
           <Grid item xs={12} id="table-container">
@@ -166,7 +174,32 @@ const AdministratorPage = () => {
                 />
               </>
             )}
-            {value === 1 && <div>Item 2</div>}
+            {value === 1 && (
+              <>
+                <Button
+                  onClick={() => {
+                    setOpenTeam(!open);
+                  }}
+                  size="large"
+                  color="primary"
+                  style={{
+                    position: "relative",
+                    top: 50,
+                    zIndex: 20,
+                    left: "90%",
+                  }}
+                >
+                  Create Team
+                </Button>
+                <TeamsTable
+                  loadingService={loadingServiceTeams}
+                  teams={teams}
+                  setLoadingP={setLoading}
+                  setMessage={setMessage}
+                  setOpenMessage={setOpenMessage}
+                />
+              </>
+            )}
             {value === 2 && <div>Item 3</div>}
           </Grid>
         </Grid>
@@ -180,7 +213,13 @@ const AdministratorPage = () => {
         setMessage={setMessage}
         setOpenMessage={setOpenMessage}
       />
-
+      <CreateTeamDialog
+        open={openTeam}
+        handleClose={handleCloseTeam}
+        setLoading={setLoading}
+        setMessage={setMessage}
+        setOpenMessage={setOpenMessage}
+      />
       <Dialog
         open={openMessage}
         disableBackdropClick={true}

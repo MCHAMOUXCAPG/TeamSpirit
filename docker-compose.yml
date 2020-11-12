@@ -1,0 +1,37 @@
+version: '3.0'
+services:
+  web:
+    image: gorn-fe-test:0.1.1
+    container_name: "teamspirit-fe"
+    ports:
+        - "8980:4200"
+    networks:
+        - teamnet
+    depends_on:
+        - api
+  
+  api:
+    image: gorn-be-test:0.1.1
+    container_name: "teamspirit-api"
+    ports:
+        - "8981:3000"
+    networks:
+        - teamnet
+    depends_on:
+        - db
+
+  db:
+    image: postgres
+    container_name: "teamspirit-db"
+    environment:
+        POSTGRES_PASSWORD: "admin"
+    volumes:
+        - ./database:/var/lib/postgresql
+    ports:
+        - "8982:5432"
+    networks:
+        - teamnet
+
+networks: 
+    teamnet: 
+        driver: bridge

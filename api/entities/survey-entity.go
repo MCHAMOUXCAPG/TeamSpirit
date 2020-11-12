@@ -6,8 +6,9 @@ type Survey struct {
 	Code      string    `gorm:"primary_key";"size:255;unique;not null"`
 	StartDate time.Time `gorm:"not null;default:null"`
 	EndDate   time.Time `gorm:"not null;default:null"`
-	Notes     []Note    `gorm:"foreignkey:SurveyCode"`
-	TeamName  string    `sql:"type:varchar REFERENCES teams(name) on update cascade on delete cascade" json:"TeamName,omitempty"`
+	Median    float64
+	Notes     []Note `gorm:"foreignkey:SurveyCode"`
+	TeamName  string `sql:"type:varchar REFERENCES teams(name) on update cascade on delete cascade" json:"TeamName,omitempty"`
 }
 
 type Note struct {

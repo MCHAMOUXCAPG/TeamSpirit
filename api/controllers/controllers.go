@@ -17,7 +17,9 @@ func HandleResquests() {
 	e := echo.New()
 	e.Use(middleware.CORS())
 
-	// init route
+	// Public routes
+
+	// Init
 	e.GET("/", helloWorld)
 
 	// Swagger
@@ -33,7 +35,9 @@ func HandleResquests() {
 	// Register
 	e.POST("/register", services.Register)
 
-	// Guards Config
+	// Private routes
+
+	// Config
 	r := e.Group("")
 
 	config := middleware.JWTConfig{
@@ -61,7 +65,6 @@ func HandleResquests() {
 	r.PUT("/role/:id", services.UpdateRole)
 
 	// ***** Servies routes *****
-
 	r.GET("/survies", services.GetSurvies)
 	r.GET("/survey/:surveyCode", services.GetSurvey)
 	r.POST("/survey/create", services.CreateSurvey)
@@ -71,9 +74,12 @@ func HandleResquests() {
 	r.GET("/survey/result/:teamName", services.GetResultSurvey)
 	// Surveys CSV Export
 	r.GET("/survey/exportCsv", services.ExportSurveysCsv)
+
 	r.GET("/resultByUsers/:teamName", services.GetHistoricSurveysByusers)
 	r.GET("/resultByQuestions/:teamName", services.GetHistoricSurveysByQuestions)
 	r.GET("/resultBySurveys/:teamName", services.GetHistoricSurveys)
+	r.GET("/newSurveyCode/:teamName", services.NextSurveyCode)
+
 	e.POST("/survey/:surveyCode/addNotes", services.AddNotesToSurvey)
 
 	// **** Teams routes *****
@@ -88,6 +94,6 @@ func HandleResquests() {
 }
 
 func helloWorld(c echo.Context) error {
-	// TODO: Extract this html to extrantl CONSt or file
+	// TODO: Extract this html + Fix it!
 	return c.HTML(http.StatusOK, "<h1>Hello, this is the backend of TeamSpirit POC!</h1><h3>You can see actual API on : </h3><a href='http://localhost:3000/swagger/index.html'>Swagger index page</a><p>(As default for devs, if on another env. please check real path)</p>")
 }

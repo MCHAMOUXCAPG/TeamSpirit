@@ -27,6 +27,13 @@
   border-top-left-radius: 25px;
   border-top-right-radius: 25px;
 }
+#team-tab {
+  border: 1px solid var(--primary);
+  background: var(--white);
+  border-radius: 0;
+  border-top-left-radius: 25px;
+  border-top-right-radius: 25px;
+}
 .PrivateTabIndicator-colorSecondary-3 {
   background-color: var(--white) !important;
 }

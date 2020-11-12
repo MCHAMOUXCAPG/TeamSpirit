@@ -33,6 +33,50 @@ var doc = `{
     "host": "{{.Host}}",
     "basePath": "{{.BasePath}}",
     "paths": {
+        "/NewSurveyCode/:teamName": {
+            "get": {
+                "description": "returns surveysCode",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Surveys"
+                ],
+                "summary": "NextSurveyCode",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "team name",
+                        "name": "teamName",
+                        "in": "query",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Team"
+                        }
+                    },
+                    "400": {
+                        "description": "Bad Request",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/access": {
             "post": {
                 "description": "you should send a survey code to access",
@@ -844,6 +888,50 @@ var doc = `{
                 }
             }
         },
+        "/survey/new/:teamName": {
+            "get": {
+                "description": "returns survey by it code",
+                "consumes": [
+                    "application/json"
+                ],
+                "produces": [
+                    "application/json"
+                ],
+                "tags": [
+                    "Surveys"
+                ],
+                "summary": "Get new survey by teamName",
+                "parameters": [
+                    {
+                        "type": "string",
+                        "description": "team name",
+                        "name": "teamName",
+                        "in": "path",
+                        "required": true
+                    }
+                ],
+                "responses": {
+                    "200": {
+                        "description": "OK",
+                        "schema": {
+                            "$ref": "#/definitions/entities.Survey"
+                        }
+                    },
+                    "404": {
+                        "description": "Not Found",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    },
+                    "500": {
+                        "description": "Internal Server Error",
+                        "schema": {
+                            "$ref": "#/definitions/dto.Error"
+                        }
+                    }
+                }
+            }
+        },
         "/survey/resetSurvey/:surveyCode": {
             "put": {
                 "description": "returns a empty survey",
@@ -1573,6 +1661,9 @@ var doc = `{
                 },
                 "endDate": {
                     "type": "string"
+                },
+                "median": {
+                    "type": "number"
                 },
                 "notes": {
                     "type": "array",

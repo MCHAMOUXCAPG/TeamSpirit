@@ -110,6 +110,16 @@ export class SurveyService {
     });
   }
 
+  // Service to generate new SurveyCode
+  public getGenerateSurveyCode(token: string | null, surveyCode: string): Promise<any> {
+    const endPoint = "/newSurveyCode/" + surveyCode;
+    return environment.get(endPoint, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
   // Service to delete permanently a survey (surveyCode + notes)
   public deleteSurvey(token: string | null, surveyCode: string): Promise<any> {
     const endPoint = "/survey/" + surveyCode;
@@ -172,7 +182,7 @@ export class ManageUserService {
     });
   }
 
-  //Service to get all users
+   //Service to get all users
   public getUsers(token: string | null): Promise<any> {
     const endPoint = "/users";
     return environment.get(endPoint, {
@@ -225,4 +235,43 @@ export class ManageUserService {
       },
     });
   }
+}
+  export class ManageTeamService {
+    // Service to delete a team
+    public deleteTeam(token: string | null, teamName: string): Promise<any> {
+      const endPoint = "/team/" + teamName;
+      return environment.delete(endPoint, {
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+      });
+    }
+
+ //Service to create a team
+ public createTeam(
+  body: ITeamDTO,
+  token: string | null
+): Promise<any> {
+  const endPoint = "/team/create";
+  return environment.post(endPoint, body, {
+    headers: {
+      Authorization: "Bearer " + token,
+    },
+  });
+  }
+
+  //Service to update a user
+  public updateTeam(
+    body: ITeamDTO,
+    teamName: string,
+    token: string | null
+  ): Promise<any> {
+    const endPoint = "/team/" + teamName;
+    return environment.put(endPoint, body, {
+      headers: {
+        Authorization: "Bearer " + token,
+      },
+    });
+  }
+
 }

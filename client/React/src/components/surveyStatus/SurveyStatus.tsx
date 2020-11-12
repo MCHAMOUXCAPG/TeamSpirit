@@ -62,6 +62,7 @@ function SurveyStatus({
   const [open, setOpen] = useState(false);
   const [surveyCode, setSurveyCode] = useState<string>("");
   const [openReset, setOpenReset] = useState(false);
+  const [openGenerate, setOpenGenerate] = useState(false);
   const [loadingS, setLoading] = useState(true);
   const [openChart, setOpenChart] = useState(false);
   const [historic, setHistoric] = useState<IHistoric[]>([]);
@@ -73,7 +74,9 @@ function SurveyStatus({
   }); // store input variables
   const [loadingDelete, setLoadingDelete] = useState(false);
   const [loadingUpdate, setLoadingUpdate] = useState(false);
+  const [loadingGenerate, setLoadingGenerate] = useState(false);
   const [deleteMessage, setDeleteMessage] = useState(""); // gets success o error message
+  const [newCodeMessage, setNewCodeMessage] = useState(false);
   const [successDialog, setSuccessDialog] = useState(false); // final dialog (shows success or error message)
   const [forceUpdate, setForceUpdate] = useState(false);
 
@@ -92,8 +95,11 @@ function SurveyStatus({
   const handleClickOpenReset = () => {
     setOpenReset(true);
   };
+  const handleClickOpenGenerate = () => {
+    setOpenGenerate(true);
+  };
 
-  // Function that updates the values when updated the configuration
+   // Function that updates the values when updated the configuration
   const handleClickCloseResetSuccess = () => {
     setSuccessDialog(false);
     setForceUpdate(!forceUpdate); // to update de surveyCode to delete
@@ -107,6 +113,19 @@ function SurveyStatus({
       resetCurrentSurvey(token, surveyCode);
     } else {
       setOpenReset(false);
+    }
+  };
+
+  const handleClickCloseGenerateSuccess = () => {
+    setNewCodeMessage(false);
+  };
+
+  const handleClickCloseGenerate = (generate: any) => {
+    if (generate) {
+      setLoadingGenerate(true);
+      generateNewCode(token, teamName);
+    } else {
+      setOpenGenerate(false);
     }
   };
 
@@ -228,6 +247,24 @@ function SurveyStatus({
         setSuccessDialog(true);
         setOpenReset(false);
       });
+  }
+
+  async function generateNewCode(token: string | null, teamName: string) {
+    await surveyService
+    .getGenerateSurveyCode(token, teamName).then((res) => {
+      setLoadingGenerate(false);
+      setDeleteMessage("New code created!");
+      setNewCodeMessage(true);
+      setOpenGenerate(false);
+      setSurveyCode(res.data.Code);
+    })
+    .catch((err) => {
+      setLoadingGenerate(false);
+      setDeleteMessage("Error creating the new survey code. Please try again later.");
+      setNewCodeMessage(true);
+      setOpenGenerate(false);
+      console.log(err);
+    });
   }
 
   useEffect(() => {
@@ -453,7 +490,59 @@ function SurveyStatus({
                           </Button>
                         </DialogActions>
                       </Dialog>
-
+                      <Dialog
+                        disableBackdropClick={true}
+                        disableEscapeKeyDown={true}
+                        open={openGenerate}
+                        onClose={handleClickCloseGenerate}
+                        aria-labelledby="form-dialog-title"
+                      >
+                        <DialogTitle id="dialog-title">
+                          Are you sure?
+                        </DialogTitle>
+                        <DialogContent>
+                          <DialogContentText id="warnning-text">
+                            {loadingGenerate ? (
+                              <Grid container direction="row" justify="center">
+                                <CircularProgress
+                                  size={24}
+                                  style={{
+                                    color: colors.primary,
+                                  }}
+                                />
+                              </Grid>
+                            ) : (
+                              <>Actual survey will be closed, results are available via csv export.</>
+                            )}
+                          </DialogContentText>
+                        </DialogContent>
+                        <DialogActions
+                          style={{
+                            height: "60px",
+                            width: "300px",
+                            margin: "15px",
+                          }}
+                        >
+                          <Button
+                            onClick={() => {
+                              handleClickCloseGenerate(true);
+                            }}
+                            color="primary"
+                            size="large"
+                          >
+                            Yes
+                          </Button>
+                          <Button
+                            onClick={() => {
+                              handleClickCloseGenerate(false);
+                            }}
+                            color="primary"
+                            size="large"
+                          >
+                            No
+                          </Button>
+                        </DialogActions>
+                      </Dialog>
                       <Dialog
                         id="update-team"
                         open={open}
@@ -552,6 +641,16 @@ function SurveyStatus({
                         </DialogActions>
                       </Dialog>
                     </Grid>
+                    <Grid item xs={12} sm={6}>
+                      <Button
+                        variant="outlined"
+                        className="btn btn-outlined"
+                        startIcon={<Settings />}
+                        onClick={handleClickOpenGenerate}
+                        >
+                        Generate next survey
+                        </Button>
+                    </Grid>
                   </Grid>
                 )}
               </Grid>
@@ -601,6 +700,54 @@ function SurveyStatus({
                 width: 60,
               }}
               onClick={handleClickCloseResetSuccess}
+            >
+              OK
+            </Button>
+          </DialogActions>
+        </Dialog>
+      )}
+      {newCodeMessage && (
+        <Dialog
+          open={newCodeMessage}
+          disableBackdropClick={true}
+          disableEscapeKeyDown={true}
+          onClose={handleClickCloseGenerateSuccess}
+          BackdropProps={{
+            style: { backgroundColor: colors.white, opacity: 0.7 },
+          }}
+          PaperProps={{
+            style: {
+              borderRadius: 20,
+            },
+          }}
+        >
+          <DialogContent
+            style={{
+              color: colors.primary,
+              justifyContent: "center",
+              textAlign: "center",
+              fontWeight: "bold",
+              width: 250,
+              height: 80,
+            }}
+          >
+            <p>{deleteMessage}</p>
+          </DialogContent>
+          <DialogActions
+            style={{
+              justifyContent: "center",
+              paddingBottom: 30,
+            }}
+          >
+            <Button
+              variant="contained"
+              style={{
+                backgroundColor: colors.primary,
+                color: colors.white,
+                borderRadius: 20,
+                width: 60,
+              }}
+              onClick={handleClickCloseGenerateSuccess}
             >
               OK
             </Button>

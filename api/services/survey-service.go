@@ -72,6 +72,17 @@ func GetSurvey(c echo.Context) error {
 	return c.JSON(http.StatusOK, survey)
 }
 
+func GetNewSurvey(team *entities.Team) {
+	nextSurveyStartDay := team.StartDate
+	nextSurveyEndDay := nextSurveyStartDay.Add(time.Duration(team.Frequency) * 24 * time.Hour)
+	nextSurveyCode := team.Name + "-" + GenerateSurveyCode(5)
+	nextSurveyTeamName := team.Name
+	nextSurvey := &entities.Survey{StartDate: nextSurveyStartDay, EndDate: nextSurveyEndDay, Code: nextSurveyCode, TeamName: nextSurveyTeamName}
+
+	SurveyRepo.CreateSurvey(nextSurvey)
+
+}
+
 // @Summary Create a new survey
 // @Description returns the survey created
 // @Tags Surveys
@@ -247,6 +258,8 @@ func AddNotesToSurvey(c echo.Context) error {
 	}
 
 	survey.Notes = notes
+
+	survey.Median, _ = SurveyRepo.GetResultSurvey(surveyCode)
 
 	surveyUpdated, err := SurveyRepo.UpdateSurvey(surveyCode, survey)
 
@@ -455,6 +468,32 @@ func GetHistoricSurveys(c echo.Context) error {
 	return c.JSON(http.StatusOK, result)
 }
 
+// @Summary NextSurveyCode
+// @Description returns surveysCode
+// @Tags Surveys
+// @Accept json
+// @Produce json
+// @Param teamName query string true "team name"
+// @Success 200 {object} entities.Team
+// @Failure 500 {object} dto.Error
+// @Failure 400 {object} dto.Error
+// @Router /NewSurveyCode/:teamName [get]
+func NextSurveyCode(c echo.Context) error {
+	teamName := c.Param("teamName")
+	team, _ := TeamRepo.GetTeam(teamName)
+	daysSinceStartLastSprint := int(time.Since(team.Surveys[len(team.Surveys)-1].StartDate).Hours() / 24)
+	if daysSinceStartLastSprint >= team.Frequency {
+		nextSurvey := BuildNextSurvey(team)
+		nextSurveyCreated, err := SurveyRepo.CreateSurvey(nextSurvey)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, teamName)
+		}
+		return c.JSON(http.StatusOK, nextSurveyCreated)
+	} else {
+		return echo.NewHTTPError(http.StatusInternalServerError, teamName)
+	}
+}
+
 func CreateSurveyAtEndOfSprint() {
 
 	teams, _ := TeamRepo.GetTeams()
@@ -462,7 +501,7 @@ func CreateSurveyAtEndOfSprint() {
 		if len(team.Surveys) != 0 {
 			daysbeforeEndSprint := 4
 			durationSinceStartLastSprint := int(time.Since(team.Surveys[len(team.Surveys)-1].StartDate).Hours() / 24)
-			if durationSinceStartLastSprint == (team.Frequency - daysbeforeEndSprint) {
+			if durationSinceStartLastSprint <= (team.Frequency - daysbeforeEndSprint) {
 				nextSurvey := BuildNextSurvey(team)
 				SurveyRepo.CreateSurvey(nextSurvey)
 			}
@@ -493,7 +532,7 @@ func GenerateSurveyCode(n int) string {
 
 func CreateSurveyAutomatically() {
 	c := cron.New()
-	c.AddFunc("* * * 1 * *", CreateSurveyAtEndOfSprint)
+	c.AddFunc("0 * * * *", CreateSurveyAtEndOfSprint)
 	c.Start()
 }
 

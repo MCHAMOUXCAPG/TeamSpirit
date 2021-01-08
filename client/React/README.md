@@ -40,3 +40,7 @@ Follow:
 - Run all tests clicking in "Running all specs"
 - A Chrome browser window will be opened with the tests.
 - Wait until all are finished
+
+
+### Notes:
+

@@ -60,11 +60,14 @@ func GetSurvey(c echo.Context) error {
 
 	surveyCode := c.Param("surveyCode")
 	survey, err := SurveyRepo.GetSurvey(surveyCode)
-
 	if gorm.IsRecordNotFoundError(err) {
-		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETSURVEY)
-	}
+		lastSurveyCode, err := SurveyRepo.GetLastSurvey(teamName)
 
+		if gorm.IsRecordNotFoundError(err) {
+			return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETSURVEY)
+		}
+	}
+	survey, err := SurveyRepo.GetSurvey(lastSurveyCode)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETSURVEY)
 	}

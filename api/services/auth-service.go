@@ -45,14 +45,21 @@ func AccessToSurvey(c echo.Context) error {
 
 	survey, err := SurveyRepo.GetSurvey(access.Code)
 
+	// If code not found check if is a team name
 	if gorm.IsRecordNotFoundError(err) {
-		return echo.NewHTTPError(http.StatusNotFound, constants.INVALID_CODE_ACCESS)
+		team, err := TeamRepo.GetTeam(access.Code)
+		if err != nil {
+			return echo.NewHTTPError(http.StatusInternalServerError, constants.GETTEAM_GETRESULTSURVEY)
+		}
+		teamName := team.Name
+		survey, _ = SurveyRepo.GetLastSurvey(teamName)
+		// Check if last survey is still active
+		if survey.EndDate.Before(time.Now()) {
+			nextSurvey := BuildNextSurvey(team)
+			SurveyRepo.CreateSurvey(nextSurvey)
+			survey, _ = SurveyRepo.GetLastSurvey(teamName)
+		}
 	}
-
-	if err != nil {
-		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETSURVEY_ACCESS)
-	}
-
 	if isNotAllowedToVote(survey.Notes, HashUser(access.User)) {
 		return echo.NewHTTPError(http.StatusNotAcceptable, constants.SURVEY_COMPLETED_ACCESS)
 	}

@@ -55,7 +55,7 @@ const HomePage = () => {
       .sendCode(inputText)
       .then((res) => {
         context.setValid(true);
-        context.setSurveyCode(search);
+        context.setSurveyCode(res.data.Code);
         context.setCurrentTeam(res.data.TeamName);
         navigate("/survey");
         // if valid, you have access to survey
@@ -122,7 +122,7 @@ const HomePage = () => {
                           className={classes.root}
                           id="outlined-required"
                           variant="outlined"
-                          placeholder="Enter your code in captial letters..."
+                          placeholder="Enter your code in capital letters..."
                           value={search}
                           onChange={(e) => setSearch(e.target.value)}
                           helperText={HelperTxt}

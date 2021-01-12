@@ -61,13 +61,8 @@ func GetSurvey(c echo.Context) error {
 	surveyCode := c.Param("surveyCode")
 	survey, err := SurveyRepo.GetSurvey(surveyCode)
 	if gorm.IsRecordNotFoundError(err) {
-		lastSurveyCode, err := SurveyRepo.GetLastSurvey(teamName)
-
-		if gorm.IsRecordNotFoundError(err) {
-			return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETSURVEY)
-		}
+		return echo.NewHTTPError(http.StatusNotFound, constants.NOTFOUND_GETSURVEY)
 	}
-	survey, err := SurveyRepo.GetSurvey(lastSurveyCode)
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GET_GETSURVEY)
 	}
@@ -483,7 +478,10 @@ func GetHistoricSurveys(c echo.Context) error {
 // @Router /NewSurveyCode/:teamName [get]
 func NextSurveyCode(c echo.Context) error {
 	teamName := c.Param("teamName")
-	team, _ := TeamRepo.GetTeam(teamName)
+	team, err := TeamRepo.GetTeam(teamName)
+	if err != nil {
+		return echo.NewHTTPError(http.StatusInternalServerError, teamName)
+	}
 	daysSinceStartLastSprint := int(time.Since(team.Surveys[len(team.Surveys)-1].StartDate).Hours() / 24)
 	if daysSinceStartLastSprint >= team.Frequency {
 		nextSurvey := BuildNextSurvey(team)
@@ -515,6 +513,13 @@ func CreateSurveyAtEndOfSprint() {
 func BuildNextSurvey(team *entities.Team) *entities.Survey {
 	nextSurveyStartDay := team.Surveys[len(team.Surveys)-1].EndDate.Add(24 * time.Hour)
 	nextSurveyEndDay := nextSurveyStartDay.Add(time.Duration(team.Frequency) * 24 * time.Hour)
+	for {
+		if nextSurveyStartDay.Before(time.Now().Add(24*time.Hour)) && nextSurveyEndDay.After(time.Now().Add(-24*time.Hour)) {
+			break
+		}
+		nextSurveyStartDay = nextSurveyEndDay.Add(24 * time.Hour)
+		nextSurveyEndDay = nextSurveyStartDay.Add(time.Duration(team.Frequency) * 24 * time.Hour)
+	}
 	nextSurveyCode := team.Name + "-" + GenerateSurveyCode(5)
 	nextSurveyTeamName := team.Name
 	nextSurvey := &entities.Survey{StartDate: nextSurveyStartDay, EndDate: nextSurveyEndDay, Code: nextSurveyCode, TeamName: nextSurveyTeamName}

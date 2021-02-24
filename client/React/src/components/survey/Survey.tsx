@@ -301,7 +301,7 @@ const Survey = (props: any) => {
           style={{
             padding: 30,
             width: '100%',
-            justifyContent: 'left',
+            justifyContent: 'center',
             paddingTop: 0,
           }}
         >

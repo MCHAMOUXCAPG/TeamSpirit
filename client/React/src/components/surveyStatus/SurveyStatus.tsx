@@ -118,6 +118,9 @@ function SurveyStatus({
 
   const handleClickCloseGenerateSuccess = () => {
     setNewCodeMessage(false);
+    setSuccessDialog(false);
+    setForceUpdate(!forceUpdate); // to update de surveyCode to delete
+    contextRender.setRender(true); // to update de current shown values
   };
 
   const handleClickCloseGenerate = (generate: any) => {

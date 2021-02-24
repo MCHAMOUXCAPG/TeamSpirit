@@ -59,20 +59,20 @@ const questions: ISurveyQuestion[] = [
   },
   {
     number: 7,
-    question: 'I feel supported by the client and stakeholders',
+    question: 'I feel supported by the client and stakeholders...',
     type: questionType.slider,
     images: [require('../assets/7.1.png'), require('../assets/7.2.png')],
   },
   {
     number: 8,
-    question: 'I feel recognized and praised by the team',
+    question: 'I feel recognized and praised by the team...',
     type: questionType.slider,
     images: [require('../assets/8.1.png'), require('../assets/8.2.png')],
   },
   {
     number: 9,
     question:
-      'I feel inspired and excited to work in this team for the coming sprints',
+      'I feel inspired and excited to work in this team for the coming sprints...',
     type: questionType.slider,
     images: [
       require('../assets/heartbroken_1x.png'),

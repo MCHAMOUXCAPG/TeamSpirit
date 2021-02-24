@@ -57,7 +57,7 @@ func AccessToSurvey(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETTEAM_ACCESS)
 	}
-	noteNum := 0
+	noteNum := 1
 	for _, eachNote := range survey.Notes {
 		noteNum = Max(noteNum, int(eachNote.Number))
 	}

@@ -425,7 +425,7 @@ func Maximum(x, y int) int {
 
 func calculateCompleted(membersTeam int, notes []entities.Note) string {
 
-	var noteNum int = 0
+	var noteNum int = 1
 	for _, eachNote := range notes {
 		noteNum = Maximum(noteNum, int(eachNote.Number))
 	}

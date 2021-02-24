@@ -141,8 +141,15 @@ const AverageChart = (props: any) => {
             series={state.seriesRadial}
             type="radialBar"
           />
-          <h1 className="grade">{props.grade}</h1>
-          <img className="noteicon" src={iconHandler()} alt="note icon" />
+          <Grid
+            container
+            direction="column"
+            justify="center"
+            alignItems="center"
+          >    
+            <h1 className="grade">{props.grade}</h1>
+            <img className="noteicon" src={iconHandler()} alt="note icon" />
+          </Grid>
         </>
       )}
     </div>

@@ -416,8 +416,20 @@ func mapResult(team *entities.Team, currentSurvey *entities.Survey) *dto.Result 
 	return result
 }
 
+func Maximum(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
+}
+
 func calculateCompleted(membersTeam int, notes []entities.Note) string {
-	membersVote := len(notes) / 6
+
+	var noteNum int = 0
+	for _, eachNote := range notes {
+		noteNum = Maximum(noteNum, int(eachNote.Number))
+	}
+	membersVote := len(notes) / noteNum
 	return strconv.Itoa(membersVote) + "/" + strconv.Itoa(membersTeam)
 }
 

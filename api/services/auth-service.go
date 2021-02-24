@@ -57,8 +57,12 @@ func AccessToSurvey(c echo.Context) error {
 	if err != nil {
 		return echo.NewHTTPError(http.StatusInternalServerError, constants.GETTEAM_ACCESS)
 	}
+	noteNum := 0
+	for _, eachNote := range survey.Notes {
+		noteNum = Max(noteNum, int(eachNote.Number))
+	}
 
-	if len(survey.Notes) >= (team.Num_mumbers * 6) {
+	if len(survey.Notes) >= (team.Num_mumbers * noteNum) {
 		return echo.NewHTTPError(http.StatusUnauthorized, constants.MAX_REACHED_ACCESS)
 	}
 
@@ -66,8 +70,14 @@ func AccessToSurvey(c echo.Context) error {
 		return echo.NewHTTPError(http.StatusUnauthorized, constants.DEADLINE_PASSED_ACCESS)
 
 	}
-
 	return c.JSON(http.StatusOK, survey)
+}
+
+func Max(x, y int) int {
+	if x > y {
+		return x
+	}
+	return y
 }
 
 // Current User godoc

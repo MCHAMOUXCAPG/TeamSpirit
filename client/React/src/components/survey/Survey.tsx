@@ -1,6 +1,6 @@
-import React, { useState, useEffect, useContext } from "react";
-import { useNavigate } from "react-router-dom";
-import "./Survey.css";
+import React, { useState, useEffect, useContext } from 'react';
+import { useNavigate } from 'react-router-dom';
+import './Survey.css';
 import {
   Container,
   Paper,
@@ -8,20 +8,20 @@ import {
   Slider,
   Button,
   CircularProgress,
-} from "@material-ui/core";
-import { Rating } from "@material-ui/lab";
+} from '@material-ui/core';
+import { Rating } from '@material-ui/lab';
 
-import colors from "../../config/colors";
-import NavBar from "../navBar/NavBar";
-import AlertDialog from "../alertDialog/AlertDialog";
-import questions from "../../models/questions";
-import { SurveyService } from "../../services/Services";
-import { useAuth, AuthContext } from "../../context/auth";
+import colors from '../../config/colors';
+import NavBar from '../navBar/NavBar';
+import AlertDialog from '../alertDialog/AlertDialog';
+import questions from '../../models/questions';
+import { SurveyService } from '../../services/Services';
+import { useAuth, AuthContext } from '../../context/auth';
 import {
   questionType,
   IQuestionStatus,
   IQuestionResponse,
-} from "../../models/interfaces";
+} from '../../models/interfaces';
 
 const Survey = (props: any) => {
   const surveyCode = useAuth().surveyCode;
@@ -29,26 +29,33 @@ const Survey = (props: any) => {
 
   const surveyService: SurveyService = new SurveyService();
   const [starsSelected, setStarsSelected] = useState<number | any>(0);
-  const [slider1, setSlider1] = useState<number | number[]>(5);
-  const [slider2, setSlider2] = useState<number | number[]>(5);
+  const [slider3, setSlider3] = useState<number | number[]>(5);
+  const [slider4, setSlider4] = useState<number | number[]>(5);
+  const [slider6, setSlider6] = useState<number | number[]>(5);
+  const [slider7, setSlider7] = useState<number | number[]>(5);
+  const [slider8, setSlider8] = useState<number | number[]>(5);
+  const [slider9, setSlider9] = useState<number | number[]>(5);
   const [success, setSuccess] = useState(false);
   const [loading, setLoading] = useState(false);
   // eslint-disable-next-line
   const [currentQuestion, setCurrentQuestion] = useState(0);
   const [disabled, setDisabled] = useState(true);
   const [questionsState, setQuestionsState] = useState<IQuestionStatus[]>([
-    { valid: false, status: "active", touched: true },
-    { valid: false, status: "", touched: false },
-    { valid: true, status: "", touched: false },
-    { valid: true, status: "", touched: false },
-    { valid: false, status: "", touched: false },
-    { valid: false, status: "", touched: false },
+    { valid: false, status: 'active', touched: true },
+    { valid: false, status: '', touched: false },
+    { valid: true, status: '', touched: false },
+    { valid: true, status: '', touched: false },
+    { valid: false, status: '', touched: false },
+    { valid: true, status: '', touched: false },
+    { valid: true, status: '', touched: false },
+    { valid: true, status: '', touched: false },
+    { valid: true, status: '', touched: false },
   ]);
 
   // Get the uniqueId from localStorage
   let uniqueId: any = undefined;
-  if (localStorage.getItem("uniqueIdTS")) {
-    uniqueId = localStorage.getItem("uniqueIdTS");
+  if (localStorage.getItem('uniqueIdTS')) {
+    uniqueId = localStorage.getItem('uniqueIdTS');
   }
 
   const [questionsResponse, setQuestionsResponse] = useState<
@@ -59,7 +66,10 @@ const Survey = (props: any) => {
     { number: 3, note: 5, surveyCode: surveyCode, User: uniqueId },
     { number: 4, note: 5, surveyCode: surveyCode, User: uniqueId },
     { number: 5, note: 0, surveyCode: surveyCode, User: uniqueId },
-    { number: 6, note: 0, surveyCode: surveyCode, User: uniqueId },
+    { number: 6, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 7, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 8, note: 5, surveyCode: surveyCode, User: uniqueId },
+    { number: 9, note: 5, surveyCode: surveyCode, User: uniqueId },
   ]);
 
   const [activeIcon, setActiveIcon] = useState([
@@ -68,7 +78,10 @@ const Survey = (props: any) => {
     [],
     [],
     [],
-    [false, false],
+    [],
+    [],
+    [],
+    [],
   ]);
 
   function useForceUpdate() {
@@ -92,7 +105,7 @@ const Survey = (props: any) => {
       })
       .catch((err) => {
         if (err.request.status === 0) {
-          alert("Please verify you have internet access!");
+          alert('Please verify you have internet access!');
         } else {
           alert(err.Error);
         }
@@ -105,12 +118,12 @@ const Survey = (props: any) => {
     let count = 0;
     const currentQuestionStatus = questionsState;
     currentQuestionStatus.forEach((question: IQuestionStatus) => {
-      question.status = "";
+      question.status = '';
       if (question.valid) {
         count++;
       }
     });
-    currentQuestionStatus[currentQuestion].status = "active";
+    currentQuestionStatus[currentQuestion].status = 'active';
     currentQuestionStatus[currentQuestion].touched = true;
     setQuestionsState(currentQuestionStatus);
     const response = questionsResponse;
@@ -128,7 +141,7 @@ const Survey = (props: any) => {
     let count = 0;
     const currentQuestionStatus = questionsState;
     currentQuestionStatus.forEach((question: IQuestionStatus) => {
-      question.status = "";
+      question.status = '';
       if (question.valid) {
         count++;
       }
@@ -221,6 +234,63 @@ const Survey = (props: any) => {
     sendSurvey(surveyCode, questionsResponse);
   };
 
+  const setSliderValue = (questionNumber: number, value: number | number[])=>{
+    handleClickSlider(questionNumber-1, value);
+    switch (questionNumber) {
+      case 3:
+        setSlider3(value);
+        break;
+
+      case 4:
+        setSlider4(value);
+        break;
+
+      case 6:
+        setSlider6(value);
+        break;
+
+      case 7:
+        setSlider7(value);
+        break;
+
+      case 8:
+        setSlider8(value);
+        break;
+
+      case 9:
+        setSlider9(value);
+        break;
+
+      default:
+        break;
+    }
+  }
+
+  const getSliderValue = (questionNumber: number) => {
+    switch (questionNumber) {
+      case 3:
+        return slider3;
+
+      case 4:
+        return slider4;
+
+      case 6:
+        return slider6;
+
+      case 7:
+        return slider7;
+
+      case 8:
+        return slider8;
+
+      case 9:
+        return slider9;
+
+      default:
+        break;
+    }
+  }
+
   return (
     <>
       <NavBar user={false} />
@@ -230,8 +300,8 @@ const Survey = (props: any) => {
           spacing={3}
           style={{
             padding: 30,
-            width: "100%",
-            justifyContent: "center",
+            width: '100%',
+            justifyContent: 'left',
             paddingTop: 0,
           }}
         >
@@ -246,25 +316,25 @@ const Survey = (props: any) => {
                 xs={6}
                 spacing={3}
                 style={{
-                  width: "100%",
+                  width: '100%',
                   height: 200,
-                  margin: "5px 0px",
-                  justifyContent: "center",
+                  margin: '5px 0px',
+                  justifyContent: 'center',
                 }}
                 key={question.number}
               >
                 <Paper
                   style={{
-                    width: "70%",
+                    width: '70%',
                     padding: 20,
-                    boxShadow: "2px 3px 3px 3px " + colors.primary,
+                    boxShadow: '2px 3px 3px 3px ' + colors.primary,
                     borderRadius: 20,
                   }}
                 >
-                  <p style={{ fontWeight: "bold" }}>
+                  <p style={{ fontWeight: 'bold' }}>
                     {question.number}. {question.question}
                   </p>
-                  <Grid container spacing={3} style={{ width: "100%" }}>
+                  <Grid container spacing={3} style={{ width: '100%' }}>
                     {question.type === questionType.fiveIcons ? (
                       <>
                         <Grid item xs={1}></Grid>
@@ -334,35 +404,24 @@ const Survey = (props: any) => {
                             style={{ height: 40, width: 40, padding: 10 }}
                             alt=""
                             onClick={() => {
-                              if (question.number === 3) {
-                                setSlider1(0);
-                                handleClickSlider(2, 0);
-                              } else {
-                                setSlider2(0);
-                                handleClickSlider(3, 0);
-                              }
+                              setSliderValue(question.number, 0)
                             }}
                           />
                         </Grid>
                         <Grid item xs={8}>
                           <Slider
-                            value={question.number === 3 ? slider1 : slider2}
+                            value={getSliderValue(question.number)}
                             onChange={(event, newValue) => {
-                              if (question.number === 3) {
-                                setSlider1(newValue);
-                                handleClickSlider(2, newValue);
-                              } else {
-                                setSlider2(newValue);
-                                handleClickSlider(3, newValue);
-                              }
+                              setSliderValue(question.number, newValue)
                             }}
                             step={2.5}
                             min={0}
                             max={10}
                             style={{
                               color: colors.primary,
-                              top: "25%",
+                              top: '25%',
                             }}
+                            marks={true}
                           />
                         </Grid>
                         <Grid item xs={2}>
@@ -372,13 +431,7 @@ const Survey = (props: any) => {
                             style={{ height: 40, width: 40, padding: 10 }}
                             alt=""
                             onClick={() => {
-                              if (question.number === 3) {
-                                setSlider1(10);
-                                handleClickSlider(2, 10);
-                              } else {
-                                setSlider2(10);
-                                handleClickSlider(3, 10);
-                              }
+                              setSliderValue(question.number, 10)
                             }}
                           />
                         </Grid>
@@ -438,62 +491,62 @@ const Survey = (props: any) => {
               </Grid>
             );
           })}
-          <Grid
-            item
-            xs={3}
-            style={{
-              justifyContent: "center",
-              alignItems: "center",
-              alignContent: "center",
-              marginTop: 20,
-            }}
+        </Grid>
+        <Grid
+          container
+          style={{
+            justifyContent: 'center',
+            alignItems: 'center',
+            alignContent: 'center',
+            marginTop: 20,
+            marginBottom: 100,
+          }}
+        >
+          <Button
+            id="submit-btn"
+            variant="contained"
+            size="large"
+            disabled={disabled}
+            onClick={handleSurveyCompletion}
+            style={
+              disabled
+                ? {
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    color: 'white',
+                    backgroundColor: colors.secondary,
+                    borderRadius: 20,
+                    width: 280,
+                    height: 40,
+                    fontSize: 20,
+                  }
+                : {
+                    justifyContent: 'center',
+                    alignContent: 'center',
+                    color: 'white',
+                    backgroundColor: colors.primary,
+                    borderRadius: 20,
+                    width: 280,
+                    height: 40,
+                    fontSize: 20,
+                  }
+            }
           >
-            <Button
-              id="submit-btn"
-              variant="contained"
-              size="large"
-              disabled={disabled}
-              onClick={handleSurveyCompletion}
-              style={
-                disabled
-                  ? {
-                      justifyContent: "center",
-                      alignContent: "center",
-                      color: "white",
-                      backgroundColor: colors.secondary,
-                      borderRadius: 20,
-                      width: 280,
-                      height: 40,
-                      fontSize: 20,
-                    }
-                  : {
-                      justifyContent: "center",
-                      alignContent: "center",
-                      color: "white",
-                      backgroundColor: colors.primary,
-                      borderRadius: 20,
-                      width: 280,
-                      height: 40,
-                      fontSize: 20,
-                    }
-              }
-            >
-              {loading ? (
-                <CircularProgress
-                  size={24}
-                  style={{
-                    color: colors.white,
-                  }}
-                />
-              ) : (
-                "SUBMIT"
-              )}
-            </Button>
-          </Grid>
+            {loading ? (
+              <CircularProgress
+                size={24}
+                style={{
+                  color: colors.white,
+                }}
+              />
+            ) : (
+              'SUBMIT'
+            )}
+          </Button>
         </Grid>
       </Container>
       <AlertDialog
-        text1="Please answer the 6 following questions."
+        text1="Please answer the 9 following questions."
         text2="It will only take you a couple of minutes."
         clicked=""
       />
@@ -503,7 +556,7 @@ const Survey = (props: any) => {
           text2="Thank you for sending us your feedback."
           clicked={() => {
             context.setValid(false);
-            navigate("/success");
+            navigate('/success');
           }}
         />
       )}

@@ -1,4 +1,17 @@
-@import "../../config/colors.css";
+@import '../../config/colors.css';
 img.icon-image {
   cursor: pointer;
+}
+.MuiSlider-mark,
+.MuiSlider-markActive {
+  width: 4px !important;
+  height: 4px !important;
+  border-radius: 4px !important;
+  border: 1px solid var(--primary) !important;
+  transform: translateY(-2px);
+}
+
+.MuiSlider-track{
+  height: 3px !important;
+  transform: translateY(-0.5px);
 }

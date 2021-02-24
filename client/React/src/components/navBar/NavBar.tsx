@@ -4,7 +4,7 @@ import { ExitToApp, Group } from "@material-ui/icons";
 import { useNavigate } from "react-router-dom";
 
 import "./NavBar.css";
-import logo from "../../assets/logo.png";
+import logo from "../../assets/logo_murcia.png";
 import { AuthContext } from "../../context/auth";
 
 // this component use the prop "user" to now if we are loggeg in or not

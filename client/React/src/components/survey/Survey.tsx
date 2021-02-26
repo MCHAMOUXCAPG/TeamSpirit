@@ -332,7 +332,7 @@ const Survey = (props: any) => {
                   }}
                 >
                   <p style={{ fontWeight: 'bold' }}>
-                    {question.number}. {question.question}
+                    {question.question}
                   </p>
                   <Grid container spacing={3} style={{ width: '100%' }}>
                     {question.type === questionType.fiveIcons ? (

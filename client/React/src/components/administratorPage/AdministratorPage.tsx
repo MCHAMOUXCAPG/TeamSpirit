@@ -133,7 +133,7 @@ const AdministratorPage = () => {
           spacing={3}
         >
           <Grid item xs={12}>
-            <div className="team-name">TeamSpirit Managment</div>
+            <div className="team-name">TeamSpirit Management</div>
           </Grid>
           <Grid item xs={12}>
             <Tabs

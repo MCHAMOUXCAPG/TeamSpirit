@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import {
+  Box,
   CircularProgress,
   Container,
   ExpansionPanel,
@@ -14,6 +15,7 @@ import { IResultsByUsers, IResultsByQuestions } from "../../models/interfaces";
 import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
 import LoupeIcon from "@material-ui/icons/Loupe";
 import colors from "../../config/colors";
+import questions from '../../models/questions';
 import "./DetailResults.css";
 
 function DetailResults({
@@ -28,9 +30,8 @@ function DetailResults({
   completed: string;
 }) {
   const [value, setValue] = useState(0);
-
   const puntos =
-    ".................................................................................................................................................................................................................................................................................  ";
+    "............................................................................................................................................................  ";
   const handleChange = (event: React.ChangeEvent<{}>, newValue: number) => {
     setValue(newValue);
   };
@@ -115,10 +116,14 @@ function DetailResults({
                               {userResult.Notes.map((Note, index) => {
                                 return (
                                   <Grid item xs={12} key={index}>
-                                    <p>
-                                      Question {Note.Number}:&nbsp;{puntos}
-                                      {parseFloat(Note.Note.toFixed(2))}
-                                    </p>
+                                   <Box display="flex" p={1} >
+                                    <Box p={1} flexGrow={1} >
+                                    <p>{ questions[index].question}</p>
+                                    </Box>
+                                    <Box p={1}>
+                                    <p>{parseFloat(Note.Note.toFixed(2))}</p>
+                                    </Box>
+                                  </Box>
                                   </Grid>
                                 );
                               })}
@@ -144,7 +149,9 @@ function DetailResults({
                             id="panel2a-header"
                           >
                             <Typography>
-                              Question {questionResult.QuestionNumber}:&nbsp;
+
+
+                              { questions[index].question}&nbsp;
                               {parseFloat(questionResult.Average.toFixed(2))}
                             </Typography>
                           </ExpansionPanelSummary>
@@ -153,10 +160,14 @@ function DetailResults({
                               {questionResult.Notes.map((Note, index) => {
                                 return (
                                   <Grid item xs={12} key={index}>
-                                    <p>
-                                      User&nbsp;{index + 1}:{puntos}&nbsp;
-                                      {parseFloat(Note.Note.toFixed(2))}
-                                    </p>
+                                   <Box display="flex" p={1} >
+                                    <Box p={1} flexGrow={1} >
+                                    <p>User&nbsp;{index + 1}</p>
+                                    </Box>
+                                    <Box p={1}>
+                                    <p>{parseFloat(Note.Note.toFixed(2))}</p>
+                                    </Box>
+                                  </Box>
                                   </Grid>
                                 );
                               })}
